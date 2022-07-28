@@ -2,7 +2,8 @@
   "name": "tokopolis-payment",
   "version": "1.0.0",
   "scripts": {
-    "dev": "node -r dotenv/config index.js"
+    "dev": "node -r dotenv/config index.js",
+    "packaging": "npm install && npm audit fix"
   },
   "author": "",
   "license": "ISC",
