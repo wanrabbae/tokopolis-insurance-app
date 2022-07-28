@@ -1,0 +1,9 @@
+.list-unstyled {
+    li {
+        margin-bottom: $spacer * .5;
+        
+        &:last-child {
+            margin-bottom: 0 !important;
+        }
+    }
+}

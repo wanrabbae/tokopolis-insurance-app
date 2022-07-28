@@ -1,0 +1,34 @@
+#footer {
+    color: $footer-color;
+    background-color: $footer-bg;
+    padding-top: $spacer * 3;
+    padding-bottom: $spacer;
+
+    h1, h2, h3, h4, h5, h6 {
+        color: $footer-color;
+    }
+
+    .footer-logo {
+        max-height: 36px;
+    }
+
+    .footer-separator {
+        border-bottom: 1px solid $white;
+    }
+
+    .copyright-text {
+        padding-top: $spacer * 1.5;
+        text-align: center;
+    }
+    
+    .social-icon {
+        width: 1.4em;
+        height: 1.4em;
+    }
+
+    .download-image {
+        display: inline-block;
+        max-width: 90px;
+        max-height: 35px;
+    }
+}

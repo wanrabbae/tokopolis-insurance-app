@@ -1,0 +1,176 @@
+// override default swiper style
+.swiper {
+    overflow: hidden !important;
+    
+    .swiper-slide {
+        height: auto !important;
+    }
+}
+
+.swiper-pagination-bullets {
+    .swiper-pagination-bullet {
+        width: 12px !important;
+        height: 12px !important;
+        background-color: $primary !important;
+        opacity: .25 !important;
+    }
+
+    .swiper-pagination-bullet-active {
+        opacity: .75 !important;
+    }
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    color: $primary !important;
+}
+
+.promotion-carousel {
+    position: relative;
+    width: 100%;
+    background-color: $gray-100;
+
+    .swiper-image {
+        position: relative;
+        width: 100%;
+        padding-top: 50%;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: $white !important;
+        opacity: .5;
+    }
+
+    .swiper-button-prev {
+        left: 24px;
+    }
+
+    .swiper-button-next {
+        right: 24px;
+    }
+
+    .swiper-pagination-bullets {
+        .swiper-pagination-bullet {
+            background-color: $white !important;
+            opacity: 1 !important;
+        }
+
+        .swiper-pagination-bullet-active {
+            background-color: $primary !important;
+            opacity: 1 !important;
+        }
+    }
+}
+
+.video-carousel,
+.testimonial-carousel {
+    .swiper-button-prev, 
+    .swiper-button-next {
+        display: inline-block !important;
+        position: relative !important;
+        width: auto !important;
+        height: auto !important;
+        top: auto !important;
+        right: auto !important;
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+    }
+}
+
+.video-carousel {
+    .swiper-pagination {
+        position: relative;
+    }
+
+    .swiper-pagination-bullets {
+        bottom: auto;
+    }
+
+    .swiper-video {
+        position: relative; 
+        max-width: 560px; 
+        max-height: 315px; 
+        margin: 0 auto;
+    }
+
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        height: 0;
+    }
+
+    .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.brand-carousel .brand-image {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 48px;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        max-height: 100%;
+    }
+}
+
+.testimonial-carousel { 
+    .card::before {
+        position: absolute;
+        content: "\"";
+        top: 0;
+        right: 16px;
+        font-size: 81px;
+        opacity: .25;
+    }
+
+    .swiper-button-prev, 
+    .swiper-button-next {
+        color: $white !important;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .swiper-button-next {
+        right: 5px !important;
+        
+        &::after {
+            font-size: 1.2rem !important;
+        }
+    }
+
+    .swiper-button-prev {
+        left: 5px !important;
+
+        &::after {
+            font-size: 1.2rem !important;
+        }
+    }
+
+    .swiper-pagination-bullets {
+        bottom: .2rem !important;
+        
+        .swiper-pagination-bullet {
+            width: 8px !important;
+            height: 8px !important;
+        }
+    }
+}

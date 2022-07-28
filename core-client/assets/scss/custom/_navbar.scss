@@ -1,0 +1,38 @@
+.navbar {
+    border-bottom: 1px solid #e7e7e7;
+    transition: background-color .15s linear;
+    color: $gray-800;
+
+    .avatar {
+        height: 30px;
+        width: 30px;
+    }
+
+    .nav-link {
+        text-transform: uppercase;
+        color: $gray-800;
+        font-weight: $font-weight-bold;
+    }
+
+    .navbar-toggler {
+        border: 0;
+        outline: none;
+    }
+
+    .b-sidebar-header,
+    .b-sidebar-body,
+    .b-sidebar-footer {
+        padding: $navbar-padding-y $navbar-padding-x;
+    }
+}
+
+@include media-breakpoint-up(lg){
+    .navbar .navbar-container {
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+
+    .b-sidebar {
+        background-color: transparent !important;
+    }
+}

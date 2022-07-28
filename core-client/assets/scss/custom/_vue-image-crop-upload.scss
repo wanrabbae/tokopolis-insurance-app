@@ -1,0 +1,199 @@
+.vue-image-crop-upload.custom-image-crop-upload {
+    display: flex ;
+    justify-content: center; 
+    align-items: center;
+    z-index: 1050;
+    background-color: rgba(34, 42, 66, 0.8);
+
+    .vicp-wrap {
+        position: relative;
+        width: 40vw;
+        height: auto;
+
+        .vicp-close {
+            display: none;
+        }
+
+        .vicp-step1 {
+            position: relative;
+
+            .vicp-drop-area {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+                background-color: $gray-100;
+                padding: 64px $padding-base-horizontal;
+                border: none;
+
+                .vicp-icon1 {
+                    width: 66px;
+                    height: 66px;
+                    background: url('/svg/upload.svg') no-repeat center;
+                    margin: 0 auto $margin-base-vertical;
+
+                    .vicp-icon1-arrow, .vicp-icon1-body, .vicp-icon1-bottom {
+                        display: none;
+                    }
+                }
+
+                .vicp-hint {
+                    padding: $padding-base-vertical $padding-base-horizontal;
+                    font-size: inherit;
+                    line-height: inherit;
+                    color: $gray-700;
+                }
+
+                .vicp-no-supported-hint {
+                    position: relative;
+                    height: auto;
+                    padding: 0;
+                    font-size: inherit;
+                    line-height: inherit;
+                    background-color: transparent;
+                    color: $warning;
+                }
+                
+                &:hover {
+                    background-color: darken($gray-100, 1%);
+                }
+            }
+        }
+
+        .vicp-step2 {
+            position: relative;
+
+            .vicp-crop {
+                .vicp-crop-left {
+                    position: relative;
+
+                    .vicp-img-container {
+                        margin: 0 auto;
+
+                        .vicp-img {
+                            max-width: none;
+                        }
+
+                        .vicp-img-shade {
+                            background-color: rgba($gray-700, 0.8);
+                            box-shadow: none;
+                        }
+                    }
+
+                    .vicp-range {
+                        margin: $margin-base-vertical auto 0;
+
+                        input[type=range] {
+                            padding-top: 8px;
+
+                            &::-webkit-slider-thumb {
+                                background-color: lighten($primary, 10);
+                            }
+
+                            &::-moz-range-thumb {
+                                background-color: lighten($primary, 10);
+                            }
+
+                            &::-ms-thumb {
+                                background-color: lighten($primary, 10);
+                            }
+
+                            &::-webkit-slider-runnable-track {
+                                background-color: rgba($primary, 0.3);
+                            }
+
+                            &::-moz-range-track {
+                                background-color: rgba($primary, 0.3);
+                            }
+
+                            &::-ms-fill-lower {
+                                background-color: rgba($primary, 0.3);
+                            }
+
+                            &::-ms-fill-upper {
+                                background-color: rgba($primary, 0.15);
+                            }
+
+                            &:focus {
+                                &::-webkit-slider-runnable-track {
+                                    background-color: rgba($primary, 0.5);
+                                }
+
+                                &::-moz-range-track {
+                                    background-color: rgba($primary, 0.5);
+                                }
+
+                                &::-ms-fill-lower {
+                                    background-color: rgba($primary, 0.45);
+                                }
+
+                                &::-ms-fill-upper {
+                                    background-color: rgba($primary, 0.25);
+                                }
+                            }
+                        }
+
+                        .vicp-icon5, .vicp-icon6 {
+                            background-color: rgba($primary, 0.08);
+
+                            &:hover {
+                                background-color: rgba($primary, 0.14);
+                            }
+                        }
+                    }
+                }
+
+                .vicp-crop-right {
+                    display: none;
+                }
+
+                .vicp-crop-left, .vicp-crop-right {
+                    float: inherit;
+                }
+            }
+        }
+
+        .vicp-error {
+            height: auto;
+            font-size: inherit;
+            line-height: inherit;
+            color: $warning;
+            margin-top: $margin-base-vertical;
+
+            .vicp-icon2 {
+                display: none;
+            }
+        }
+
+        .vicp-operate {
+            position: relative;
+            display: flex;
+            justify-content: flex-end;
+            right: inherit;
+            bottom: inherit;
+            margin-top: $margin-base-vertical;
+            
+            a {
+                width: auto;
+                height: auto;
+                float: inherit;
+                font-size: inherit;
+                line-height: inherit;
+                margin-left: 12px;
+                margin-right: 12px;
+                border-radius: 0;
+                color: $primary;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .vue-image-crop-upload .custom-image-crop-upload .vicp-wrap {
+        width: 80vw;
+
+        .vicp-drop-area {
+            padding: 32px $padding-base-horizontal;
+        }
+    }
+}

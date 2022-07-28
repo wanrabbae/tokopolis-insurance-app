@@ -1,0 +1,10 @@
+.pagination .page-item {
+    &:not(:last-child) {
+        margin-right: $spacer * .75;
+    }
+
+    .page-link {
+        border-radius: $border-radius !important;
+    }
+}
+  

@@ -1,0 +1,60 @@
+@each $size, $value in $display-font-sizes {
+    .fs-#{$size} {
+        @include font-size($value);
+    }
+
+    @each $breakpoint, $breakpoint-value in $grid-breakpoints {
+        @include media-breakpoint-up($breakpoint){
+            .fs-#{$breakpoint}-#{$size} {
+                font-size: $value !important;
+            }
+        }
+    }
+}
+
+@each $weight, $value in $font-weights {
+    .fw-#{$weight} {
+        font-weight: $value !important;
+    }
+
+    @each $breakpoint, $breakpoint-value in $grid-breakpoints {
+        @include media-breakpoint-up($breakpoint){
+            .fw-#{$breakpoint}-#{$weight} {
+                font-weight: $value !important;
+            }
+        }
+    }
+}
+
+@include media-breakpoint-down(md) {
+    h1, .h1 {
+        font-size: $h1-font-size * 0.714;
+    }
+
+    h2, .h2{
+        font-size: $h2-font-size * 0.714;
+    }
+
+    h3, .h3{
+        font-size: $h3-font-size * 0.85714286;
+    }
+
+    h4, .h4{
+        font-size: $h4-font-size * 0.85714286;
+    }
+
+    h5, .h5 {
+        font-size: $h5-font-size * 0.85714286;
+    }
+
+    h6, .h6{
+        font-size: $h6-font-size * 0.85714286;
+    }
+    
+    body, p, button, .btn, input, optgroup,
+    select, textarea, .form-control, 
+    .card label, .card .custom-label, 
+    label, .custom-label, .custom-select {
+        font-size: $font-size-sm;
+    }
+}

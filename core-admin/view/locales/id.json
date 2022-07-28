@@ -1,0 +1,85 @@
+{
+    "navbar": {
+      "search": {
+        "text": "Cari..."
+      },
+      "dropdown": {
+        "site": {
+          "list": {
+            "github": "GitHub",
+            "bitbucket": "Bitbucket",
+            "dribbble": "Dribbble",
+            "dropbox": "Dropbox",
+            "mailchimp": "Mail Chimp",
+            "slack": "Slack"
+          }
+        },
+        "notification": {
+          "badge": "3",
+          "text": "Notifications",
+          "subtext": "Mark all as unread",
+          "order": {
+            "title": "Your order is placed",
+            "text": "If several languages coalesce the grammar",
+            "time": "3 min ago"
+          },
+          "james": {
+            "title": "James Lemire",
+            "text": "It will seem like simplified English.",
+            "time": "1 hours ago"
+          },
+          "item": {
+            "title": "Your item is shipped",
+            "text": "If several languages coalesce the grammar",
+            "time": "3 min ago"
+          },
+          "salena": {
+            "title": "Salena Layfield",
+            "text": "As a skeptical Cambridge friend of mine occidental.",
+            "time": "1 hours ago"
+          },
+          "button": "Load More.."
+        },
+        "marcus": {
+          "text": "Marcus",
+          "list": {
+            "profile": "Profil",
+            "mywallet": "Dompetku",
+            "settings": "Pengaturan",
+            "lockscreen": "Kunci layar",
+            "logout": "Keluar"
+          }
+        }
+      }
+    },
+    "menuitems": {
+      "menu": {
+        "text": "Menu"
+      },
+      "dashboard": {
+        "text": "Beranda"
+      },
+      "endpoint": {
+        "text": "Daftar Endpoint"
+      },
+      "role": {
+        "text": "Daftar Role"
+      },
+      "account": {
+        "text": "Daftar Pengguna"
+      },
+      "vehicle": {
+        "text": "Daftar Kendaraan"
+      },
+      "user": {
+        "text": "Menu User",
+        "list": {
+          "invoicelist": "Daftar User",
+          "invoicedetail": "Detail User"
+        }
+      },
+      "product": {
+        "text": "Daftar Produk"
+      }
+    }
+  }

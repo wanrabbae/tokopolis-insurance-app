@@ -1,0 +1,16 @@
+.table tr:first-child {
+    th, td {
+        border-top: 0 !important;
+    }
+}
+
+.table.rounded {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: $border-radius;
+    -moz-border-radius: $border-radius;
+}
+
+.table:last-child {
+    margin-bottom: 0 !important;
+}

@@ -1,0 +1,17 @@
+.blur-active {
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+}
+
+.blur-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:1010;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+}

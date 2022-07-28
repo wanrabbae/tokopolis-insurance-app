@@ -1,0 +1,86 @@
+<template>
+
+    <div>
+
+        <div class="card-body">
+            
+            <h2>Detail Bank</h2>
+
+            <b-form>
+
+                <BaseSelect
+                    v-model="model.bank"
+                    name="Nama Bank"
+                    label="Nama Bank"
+                    :options="banks"
+                    class="w-100 w-lg-75"
+                    :rules="{ required: true }"
+                    required
+                />
+
+                <BaseInput
+                    v-model="model.bank_number"
+                    type="number"
+                    label="Nomor Rekening"
+                    name="Nomor Rekening"
+                    input-classes="custom-number"
+                    placeholder="Masukkan Nomor Rekening"
+                    class="w-100 w-lg-75"
+                    :rules="{required: true}"
+                    required
+                />
+
+                <BaseInput
+                    v-model="model.bank_name"
+                    name="Nama Rekening"
+                    label="Nama Rekening"
+                    placeholder="Masukkan Nama Rekening"
+                    class="w-100 w-lg-75"
+                    :rules="{required: true}"
+                    required
+                />
+
+                <BaseButton native-type="submit" classes="w-100 w-lg-auto">Update</BaseButton>
+
+            </b-form>
+
+        </div> <!-- card-body ends -->
+        
+    </div>
+    
+</template>
+
+<script>
+import BaseInput from '../../components/Inputs/BaseInput'
+import BaseSelect from '../../components/Inputs/BaseSelect'
+
+export default {
+    components: {
+        BaseInput,
+        BaseSelect
+    },
+    layout: 'userarea',
+    data() {
+        return {
+            model: {
+                bank:null,
+                bank_number:'',
+                bank_name:'',
+            },
+            banks: [{ text: 'Pilih Bank', value: null }, 'BCA', 'BNI', 'MANDIRI' ,'BRI' , 'BTN' , 'CIMB'],
+        }
+    },
+    head() {
+        return {
+            title: 'Detail Bank - Pico Insurtech',
+            meta: [
+                {
+                    hid: 'description',
+                    name: 'description',
+                    content: 'Deskripsi Halaman'
+                }
+            ]
+        };
+    }
+}
+</script>

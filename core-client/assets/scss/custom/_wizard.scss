@@ -1,0 +1,60 @@
+.step-navigation {
+    overflow: hidden;
+    color: $text-muted;
+    @include list-unstyled;
+
+    li {
+        position: relative;
+        float: left;
+    
+        &.active {
+            color: $gray-700;
+
+            &:not(:last-child)::before {
+                background: $primary;
+            }
+
+            .step-icon {
+                color: $primary;
+                border: 2px solid $primary;
+            }
+        }
+
+        &.current {
+            &:not(:last-child)::before {
+                background: $text-muted !important;
+            }
+        }
+
+        &:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: $text-muted;
+        }
+    }
+
+    .step-icon {
+        position: relative;
+        display: block;
+        width: 70px;
+        height: 70px;
+        background-color: $white;
+        border: 2px solid $text-muted;
+        border-radius: 50%;
+        margin: 0 auto $spacer auto;
+        padding: $spacer;
+    }
+
+    .step-caption {
+        text-align: center;
+        font-weight: $font-weight-bold;
+    }
+
+    .step-date-complete {
+        text-align: center;
+    }
+}

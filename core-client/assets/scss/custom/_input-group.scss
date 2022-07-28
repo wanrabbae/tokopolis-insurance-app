@@ -1,0 +1,19 @@
+.input-group.addon-combined {
+    border: 1px solid $input-border-color;
+    border-radius: $input-border-radius;
+    background-color: $input-bg;
+    
+    .form-control {
+        border: 0;
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    &:focus-within {
+        border-color: $input-focus-border-color;
+    }
+
+    &.is-invalid {
+        border-color: $warning;
+    }
+}

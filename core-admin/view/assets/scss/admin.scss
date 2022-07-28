@@ -1,0 +1,31 @@
+$color-error: #f46a6a;
+
+.avatar-lg {
+    display: inline-block;
+    width: 5rem !important;
+    height: 5rem !important;
+
+    i {
+        font-size: 45px;
+    }
+}
+
+.x-hidden {
+    overflow-x: hidden;
+}
+
+.custom-select {
+    width: 100% !important;
+    padding: 0.55rem 0.75em;
+    font-size: 0.9rem;
+}
+
+.is-invalid {
+    .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
+        border-color: $color-error !important;
+    }
+
+    .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+        border: 0.5px solid $color-error;
+    }
+}

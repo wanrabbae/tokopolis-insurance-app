@@ -1,0 +1,51 @@
+.error-container {
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 32%;
+        height: 100%;
+        background: url('/svg/cable-left.svg') no-repeat;
+        background-position-x: center;
+        background-position-y: center;
+        background-size: contain;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 32%;
+        height: 100%;
+        background: url('/svg/cable-right.svg') no-repeat;
+        background-position-x: center;
+        background-position-y: center;
+        background-size: contain;
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .error-container {
+        &::before {
+            background-position-y: 10%;
+        }
+
+        &::after {
+            background-position-y: 90%;
+        }
+
+        &::before, &::after {
+            width: 50%;
+        }
+    }
+}
+
+@include media-breakpoint-down(xs) {
+    .error-container {
+        &::before, &::after {
+            width: 60%;
+        }
+    }
+}

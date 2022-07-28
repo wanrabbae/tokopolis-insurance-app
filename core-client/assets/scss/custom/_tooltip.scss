@@ -1,0 +1,31 @@
+@each $color, $value in $theme-colors {
+    .tooltip.b-tooltip-#{$color} {
+        .tooltip-inner {
+            background-color: $value;
+        }
+    
+        &.bs-tooltip-top, &.bs-tooltip-auto[x-placement^=top] {
+            .arrow::before {
+                border-top-color: $value;
+            }
+        }
+    
+        &.bs-tooltip-left, &.bs-tooltip-auto[x-placement^=left] {
+            .arrow::before {
+                border-left-color: $value;
+            }
+        }
+    
+        &.bs-tooltip-right, &.bs-tooltip-auto[x-placement^=right] {
+            .arrow::before {
+                border-right-color: $value;
+            }
+        }
+    
+        &.bs-tooltip-bottom, &.bs-tooltip-auto[x-placement^=bottom] {
+            .arrow::before {
+                border-bottom-color: $value;
+            }
+        }
+    }  
+}

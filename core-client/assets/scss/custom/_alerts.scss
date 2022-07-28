@@ -1,0 +1,14 @@
+@each $color, $value in $theme-colors {
+    .alert-#{$color} {
+        color: $value;
+        border-color: transparent;
+        background-color: $value;
+        padding: 0;
+    }
+
+    .list-item-alert-#{$color} {
+        border-color: $value;
+        background-color: $value;
+        padding: 2px 1.25rem;
+    }    
+}

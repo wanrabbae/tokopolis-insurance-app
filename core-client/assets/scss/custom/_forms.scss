@@ -1,0 +1,96 @@
+form .form-group:last-child,
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.custom-control-eula{
+    margin-right: 3px !important;
+}
+
+.custom-textarea {
+    resize: none;
+}
+
+.custom-select {
+    color: $gray-700;
+}
+
+.custom-radio {
+    margin-bottom: 8px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.custom-number {
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button, 
+    &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+.identity-file-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+
+    .identity-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 99;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: .5rem;
+    }
+
+    .identity-upload-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 99;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+}
+
+.checkbox-centered .custom-control-label {
+    &::before, &::after {
+        content: "";
+        position: absolute;
+        display: block;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+}
+
+.b-form-datepicker > .btn {
+    padding: $input-btn-padding-y $input-btn-padding-x;
+}
+
+.b-form-timepicker > .btn {
+    padding: $input-btn-padding-y $input-btn-padding-x;
+}
+
+.b-form-datepicker, .b-form-timepicker {   
+    .dropdown-menu {
+        border: $border-width solid $border-color !important;
+        padding: 0 !important;
+        min-width: auto;
+    }
+}

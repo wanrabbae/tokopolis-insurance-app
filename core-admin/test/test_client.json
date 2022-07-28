@@ -1,0 +1,1251 @@
+{
+	"info": {
+		"_postman_id": "9f9e18e5-36df-48a2-b1ec-38c3a27a12d3",
+		"name": "Toko Polis Client Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5015202"
+	},
+	"item": [
+		{
+			"name": "Client",
+			"item": [
+                {
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Doing Login\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Set Client Token\", function () {",
+									"    let response = pm.response.json();",
+									"    pm.environment.set(\"clientToken\", response.data.token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "ansori34@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123qweasd",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+                {
+                    "name": "Product List",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Request Product\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Check Product Feedback\", function () {",
+                                    "    let response = pm.response.json();",
+                                    "    pm.expect(response.data).to.not.equal({});",
+                                    "    pm.expect(response.data.data).to.not.equal([]);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{host}}/api/product?page=1&year=2021&brand=AUDI&model=A3&sub_model=A3 SPORTBACK 1.2 TFSI&price=678000000&plate=L&protection=comprehensive&use=private&acc[]=Glass,Premium,100000&acc[]=Velg,BBS,1300000&start_date=2021-06-30",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "path": [
+                                "api",
+                                "product"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "year",
+                                    "value": "2021"
+                                },
+                                {
+                                    "key": "brand",
+                                    "value": "AUDI"
+                                },
+                                {
+                                    "key": "model",
+                                    "value": "A3"
+                                },
+                                {
+                                    "key": "sub_model",
+                                    "value": "A3 SPORTBACK 1.2 TFSI"
+                                },
+                                {
+                                    "key": "price",
+                                    "value": "678000000"
+                                },
+                                {
+                                    "key": "plate",
+                                    "value": "L"
+                                },
+                                {
+                                    "key": "protection",
+                                    "value": "comprehensive",
+                                    "description": "comprehensive, tlo"
+                                },
+                                {
+                                    "key": "use",
+                                    "value": "private",
+                                    "description": "private, agency"
+                                },
+                                {
+                                    "key": "acc[]",
+                                    "value": "Glass,Premium,100000"
+                                },
+                                {
+                                    "key": "acc[]",
+                                    "value": "Velg,BBS,1300000"
+                                },
+                                {
+                                    "key": "start_date",
+                                    "value": "2022-06-30"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Request Success",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{host}}/api/product?page=1&year=2021&brand=AUDI&model=A3&sub_model=A3 SPORTBACK 1.2 TFSI&price=678000000&plate=L&protection=comprehensive&use=private&acc[]=Glass,Premium,100000&acc[]=Velg,BBS,1300000",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "product"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "page",
+                                            "value": "1"
+                                        },
+                                        {
+                                            "key": "year",
+                                            "value": "2021"
+                                        },
+                                        {
+                                            "key": "brand",
+                                            "value": "AUDI"
+                                        },
+                                        {
+                                            "key": "model",
+                                            "value": "A3"
+                                        },
+                                        {
+                                            "key": "sub_model",
+                                            "value": "A3 SPORTBACK 1.2 TFSI"
+                                        },
+                                        {
+                                            "key": "price",
+                                            "value": "678000000"
+                                        },
+                                        {
+                                            "key": "plate",
+                                            "value": "L"
+                                        },
+                                        {
+                                            "key": "protection",
+                                            "value": "comprehensive",
+                                            "description": "comprehensive, tlo"
+                                        },
+                                        {
+                                            "key": "use",
+                                            "value": "private",
+                                            "description": "private, agency"
+                                        },
+                                        {
+                                            "key": "acc[]",
+                                            "value": "Glass,Premium,100000"
+                                        },
+                                        {
+                                            "key": "acc[]",
+                                            "value": "Velg,BBS,1300000"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Security-Policy",
+                                    "value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                                },
+                                {
+                                    "key": "X-DNS-Prefetch-Control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "Expect-CT",
+                                    "value": "max-age=0"
+                                },
+                                {
+                                    "key": "X-Frame-Options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "Strict-Transport-Security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "X-Download-Options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "X-Content-Type-Options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "X-Permitted-Cross-Domain-Policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "Referrer-Policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "X-XSS-Protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "8487"
+                                },
+                                {
+                                    "key": "ETag",
+                                    "value": "W/\"2127-2E27fJb8YJcSD2Skf81cjlMU0iE\""
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 06 Jun 2022 15:19:41 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"data\": {\n        \"pagination\": {\n            \"total\": 3,\n            \"per_page\": 5,\n            \"current_page\": 1,\n            \"last_page\": 1\n        },\n        \"data\": [\n            {\n                \"id\": 1,\n                \"name\": \"Garda Oto Comprehensive\",\n                \"type\": \"comprehensive\",\n                \"description\": \"<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>\",\n                \"image\": \"/img/garda-oto.png\",\n                \"tnc\": \"<ul><li>E-polis akan dikirim oleh Qoala setelah proses validasi selesai dilakukan dalam waktu maksimal 3 hari kerja</li><li>Usia maksimum untuk Jaminan Total Loss Only (TLO) adalah 15 tahun</li><li>Mobil Anda dinilai sesuai dengan kebijakan Asuransi Adira dan dibandingkan dengan harga pasar mobil saat ini</li><li>Asuransi tidak berlaku untuk mobil yang digunakan untuk keperluan transportasi online</li><li>Asuransi tidak berlaku untuk kendaraan yang digunakan di kawasan industri (pertambangan, perkebunan, dll)</li><li>Syarat dan ketentuan pertanggungan lengkap dapat ditemukan dalam <a href=\\\"https://assets.qoala.app/mv/documents/Polis-Standar-Asuransi-Kendaraan-Bermotor-Indonesia.pdf\\\">PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia)</a></li></ul>\",\n                \"claim\": \"<ul><li>Laporan klaim harus Anda laporkan dalam tempo 5 (lima) hari kalender sejak terjadinya kerugian</li><li>Laporan klaim dapat diajukan ke Asuransi Adira melalui telpon, e-mail atau aplikasi Autocillin Mobile Claim (lihat detail kontak di bawah)</li><li>Dokumen yang diperlukan antara lain KTP Pemegang Polis, STNK Kendaraan, SIM Pengemudi, nomor polis Asuransi Adira dan dokumen pendukung lainnya (jika diperlukan)</li><li>Untuk setiap klaim, terdapat biaya atas risiko sendiri yang harus ditanggung oleh pemegang polis. <a href=\\\"https://assets.qoala.app/mv/documents/ADIRA-OR-Klaim.pdf\\\">Klik disini untuk rinciannya</a></li></ul><p><strong>Layanan Klaim</strong></p><p>Hotline 24 Jam 1500 456<br>adiracare@asuransiadira.co.id<br>Autocillin Mobile Claim (Tersedia di Google Play Store dan iOs App Store)</p>\",\n                \"brochure_file\": \"/doc/ADIRA-Motor-Vehicle-Brochure.pdf\",\n                \"workshop_file\": \"/doc/ADIRA-List-Bengkel.pdf\",\n                \"workshop_count\": 100,\n                \"deleted_at\": null,\n                \"features\": [\n                    {\n                        \"id\": 1,\n                        \"name\": \"Layanan Derek\",\n                        \"type\": \"tow\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Fasilitas derek gratis bagi Anda yang mengalami musibah saat berkendara untuk wilayah Jabodetabek, Surabaya, Bandung, Semarang, Palembang, Makassar, Medan. Untuk wilayah yang tidak terjangkau mobil derek Autocillin dan rekanan, Anda dapat mengajukan penggantian biaya derek maksimum 0.5% dari harga pertanggungan atau maksimum Rp 500 ribu per kejadian)</p>\"\n                    },\n                    {\n                        \"id\": 2,\n                        \"name\": \"Ambulans\",\n                        \"type\": \"ambulance\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Memberikan fasilitas ambulans bagi pengemudi dan/atau penumpang yang mengalami musibah saat berkendara, maksimum Rp 500 ribu per kejadian</p>\"\n                    },\n                    {\n                        \"id\": 3,\n                        \"name\": \"Emergency Road Assistance\",\n                        \"type\": \"era\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Bantuan perbaikan gratis bagi kendaraan Anda yang mengalami gangguan ringan saat berkendara di jalan (untuk wilayah Jabodetabek, Surabaya, Bandung dan Medan)</p>\"\n                    },\n                    {\n                        \"id\": 4,\n                        \"name\": \"Perbaikan pada hari yang sama (Same Day Repair)\",\n                        \"type\": \"other\",\n                        \"short_description\": null,\n                        \"description\": \"<ul style=\\\"list-style-type: disc;\\\"> <li>Layanan khusus dari Asuransi Adira untuk perbaikan mobil yang dilakukan pada hari yang sama di bengkel rekanan terpilih (yang telah memiliki peralatan khusus untuk perbaikan cepat).</li> <li>Kerusakan yang dapat ditangani antara lain goresan kecil, abrasi dan lecet yang tidak memerlukan ketukan, pengelasan atau penggantian suku cadang. Same day repair dapat menghilangkan goresan pada mobil dengan cepat di hari yang sama</li></ul>\"\n                    }\n                ],\n                \"price\": 7745159.999999999\n            },\n            {\n                \"id\": 2,\n                \"name\": \"BCA Insurance Digital Comprehensive\",\n                \"type\": \"comprehensive\",\n                \"description\": \"<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>\",\n                \"image\": \"/img/bca-insurance.png\",\n                \"tnc\": \"<p>Terms and Condition</p>\",\n                \"claim\": \"<p>Claim Description</p>\",\n                \"brochure_file\": \"/doc/ADIRA-Motor-Vehicle-Brochure.pdf\",\n                \"workshop_file\": \"/doc/ADIRA-List-Bengkel.pdf\",\n                \"workshop_count\": 58,\n                \"deleted_at\": null,\n                \"features\": [\n                    {\n                        \"id\": 5,\n                        \"name\": \"Layanan Bantuan Darurat\",\n                        \"type\": \"era\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Tugu Real Experience (TREX) menyediakan layanan bantuan 24 jam yang bisa kamu manfaatkan jika ada kondisi darurat seperti ban bocor, mogok sampai kecelakaan atau membutuhkan layanan towing (mencakup wilayah Jabodetabek, Surabaya dan Medan).<br>&nbsp;Untuk wilayah yang tidak terjangkau TREX, Anda dapat mengajukan penggantian biaya derek maksimum 0.5% dari harga pertanggungan atau maksimum Rp 500 ribu per kejadian)</p>\"\n                    },\n                    {\n                        \"id\": 6,\n                        \"name\": \"Penggantian Mobil Baru\",\n                        \"type\": \"replace_vehicle\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Layanan ini diberikan apabila terjadi kehilangan atau kerusakan total akibat kecelakaan untuk kendaraan baru selama 6 bulan masa pertanggungan. Ganti rugi yang diberikan adalah sesuai harga baru kendaraan pada saat terjadinya kerugian.</p>\"\n                    },\n                    {\n                        \"id\": 7,\n                        \"name\": \"Garansi Perbaikan\",\n                        \"type\": \"repair_warranty\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Layanan ini diberikan apabila hasil perbaikan yang telah dilakukan oleh bengkel rekanan tidak memenuhi standar. Garansi perbaikan ini hanya berlaku selama 6 (enam) bulan sejak kendaraan keluar dari bengkel.</p>\"\n                    },\n                    {\n                        \"id\": 8,\n                        \"name\": \"Ambulan Gratis\",\n                        \"type\": \"ambulance\",\n                        \"short_description\": null,\n                        \"description\": \"Ini Deskripsi\"\n                    }\n                ],\n                \"price\": 7745159.999999999\n            },\n            {\n                \"id\": 3,\n                \"name\": \"Mega Comprehensive\",\n                \"type\": \"comprehensive\",\n                \"description\": \"<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>\",\n                \"image\": \"/img/mega-insurance.png\",\n                \"tnc\": \"<p>Terms and Condition</p>\",\n                \"claim\": \"<p>Claim Description</p>\",\n                \"brochure_file\": \"/doc/ADIRA-Motor-Vehicle-Brochure.pdf\",\n                \"workshop_file\": \"/doc/ADIRA-List-Bengkel.pdf\",\n                \"workshop_count\": 67,\n                \"deleted_at\": null,\n                \"features\": [\n                    {\n                        \"id\": 9,\n                        \"name\": \"Layanan Derek\",\n                        \"type\": \"tow\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Fasilitas derek gratis bagi Anda yang mengalami musibah saat berkendara untuk wilayah Jabodetabek, Surabaya, Bandung, Semarang, Palembang, Makassar, Medan. Untuk wilayah yang tidak terjangkau mobil derek Autocillin dan rekanan, Anda dapat mengajukan penggantian biaya derek maksimum 0.5% dari harga pertanggungan atau maksimum Rp 500 ribu per kejadian)</p>\"\n                    },\n                    {\n                        \"id\": 10,\n                        \"name\": \"Ambulans\",\n                        \"type\": \"ambulance\",\n                        \"short_description\": null,\n                        \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Memberikan fasilitas ambulans bagi pengemudi dan/atau penumpang yang mengalami musibah saat berkendara, maksimum Rp 500 ribu per kejadian</p>\"\n                    }\n                ],\n                \"price\": 7745159.999999999\n            }\n        ]\n    }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Product Detail",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Request Product Detail\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Check Detail Feedback\", function () {",
+                                    "    let response = pm.response.json();",
+                                    "    pm.expect(response.data).to.not.equal({});",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": []
+                        },
+                        "url": {
+                            "raw": "{{host}}/api/product/detail?id=1",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "path": [
+                                "api",
+                                "product",
+                                "detail"
+                            ],
+                            "query": [
+                                {
+                                    "key": "id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Request Success",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "body": {
+                                    "mode": "urlencoded",
+                                    "urlencoded": []
+                                },
+                                "url": {
+                                    "raw": "{{host}}/api/product/detail?id=1",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "product",
+                                        "detail"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "id",
+                                            "value": "1"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Security-Policy",
+                                    "value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                                },
+                                {
+                                    "key": "X-DNS-Prefetch-Control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "Expect-CT",
+                                    "value": "max-age=0"
+                                },
+                                {
+                                    "key": "X-Frame-Options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "Strict-Transport-Security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "X-Download-Options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "X-Content-Type-Options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "X-Permitted-Cross-Domain-Policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "Referrer-Policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "X-XSS-Protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "4346"
+                                },
+                                {
+                                    "key": "ETag",
+                                    "value": "W/\"10fa-ERHT1yRQOnQa381VywXGs5aSTe0\""
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 06 Jun 2022 15:35:11 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Garda Oto Comprehensive\",\n        \"type\": \"comprehensive\",\n        \"description\": \"<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>\",\n        \"image\": \"/img/garda-oto.png\",\n        \"tnc\": \"<ul><li>E-polis akan dikirim oleh Qoala setelah proses validasi selesai dilakukan dalam waktu maksimal 3 hari kerja</li><li>Usia maksimum untuk Jaminan Total Loss Only (TLO) adalah 15 tahun</li><li>Mobil Anda dinilai sesuai dengan kebijakan Asuransi Adira dan dibandingkan dengan harga pasar mobil saat ini</li><li>Asuransi tidak berlaku untuk mobil yang digunakan untuk keperluan transportasi online</li><li>Asuransi tidak berlaku untuk kendaraan yang digunakan di kawasan industri (pertambangan, perkebunan, dll)</li><li>Syarat dan ketentuan pertanggungan lengkap dapat ditemukan dalam <a href=\\\"https://assets.qoala.app/mv/documents/Polis-Standar-Asuransi-Kendaraan-Bermotor-Indonesia.pdf\\\">PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia)</a></li></ul>\",\n        \"claim\": \"<ul><li>Laporan klaim harus Anda laporkan dalam tempo 5 (lima) hari kalender sejak terjadinya kerugian</li><li>Laporan klaim dapat diajukan ke Asuransi Adira melalui telpon, e-mail atau aplikasi Autocillin Mobile Claim (lihat detail kontak di bawah)</li><li>Dokumen yang diperlukan antara lain KTP Pemegang Polis, STNK Kendaraan, SIM Pengemudi, nomor polis Asuransi Adira dan dokumen pendukung lainnya (jika diperlukan)</li><li>Untuk setiap klaim, terdapat biaya atas risiko sendiri yang harus ditanggung oleh pemegang polis. <a href=\\\"https://assets.qoala.app/mv/documents/ADIRA-OR-Klaim.pdf\\\">Klik disini untuk rinciannya</a></li></ul><p><strong>Layanan Klaim</strong></p><p>Hotline 24 Jam 1500 456<br>adiracare@asuransiadira.co.id<br>Autocillin Mobile Claim (Tersedia di Google Play Store dan iOs App Store)</p>\",\n        \"brochure_file\": \"/doc/ADIRA-Motor-Vehicle-Brochure.pdf\",\n        \"workshop_file\": \"/doc/ADIRA-List-Bengkel.pdf\",\n        \"workshop_count\": 100,\n        \"deleted_at\": null,\n        \"features\": [\n            {\n                \"id\": 1,\n                \"name\": \"Layanan Derek\",\n                \"type\": \"tow\",\n                \"short_description\": null,\n                \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Fasilitas derek gratis bagi Anda yang mengalami musibah saat berkendara untuk wilayah Jabodetabek, Surabaya, Bandung, Semarang, Palembang, Makassar, Medan. Untuk wilayah yang tidak terjangkau mobil derek Autocillin dan rekanan, Anda dapat mengajukan penggantian biaya derek maksimum 0.5% dari harga pertanggungan atau maksimum Rp 500 ribu per kejadian)</p>\"\n            },\n            {\n                \"id\": 2,\n                \"name\": \"Ambulans\",\n                \"type\": \"ambulance\",\n                \"short_description\": null,\n                \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Memberikan fasilitas ambulans bagi pengemudi dan/atau penumpang yang mengalami musibah saat berkendara, maksimum Rp 500 ribu per kejadian</p>\"\n            },\n            {\n                \"id\": 3,\n                \"name\": \"Emergency Road Assistance\",\n                \"type\": \"era\",\n                \"short_description\": null,\n                \"description\": \"<p style='margin-top:0cm;margin-right:0cm;margin-bottom:8.0pt;margin-left:0cm;line-height:107%;font-size:15px;font-family:\\\"Calibri\\\",sans-serif;'>Bantuan perbaikan gratis bagi kendaraan Anda yang mengalami gangguan ringan saat berkendara di jalan (untuk wilayah Jabodetabek, Surabaya, Bandung dan Medan)</p>\"\n            },\n            {\n                \"id\": 4,\n                \"name\": \"Perbaikan pada hari yang sama (Same Day Repair)\",\n                \"type\": \"other\",\n                \"short_description\": null,\n                \"description\": \"<ul style=\\\"list-style-type: disc;\\\"> <li>Layanan khusus dari Asuransi Adira untuk perbaikan mobil yang dilakukan pada hari yang sama di bengkel rekanan terpilih (yang telah memiliki peralatan khusus untuk perbaikan cepat).</li> <li>Kerusakan yang dapat ditangani antara lain goresan kecil, abrasi dan lecet yang tidak memerlukan ketukan, pengelasan atau penggantian suku cadang. Same day repair dapat menghilangkan goresan pada mobil dengan cepat di hari yang sama</li></ul>\"\n            }\n        ],\n        \"expansions\": [\n            {\n                \"id\": 1,\n                \"name\": \"pencurian_oleh_pengemudi\",\n                \"label\": \"Pencurian oleh Pengemudi\",\n                \"rate\": 0.15\n            }\n        ],\n        \"price\": 7745159.999999999\n    }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Data Transaction",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Request Transaction Data\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Check Data Feedback\", function () {",
+                                    "    let response = pm.response.json();",
+                                    "    pm.expect(response.data).to.not.equal({});",
+                                    "    pm.expect(response.data.account).to.not.equal({});",
+                                    "    pm.expect(response.data.price).to.not.equal(0);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{host}}/api/transaction",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transaction"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Request Success",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{host}}/api/transaction",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "transaction"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Security-Policy",
+                                    "value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                                },
+                                {
+                                    "key": "X-DNS-Prefetch-Control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "Expect-CT",
+                                    "value": "max-age=0"
+                                },
+                                {
+                                    "key": "X-Frame-Options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "Strict-Transport-Security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "X-Download-Options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "X-Content-Type-Options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "X-Permitted-Cross-Domain-Policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "Referrer-Policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "X-XSS-Protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "127"
+                                },
+                                {
+                                    "key": "ETag",
+                                    "value": "W/\"7f-XWBlSFSvGwnA3HA6sCz2j5a+CpQ\""
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 06 Jun 2022 15:57:46 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"data\": {\n        \"account\": {\n            \"fullname\": \"Rahmat Ansori\",\n            \"email\": \"ansori34@gmail.com\",\n            \"phone\": \"085258754309\"\n        },\n        \"price\": 7745159.999999999\n    }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Post Transaction",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Request Transaction\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Set Transaction ID\", function () {",
+                                    "    let response = pm.response.json();",
+                                    "    pm.globals.set(\"transactionID\", response.data.transaction_id);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disabledSystemHeaders": {}
+                    },
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "stnk",
+                                    "type": "file",
+                                    "src": "{{imgFile}}"
+                                },
+                                {
+                                    "key": "front_side",
+                                    "type": "file",
+                                    "src": "{{imgFile}}"
+                                },
+                                {
+                                    "key": "back_side",
+                                    "type": "file",
+                                    "src": "{{imgFile}}"
+                                },
+                                {
+                                    "key": "left_side",
+                                    "type": "file",
+                                    "src": "{{imgFile}}"
+                                },
+                                {
+                                    "key": "right_side",
+                                    "type": "file",
+                                    "src": "{{imgFile}}"
+                                },
+                                {
+                                    "key": "dashboard",
+                                    "type": "file",
+                                    "src": "{{imgFile}}"
+                                },
+                                {
+                                    "key": "plate_detail",
+                                    "value": "2120 JK",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "vehicle_color",
+                                    "value": "Silver",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "machine_number",
+                                    "value": "F430ID271263",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "skeleton_number",
+                                    "value": "MH8FD125X472",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{host}}/api/transaction?product_id=1",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transaction"
+                            ],
+                            "query": [
+                                {
+                                    "key": "product_id",
+                                    "value": "1"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Request Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "formdata",
+                                    "formdata": [
+                                        {
+                                            "key": "stnk",
+                                            "type": "file",
+                                            "src": "{{imgFile}}"
+                                        },
+                                        {
+                                            "key": "front_side",
+                                            "type": "file",
+                                            "src": "{{imgFile}}"
+                                        },
+                                        {
+                                            "key": "back_side",
+                                            "type": "file",
+                                            "src": "{{imgFile}}"
+                                        },
+                                        {
+                                            "key": "left_side",
+                                            "type": "file",
+                                            "src": "{{imgFile}}"
+                                        },
+                                        {
+                                            "key": "right_side",
+                                            "type": "file",
+                                            "src": "{{imgFile}}"
+                                        },
+                                        {
+                                            "key": "dashboard",
+                                            "type": "file",
+                                            "src": "{{imgFile}}"
+                                        },
+                                        {
+                                            "key": "start_date",
+                                            "value": "2022-6-30",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "vehicle_color",
+                                            "value": "Silver",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "machine_number",
+                                            "value": "F430ID271263",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "skeleton_number",
+                                            "value": "MH8FD125X472",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "exp[]",
+                                            "value": "flood",
+                                            "description": "Kode",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "exp[]",
+                                            "value": "tpl,5",
+                                            "description": "Kode, Limit (satuan jt)",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "exp[]",
+                                            "value": "pap,5,1",
+                                            "description": "Kode, Limit (satuan jt), Jumlah Penumpang",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "exp[]",
+                                            "value": "srcc",
+                                            "type": "text",
+                                            "disabled": true
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{host}}/api/transaction?product_id=1",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "transaction"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "product_id",
+                                            "value": "1"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Security-Policy",
+                                    "value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                                },
+                                {
+                                    "key": "X-DNS-Prefetch-Control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "Expect-CT",
+                                    "value": "max-age=0"
+                                },
+                                {
+                                    "key": "X-Frame-Options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "Strict-Transport-Security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "X-Download-Options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "X-Content-Type-Options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "X-Permitted-Cross-Domain-Policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "Referrer-Policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "X-XSS-Protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "29"
+                                },
+                                {
+                                    "key": "ETag",
+                                    "value": "W/\"1d-VLFlYN8rOC2rCySvqkgsC2Kkp88\""
+                                },
+                                {
+                                    "key": "Set-Cookie",
+                                    "value": "nuxt-session-id=s%3AhDVMi7Gp6T2HuD3ZHbUTEawC524FA_j2.BvoWw49ZxtV8IhyfuPkEeIMk2EaeXostg9YNxmQlqIE; Path=/; Expires=Mon, 05 Jun 2023 15:55:19 GMT; HttpOnly"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 06 Jun 2022 15:55:19 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"data\": {\n        \"transaction_id\": 7\n    }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Transaction Review",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Request Transaction Review Data\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Check Review Feedback\", function () {",
+                                    "    let response = pm.response.json();",
+                                    "    pm.expect(response.data).to.not.equal({});",
+                                    "    pm.expect(response.data.account).to.not.equal({});",
+                                    "    pm.expect(response.data.vehicle).to.not.equal({});",
+                                    "    pm.expect(response.data.transaction).to.not.equal({});",
+                                    "    pm.expect(response.data.total).to.not.equal(0);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{host}}/api/transaction/review?transaction_id={{transactionID}}",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transaction",
+                                "review"
+                            ],
+                            "query": [
+                                {
+                                    "key": "transaction_id",
+                                    "value": "{{transactionID}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Request Success",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{host}}/api/transaction/review?transaction_id={{transactionID}}",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "transaction",
+                                        "review"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "transaction_id",
+                                            "value": "{{transactionID}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Security-Policy",
+                                    "value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                                },
+                                {
+                                    "key": "X-DNS-Prefetch-Control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "Expect-CT",
+                                    "value": "max-age=0"
+                                },
+                                {
+                                    "key": "X-Frame-Options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "Strict-Transport-Security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "X-Download-Options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "X-Content-Type-Options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "X-Permitted-Cross-Domain-Policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "Referrer-Policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "X-XSS-Protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "1160"
+                                },
+                                {
+                                    "key": "ETag",
+                                    "value": "W/\"488-Sl42FrnkON/JddC2vsB9wFjt1Fk\""
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 06 Jun 2022 16:04:52 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"data\": {\n        \"account\": {\n            \"fullname\": \"Rahmat Ansori\",\n            \"email\": \"ansori34@gmail.com\",\n            \"phone\": \"085258754309\"\n        },\n        \"vehicle\": {\n            \"brand\": \"AUDI\",\n            \"model\": \"A3\",\n            \"sub_model\": \"A3 SPORTBACK 1.2 TFSI\",\n            \"year\": 2021,\n            \"price\": 678000000,\n            \"plate\": \"L\",\n            \"protection\": \"comprehensive\",\n            \"vehicle_color\": \"Silver\",\n            \"machine_number\": \"F430ID271263\",\n            \"skeleton_number\": \"MH8FD125X472\"\n        },\n        \"transaction\": {\n            \"id\": 8,\n            \"start_date\": \"2022-06-30\",\n            \"price\": 7745160,\n            \"documents\": {\n                \"stnk\": \"/uploads/transaction/PIiumw0xSPZMuqF2h5payxn7UkzZgXzX.png\",\n                \"back_side\": \"/uploads/transaction/TvrxMoKh3p4e6hyewtFU4Vwq8bugihWF.png\",\n                \"dashboard\": \"/uploads/transaction/EV7f8Pr7avVU3xPFwNsCB9IeV8aF7AtE.png\",\n                \"left_side\": \"/uploads/transaction/2aKQ8Ig5UoTEsU5hXiSithnPn14EdcfO.png\",\n                \"front_side\": \"/uploads/transaction/PhgiFU3gfW7kRZDT9oojTI7kTvkL8whf.png\",\n                \"right_side\": \"/uploads/transaction/cisJ1sgHonuspgm0M47UD4qWe3K1Oghn.png\"\n            },\n            \"expansions\": [\n                {\n                    \"code\": \"flood\",\n                    \"label\": \"Angin Topan, Banjir, Badai, Angin Ribut, dan Tanah Longsor\",\n                    \"price\": 508500\n                },\n                {\n                    \"code\": \"tpl\",\n                    \"label\": \"Tanggung Jawab Hukum terhadap Pihak Ketiga\",\n                    \"limit\": 5,\n                    \"price\": 50000\n                },\n                {\n                    \"code\": \"pap\",\n                    \"count\": 1,\n                    \"label\": \"Kecelakaan Diri untuk Penumpang\",\n                    \"limit\": 5,\n                    \"price\": 5000\n                }\n            ],\n            \"total\": 8308660\n        }\n    }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Create Payment",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Request Create Payment\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Get Payment Feedback\", function () {",
+                                    "    let response = pm.response.json();",
+                                    "    pm.expect(response.data).to.not.equal({});",
+                                    "",
+                                    "    console.log(response.data.data);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": [
+                                {
+                                    "key": "transaction_id",
+                                    "value": "{{transactionID}}",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "platform",
+                                    "value": "{{paymentMethod}}",
+                                    "description": "bca,bri,bni,mandiri,permata,gopay,qris,ovo,dana,shopeepay,linkaja",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{host}}/api/transaction/payment",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transaction",
+                                "payment"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "Request Success",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "urlencoded",
+                                    "urlencoded": [
+                                        {
+                                            "key": "transaction_id",
+                                            "value": "{{transactionID}}",
+                                            "type": "text"
+                                        },
+                                        {
+                                            "key": "platform",
+                                            "value": "{{paymentMethod}}",
+                                            "description": "bca,bri,bni,mandiri,permata,gopay,qris,ovo,dana,shopeepay,linkaja",
+                                            "type": "text"
+                                        }
+                                    ]
+                                },
+                                "url": {
+                                    "raw": "{{host}}/api/transaction/payment",
+                                    "host": [
+                                        "{{host}}"
+                                    ],
+                                    "path": [
+                                        "api",
+                                        "transaction",
+                                        "payment"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "json",
+                            "header": [
+                                {
+                                    "key": "Content-Security-Policy",
+                                    "value": "default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests"
+                                },
+                                {
+                                    "key": "X-DNS-Prefetch-Control",
+                                    "value": "off"
+                                },
+                                {
+                                    "key": "Expect-CT",
+                                    "value": "max-age=0"
+                                },
+                                {
+                                    "key": "X-Frame-Options",
+                                    "value": "SAMEORIGIN"
+                                },
+                                {
+                                    "key": "Strict-Transport-Security",
+                                    "value": "max-age=15552000; includeSubDomains"
+                                },
+                                {
+                                    "key": "X-Download-Options",
+                                    "value": "noopen"
+                                },
+                                {
+                                    "key": "X-Content-Type-Options",
+                                    "value": "nosniff"
+                                },
+                                {
+                                    "key": "X-Permitted-Cross-Domain-Policies",
+                                    "value": "none"
+                                },
+                                {
+                                    "key": "Referrer-Policy",
+                                    "value": "no-referrer"
+                                },
+                                {
+                                    "key": "X-XSS-Protection",
+                                    "value": "0"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json; charset=utf-8"
+                                },
+                                {
+                                    "key": "Content-Length",
+                                    "value": "255"
+                                },
+                                {
+                                    "key": "ETag",
+                                    "value": "W/\"ff-x9UlTLP17ea+Coe7NxI18Oy26Ao\""
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 06 Jun 2022 16:06:39 GMT"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"data\": {\n        \"status\": true,\n        \"message\": \"Success, Bank Transfer transaction is created\",\n        \"data\": {\n            \"type\": \"bank_transfer\",\n            \"name\": \"bca\",\n            \"transaction_id\": \"e525e1aa-0244-4367-8f84-de3515cf0fb2\",\n            \"amount\": \"8308660.00\",\n            \"status\": \"pending\",\n            \"virtual_number\": \"44802393152\"\n        }\n    }\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Payment Detail",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "pm.test(\"Request Create Payment\", function () {",
+                                    "    pm.response.to.have.status(200);",
+                                    "});",
+                                    "",
+                                    "pm.test(\"Get Payment Feedback\", function () {",
+                                    "    let response = pm.response.json();",
+                                    "    pm.expect(response.data).to.not.equal({});",
+                                    "",
+                                    "    console.log(response.data);",
+                                    "});"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "urlencoded",
+                            "urlencoded": []
+                        },
+                        "url": {
+                            "raw": "{{host}}/api/transaction/payment?transaction_id={{transactionID}}",
+                            "host": [
+                                "{{host}}"
+                            ],
+                            "path": [
+                                "api",
+                                "transaction",
+                                "payment"
+                            ],
+                            "query": [
+                                {
+                                    "key": "transaction_id",
+                                    "value": "{{transactionID}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+			],
+			"description": "Test Case:\n\n*   login\n*   product list\n*   product detail\n*   get data transaction\n*   post transaction\n*   get transaction review",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{clientToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3001"
+		},
+		{
+			"key": "adminToken",
+			"value": ""
+		},
+		{
+			"key": "clientToken",
+			"value": ""
+		},
+		{
+			"key": "imgFile",
+			"value": "D:\\kerja\\Project Asuransi\\piqo-admin\\view\\static\\img\\DefaultProfile.png"
+		}
+	]
+}

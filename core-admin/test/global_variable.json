@@ -1,0 +1,33 @@
+{
+	"id": "e9e4b136-d04b-45fc-87d3-668aff2cf37e",
+	"values": [
+		{
+			"key": "token_admin",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjMsImVtYWlsIjoiYWNobWFkc3lmZGluQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1NDUyODA2MiwiZXhwIjoxNjU0NjE0NDYyfQ.L-tIx4GuzT39cShs9-FRJd8nvavm_VfgIwUboEYlC4c",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token_agent",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjEwLCJlbWFpbCI6Ill1c3VmUHJhczFAZ21haWwuY29tIiwicm9sZSI6ImFnZW50IiwiaWF0IjoxNjUzMzc2ODU2LCJleHAiOjE2NTM0NjMyNTZ9.1vyxcRdgfMhHrd2ekalbI6N_nV05f-AEES_0JJNANXE",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "transactionID",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "paymentMethod",
+			"value": "bca",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2022-06-06T17:35:36.819Z",
+	"_postman_exported_using": "Postman/9.18.3"
+}

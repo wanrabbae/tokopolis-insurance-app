@@ -1,0 +1,7 @@
+@each $breakpoint, $value in $grid-breakpoints {
+    @include media-breakpoint-up($breakpoint){
+        .border-#{$breakpoint} {
+            border: $border-width solid $border-color !important;
+        }
+    }
+}
