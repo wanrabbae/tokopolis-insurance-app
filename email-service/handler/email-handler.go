@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"go-email-service/service"
 	"log"
-	"mime/multipart"
 )
 
 type EmailHandler interface {
@@ -21,14 +20,7 @@ func NewEmailHandler(emailService service.EmailService) EmailHandler {
 	}
 }
 
-type Email struct {
-	To      string               `json:"to" form:"to" binding:"required"`
-	Subject string               `json:"subject" form:"subject" binding:"required"`
-	File    multipart.FileHeader `json:"file" form:"file"`
-}
-
 func (c *emailHandler) SendEmail(payload []byte) {
-	//log.Println(fmt.Sprintf("%s", payload))
 	var emailData service.EmailData
 	if err := json.Unmarshal(payload, &emailData); err != nil {
 		log.Fatal(err)
@@ -36,6 +28,6 @@ func (c *emailHandler) SendEmail(payload []byte) {
 
 	err := c.emailService.SendWithoutAttachment(emailData)
 	if err != nil {
-		panic("gagal")
+		log.Fatal(err)
 	}
 }

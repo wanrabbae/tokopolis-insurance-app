@@ -12,7 +12,6 @@ import (
 
 type EmailService interface {
 	SendWithoutAttachment(emailData EmailData) error
-	//SendWithAttachment(payload []byte, to string, subject string, filePath string) error
 }
 
 type emailService struct {
@@ -25,10 +24,7 @@ type emailService struct {
 	mailEncryption string
 }
 
-type ContentBody struct {
-	Body string
-}
-
+// EmailData Email interface
 type EmailData struct {
 	Host    string
 	Target  string
@@ -38,9 +34,10 @@ type EmailData struct {
 }
 
 func NewEmailService() EmailService {
+	// Loading env file.
 	err := godotenv.Load()
 	if err != nil {
-		panic("Failed to load env.")
+		log.Fatal("Failed to load env : ", err)
 	}
 	return &emailService{
 		mailHost:       os.Getenv("MAIL_HOST"),
@@ -55,20 +52,24 @@ func NewEmailService() EmailService {
 
 func (c *emailService) SendWithoutAttachment(emailData EmailData) error {
 
+	// Setting up header for email
 	msg := gomail.NewMessage()
 	msg.SetHeader("From", c.mailFrom)
 	msg.SetHeader("To", emailData.Target)
 	msg.SetHeader("Subject", emailData.Subject)
 
+	// Email template parsing
 	t := template.Must(template.ParseGlob("email/*.html"))
 	result := template.Must(t.ParseGlob("email/section/*.html"))
 
+	// Execute template parsing and add data
 	buff := new(bytes.Buffer)
 	err := result.ExecuteTemplate(buff, emailData.Type+".html", emailData)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
+	// Add email body, initialize smtp port, email dialer, send the email.
 	msg.SetBody("text/html", buff.String())
 	port, _ := strconv.Atoi(c.mailPort)
 	n := gomail.NewDialer(
@@ -78,69 +79,9 @@ func (c *emailService) SendWithoutAttachment(emailData EmailData) error {
 		c.mailPass)
 
 	if err := n.DialAndSend(msg); err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	log.Println("Email Sent")
 
 	return nil
-}
-
-/*func (c *emailService) SendWithAttachment(payload []byte, to string, subject string, filePath string) error {
-	msg := gomail.NewMessage()
-	msg.SetHeader("From", c.mailFrom)
-	msg.SetHeader("To", to)
-	msg.SetHeader("Subject", subject)
-	msg.SetBody("text/html", "<b>This is the body of the mail</b>")
-	msg.Attach(filePath)
-
-	port, _ := strconv.Atoi(c.mailPort)
-	n := gomail.NewDialer(
-		c.mailHost,
-		port,
-		c.mailUsername,
-		c.mailPass)
-
-	if err := n.DialAndSend(msg); err != nil {
-		panic(err)
-	}
-
-	return nil
-}
-*/
-
-func getEmailContent(emailData *EmailData) (string, error) {
-	var emailContent *template.Template
-	emailContent, err := emailContent.ParseFiles("email/" + emailData.Type + ".html")
-	if err != nil {
-		log.Println("Email parse Error a")
-		return "Error : ", err
-	}
-	buff := new(bytes.Buffer)
-	err = emailContent.Execute(buff, emailData)
-	if err != nil {
-		log.Println("Email parse Error")
-		return "Error : ", err
-	}
-
-	return buff.String(), nil
-}
-
-func emailTemplate(emailType string) (string, error) {
-	/*var main *template.Template
-	main, err := main.ParseFiles("email/default.html")
-	if err != nil {
-		log.Println("Email parse Error")
-		return "", err
-	}
-	var body *template.Template
-	body, err = body.ParseFiles("email/" + emailType + ".html")
-	if err != nil {
-		log.Println("Email parse Error")
-		return "", err
-	}
-
-	buff := new(bytes.Buffer)
-
-	return*/
-	return "a", nil
 }

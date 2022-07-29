@@ -31,18 +31,10 @@ func main() {
 	var forever chan struct{}
 	go func() {
 		for d := range payload {
-			//log.Printf("Received a message from payload: %s", d.Body)
+			// Handling new request to send email
 			emailHandler.SendEmail(d.Body)
 		}
 	}()
 	log.Printf(" [*] Waiting for messages. To exit press CTRL+C")
 	<-forever
-
-	/*r := gin.Default()
-
-	emailRoutes := r.Group("api/pico/")
-	{
-		emailRoutes.POST("/email/send", emailHandler.SendEmail)
-	}
-	r.Run()*/
 }

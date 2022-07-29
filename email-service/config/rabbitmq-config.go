@@ -14,6 +14,7 @@ func SetupMessageBrokerConnection() (*amqp091.Connection, *amqp091.Channel, amqp
 	port := os.Getenv("MESSAGE_BROKER_PORT")
 
 	connectionString := fmt.Sprintf("amqp://%s:%s@%s:%s/", username, password, host, port)
+
 	// Setting up message broker connection
 	connection, err := amqp091.Dial(connectionString)
 	FailOnError("Connection failed : ", err)
@@ -34,6 +35,7 @@ func FailOnError(msg string, err error) {
 	}
 }
 
+// Declaring queue function
 func queueSetup(
 	ch *amqp091.Channel,
 	name string,
