@@ -208,7 +208,7 @@ export default class AccountService {
     sendEmailRegister(payload) {
         let mailer = new Mailer(payload.host)
         mailer.setUrl('/confirm-email')
-        mailer.setTemplate('confirm-register')
+        mailer.setType('confirm-register')
         mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,
@@ -222,7 +222,7 @@ export default class AccountService {
 
         let mailer = new Mailer(payload.host)
         // mailer.setUrl('/path')
-        mailer.setTemplate('login-detected')
+        mailer.setType('login-detected')
         mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,
@@ -236,7 +236,7 @@ export default class AccountService {
     sendEmailReset(payload) {
         let mailer = new Mailer(payload.host)
         mailer.setUrl('/lupa-password')
-        mailer.setTemplate('forget-password')
+        mailer.setType('forget-password')
         mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,
@@ -248,7 +248,7 @@ export default class AccountService {
     sendEmailProfile(payload) {
         let mailer = new Mailer(payload.host)
         mailer.setUrl('/confirm-email')
-        mailer.setTemplate('confirm-email')
+        mailer.setType('confirm-email')
         mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,

@@ -1,45 +1,59 @@
-const nodemailer = require('nodemailer')
-
-import transporter from '../../config/mail.config.js'
+const amqplib = require('amqplib')
 
 class Mailer {
     constructor(host) {
         this.host = host
-        this.template = ""
         this.target = ""
+        this.type = ""
         this.subject = ""
-        this.context = {}
+        this.body = {}
     }
 
     setUrl(url) {
         this.host = `${this.host}${url}/`
     }
 
-    setTemplate(template) {
-        this.template = template
-    }
-
     setTarget(target) {
         this.target = target
     }
 
-    setMail(subject, context) {
+    setType(type) {
+        this.type = type
+    }
+
+    setMail(subject, body) {
         this.subject = subject
-        this.context = context
+        this.body = body
     }
 
     async send() {
-        this.context.host = this.host
+        const host = process.env.MESSAGE_BROKER_HOST
+        const port = process.env.MESSAGE_BROKER_PORT
+        const user = process.env.MESSAGE_BROKER_USER
+        const pass = process.env.MESSAGE_BROKER_PASSWORD
 
-        let info = await transporter.sendMail({
-            from: process.env.MAIL_FROM,
-            to: this.target,
+        var conn = await amqplib.connect(`amqp://${user}:${pass}@${host}:${port}`, "heartbeat=60")
+        var channel = await conn.createChannel()
+
+        var queue = 'hello'
+        var exchange = 'exchange'
+        var route = 'route'
+
+        var message = JSON.stringify({
+            host: this.host,
+            target: this.target,
+            type: this.type,
             subject: this.subject,
-            template: this.template,
-            context: this.context
+            body: this.body
         })
 
-        nodemailer.getTestMessageUrl(info)
+        channel.bindQueue(queue, exchange, route)
+        channel.publish(exchange, route, Buffer.from(message))
+
+        setTimeout(function() {
+            channel.close()
+            conn.close()
+        }, 500)
     }
 }
 
