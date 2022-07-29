@@ -119,7 +119,7 @@
                                     v-model="model.vehicleColor"
                                     name="Warna Mobil"
                                     label="Warna Mobil"
-                                    placeholder="Masukkan Warna Mobil"
+                                    placeholder="Putih"
                                     :rules="{ required: true }"
                                     required
                                     @change="checkFormData"
@@ -129,8 +129,8 @@
                                     v-model="model.plateNumber"
                                     name="Nomor Plat"
                                     label="Nomor Plat"
-                                    prepend-icon="w"
-                                    placeholder="Masukkan Nomor Plat"
+                                    :prefix-text= model.licensePlate
+                                    placeholder="1234 WW"
                                     :rules="{ required: true }"
                                     required
                                     @change="checkFormData"
@@ -140,7 +140,7 @@
                                     v-model="model.machineNumber"
                                     name="Nomor Mesin"
                                     label="Nomor Mesin"
-                                    placeholder="Masukkan Nomor Mesin"
+                                    placeholder="SDR72V2500W2017060104R"
                                     :rules="{ required: true }"
                                     required
                                     @change="checkFormData"
@@ -150,10 +150,11 @@
                                     v-model="model.vehicleIdentificationNumber"
                                     name="Nomor Rangka"
                                     label="Nomor Rangka"
-                                    placeholder="Masukkan Nomor Rangka"
+                                    placeholder="1HGBH41JXMN109186"
                                     :rules="{ required: true }"
                                     required
                                     @change="checkFormData"
+                                    
                                 />
 
                             </div>
@@ -316,7 +317,6 @@ export default {
         this.$destroy()
     },
     created(){
-        // this.$destroy()
         this.id =  this.$store.state.product_id
     },
     mounted(){
@@ -331,34 +331,6 @@ export default {
             this.url[e.target.id] = URL.createObjectURL(file);
 
         },
-        async getProductList(){
-            const param = () => {
-                if (this.model !== null && this.model !== undefined)
-                    return {
-                        year: this.model.yearProduction,
-                        brand: this.model.brand,
-                        model: this.model.type,
-                        sub_model: this.model.series,
-                        price: this.model.price,
-                        plate: this.model.licensePlate,
-                        protection: this.model.insurancePackage,
-                        use: this.model.usage,
-                        acc: this.model.accessories
-                    }
-
-            }
-
-            await this.$axios.$get('api/product', {
-                params: param()
-            }).then ((response) => {
-                
-                this.loading = false
-
-            }).catch (error => {
-                console.log(error)
-                this.$router.push({name: "asuransi-mobil"})
-            })
-        },
         async getDataTransaction() {
             await this.$axios.$get('api/transaction')
                 .then ((response) => {
@@ -371,6 +343,9 @@ export default {
                 .catch (error => {
                     console.log(error)
                 })
+        },
+        upperCase(){
+            
         },
         checkFormData(){
             const form = this.formData
@@ -410,4 +385,4 @@ export default {
         }
     }
 }
-</script>
+</script>   

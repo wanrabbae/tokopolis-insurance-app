@@ -19,6 +19,13 @@
             </span>
           </slot>
         </div>
+        <div v-if="prefixText || $slots.prepend" class="input-group-prepend">
+          <slot name="prepend">
+            <span class="input-group-text">
+              {{prefixText}}
+            </span>
+          </slot>
+        </div>
         <slot v-bind="slotData">
           <input
             :value="value"
@@ -119,6 +126,10 @@ import {  ValidationProvider } from 'vee-validate';
       prependIcon: {
         type: String,
         description: "Prepend icon (left)"
+      },
+      prefixText: {
+        type: String,
+        description: "Prefix text (left)"
       },
       rules: {
         type: [String, Array, Object],

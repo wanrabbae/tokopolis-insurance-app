@@ -156,6 +156,14 @@ $text-muted:                  $gray-400 !default;
 
 $blockquote-font-size:        $font-size-base * 1.1 !default;
 
+$opacity-values: () !default;
+$opacity-values: map-merge((
+  25: .25,
+  50: .50,
+  75: .75,
+  100: 1,
+), $opacity-values);
+
 // Grid columns
 //
 // Set the number of columns and specify the width of the gutters.
