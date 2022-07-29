@@ -1,0 +1,33 @@
+{{template "top.html"}}
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <h3>Selamat Datang di PIQO</h3>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>Hai <strong class="text-primary">{{.Body.name}}</strong>, terima kasih telah mendaftar. Silahkan konfirmasi email anda dengan klik tombol di bawah.</p>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600" style="margin: 2rem 0;">
+    <tr>
+        <td width="600" valign="top" align="center">
+            <a href="{{.Body.host}}{{.Body.token}}" class="button btn-action" target="_blank">Konfirmasi Email</a>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>Hal ini dilakukan untuk meningkatkan keamanan akun dan membantu memulihkan akun seandainya anda lupa kata sandi.</p>
+        </td>
+    </tr>
+</table>
+{{template "bottom.html"}}
