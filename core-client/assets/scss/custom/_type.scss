@@ -12,6 +12,12 @@
     }
 }
 
+@each $size, $value in $opacity-values {
+    .opacity-#{$size} {
+        opacity: $value !important;
+    }    
+}
+
 @each $weight, $value in $font-weights {
     .fw-#{$weight} {
         font-weight: $value !important;

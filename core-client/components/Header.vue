@@ -252,7 +252,7 @@ export default {
             await this.$store.commit('setData', { token: null, photo: null })
             // await this.$router.app.refresh()
 
-            this.$router.go('/')
+            this.$router.push('/')
         }
     }
 }

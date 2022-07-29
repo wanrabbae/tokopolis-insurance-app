@@ -449,12 +449,12 @@ export default {
         this.getProductList()
     },
     methods: {
-        detailProduct(index) {
-            this.$store.commit('setProductId',this.products[index-1].id)
+        detailProduct(id) {
+            this.$store.commit('setProductId',id)
             this.$router.push({name: "asuransi-mobil-polis-detail-polis"})
         },
-        detailPayment(index) {
-            this.$store.commit('setProductId',this.products[index-1].id)
+        detailPayment(id) {
+            this.$store.commit('setProductId',id)
             this.$router.push({name: "asuransi-mobil-polis-pembelian"})
         },
         comparePolis(){
@@ -465,12 +465,12 @@ export default {
         blurActive(index) {
             return !this.isLoggedIn && index === this.shownProducts.length - 1;
         },
-        disableProduct(index) {
+        disableProduct(id) {
             if(this.mobileView && this.productToCompare.length < 2) return false;
             if(!this.mobileView && this.productToCompare.length < 3) return false;
 
             return !this.productToCompare.find(productId => {
-                return index === productId;
+                return id === productId;
             });
         },
         onPageClick(event, page) {
