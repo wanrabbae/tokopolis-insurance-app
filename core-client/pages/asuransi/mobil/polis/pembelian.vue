@@ -81,7 +81,7 @@
                                     v-model="model.name"
                                     name="Nama"
                                     label="Nama"
-                                    placeholder="Masukkan Nama"
+                                    placeholder="Josua Jostar"
                                     :rules="{ required: true }"
                                     required
                                 />
@@ -91,7 +91,7 @@
                                     type="number"
                                     name="Nomor Telepon"
                                     label="Nomor Telepon"
-                                    placeholder="081XXXXXXXXX"
+                                    placeholder="+62812345678"
                                     :rules="{ required: true }"
                                     input-classes="form-control custom-number"
                                     onkeypress="if(this.value.length==14) return false;"
@@ -102,8 +102,17 @@
                                     v-model="model.email"
                                     name="Email"
                                     label="Email"
-                                    placeholder="Masukkan Email"
+                                    placeholder="user@gmail.com"
                                     :rules="{required: true, email: true}"
+                                    required
+                                />
+                                <BaseTextarea
+                                    v-model="model.address"
+                                    name="Alamat Lengkap"
+                                    label="Alamat Lengkap"
+                                    placeholder="Jl. TB Simatupang Banjarsari I no. 8C, Kelurahan Cilandak Barat, Kecamatan Cilandak, Kota Jakarta Selatan, DKI Jakarta 12430"
+                                    :rules="{ required: true }"
+                                    rows="4"
                                     required
                                 />
 
@@ -178,10 +187,12 @@
 
 <script>
 import BaseInput from '../../../../components/Inputs/BaseInput'
+import BaseTextarea from '../../../../components/Inputs/BaseTextarea'
 
 export default {
     components: {
     BaseInput,
+    BaseTextarea
 },
     data () {
         return {
@@ -194,6 +205,7 @@ export default {
                 name: "",
                 phone: "",
                 email: "",
+                address:"",
                 totalPremi: this.formatPrice(0),
                 startDatePeriod: null,
                 vehicleColor: null,
@@ -334,9 +346,7 @@ export default {
         async getDataTransaction() {
             await this.$axios.$get('api/transaction')
                 .then ((response) => {
-                    this.model.name = response.data.account.fullname
-                    this.model.email = response.data.account.email
-                    this.model.phone = response.data.account.phone
+
                     this.model.totalPremi = this.formatPrice(response.data.price)
                     this.loading = false
                 })
