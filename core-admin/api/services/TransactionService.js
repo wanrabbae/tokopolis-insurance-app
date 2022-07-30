@@ -56,7 +56,7 @@ export default class TransactionService {
     sendEmailPayment(payload) {
         let mailer = new Mailer(payload.host)
         // mailer.setUrl('/path')
-        mailer.setTemplate('payment-created')
+        mailer.setType('payment-created')
         mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,
@@ -71,7 +71,7 @@ export default class TransactionService {
     sendEmailPaymentSuccess(payload) {
         let mailer = new Mailer(payload.host)
         // mailer.setUrl('/path')
-        mailer.setTemplate('payment-success')
+        mailer.setType('payment-success')
         mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,
