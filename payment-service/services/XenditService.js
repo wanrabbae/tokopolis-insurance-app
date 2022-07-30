@@ -11,46 +11,42 @@ exports.XenditService = class {
         this.xenditBankSuccess = (platform, result) => {
             return {
                 status: true,
-                message: result.status_message,
                 data: {
+                    transaction_id: result.id,
                     type: "bank_transfer",
                     name: platform,
                     virtual_number: result.account_number,
-                    transaction_id: result.id,
-                    amount: result.expected_amount,
+                    amount: parseInt(result.expected_amount),
                     status: result.status
                 }
             }
         }
 
         this.xenditEWalletSuccess = (platform, result) => {
-            var links = {
-                website: null,
-                mobile: null,
-                deeplink: null,
-                qrcode: null,
-            }
-
-            if (platform != 'ovo') {
-                links = {
-                    website: result.actions.desktop_web_checkout_url,
-                    mobile: result.actions.mobile_web_checkout_url,
-                    deeplink: result.actions.mobile_deeplink_checkout_url,
-                    qrcode: result.actions.qr_checkout_string
-                }
-            }
-
             return {
                 status: true,
-                message: result.status_message,
                 data: {
+                    transaction_id: result.id,
                     type: "ewallet",
                     name: platform,
-                    transaction_id: result.id,
-                    amount: result.charge_amount,
-                    status: result.status
+                    amount: parseInt(result.charge_amount),
+                    status: result.status,
+                    action: result.actions
                 },
-                links: links
+            }
+        }
+
+        this.xenditQRSuccess = (platform, result) => {
+            return {
+                status: true,
+                data: {
+                    transaction_id: result.id,
+                    type: "qr",
+                    name: platform,
+                    qr_string: result.qr_string,
+                    amount: parseInt(result.charge_amount),
+                    status: result.status,
+                },
             }
         }
 
@@ -76,10 +72,7 @@ exports.XenditService = class {
         }
 
         return await va.createFixedVA(parameters)
-            .then(result => {
-                console.log(result)
-                return this.xenditBankSuccess(payload.platform, result)
-            })
+            .then(result => this.xenditBankSuccess(payload.platform, result))
             .catch(this.xenditError)
     }
 
@@ -110,22 +103,23 @@ exports.XenditService = class {
         }
 
         return await wallet.createEWalletCharge(parameters)
-            .then(result => {
-                console.log(result)
-                return this.xenditEWalletSuccess(payload.platform, result)
-            })
+            .then(result => this.xenditEWalletSuccess(payload.platform, result))
             .catch(this.xenditError)
     }
 
-    async xenditRetailRequest(payload) { // Indomaret,Alfamart
-        const { RetailOutlet } = this.xenditApi
-        const retail = new RetailOutlet({})
+    async qrisRequest(payload) {
+        const { QrCode } = this.xenditApi
+        const qrcode = new QrCode({})
 
-        return await retail.createFixedPaymentCode({
+        const parameters = {
             externalID: payload.order_id,
-            retailOutletName: payload.platform,
-            name: payload.customer.fullname,
-            expectedAmt: payload.amount,
-        })
+            type: 'DYNAMIC',
+            amount: payload.amount,
+            callbackURL: payload.redirectSuccess
+        }
+
+        return await qrcode.createCode(parameters)
+            .then(result => this.xenditQRSuccess(payload.platform, result))
+            .catch(this.xenditError)
     }
 }

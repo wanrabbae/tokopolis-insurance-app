@@ -8,33 +8,18 @@ exports.MidtransService = class {
             clientKey : process.env.MIDTRANS_CLIENT_KEY
         })
 
-        this.midtransEWalletSuccess = (platform, result) => {
-            var links = {
-                website: null,
-                mobile: null,
-                deeplink: null,
-                qrcode: null,
-            }
-
-            if (platform == 'gopay') {
-                links['qrcode'] = result.actions[0].url
-                links['deeplink'] = result.actions[1].url
-            }
-            else {
-                links['deeplink'] = result.actions[0].url
-            }
-
+        this.midtransGopaySuccess = (platform, result) => {
             return {
                 status: true,
                 message: result.status_message,
                 data: {
+                    transaction_id: result.transaction_id,
                     type: "ewallet",
                     name: platform,
-                    transaction_id: result.transaction_id,
-                    amount: result.gross_amount,
-                    status: result.transaction_status
+                    amount: parseInt(result.gross_amount),
+                    status: result.transaction_status,
+                    actions: result.actions
                 },
-                links: links
             }
         }
 
@@ -46,7 +31,7 @@ exports.MidtransService = class {
         }
     }
 
-    async eWalletRequest(payload) { // Gopay,QRIS
+    async gopayRequest(payload) {
         var parameters = {
             "payment_type": payload.platform,
             "transaction_details": {
@@ -67,7 +52,7 @@ exports.MidtransService = class {
         }
 
         return await this.midtransApi.charge(parameters)
-            .then(result => this.midtransEWalletSuccess(payload.platform, result))
+            .then(result => this.midtransGopaySuccess(payload.platform, result))
             .catch(this.midtransError)
     }
 }

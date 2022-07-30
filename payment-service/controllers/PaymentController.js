@@ -7,7 +7,7 @@ let xenditService = new XenditService()
 let midtransService = new MidtransService()
 
 let percentToDecimal = (number) => number / parseFloat(100)
-let calculateFeePercentage = (price, percentage) => (price / parseFloat(1 - percentage) - price) / parseFloat(price)
+let calculateFeePercentage = (price, percentage) => (price / parseFloat(1 - percentage) - price) / parseFloat(price) * 1.11 // Add VAT 11%
 
 let getPaymentFee = (platform, rawPrice) => {
     switch (platform) {
@@ -28,21 +28,19 @@ let getPaymentFee = (platform, rawPrice) => {
         case 'shopeepay':
             return Math.ceil(rawPrice * calculateFeePercentage(rawPrice, percentToDecimal(1.8)))
 
+        case 'qris':
+            return Math.ceil(rawPrice * calculateFeePercentage(rawPrice, percentToDecimal(0.63)))
+
         case 'gopay':
             return Math.ceil(rawPrice * calculateFeePercentage(rawPrice, percentToDecimal(2)))
-
-        case 'qris':
-            return Math.ceil(rawPrice * calculateFeePercentage(rawPrice, percentToDecimal(0.7)))
     }
 }
 
 exports.createPayment = async (req, res) => {
     const customer = {
-        fullname: 'Rahmat Ansori',
-        firstname: 'Rahmat',
-        lastname: 'Ansori',
-        email: 'ansori34@gmail.com',
-        phone: '+6285258754300',
+        fullname: req.body.customer.fullname,
+        email: req.body.customer.email,
+        phone: req.body.customer.phone,
     }
 
     const total = parseInt(req.body.total)
@@ -51,8 +49,10 @@ exports.createPayment = async (req, res) => {
     const requestPayment = async (platform) => {
         switch (platform) {
             case 'bca':
-            case 'bri':
             case 'bni':
+            case 'bri':
+            case 'bsi':
+            case 'bjb':
             case 'mandiri':
             case 'permata':
                 return await xenditService.bankRequest({
@@ -74,9 +74,16 @@ exports.createPayment = async (req, res) => {
                     amount: total + paymentFee,
                 })
 
-            case 'gopay':
             case 'qris':
-                return await midtransService.eWalletRequest({
+                return await xenditService.qrisRequest({
+                    order_id: req.body.order_id,
+                    customer: customer,
+                    redirectSuccess: process.env.XENDIT_EWALLET_REDIRECT_SUCCESS,
+                    amount: total + paymentFee,
+                })
+
+            case 'gopay':
+                return await midtransService.gopayRequest({
                     order_id: req.body.order_id,
                     customer: customer,
                     platform: req.body.platform,
@@ -88,30 +95,9 @@ exports.createPayment = async (req, res) => {
 
     const paymentResult = await requestPayment(req.body.platform)
 
-    if (!paymentResult.status) return console.log(paymentResult)
-
-    const paymentData = paymentResult.data
-    const data = {
-        name: paymentData.name,
-        total: total,
-        fee: paymentFee,
-        due: moment().add(1, 'd').format('YYYY-MM-DD HH:mm:ss'),
-        date: null
-    }
-
-    if (paymentData['virtual_number'] != null) {
-        data['virtual_number'] = paymentData.virtual_number
-    }
-
-    if (paymentResult['links'] != null) {
-        data['links'] = paymentResult.links
-    }
+    if (!paymentResult.status) return res.status(400).send(paymentResult)
 
     return res.status(200).send({
-        data: {
-            pg_transaction_id: paymentData.transaction_id,
-            pg_data: data,
-            status: 'waiting'
-        }
+        data: paymentResult.data
     })
 }
