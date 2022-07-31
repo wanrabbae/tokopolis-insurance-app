@@ -1,17 +1,17 @@
 <template>
 
-    <div class="card border">
+    <div class="commission-stats card border">
 
         <div class="row no-gutters">
 
-            <div class="p-3" :class="inline ? 'col-4 border-right' : 'col-12 border-bottom'">
+            <div class="p-3 p-md-4" :class="inline ? 'col-4 border-right' : 'col-12 border-bottom'">
             
-                <div class="mb-2" :class="{'d-flex align-items-center justify-content-between' : !inline}">
+                <div class="mb-2" :class="{'d-flex align-items-center justify-content-between' : !withdrawButton}">
 
-                    <span class="fs-4 fw-bold">
+                    <span class="fs-5 fs-md-4 fw-bold">
 
-                        <span class="mr-2">
-                            <CoinsIcon width="32px" height="32px"/>
+                        <span class="mr-1 mr-md-2">
+                            <CoinsIcon class="icon"/>
                         </span>
                         
                         Komisi
@@ -22,24 +22,24 @@
                     
                     </span>
 
-                    <BaseButton v-if="!inline">Penarikan</BaseButton>
+                    <BaseButton v-if="!withdrawButton">Penarikan</BaseButton>
 
                 </div>
 
                 <div class="d-block">
 
-                    <span class="fs-2 fw-bold">{{ formatPrice(0) }}</span>
+                    <span class="fs-4 fs-md-2 fw-bold">{{ formatPrice(commission) }}</span>
 
                 </div>
         
             </div>
 
-            <div class="border-right p-3" :class="inline ? 'col-4' : 'col-6'">
+            <div class="border-right p-3 p-md-4" :class="inline ? 'col-4' : 'col-6'">
                 
-                <div class="fs-4 fw-bold mb-2">
+                <div class="fs-5 fs-md-4 fw-bold mb-2">
                     
-                    <span class="mr-2">
-                        <b-img src="/img/shield-checkmark.png" style="width: 32px; height: 32px" />
+                    <span class="mr-1 mr-md-2">
+                        <b-img src="/img/shield-checkmark.png" class="icon" />
                     </span>
 
                     Polis Terjual
@@ -52,18 +52,18 @@
 
                 <div class="d-block">
 
-                    <span class="fs-2 fw-bold">0</span>
+                    <span class="fs-4 fs-md-2 fw-bold">{{ productSold }}</span>
 
                 </div>
 
             </div>
 
-            <div class="p-3" :class="inline ? 'col-4' : 'col-6'">
+            <div class="p-3 p-md-4" :class="inline ? 'col-4' : 'col-6'">
                 
-                <div class="fs-4 fw-bold mb-2">
+                <div class="fs-5 fs-md-4 fw-bold mb-2">
                     
-                    <span class="mr-2">
-                        <StripesIcon width="32px" height="32px" />
+                    <span class="mr-1 mr-md-2">
+                        <StripesIcon class="icon" />
                     </span>
 
                     Downline 
@@ -76,7 +76,7 @@
 
                 <div class="d-block">
 
-                    <span class="fs-2 fw-bold">0</span>
+                    <span class="fs-4 fs-md-2 fw-bold">{{ downline }}</span>
 
                 </div>
 
@@ -111,6 +111,10 @@ export default {
         downline: {
             type: Number,
             default: 0
+        },
+        withdrawButton: {
+            type: Boolean,
+            default: true
         },
         inline: {
             type: Boolean,
