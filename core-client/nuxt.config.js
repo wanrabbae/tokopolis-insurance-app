@@ -76,7 +76,8 @@ export default {
     'bootstrap-vue/nuxt',
     'nuxt-fontawesome',
     '@nuxtjs/style-resources',
-    '@nuxt/content'
+    '@nuxt/content',
+    '@nuxtjs/dayjs',
   ],
 
   fontawesome: {
@@ -138,5 +139,15 @@ export default {
   publicRuntimeConfig: {
     baseAPI: process.env.API_SERVER_URL
   },
+
+  dayjs: {
+    locales: ['id', 'en'],
+    defaultLocale: 'id',
+    defaultTimeZone: 'Asia/Jakarta',
+    plugins: [
+      'utc',
+      'timezone'
+    ]
+  }
 }
 

@@ -1,0 +1,17 @@
+.commission-stats .icon {
+    width: 36px;
+    height: 36px;
+}
+
+.commission-history {
+    th, td {
+        white-space: nowrap;
+    }
+}
+
+@include media-breakpoint-down(md) {
+    .commission-stats .icon {
+        width: 18px;
+        height: 18px;
+    }
+}
