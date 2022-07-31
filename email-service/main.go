@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go-email-service/config"
-	"go-email-service/handler"
-	"go-email-service/service"
+	"email-service/config"
+	"email-service/handler"
+	"email-service/service"
 	"log"
 )
 
