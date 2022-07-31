@@ -1,4 +1,4 @@
-module go-email-service
+module email-service
 
 go 1.18
 

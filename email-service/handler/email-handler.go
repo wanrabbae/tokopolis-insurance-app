@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"email-service/service"
 	"encoding/json"
-	"go-email-service/service"
 	"log"
 )
 
