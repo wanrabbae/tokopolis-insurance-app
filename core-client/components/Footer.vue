@@ -10,7 +10,7 @@
                     
                     <div class="mb-4">
     
-                        <PicoLogo class="text-white" height="36px"/>
+                        <TokopolisLogo class="text-white" height="150px"/>
 
                     </div>
                     
@@ -197,11 +197,11 @@
 </template>
 
 <script>
-import PicoLogo from '../assets/svg/pico-logo.svg'
+import TokopolisLogo from '../assets/svg/tokopolis-logo-white.svg'
 
 export default {
     components: {
-        PicoLogo
+        TokopolisLogo
     }    
 }
 </script>

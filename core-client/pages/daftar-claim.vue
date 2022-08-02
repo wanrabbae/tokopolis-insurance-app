@@ -103,7 +103,7 @@
 
                             <div class="d-inline-block align-top mr-3">
 
-                                <img :src="policy.image" alt="Mobil" class="rounded-circle" style="max-height: 96px">
+                                <img :src="policy.image" alt="Mobil" height="96px" width="96px" class="rounded-circle" style="max-height: 96px">
 
                             </div>
 
@@ -201,7 +201,7 @@ export default {
                     holder: "John Doe",
                     name: "Garda Oto Comprehensive",
                     period: "22 Januari 2021 - 22 Januari 2022",
-                    image: "/svg/car.svg",
+                    image: "/svg/new/polis-car.svg",
                     isActive: true,
                     isPaid: true
                 },
@@ -210,7 +210,7 @@ export default {
                     holder: "John Doe",
                     name: "Garda Oto Comprehensive",
                     period: "22 Januari 2021 - 22 Januari 2022",
-                    image: "/svg/car.svg",
+                    image: "/svg/new/polis-car.svg",
                     isActive: true,
                     isPaid: true
                 }
