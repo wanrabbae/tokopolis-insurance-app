@@ -543,7 +543,7 @@ export default {
             this.condition.comprehensive = false
             this.condition.tlo = false
             this.model.insurancePackage = null
-            this.model.price = this.formatPrice(0)
+            this.model.price = this.formatPrice(0, 'id-ID', 'decimal')
             this.model.minPrice = this.formatPrice(0)
             this.model.maxPrice = this.formatPrice(0)
             console.log(this.model)
@@ -636,7 +636,7 @@ export default {
             this.condition.comprehensive = false
             this.condition.tlo = false
             this.model.insurancePackage = null
-            this.model.price = this.formatPrice(0)
+            this.model.price = this.formatPrice(0, 'id-ID', 'decimal')
             this.model.minPrice = this.formatPrice(0)
             this.model.maxPrice = this.formatPrice(0)
 
@@ -653,7 +653,7 @@ export default {
                 }
             }).then ((response) => {
                 console.log(response)
-                this.model.price = this.formatPrice(response.data.price)
+                this.model.price = this.formatPrice(response.data.price, 'id-ID', 'decimal')
                 this.model.minPrice = this.formatPrice(response.data.lowest_price)
                 this.model.maxPrice = this.formatPrice(response.data.highest_price)
 
@@ -699,7 +699,7 @@ export default {
             const min = this.formatNumber(this.model.minPrice)
             const max = this.formatNumber(this.model.maxPrice)
 
-            this.model.price = this.formatPrice(this.limit(value, min, max));
+            this.model.price = this.formatPrice(this.limit(value, min, max), 'id-ID', 'decimal');
         },
         scrollToMain() {
             const mainEl = this.$refs.main;

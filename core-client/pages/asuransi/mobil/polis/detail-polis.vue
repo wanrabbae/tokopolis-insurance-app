@@ -383,6 +383,11 @@ export default {
                 this.discount = null;
             }
         },
+        onBlurDiscount(){
+            if(this.model.discount === null) return
+            const value = this.formatNumber(this.model.discount)
+            this.model.discount = this.formatPrice(this.limit(value, 0, this.maxDiscount), 'id-ID', 'decimal');
+        },
         submitDiscount() {
             this.discount = this.formatNumber(this.model.discount);
         },
