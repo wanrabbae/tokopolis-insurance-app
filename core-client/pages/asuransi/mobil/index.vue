@@ -91,7 +91,7 @@
                                 v-model="model.price"
                                 name="Harga Mobil"
                                 placeholder="Masukkan Harga Mobil"
-                                prepend-icon="coins"
+                                currency="IDR"
                                 :rules="{ required: true, price_between: [model.minPrice, model.maxPrice] }"
                                 required
                                 @blur="checkMinMaxPrice"
@@ -699,7 +699,7 @@ export default {
             const min = this.formatNumber(this.model.minPrice)
             const max = this.formatNumber(this.model.maxPrice)
 
-            this.model.price = this.formatPrice(this.limitValue(value, min, max));
+            this.model.price = this.formatPrice(this.limit(value, min, max));
         },
         scrollToMain() {
             const mainEl = this.$refs.main;
@@ -709,15 +709,6 @@ export default {
                     top: mainEl.getBoundingClientRect().top,
                     behavior: "smooth"
                 });
-            }
-        },
-        limitValue(value, min, max) {
-            if(value < min) {
-                return min;
-            } else if(value > max) {
-                return max;
-            } else {
-                return value;
             }
         },
         onAccessoriesCheckboxChange(checked) {

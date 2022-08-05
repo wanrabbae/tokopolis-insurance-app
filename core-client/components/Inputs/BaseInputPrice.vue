@@ -7,16 +7,18 @@
         </label>
       </slot>
       <div :class="[
-        {'input-group': hasIcon},
+        {'input-group addon-combined': hasCurrency},
         {'focused': focused},
         {'input-group-alternative': alternative},
         {'has-label': label || $slots.label},
+        {'is-valid': hasCurrency && valid && validated && successMessage},
+        {'is-invalid': hasCurrency && invalid && validated},
         inputGroupClasses
       ]">
-        <div v-if="prependIcon || $slots.prepend" class="input-group-prepend">
+        <div v-if="currency || $slots.prepend" class="input-group-prepend">
           <slot name="prepend">
             <span class="input-group-text">
-              <fa :icon="prependIcon"/>
+              {{ getCurrencySymbol(currency) }}
             </span>
           </slot>
         </div>
@@ -29,23 +31,12 @@
             :required="required"
             class="form-control"
             :class="[
-              {'is-valid': valid && validated && successMessage},
-              {'is-invalid': invalid && validated}, 
+              {'is-valid': !hasCurrency && valid && validated && successMessage},
+              {'is-invalid': !hasCurrency && invalid && validated}, 
               inputClasses
-            ]"
-            :style="[
-              prependIcon || $slots.prepend ? { borderTopLeftRadius: '0 !important', borderBottomLeftRadius: '0 !important' } : null, 
-              appendIcon || $slots.append ? { borderTopRightRadius: '0 !important', borderBottomRightRadius: '0 !important' } : null
             ]"
             v-on="listeners">
         </slot>
-        <div v-if="appendIcon || $slots.append" class="input-group-append">
-          <slot name="append">
-            <span class="input-group-text">
-              <fa :icon="appendIcon"/>
-            </span>
-          </slot>
-        </div>
         <slot name="infoBlock"></slot>
       </div>
       <slot name="success">
@@ -117,11 +108,7 @@ import {  ValidationProvider } from 'vee-validate';
         description: "Input type",
         default: "text"
       },
-      appendIcon: {
-        type: [String, Array],
-        description: "Append icon (right)"
-      },
-      prependIcon: {
+      currency: {
         type: [String, Array],
         description: "Prepend icon (left)"
       },
@@ -159,13 +146,11 @@ import {  ValidationProvider } from 'vee-validate';
           ...this.listeners
         };
       },
-      hasIcon() {
-        const { append, prepend } = this.$slots;
+      hasCurrency() {
+        const { prepend } = this.$slots;
         return (
-          append !== undefined ||
           prepend !== undefined ||
-          this.appendIcon !== undefined ||
-          this.prependIcon !== undefined ||
+          this.currency !== undefined ||
           this.group
         );
       }
@@ -228,17 +213,26 @@ import {  ValidationProvider } from 'vee-validate';
         this.$emit("onkeydown", evt);
       },
       formatPrice(value) {
-          if (typeof value !== "number") {
-              return value;
-          }
-
           const formatter = new Intl.NumberFormat('id-ID', {
-              style: 'currency', 
-              currency: 'IDR',
-              minimumFractionDigits: 0
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
           });
 
-          return formatter.format(value);
+          if(value === null) {
+              return formatter.format(0);
+          }
+
+          return formatter.format(Number(value));
+      },
+      getCurrencySymbol(currency) {
+          const formatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          });
+
+          return formatter.format(0).replace(/\d/g, '').trim()
       },
     }
   };
