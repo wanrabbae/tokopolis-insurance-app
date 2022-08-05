@@ -14,15 +14,15 @@
         
         </b-alert>
         
-        <validation-observer v-slot="{ handleSubmit }" ref="formValidator">
+        <ValidationObserver v-slot="{ invalid }">
             
-            <b-form role="form" method="post" @submit.prevent="handleSubmit(doLogin)">
+            <b-form role="form" method="post" @submit.prevent="doLogin">
 
                 <BaseInput
                   v-model="email"
                   name="Email"
                   placeholder="Email"
-                  :rules="{required: true, email: true}"
+                  rules="required|email"
                 />
 
                 <BaseInput
@@ -30,14 +30,14 @@
                   type="password"
                   name="Password"
                   placeholder="Password"
-                  :rules="{required: true, min: 8}"
+                  rules="required"
                 />
 
                 <a href="/lupa-password" class="d-block mb-3">
                     Lupa Password?
                 </a>
 
-                <BaseButton native-type="submit" class="mb-3" block>
+                <BaseButton native-type="submit" class="mb-3" :disabled="invalid" block>
                     Masuk ke Akun
                 </BaseButton>
 
@@ -47,7 +47,7 @@
 
             </b-form>
 
-        </validation-observer>
+        </ValidationObserver>
 
     </div>
     
@@ -56,13 +56,14 @@
 <script>
 import cookie from 'js-cookie'
 import atob from 'atob'
-import {  ValidationObserver } from 'vee-validate'
+import { ValidationObserver } from 'vee-validate'
 import BaseInput from '../components/Inputs/BaseInput'
 
 export default {
     components: { 
         BaseInput,
-        'validation-observer': ValidationObserver },
+        ValidationObserver
+    },
     layout: 'auth',
     middleware:'guest',
     data() {
