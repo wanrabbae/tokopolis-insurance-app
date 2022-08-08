@@ -7,7 +7,7 @@
             <CommissionStats 
                 :commission="5000000" 
                 :product-sold="3" 
-                :downline="5"
+                :gwp="5"
                 class="mb-4"
             />
 
@@ -16,6 +16,7 @@
                 <span class="fs-5 fs-md-4 fw-bold">Riwayat</span>
 
                 <b-form-select v-model="selectedDateRange" class="w-auto" :options="dateRangeOptions"></b-form-select>
+            
             </div>
 
             <b-table-simple class="commission-history" responsive>

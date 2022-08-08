@@ -6,7 +6,7 @@
 
             <div class="p-3 p-md-4" :class="inline ? 'col-4 border-right' : 'col-12 border-bottom'">
             
-                <div class="mb-2" :class="{'d-flex align-items-center justify-content-between' : !withdrawButton}">
+                <div class="mb-2" :class="{'d-flex align-items-center justify-content-between' : withdrawButton}">
 
                     <span class="fs-5 fs-md-4 fw-bold">
 
@@ -16,13 +16,16 @@
                         
                         Komisi
                         
-                        <small class="ml-1 align-top text-primary opacity-75">
+                        <small 
+                            v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Komisi di sini'" 
+                            class="ml-1 pr-2 align-top text-primary opacity-75"
+                        >
                             <fa icon="circle-info"/>
                         </small>
                     
                     </span>
 
-                    <BaseButton v-if="!withdrawButton">Penarikan</BaseButton>
+                    <BaseButton v-if="withdrawButton" @click="onDrawCommission">Tarik Komisi</BaseButton>
 
                 </div>
 
@@ -44,7 +47,10 @@
 
                     Polis Terjual
                     
-                    <small class="ml-1 align-top text-primary opacity-75">
+                    <small 
+                        v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Polis Terjual di sini'" 
+                        class="ml-1 pr-2 align-top text-primary opacity-75"
+                    >
                         <fa icon="circle-info"/>
                     </small>
 
@@ -66,17 +72,20 @@
                         <StripesIcon class="icon" />
                     </span>
 
-                    Downline 
+                    GWP
                     
-                    <small class="ml-1 align-top text-primary opacity-75">
+                    <small 
+                        v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Gross Written Premium (GWP) di sini'" 
+                        class="ml-1 pr-2 align-top text-primary opacity-75"
+                    >
                         <fa icon="circle-info"/>
-                    </small>
+                    </small>                  
 
                 </div>
 
                 <div class="d-block">
 
-                    <span class="fs-4 fs-md-2 fw-bold">{{ downline }}</span>
+                    <span class="fs-4 fs-md-2 fw-bold">{{ gwp }}</span>
 
                 </div>
 
@@ -108,7 +117,7 @@ export default {
             type: Number,
             default: 0
         },
-        downline: {
+        gwp: {
             type: Number,
             default: 0
         },
@@ -119,6 +128,12 @@ export default {
         inline: {
             type: Boolean,
             default: false
+        }
+    },
+    methods: {
+        onDrawCommission() {
+            // masukkan fungsi penarikan komisi di sini
+            console.log("Komisi ditarik")
         }
     }
 }
