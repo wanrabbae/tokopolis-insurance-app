@@ -161,7 +161,7 @@
                                 
                                 <template #button-content>
                                     
-                                    <CalendarIcon style="color:#5144c7; width: 1.4rem" />
+                                    <CalendarIcon style="color:#FF7900; width: 1.4rem" />
                                 
                                 </template>
 
@@ -202,7 +202,7 @@
                                                 
                                                 <div class="col-12 col-lg-4 d-none d-lg-block">
 
-                                                    <b-img src="/svg/komprehensif.svg" alt="Komprehensif" />
+                                                    <b-img src="/svg/new/car-komprehensif.svg" alt="Komprehensif" />
                                                 
                                                 </div> <!-- col-12.col-lg-8 ends -->
                                                 
@@ -239,7 +239,7 @@
                                                 
                                                 <div class="col-12 col-lg-4 d-none d-lg-block">
 
-                                                    <b-img src="/svg/tlo.svg" alt="tlo" />
+                                                    <b-img src="/svg/new/car-tlo.svg" alt="tlo" />
                                                 
                                                 </div> <!-- col-12.col-lg-4 ends -->
                                                 

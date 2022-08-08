@@ -4,21 +4,23 @@
 // consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
 
 // Color system
-$white:    #fff !default;
-$gray-100: #f9f3fd !default;  // homepage claim assistance color
-$gray-200: #dadfe4 !default;  // footer color
-$gray-300: #e3e3e3 !default;
-$gray-400: #c6c6d0 !default;
-$gray-500: #adb5bd !default;
-$gray-600: #6c757d !default;   // Line footer color
-$gray-700: #525f7f !default;   // Line p color
-$gray-800: #32325d !default;   // Line heading color
-$gray-900: #212529 !default;
-$black:    #222a42 !default;
+$white     : #fff !default;
+$gray-100  : #f9f3fd !default;  
+$gray-200  : #dadfe4 !default;  // footer color
+$gray-300  : #e3e3e3 !default;
+$gray-400  : #c6c6d0 !default;
+$gray-500  : #adb5bd !default;
+$gray-600  : #6c757d !default;   // Line footer color
+$gray-700  : #525f7f !default;   // Line p color
+$gray-800  : #32325d !default;   // Line heading color
+$gray-900  : #212529 !default;
+$black     : #222a42 !default;
+$light-blue: #F4F6FF !default; // homepage claim assistance color
+$dark-blue : #435A8C !default;
 
 $blue:    #5e72e4 !default;
 $indigo:  #5603ad !default;
-$purple:  #6c5bde !default; // primary
+$orange:  #FF7900 !default; // primary
 $pink:    #ff8d72 !default;
 $red:     #eb3751 !default;
 $orange:  #fb6340 !default;
@@ -27,7 +29,7 @@ $green:   #32d659 !default;
 $teal:    #1d8cf8 !default;
 $cyan:    #42b883 !default;
 
-$primary:       $purple !default;
+$primary:       $orange !default;
 $secondary:     $white !default;
 $success:       $green !default;
 $info:          $teal !default;
@@ -47,7 +49,8 @@ $theme-colors: map-merge(
     "warning":    $warning,
     "danger":     $danger,
     "light":      $light,
-    "dark":       $dark
+    "dark":       $dark,
+    "dark-blue":  $dark-blue
   ),
   $theme-colors
 );
