@@ -1,0 +1,24 @@
+name: Test Core Admin System
+
+on:
+  # pull_request:
+  #   branches: [ master ]
+  #   paths: [ core-admin ]
+  push:
+    paths: [ core-admin ]
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install Packages
+        working-directory: core-admin
+        run: npm ci
+        run: npm test
+        run: npm run build
