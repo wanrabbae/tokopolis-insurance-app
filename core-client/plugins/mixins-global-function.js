@@ -3,11 +3,12 @@ import cookie from 'js-cookie'
 
 const mixin ={
     methods: {
-        formatPrice(value) {
-            const formatter = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
+        formatPrice(value, locales='id-ID', style='currency', currency = 'IDR') {
+            const formatter = new Intl.NumberFormat(locales, {
+                style,
+                currency,
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
             });
 
             if(value === null) {
@@ -22,6 +23,15 @@ const mixin ={
             }
 
             return parseInt(value.toString().replace(/[^\d]/g, ''))
+        },
+        limit(value, min, max) {
+            if(value < min) {
+                return min;
+            } else if(value > max) {
+                return max;
+            } else {
+                return value;
+            }
         },
         async logout(){
             await cookie.remove('token')

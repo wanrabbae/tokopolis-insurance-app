@@ -51,7 +51,7 @@
                     font-size: inherit;
                     line-height: inherit;
                     background-color: transparent;
-                    color: $warning;
+                    color: $danger;
                 }
                 
                 &:hover {
@@ -157,7 +157,7 @@
             height: auto;
             font-size: inherit;
             line-height: inherit;
-            color: $warning;
+            color: $danger;
             margin-top: $margin-base-vertical;
 
             .vicp-icon2 {
