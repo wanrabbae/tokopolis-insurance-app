@@ -4,7 +4,7 @@
         
         <a href="/" class="mx-auto mb-4">
 
-            <PicoLogo class="text-white" height="64px" />
+            <TokopolisLogo class="text-white" height="150px" />
         
         </a>
 
@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import PicoLogo from '../assets/svg/pico-logo.svg'
+import TokopolisLogo from '../assets/svg/tokopolis-logo-white.svg'
 
 export default {
     components: {
-        PicoLogo
+        TokopolisLogo
     }
 }
 </script>

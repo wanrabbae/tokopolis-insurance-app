@@ -62,7 +62,7 @@
         
         </section>
 
-        <section id="testimonial" class="bg-primary py-5">
+        <section id="testimonial" class="bg-dark-blue py-5">
             
             <div class="container">
                 
@@ -121,12 +121,12 @@ export default {
             ],
             serviceList: [
                 {
-                    image: "svg/smartphone-coming-soon.svg",
+                    image: "svg/new/polis-smartphone-locked.svg",
                     text: "Smartphone",
                     link: "#"
                 },
                 {
-                    image: "svg/car.svg",
+                    image: "svg/new/polis-car.svg",
                     text: "Mobil",
                     link: "/asuransi/mobil"
                 },
@@ -166,36 +166,36 @@ export default {
             ],
             claimAssistanceList: [
                 {
-                    image: "svg/claim-report.svg",
+                    image: "svg/new/claim-report.svg",
                     text: "Lapor Claim",
                     link: "#"
                 },
                 {
-                    image: "svg/claim-status.svg",
+                    image: "svg/new/claim-status.svg",
                     text: "Claim Status",
                     link: "#"
                 },
                 {
-                    image: "svg/emergency.svg",
+                    image: "svg/new/emergency.svg",
                     text: "Emergency",
                     link: "#"
                 }
             ],
             whyUsList: [
                 {
-                    image: "svg/fast-time.svg",
+                    image: "svg/new/fast-time.svg",
                     text: "Praktis dan Proses Cepat"
                 },
                 {
-                    image: "svg/cooperation.svg",
+                    image: "svg/new/cooperation.svg",
                     text: "40+ Partner Asuransi"
                 },
                 {
-                    image: "svg/file.svg",
+                    image: "svg/new/file.svg",
                     text: "Bandingkan Dengan Mudah"
                 },
                 {
-                    image: "svg/headset.svg",
+                    image: "svg/new/headset.svg",
                     text: "Digital Claim Assistance"
                 }
             ],

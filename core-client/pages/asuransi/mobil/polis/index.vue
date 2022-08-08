@@ -8,7 +8,7 @@
 
                 <h2>Asuransi Mobil</h2>
 
-                <div class="text-primary">Temukan asuransi yang cocok denganmu</div>
+                <div class="text-dark-blue">Temukan asuransi yang cocok denganmu</div>
 
             </header>
 
@@ -97,7 +97,7 @@
                                             classes="text-left p-0"
                                             @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
                                         >
-                                            <span class="fs-lg-4 fw-bold text-primary">{{ product.name }}</span>
+                                            <span class="fs-lg-4 fw-bold text-dark">{{ product.name }}</span>
                                         </BaseButton>
 
                                         <span class="text-dark fw-bold">

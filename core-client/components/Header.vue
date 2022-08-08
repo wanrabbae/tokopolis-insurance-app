@@ -14,7 +14,7 @@
 
                 <a href="/" target="_self" class="navbar-brand">
                     
-                    <PicoLogo class="text-primary" height="36px"/>
+                    <TokopolisLogo class="text-primary" height="38px"/>
                 
                 </a> <!-- navbar-brand ends -->
 
@@ -157,7 +157,7 @@
                                     </div>
                                 
                                 </template>
-                                
+                                 <b-dropdown-item @click.once="handleClick">Test</b-dropdown-item>
                                 <b-dropdown-item href="/profil">Profil</b-dropdown-item>
 
                                 <b-dropdown-item @click="logout">Keluar</b-dropdown-item>
@@ -192,11 +192,11 @@
 
 <script>
 import cookie from 'js-cookie'
-import PicoLogo from '../assets/svg/pico-logo.svg'
+import TokopolisLogo from '../assets/svg/tokopolis-logo.svg'
 
 export default {
     components: {
-        PicoLogo
+        TokopolisLogo
     },
     props: {
         mobileView: {
@@ -245,6 +245,16 @@ export default {
                 this.scrolled = false;
             }
         },
+        async handleClick(){
+            await this.$axios.$get('api/transaction')
+                .then ((response) => {
+                    console.log(response)
+                })
+                .catch (error => {
+                    console.log(error)
+                })
+        }
+        ,
         async logout(){
             await cookie.remove('token')
             await cookie.remove('photo')
