@@ -12,7 +12,11 @@
 
                 </div> <!-- card-header ends-->
 
-                <div class="card-body">
+                <ValidationObserver 
+                    v-slot="{ invalid }"
+                    tag="div"
+                    class="card-body"
+                >
 
                     <div class="row">
 
@@ -23,7 +27,22 @@
                             </div>
 
                             <div class="mb-4">
-                                <span class="fs-2 fw-bold">{{ model.totalPremi }}</span>
+                                <span class="fs-2 fw-bold">{{ model.totalPremium }}</span>
+                            </div>
+
+                            <div class="mb-lg-2 mb-3">
+                                <span class="fw-bold">Kondisi Kendaraan</span>
+                            </div>
+
+                            <div class="mb-4">
+                                
+                                <b-form-radio-group     
+                                    v-model="model.vehicleCondition"
+                                    :options="vehicleConditionOptions" 
+                                    button-variant="primary"
+                                    buttons
+                                ></b-form-radio-group>
+
                             </div>
 
                             <div class="mb-lg-2 mb-3">
@@ -38,7 +57,7 @@
 
                                         <img v-if="url[field.key]" :src="url[field.key]">
 
-                                        <img v-else src="/svg/picture.svg">
+                                        <img v-else src="/svg/new/item-pictures.svg">
 
                                     </div>
 
@@ -82,8 +101,7 @@
                                     name="Nama"
                                     label="Nama"
                                     placeholder="Josua Jostar"
-                                    :rules="{ required: true }"
-                                    required
+                                    rules="required"
                                 />
 
                                 <BaseInput
@@ -92,10 +110,9 @@
                                     name="Nomor Telepon"
                                     label="Nomor Telepon"
                                     placeholder="+62812345678"
-                                    :rules="{ required: true }"
+                                    rules="required"
                                     input-classes="form-control custom-number"
                                     onkeypress="if(this.value.length==14) return false;"
-                                    required
                                 />
 
                                 <BaseInput
@@ -103,15 +120,16 @@
                                     name="Email"
                                     label="Email"
                                     placeholder="user@gmail.com"
-                                    :rules="{required: true, email: true}"
+                                    rules="required|email"
                                     required
                                 />
+
                                 <BaseTextarea
                                     v-model="model.address"
                                     name="Alamat Lengkap"
                                     label="Alamat Lengkap"
                                     placeholder="Jl. TB Simatupang Banjarsari I no. 8C, Kelurahan Cilandak Barat, Kecamatan Cilandak, Kota Jakarta Selatan, DKI Jakarta 12430"
-                                    :rules="{ required: true }"
+                                    rules="required"
                                     rows="4"
                                     required
                                 />
@@ -129,20 +147,18 @@
                                     name="Warna Mobil"
                                     label="Warna Mobil"
                                     placeholder="Putih"
-                                    :rules="{ required: true }"
+                                    rules="required"
                                     required
-                                    @change="checkFormData"
                                 ></BaseInput>
 
                                 <BaseInput
-                                    v-model="model.plateNumber"
+                                    v-model="model.plateDetail"
                                     name="Nomor Plat"
                                     label="Nomor Plat"
                                     :prefix-text= model.licensePlate
                                     placeholder="1234 WW"
-                                    :rules="{ required: true }"
+                                    rules="required"
                                     required
-                                    @change="checkFormData"
                                 />
 
                                 <BaseInput
@@ -150,20 +166,17 @@
                                     name="Nomor Mesin"
                                     label="Nomor Mesin"
                                     placeholder="SDR72V2500W2017060104R"
-                                    :rules="{ required: true }"
+                                    rules="required"
                                     required
-                                    @change="checkFormData"
                                 />
 
                                 <BaseInput
-                                    v-model="model.vehicleIdentificationNumber"
+                                    v-model="model.skeletonNumber"
                                     name="Nomor Rangka"
                                     label="Nomor Rangka"
                                     placeholder="1HGBH41JXMN109186"
-                                    :rules="{ required: true }"
+                                    rules="required"
                                     required
-                                    @change="checkFormData"
-                                    
                                 />
 
                             </div>
@@ -172,9 +185,9 @@
 
                     </div> <!-- row ends-->
 
-                    <BaseButton :disabled="!validateForm" block @click="postTranscation">Lanjutkan</BaseButton>
+                    <BaseButton :disabled="invalid || invalidDocumentsValidation" block @click="postTranscation">Lanjutkan</BaseButton>
 
-                </div> <!-- card-body ends -->
+                </ValidationObserver> <!-- card-body ends -->
 
             </div> <!-- card ends -->
 
@@ -186,106 +199,97 @@
 </template>
 
 <script>
+import { ValidationObserver } from 'vee-validate'
 import BaseInput from '../../../../components/Inputs/BaseInput'
 import BaseTextarea from '../../../../components/Inputs/BaseTextarea'
 
 export default {
     components: {
-    BaseInput,
-    BaseTextarea
-},
+        BaseInput,
+        BaseTextarea,
+        ValidationObserver
+    },
     data () {
         return {
             id: null,
             formData: null,
             url: [],
-            validate: false,
             loading : true,
             model: {
-                name: "",
-                phone: "",
-                email: "",
-                address:"",
-                totalPremi: this.formatPrice(0),
-                startDatePeriod: null,
+                totalPremium: this.formatPrice(0),
+                vehicleCondition: 'new',
+                name: null,
+                phone: null,
+                email: null,
+                address: null,
+                plateDetail: null,
                 vehicleColor: null,
-                machineNumber: null,
-                plateNumber:null,
-                vehicleIdentificationNumber: null,
-                stnk: null,
-                vehicleFront: null,
-                vehicleRight: null,
-                vehicleLeft: null,
-                vehicleBehind: null,
-                vehicleDasboard: null,
-                optionalPhoto1: null,
-                optionalPhoto2: null,
-                optionalPhoto3: null,
-                optionalPhoto4: null,
+                machineNumber: null
             },
-            documentFields: [
+            vehicleConditionOptions: [
+                { text: 'Baru', value: 'new' },
+                { text: 'Bekas', value: 'used' },
+            ],
+            newVehicleDocumentFields: [
+                {
+                    key: "recordOfTransfer",
+                    label: "Berita Acara Serah Terima Kendaraan (BASTK)",
+                    required: true
+                },
+                {
+                    key: "identityCard",
+                    label: "Kartu Identitas (KTP/NPWP/PASPOR/SIM)",
+                    required: true
+                }
+            ],
+            usedVehicledocumentFields: [
                 {
                     key: "stnk",
                     label: "Foto STNK",
                     required: true
                 },
                 {
-                    key: "vehicleFront",
+                    key: "frontSide",
                     label: "Foto Bagian Depan Kendaraan",
                     required: true
                 },
                 {
-                    key: "vehicleRight",
-                    label: "Foto Bagian Kanan Kendaraan",
-                    required: true
-                },
-                {
-                    key: "vehicleLeft",
-                    label: "Foto Bagian Kiri Kendaraan",
-                    required: true
-                },
-                {
-                    key: "vehicleBehind",
+                    key: "backSide",
                     label: "Foto Bagian Belakang Kendaraan",
                     required: true
                 },
                 {
-                    key: "vehicleDasboard",
+                    key: "leftSide",
+                    label: "Foto Bagian Kiri Kendaraan",
+                    required: true
+                },
+                {
+                    key: "rightSide",
+                    label: "Foto Bagian Kanan Kendaraan",
+                    required: true
+                },
+                {
+                    key: "dashboard",
                     label: "Foto Dasbor Kendaraan",
                     required: true
                 },
                 {
-                    key: "optionalPhoto1",
+                    key: "optional_1",
                     label: "Foto Tambahan (Opsional)"
                 },
                 {
-                    key: "optionalPhoto2",
+                    key: "optional_2",
                     label: "Foto Tambahan (Opsional)"
                 },
                 {
-                    key: "optionalPhoto3",
+                    key: "optional_3",
                     label: "Foto Tambahan (Opsional)"
                 },
                 {
-                    key: "optionalPhoto4",
+                    key: "optional_4",
                     label: "Foto Tambahan (Opsional)"
                 }
-            ],
-            calendarLabels: {
-                labelPrevDecade: 'Dekade Sebelumnya',
-                labelPrevYear: 'Tahun Sebelumnya',
-                labelPrevMonth: 'Bulan Sebelumnya',
-                labelCurrentMonth: 'Bulan Ini',
-                labelNextMonth: 'Bulan Depan',
-                labelNextYear: 'Tahun Depan',
-                labelNextDecade: 'Dekade Depan',
-                labelToday: 'Hari Ini',
-                labelSelected: 'Tanggal Terpilih ',
-                labelNoDateSelected: 'Tanggal Belum Dipilih',
-                labelCalendar: 'Kalendar',
-                labelNav: 'Navigasi Kalendar',
-                labelHelp: 'Gunakan Anak Panah Sebagai Bantuan Navigasi'
-            }
+            ]
         }
     },
     head() {
@@ -301,28 +305,19 @@ export default {
         };
     },
     computed: {
-        validateForm(){
-            const required = [
-                this.model.name,
-                this.model.phone,
-                this.model.email,
-                this.model.vehicleColor,
-                this.model.machineNumber,
-                this.model.plateNumber,
-                this.model.vehicleIdentificationNumber,
-                this.model.stnk,
-                this.model.vehicleFront,
-                this.model.vehicleRight,
-                this.model.vehicleLeft,
-                this.model.vehicleBehind,
-                this.model.vehicleDasboard]
+        documentFields() {
+            return this.model.vehicleCondition === 'new' ? this.newVehicleDocumentFields : this.usedVehicledocumentFields;
+        },
+        invalidDocumentsValidation(){
+            let invalid = false
 
-            for(let i = 0; i < 14; i++){
-                if (required[i] === null || required[i] === ''){
-                    return false
+            this.documentFields.forEach(field => {
+                if (field.required && (this.model[field.key] === undefined || this.model[field.key] === null || this.model[field.key] === '')){
+                    invalid = true
                 }
-            }
-            return true
+            })
+
+            return invalid
         }
     },
     deactivated(){
@@ -347,38 +342,34 @@ export default {
             await this.$axios.$get('api/transaction')
                 .then ((response) => {
 
-                    this.model.totalPremi = this.formatPrice(response.data.price)
+                    this.model.totalPremium = this.formatPrice(response.data.price)
                     this.loading = false
                 })
                 .catch (error => {
                     console.log(error)
                 })
         },
-        upperCase(){
-            
-        },
-        checkFormData(){
-            const form = this.formData
-            const data = ['stnk','front_side','back_side','left_side','right_side','dashboard','start_date','vehicle_color','machine_number','skeleton_number']
-            // eslint-disable-next-line eqeqeq
-            if(JSON.stringify(form)==JSON.stringify(data)){
-                this.validate = true
-            }
-
-        },
         postTranscation() {
             const self = this
             this.formData = new FormData()
-            this.formData.append('stnk',this.model.stnk)
-            this.formData.append('front_side',this.model.vehicleFront)
-            this.formData.append('back_side',this.model.vehicleBehind)
-            this.formData.append('left_side',this.model.vehicleLeft)
-            this.formData.append('right_side',this.model.vehicleRight)
-            this.formData.append('dashboard',this.model.vehicleDasboard)
+
+            // silahkan diperbaiki kalau ada yang salah
+            if(this.model.vehicleCondition === 'new') {
+                this.formData.append('record_of_transfer',this.model.recordOfTransfer)
+                this.formData.append('identity_card',this.model.identityCard)
+            } else {
+                this.formData.append('stnk',this.model.stnk)
+                this.formData.append('front_side',this.model.frontSide)
+                this.formData.append('back_side',this.model.backSide)
+                this.formData.append('left_side',this.model.leftSide)
+                this.formData.append('right_side',this.model.rightSide)
+                this.formData.append('dashboard',this.model.dashboard)
+            }
+
             this.formData.append('vehicle_color',this.model.vehicleColor)
-            this.formData.append('plate_detail',this.model.plateNumber)
+            this.formData.append('plate_detail',this.model.plateDetail)
             this.formData.append('machine_number',this.model.machineNumber)
-            this.formData.append('skeleton_number',this.model.vehicleIdentificationNumber)
+            this.formData.append('skeleton_number',this.model.skeletonNumber)
 
             this.$axios.$post(`api/transaction?product_id=${this.id}`, this.formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
