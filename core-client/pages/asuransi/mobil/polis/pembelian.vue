@@ -38,7 +38,7 @@
 
                                         <img v-if="url[field.key]" :src="url[field.key]">
 
-                                        <img v-else src="/svg/picture.svg">
+                                        <img v-else src="/svg/new/item-pictures.svg">
 
                                     </div>
 

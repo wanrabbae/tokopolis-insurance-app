@@ -10,7 +10,7 @@
 
                     <div class="text-dark fw-bold fs-4 mb-2">Sisa Waktu Pembayaran</div>
 
-                    <div class="text-primary fw-bold">
+                    <div class="text-dark-blue fw-bold">
                         {{ timeLeft === null ? "-- : -- : --" : formattedTimeLeft }}
                     </div>
 
@@ -46,7 +46,7 @@
                                                 <BaseButton
                                                     id="copy-text"
                                                     type="link"
-                                                    classes="p-0"
+                                                    classes="p-0 "
                                                     @click="copyToClipboard(paymentData.virtual_number)"
                                                 >
                                                     <span class="pl-2">Salin Nomor</span>
@@ -161,8 +161,8 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
-                                    <span class="text-primary fw-bold">Total Pembelian</span>
-                                    <span class="text-primary fw-bold">{{ formatPrice(totalPayment) }}</span>
+                                    <span class="text-dark-blue fw-bold">Total Pembelian</span>
+                                    <span class="text-dark-blue fw-bold">{{ formatPrice(totalPayment) }}</span>
                                 </div>
 
                             </div>

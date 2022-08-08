@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import TrackClaimIcon from '../assets/svg/track-claim.svg'
+import TrackClaimIcon from '../assets/svg/track-claim-new.svg'
 import BaseInput from './Inputs/BaseInput'
 import BaseButton from './BaseButton'
 

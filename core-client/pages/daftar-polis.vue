@@ -68,7 +68,7 @@
                     <div class="card-body">
                         <div class="d-block mb-3">
                             <div class="d-inline-block align-top mr-3">
-                                <img :src="policy.image" alt="Mobil" class="rounded-circle" style="max-height: 96px">
+                                <img :src="policy.image" alt="Mobil" class="rounded-circle" width="96px" height="96[x" style="max-height: 96px">
                             </div>
                             <div class="d-inline-block align-top">
                                 <div class="fs-4 fw-bold">{{ policy.holder }}</div>
@@ -174,7 +174,7 @@ export default {
                         holder: "Ansori",
                         name: field.product.name,
                         period: field.start_date,
-                        image: "/svg/car.svg",
+                        image: "/svg/new/polis-car.svg",
                         isActive: true,
                         isPaid: true
                     })
