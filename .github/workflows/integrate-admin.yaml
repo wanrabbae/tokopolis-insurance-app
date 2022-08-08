@@ -1,10 +1,8 @@
 name: Test Core Admin System
 
 on:
-  # pull_request:
-  #   branches: [ master ]
-  #   paths: [ core-admin ]
-  push:
+  pull_request:
+    branches: [ master ]
     paths: [ core-admin ]
 
 jobs:
