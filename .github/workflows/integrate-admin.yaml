@@ -1,9 +1,10 @@
-name: Test Core Admin System
+name: Test Core Admin
 
 on:
   pull_request:
     branches: [ master ]
-    paths: [ core-admin ]
+    paths:
+      - 'core-admin/**'
 
 jobs:
   test:
@@ -15,8 +16,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '14.x'
-      - name: Install Packages
+      - name: Install & Build Packages
         working-directory: core-admin
-        run: npm ci
-        run: npm test
-        run: npm run build
+        run: |
+          npm install
+          npm run build
