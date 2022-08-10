@@ -2,7 +2,7 @@ name: Deploy Core Admin
 
 on:
   push:
-    branches: [ master ]
+    # branches: [ master ]
     paths:
       - 'core-admin/**'
 
@@ -21,8 +21,8 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
       with:
-        source: "."
-        target: "/var/www/tokopolis-test"
+        source: "core-admin/*"
+        target: "/var/www/html/tokopolis-test"
 
     - name: Executing remote command
       uses: appleboy/ssh-action@master
@@ -31,4 +31,8 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
-        script: ls
+        script: |
+          npm run packaging
+          npm run build
+          pm2 delete tokopolis-admin
+          pm2 start npm --name "tokopolis-admin" -- start
