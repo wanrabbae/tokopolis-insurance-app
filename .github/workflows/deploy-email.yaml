@@ -1,16 +1,16 @@
-name: Deploy Core Client
+name: Deploy Email Service
 
 on:
   pull_request:
     branches: [ master ]
     types: [ closed ]
     paths:
-      - 'core-client/**'
+      - 'email-service/**'
 
 env:
   folderPath: /var/www/html/tokopolis
-  folderName: core-client
-  pmName: tokopolis-client
+  folderName: email-service
+  pmName: tokopolis-email
 
 jobs:
   build:
@@ -39,7 +39,6 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           cd ${{ env.folderPath }}/${{ env.folderName }}
-          npm run packaging
-          npm run build
+          go build main.go
           pm2 delete ${{ env.pmName }}
-          pm2 start npm --name "${{ env.pmName }}" -- start
+          pm2 start ./main --name "${{ env.pmName }}"

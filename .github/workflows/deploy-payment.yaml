@@ -1,16 +1,16 @@
-name: Deploy Core Client
+name: Deploy Payment Service
 
 on:
   pull_request:
     branches: [ master ]
     types: [ closed ]
     paths:
-      - 'core-client/**'
+      - 'payment-service/**'
 
 env:
   folderPath: /var/www/html/tokopolis
-  folderName: core-client
-  pmName: tokopolis-client
+  folderName: payment-service
+  pmName: tokopolis-payment
 
 jobs:
   build:
@@ -40,6 +40,5 @@ jobs:
         script: |
           cd ${{ env.folderPath }}/${{ env.folderName }}
           npm run packaging
-          npm run build
           pm2 delete ${{ env.pmName }}
-          pm2 start npm --name "${{ env.pmName }}" -- start
+          pm2 start npm --name "${{ env.pmName }}" -- run dev
