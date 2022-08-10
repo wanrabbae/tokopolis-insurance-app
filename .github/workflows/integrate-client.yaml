@@ -1,0 +1,23 @@
+name: Test Core Client
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'core-client/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install & Build Packages
+        working-directory: core-client
+        run: |
+          npm install
+          npm run build

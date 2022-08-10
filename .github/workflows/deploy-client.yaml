@@ -1,16 +1,16 @@
-name: Deploy Core Admin
+name: Deploy Core Client
 
 on:
   pull_request:
     branches: [ master ]
     types: [ closed ]
     paths:
-      - 'core-admin/**'
+      - 'core-client/**'
 
 env:
   folderPath: /var/www/html/tokopolis
-  folderName: core-admin
-  pmName: tokopolis-admin
+  folderName: core-client
+  pmName: tokopolis-client
 
 jobs:
   build:
