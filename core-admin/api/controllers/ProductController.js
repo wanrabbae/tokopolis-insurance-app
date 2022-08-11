@@ -89,7 +89,7 @@ exports.getProductData = async (req, res) => {
     var returnData = {}
 
     // Guest checking
-    if (req.account != null || req.session.account != null) {
+    if (req.account != null) {
         const limit = 5
         const offset = (page - 1) * limit
 

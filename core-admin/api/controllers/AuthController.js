@@ -68,22 +68,6 @@ exports.login = async (req, res) => {
     })
 }
 
-exports.guestLogin = async (req, res) => {
-    const validate = validation.guest(req)
-    if (validate.error) return res.errorValidation(validate.details)
-
-    const account = await service.getAccountFromEmail(req.body.email)
-    if (account != null) return res.errorBadRequest(req.polyglot.t('error.email.guest.exist'))
-
-    req.session.account = {
-        fullname: req.body.fullname,
-        email: req.body.email,
-        phone: req.body.phone,
-    }
-
-    return res.jsonSuccess()
-}
-
 exports.forgetPassword = async (req, res) => {
     const validate = validation.forget(req)
     if (validate.error) return res.errorValidation(validate.details)

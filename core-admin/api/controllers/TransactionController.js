@@ -70,27 +70,10 @@ exports.getAll = async (req, res) => {
 
 exports.transaction = async (req, res) => {
     if (req.session.product?.price == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
-
-    var account = {}
-
-    if (req.account != null) {
-        const data = await accountService.getAccountData(req.account._id)
-
-        account = {
-            fullname: data.fullname,
-            email: data.email,
-            phone: data.profile?.phone,
-        }
-    }
-    else if (req.session.account != null) {
-        account = req.session.account
-    }
-    else {
-        return res.errorBadRequest(req.polyglot.t('error.auth'))
-    }
+    if (req.account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
     return res.jsonData({
-        account: account,
+        plate: req.session.vehicle?.plate,
         price: req.session.product?.price
     })
 }
@@ -120,35 +103,9 @@ exports.postTransaction = async (req, res) => {
 
     if (req.session.vehicle == null) return res.errorBadRequest(req.polyglot.t('error.vehicle.data'))
     if (req.query.product_id == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
+    if (req.account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    var account = null
-
-    if (req.account != null) {
-        account = await accountService.getAccount(req.account._id)
-    }
-    else {
-        const validate = validation.account(req)
-        if (validate.error) return res.errorValidation(validate.details)
-
-        const body = () => {
-            if (req.session.account != null) {
-                return req.session.account
-            }
-
-            return req.body
-        }
-
-        account = await accountService.createAccount({
-            fullname: body().fullname,
-            email: body().email,
-            password: randomString(10),
-            phone: body().phone,
-        })
-
-        req.session.account = null
-    }
-
-    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    const account = await accountService.getAccount(req.account._id)
 
     req.session.vehicle.plate_detail = req.body.plate_detail
     req.session.vehicle.vehicle_color = req.body.vehicle_color
@@ -179,9 +136,6 @@ exports.review = async (req, res) => {
     const validate = validation.review(req)
     if (validate.error) return res.errorValidation(validate.details)
 
-    const account = await accountService.getAccountData(req.account._id)
-    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
-
     const transaction = await service.getTransaction(account.id, req.query.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
@@ -189,11 +143,6 @@ exports.review = async (req, res) => {
     if (vehicle == null) return res.errorBadRequest(req.polyglot.t('error.vehicle.data'))
 
     return res.jsonData({
-        account: {
-            fullname: account.fullname,
-            email: account.email,
-            phone: account.profile?.phone,
-        },
         vehicle: {
             brand: vehicle[0].brand,
             model: vehicle[0].model,

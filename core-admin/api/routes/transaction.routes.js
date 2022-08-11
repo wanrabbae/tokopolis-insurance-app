@@ -9,11 +9,10 @@ const { getAll, transaction, postTransaction, postOffer,
 
 const router = Router()
 const auth = verify()
-const guest = verifyGuest()
 
 router.get('/transaction/all', auth, getAll)
-router.get('/transaction', guest, transaction)
-router.post('/transaction', guest,
+router.get('/transaction', auth, transaction)
+router.post('/transaction', auth,
     uploadFile({ fileSize: 5 }).fields([
         { name: 'stnk' }, { name: 'front_side' }, { name: 'back_side' },
         { name: 'left_side' }, { name: 'right_side' }, { name: 'dashboard' },
