@@ -89,6 +89,16 @@ export default class TransactionRepository {
         })
     }
 
+    async getAgentPaymentData(agent_id, transaction_id) {
+        return await Transaction.findOne({
+            where: {
+                id: transaction_id,
+                agent_id: agent_id
+            },
+            attributes: ['total', 'pg_data', 'status']
+        })
+    }
+
     async setPaymentData(id, payload) {
         return await Transaction.update(payload, {
             where: { id: id }

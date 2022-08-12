@@ -195,67 +195,32 @@ exports.doPayment = async (req, res) => {
     const account = await accountService.getAccountData(req.account._id)
     if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    const transaction = await service.getTransaction(account.id, req.body.transaction_id)
+    const transaction = await service.getAgentTransaction(account.id, req.body.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
-    const customer = {
-        fullname: account.fullname,
-        firstname: account.firstname,
-        lastname: account.lastname,
-        email: account.email,
-        phone: phoneFormat(account.profile?.phone),
-    }
     const payload = {
-        // order_id: transaction.code,
-        order_id: randomString(6),
-        customer: customer,
-        platformName: req.body.platform,
-        amount: transaction.total,
+        order_id: randomString(20),
+        customer: {
+            fullname: transaction.client_data.fullname,
+            email: transaction.client_data.email || account.email,
+            phone: transaction.client_data.phone || '+6285123456789',
+        },
+        platform: req.body.platform,
+        total: transaction.total,
     }
 
-    const platformList = async () => {
-        if (['bca', 'bri', 'bni', 'mandiri', 'permata'].includes(req.body.platform))
-            return await paymentService.midtransBankRequest(payload)
-        else if (['ovo', 'dana', 'shopeepay', 'linkaja'].includes(req.body.platform))
-            return await paymentService.xenditEWalletRequest(payload)
-        else if (['alfamart', 'indomaret'].includes(req.body.platform))
-            return await paymentService.midtransRetailRequest(payload)
-        else if (['gopay', 'qris'].includes(req.body.platform)) {
-            return await paymentService.midtransEWalletRequest(payload)
-        }
-    }
+    const paymentRequest = await paymentService.createRequest(payload)
 
-    if (transaction.pg_data != null && transaction.status == 'waiting') {
-        // Cancel Midtrans Exists Payment
-        if (!['ovo', 'dana', 'shopeepay', 'linkaja'].includes(req.body.platform)) {
-            await paymentService.midtransCancel(payload.order_id)
-        }
-    }
+    if (paymentRequest.data) {
+        const data = Object.assign({}, paymentRequest.data)
 
-    const paymentRequest = await platformList()
+        delete data['transaction_id']
+        delete data['status']
 
-    if (paymentRequest.status) {
-        const paymentData = paymentRequest.data
-        const platformName = paymentService.getPlatformName(paymentData.name)
-        const paymentDue = getMoment().add(1, 'd')
-
-        const data = {
-            name: paymentData.name,
-            fee: 0,
-            due: paymentDue.format('YYYY-MM-DD HH:mm:ss'),
-            date: null
-        }
-
-        if (paymentData['virtual_number'] != null) {
-            data['virtual_number'] = paymentData.virtual_number
-        }
-
-        if (paymentRequest['links'] != null) {
-            data['links'] = paymentRequest.links
-        }
+        data['due'] = getMoment().add(1, 'd').format('YYYY-MM-DD HH:mm:ss')
 
         await service.setPaymentData(transaction.id, {
-            pg_transaction_id: paymentData.transaction_id,
+            pg_transaction_id: paymentRequest.data.transaction_id,
             pg_data: data,
             status: 'waiting'
         })
@@ -265,16 +230,16 @@ exports.doPayment = async (req, res) => {
             target: account.email,
             title: req.polyglot.t('mail.payment.created'),
             data: {
-                name: account.firstname,
-                platform: platformName,
-                virtual_number: paymentData.virtual_number,
-                total: moneyFormat(transaction.total),
-                date: paymentDue.format('D MMMM YYYY h:mm:ss')
+                name: transaction.client_data.fullname,
+                platform: data.name,
+                virtual_number: data.virtual_number,
+                total: moneyFormat(data.amount),
+                date: data.due
             }
         })
     }
 
-    return res.jsonData(paymentRequest)
+    return res.jsonData(paymentRequest.data)
 }
 
 exports.webhookMidtrans = async (req, res) => {
@@ -381,7 +346,7 @@ exports.getPayment = async (req, res) => {
     const validate = validation.getPayment(req)
     if (validate.error) return res.errorValidation(validate.details)
 
-    const data = await service.getPaymentData(req.account._id, req.query.transaction_id)
+    const data = await service.getAgentPaymentData(req.account._id, req.query.transaction_id)
 
     return res.jsonData(data)
 }

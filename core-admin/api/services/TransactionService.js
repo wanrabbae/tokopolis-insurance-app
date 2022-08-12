@@ -49,6 +49,10 @@ export default class TransactionService {
         return this.repository.getPaymentData(client_id, transaction_id)
     }
 
+    getAgentPaymentData(agent_id, transaction_id) {
+        return this.repository.getAgentPaymentData(agent_id, transaction_id)
+    }
+
     setPaymentData(id, payload) {
         return this.repository.setPaymentData(id, payload)
     }
