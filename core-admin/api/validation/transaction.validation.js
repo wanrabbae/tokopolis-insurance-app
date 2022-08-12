@@ -4,9 +4,93 @@ const { joiResponse, joiErrorMessages } = require('../utilities/validation')
 const { extensionHelper } = require('../utilities/functions')
 
 const post = (req) => {
+    const schema = Joi.object({
+        condition: Joi.valid('new', 'old')
+            .required()
+            .label(req.polyglot.t('field.transaction.condition')),
+        client: Joi.object({
+                fullname: Joi.string()
+                    .required()
+                    .label(req.polyglot.t('field.fullname')),
+            })
+            .required()
+            .label(req.polyglot.t('field.transaction.client')),
+        plate_detail: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.plate_detail')),
+        vehicle_color: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.color')),
+        machine_number: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.machine_number')),
+        skeleton_number: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.skeleton_number')),
+    })
+
+    return joiResponse(schema.validate(req.body, {
+        abortEarly: false,
+        allowUnknown: true,
+        messages: joiErrorMessages(),
+        errors: {
+            language: req.locale.language
+        }
+    }))
+}
+
+const fileNew = (req) => {
     const extensions = extensionHelper(['png', 'jpg', 'jpeg'])
 
     const schema = Joi.object({
+        condition: Joi.valid('new', 'old')
+            .required()
+            .label(req.polyglot.t('field.transaction.condition')),
+        bastk: Joi.string()
+            .required()
+            .regex(RegExp(extensions.regex))
+            .label(req.polyglot.t('field.transaction.bastk')),
+        identity_card: Joi.string()
+            .required()
+            .regex(RegExp(extensions.regex))
+            .label(req.polyglot.t('field.transaction.identity')),
+        client: Joi.object({
+                fullname: Joi.string()
+                    .required()
+                    .label(req.polyglot.t('field.fullname')),
+            })
+            .required()
+            .label(req.polyglot.t('field.transaction.client')),
+        plate_detail: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.plate_detail')),
+        vehicle_color: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.color')),
+        machine_number: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.machine_number')),
+        skeleton_number: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.skeleton_number')),
+    })
+
+    return joiResponse(schema.validate(req.body, {
+        abortEarly: false,
+        messages: joiErrorMessages(),
+        errors: {
+            language: req.locale.language
+        }
+    }))
+}
+
+const fileOld = (req) => {
+    const extensions = extensionHelper(['png', 'jpg', 'jpeg'])
+
+    const schema = Joi.object({
+        condition: Joi.valid('new', 'old')
+            .required()
+            .label(req.polyglot.t('field.transaction.condition')),
         stnk: Joi.string()
             .required()
             .regex(RegExp(extensions.regex))
@@ -43,6 +127,13 @@ const post = (req) => {
         optional4: Joi.string()
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t('field.transaction.optional')),
+        client: Joi.object({
+                fullname: Joi.string()
+                    .required()
+                    .label(req.polyglot.t('field.fullname')),
+            })
+            .required()
+            .label(req.polyglot.t('field.transaction.client')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -185,6 +276,6 @@ const xendit = (req) => {
 }
 
 module.exports = {
-    post, review, account, getPayment,
+    post, fileNew, fileOld, review, account, getPayment,
     createPayment, midtrans, xendit
 }

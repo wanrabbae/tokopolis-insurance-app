@@ -77,6 +77,13 @@ module.exports = (sequelize, Sequelize) => {
 			onDelete: 'CASCADE'
 		})
 
+		Vehicle.hasMany(models.Transaction, {
+			as: 'transactions',
+			sourceKey: 'id',
+			foreignKey: 'vehicle_id',
+			onDelete: 'CASCADE'
+		})
+
 		Vehicle.belongsToMany(models.Account, { foreignKey: 'vehicle_id',
 			through: 'account_vehicles', timestamps: false })
 	}

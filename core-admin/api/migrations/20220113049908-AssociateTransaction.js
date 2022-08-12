@@ -3,10 +3,28 @@
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return Promise.all([
-			queryInterface.changeColumn('transactions', 'account_id', {
+			queryInterface.changeColumn('transactions', 'client_id', {
 				type: Sequelize.INTEGER,
 				references: {
 					model: 'accounts',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
+			}),
+			queryInterface.changeColumn('transactions', 'agent_id', {
+				type: Sequelize.INTEGER,
+				references: {
+					model: 'accounts',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
+			}),
+			queryInterface.changeColumn('transactions', 'vehicle_id', {
+				type: Sequelize.INTEGER,
+				references: {
+					model: 'vehicles',
 					key: 'id',
 				},
 				onUpdate: 'CASCADE',
@@ -21,15 +39,6 @@ module.exports = {
 				onUpdate: 'CASCADE',
 				onDelete: 'CASCADE',
 			}),
-			queryInterface.changeColumn('transactions', 'account_vehicle_id', {
-				type: Sequelize.INTEGER,
-				references: {
-					model: 'account_vehicles',
-					key: 'id',
-				},
-				onUpdate: 'CASCADE',
-				onDelete: 'CASCADE',
-			})
 		])
 	},
 
@@ -37,16 +46,20 @@ module.exports = {
 		return Promise.all([
 			queryInterface.removeColumn(
 				'transactions',
-				'account_id'
+				'client_id'
+			),
+			queryInterface.removeColumn(
+				'transactions',
+				'agent_id'
+			),
+			queryInterface.removeColumn(
+				'transactions',
+				'vehicle_id'
 			),
 			queryInterface.removeColumn(
 				'transactions',
 				'product_id'
 			),
-			queryInterface.removeColumn(
-				'transactions',
-				'account_vehicle_id'
-			)
 		])
 	}
 }

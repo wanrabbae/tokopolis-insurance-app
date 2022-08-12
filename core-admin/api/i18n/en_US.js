@@ -58,7 +58,11 @@ const en_US_strings = {
 
             'transaction.id': 'Transaction ID',
             'transaction.status': 'Transaction Status',
+            'transaction.condition': 'Vehicle Condition',
+            'transaction.client': 'Client Data',
 
+            'transaction.bastk': 'BASTK File',
+            'transaction.identity': 'Identity Photo',
             'transaction.stnk': 'STNK Photo',
             'transaction.front': 'Front Side Photo',
             'transaction.back': 'Back Side Photo',

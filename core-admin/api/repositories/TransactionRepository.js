@@ -1,21 +1,16 @@
-const { Account, AccountVehicle, Product, Vehicle,
+const { Account, Product, Vehicle,
     Transaction } = require('../models')
 
 export default class TransactionRepository {
     constructor() {}
 
-    async getAll(account_id) {
+    async getAll(client_id) {
         return await Transaction.findAll({
             attributes: ['id', 'start_date', 'status'],
             where: {
-                account_id: account_id,
+                client_id: client_id,
             },
             include: [
-                {
-                    attributes: ['id'],
-                    model: AccountVehicle,
-                    include: { attributes: ['sub_model'], model: Vehicle }
-                },
                 {
                     attributes: ['name'],
                     model: Product,
@@ -25,14 +20,28 @@ export default class TransactionRepository {
         })
     }
 
-    async getTransaction(account_id, id) {
+    async getTransaction(client_id, id) {
         return await Transaction.findOne({
             where: {
                 id: id,
-                account_id: account_id,
+                client_id: client_id,
             },
             include: [
-                { model: Product, as: 'product' }
+                { model: Vehicle, as: 'vehicle' },
+                { model: Product, as: 'product' },
+            ]
+        })
+    }
+
+    async getAgentTransaction(agent_id, id) {
+        return await Transaction.findOne({
+            where: {
+                id: id,
+                agent_id: agent_id,
+            },
+            include: [
+                { model: Vehicle, as: 'vehicle' },
+                { model: Product, as: 'product' },
             ]
         })
     }
@@ -46,11 +55,11 @@ export default class TransactionRepository {
         })
     }
 
-    async getTransactionByAccountId(account_id) {
+    async getTransactionByAccountId(client_id) {
         return await Transaction.findAll({
-            attributes: ['id', 'account_id', 'product_id',
+            attributes: ['id', 'client_id', 'product_id',
                 'start_date', 'status'],
-            where: { account_id: account_id },
+            where: { client_id: client_id },
             include: [
                 {
                     attributes: ['fullname'],
@@ -70,11 +79,11 @@ export default class TransactionRepository {
         return await Transaction.create(payload)
     }
 
-    async getPaymentData(account_id, transaction_id) {
+    async getPaymentData(client_id, transaction_id) {
         return await Transaction.findOne({
             where: {
                 id: transaction_id,
-                account_id: account_id
+                client_id: client_id
             },
             attributes: ['total', 'pg_data', 'status']
         })

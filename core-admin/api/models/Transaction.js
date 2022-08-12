@@ -14,11 +14,7 @@ module.exports = (sequelize, Sequelize) => {
                 return prefix + (combined + this.id).slice(combined.length * -1)
             }
         },
-        account_id: {
-            type: Sequelize.INTEGER,
-            primaryKey: true
-        },
-        account_vehicle_id: {
+        client_id: {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
@@ -26,13 +22,27 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
+        vehicle_id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+        },
         product_id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
         },
+        client_data: {
+            type: Sequelize.JSON,
+        },
         start_date: {
             type: Sequelize.DATEONLY,
             allowNull: false,
+        },
+        is_new_condition: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+        },
+        vehicle_data: {
+            type: Sequelize.JSON,
         },
         documents: {
             type: Sequelize.JSON,
@@ -41,13 +51,19 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        discount_format: {
+            type: Sequelize.ENUM('amount', 'percentage'),
+            defaultValue: 'amount'
+        },
+        discount_total: {
+            type: Sequelize.INTEGER,
+        },
         loading_rate: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
         expansions: {
             type: Sequelize.JSON,
-            allowNull: true,
         },
         pg_transaction_id: {
             type: Sequelize.STRING,
@@ -78,9 +94,9 @@ module.exports = (sequelize, Sequelize) => {
 	})
 
 	Transaction.associate = function(models) {
-        Transaction.belongsTo(models.Account, { foreignKey: 'account_id' })
-        Transaction.belongsTo(models.AccountVehicle, { foreignKey: 'account_vehicle_id' })
-        Transaction.belongsTo(models.Account, { foreignKey: 'agent_id' })
+        Transaction.belongsTo(models.Account, { foreignKey: 'client_id', as: 'client_transactions' })
+        Transaction.belongsTo(models.Account, { foreignKey: 'agent_id', as: 'agent_transactions' })
+        Transaction.belongsTo(models.Vehicle, { foreignKey: 'vehicle_id' })
         Transaction.belongsTo(models.Product, { foreignKey: 'product_id' })
 	}
 

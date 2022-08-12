@@ -8,20 +8,24 @@ export default class TransactionService {
         this.repository = new TransactionRepository()
     }
 
-    getAll(account_id) {
-        return this.repository.getAll(account_id)
+    getAll(client_id) {
+        return this.repository.getAll(client_id)
     }
 
-    getTransaction(account_id, id) {
-        return this.repository.getTransaction(account_id, id)
+    getTransaction(client_id, id) {
+        return this.repository.getTransaction(client_id, id)
+    }
+
+    getAgentTransaction(agent_id, id) {
+        return this.repository.getAgentTransaction(agent_id, id)
     }
 
     getTransactionByPaymentId(pg_transaction_id) {
         return this.repository.getTransactionByPaymentId(pg_transaction_id)
     }
 
-    getTransactionByAccountId(account_id) {
-        return this.repository.getTransactionByAccountId(account_id)
+    getTransactionByAccountId(client_id) {
+        return this.repository.getTransactionByAccountId(client_id)
     }
 
     createOffer(payload) {
@@ -41,8 +45,8 @@ export default class TransactionService {
         return this.repository.createTransaction(payload)
     }
 
-    getPaymentData(account_id, transaction_id) {
-        return this.repository.getPaymentData(account_id, transaction_id)
+    getPaymentData(client_id, transaction_id) {
+        return this.repository.getPaymentData(client_id, transaction_id)
     }
 
     setPaymentData(id, payload) {

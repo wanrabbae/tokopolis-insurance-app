@@ -1,7 +1,6 @@
 const moment = require('moment')
 
 import AccountService from '../services/AccountService'
-import VehicleService from '../services/VehicleService'
 import TransactionService from '../services/TransactionService'
 import PaymentService from '../services/PaymentService'
 import PdfService from '../services/PdfService'
@@ -12,7 +11,6 @@ const { getHost, getMoment, moneyFormat,
 
 const service = new TransactionService()
 const accountService = new AccountService()
-const vehicleService = new VehicleService()
 const paymentService = new PaymentService()
 const pdfService = new PdfService()
 
@@ -81,11 +79,22 @@ exports.transaction = async (req, res) => {
 exports.postOffer = async (req, res) => {
     const account = await accountService.getAccount(req.account._id)
 
+    const vehicle = {
+        year: req.session.vehicle.year,
+        plate: req.session.vehicle.plate,
+        price: req.session.vehicle.price,
+    }
+
     const transaction = await service.createOffer({
         agent_id: account.id,
+        vehicle_id: req.session.vehicle.id,
         product_id: req.body.product_id,
+        is_new_condition: true,
+        vehicle_data: vehicle,
         start_date: req.session.product.start_date,
         price: req.session.product.price,
+        discount_format: req.body.discount_format,
+        discount_total: req.body.discount_total || null,
         loading_rate: req.session.product.loading_rate,
         expansions: req.session.product.expansion,
         total: req.session.product.price +
@@ -106,19 +115,28 @@ exports.postTransaction = async (req, res) => {
     if (req.account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
     const account = await accountService.getAccount(req.account._id)
+    const condition = req.body.condition == "new" ? true : false
 
-    req.session.vehicle.plate_detail = req.body.plate_detail
-    req.session.vehicle.vehicle_color = req.body.vehicle_color
-    req.session.vehicle.machine_number = req.body.machine_number
-    req.session.vehicle.skeleton_number = req.body.skeleton_number
+    const validateFile = condition ? validation.fileNew(req) : validation.fileOld(req)
+    if (validateFile.error) return res.errorValidation(validateFile.details)
 
-    const vehicleId = await vehicleService.saveAccountVehicle(account.id,
-        req.session.vehicle.id, req.session.vehicle)
+    const vehicle = {
+        year: req.session.vehicle.year,
+        plate: req.session.vehicle.plate,
+        plate_detail: req.body.plate_detail,
+        color: req.body.vehicle_color,
+        machine_number: req.body.machine_number,
+        skeleton_number: req.body.skeleton_number,
+        price: req.session.vehicle.price,
+    }
 
     const transaction = await service.createTransaction({
-        account_id: account.id,
+        agent_id: account.id,
+        vehicle_id: req.session.vehicle.id,
         product_id: req.query.product_id,
-        account_vehicle_id: vehicleId,
+        client_data: req.body.client,
+        is_new_condition: condition,
+        vehicle_data: vehicle,
         start_date: req.session.product.start_date,
         price: req.session.product.price,
         loading_rate: req.session.product.loading_rate,
@@ -136,25 +154,28 @@ exports.review = async (req, res) => {
     const validate = validation.review(req)
     if (validate.error) return res.errorValidation(validate.details)
 
-    const transaction = await service.getTransaction(account.id, req.query.transaction_id)
+    const account = await accountService.getAccountData(req.account._id)
+    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+
+    const transaction = await service.getAgentTransaction(account.id, req.query.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
-    const vehicle = await vehicleService.getAccountVehicle(transaction.account_vehicle_id)
-    if (vehicle == null) return res.errorBadRequest(req.polyglot.t('error.vehicle.data'))
-
     return res.jsonData({
+        client: {
+            fullname: transaction.client_data.fullname
+        },
         vehicle: {
-            brand: vehicle[0].brand,
-            model: vehicle[0].model,
-            sub_model: vehicle[0].sub_model,
-            year: vehicle[0].year,
-            price: vehicle[0].price,
-            plate: vehicle[0].plate,
-            plate_detail: vehicle[0].plate_detail,
+            brand: transaction.vehicle.brand,
+            model: transaction.vehicle.model,
+            sub_model: transaction.vehicle.sub_model,
+            year: transaction.vehicle_data.year,
+            price: transaction.vehicle_data.price,
+            plate: transaction.vehicle_data.plate,
+            plate_detail: transaction.vehicle_data.plate_detail,
             protection: transaction.product.type,
-            vehicle_color: vehicle[0].vehicle_color,
-            machine_number: vehicle[0].machine_number,
-            skeleton_number: vehicle[0].skeleton_number,
+            vehicle_color: transaction.vehicle_data.vehicle_color,
+            machine_number: transaction.vehicle_data.machine_number,
+            skeleton_number: transaction.vehicle_data.skeleton_number,
         },
         transaction: {
             id: transaction.id,

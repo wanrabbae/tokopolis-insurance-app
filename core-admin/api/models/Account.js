@@ -87,9 +87,16 @@ module.exports = (sequelize, Sequelize) => {
 		})
 
 		Account.hasMany(models.Transaction, {
-			as: 'transactions',
+			as: 'client_transactions',
 			sourceKey: 'id',
-			foreignKey: 'account_id',
+			foreignKey: 'client_id',
+			onDelete: 'CASCADE'
+		})
+
+		Account.hasMany(models.Transaction, {
+			as: 'agent_transactions',
+			sourceKey: 'id',
+			foreignKey: 'agent_id',
 			onDelete: 'CASCADE'
 		})
 
