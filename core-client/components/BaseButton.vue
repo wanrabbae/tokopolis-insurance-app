@@ -77,14 +77,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  /deep/ i {
-    padding: 0 3px;
-  }
-}
-</style>

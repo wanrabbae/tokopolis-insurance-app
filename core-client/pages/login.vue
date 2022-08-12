@@ -56,13 +56,12 @@
 <script>
 import cookie from 'js-cookie'
 import atob from 'atob'
-import {  ValidationObserver } from 'vee-validate'
 import BaseInput from '../components/Inputs/BaseInput'
 
 export default {
     components: { 
         BaseInput,
-        'validation-observer': ValidationObserver },
+    },
     layout: 'auth',
     middleware:'guest',
     data() {

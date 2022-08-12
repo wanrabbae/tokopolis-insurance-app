@@ -68,12 +68,8 @@
   </b-form-group>
 </template>
 <script>
-import {  ValidationProvider } from 'vee-validate';
   export default {
     name: 'BaseInput',
-    components: {
-      'validation-provider': ValidationProvider
-    },
     inheritAttrs: false,
     props: {
       required: {

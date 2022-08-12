@@ -28,7 +28,7 @@ export default {
   */
   css: [
     '~assets/scss/piqo.scss',
-    'swiper/css//swiper.min.css',
+    'swiper/css/swiper.min.css',
   ],
 
   router: {
@@ -39,14 +39,13 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    `~/plugins/dashboard-plugin.js`,
     '~/plugins/mixins-global-function.js',
+    '~/plugins/bootstrap-vue.js',
+    '~/plugins/vee-validate.js',
+    '~/plugins/persistedState.client.js',
     { mode: 'client', src: '~/plugins/axios' },
     { mode: 'client', src: '~/plugins/vue-awesome-swiper.js' },
     { mode: 'client', src:'~/plugins/avatar.js', ssr: false },
-    '~/plugins/vee-validate.js',
-    { mode: 'client', src: '~/plugins/vue-moment.js' },
-    { src: '~/plugins/persistedState.client.js' }
   ],
 
   /*
@@ -75,7 +74,6 @@ export default {
     'nuxt-session',
     'bootstrap-vue/nuxt',
     'nuxt-fontawesome',
-    '@nuxtjs/style-resources',
     '@nuxt/content',
     '@nuxtjs/dayjs',
   ],

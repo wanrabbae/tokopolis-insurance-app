@@ -62,12 +62,8 @@
   </b-form-group>
 </template>
 <script>
-import {  ValidationProvider } from 'vee-validate';
   export default {
-    name: 'BaseInput',
-    components: {
-      'validation-provider': ValidationProvider
-    },
+    name: 'BaseInputPrice',
     inheritAttrs: false,
     props: {
       required: {
