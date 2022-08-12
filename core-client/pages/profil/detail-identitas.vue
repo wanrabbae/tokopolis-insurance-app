@@ -23,7 +23,7 @@
 
                     <b-form-group class="col-12 col-lg-6 mb-3">
                         
-                        <ValidationProvider 
+                        <validation-provider 
                             v-slot="{ errors, invalid, validated }"
                             name="Nomor Identitas"
                             :rules="{ required: true, regex: identityNumberRegex}"
@@ -45,7 +45,7 @@
                                 {{ errors[0] }}
                             </div>
 
-                        </ValidationProvider>
+                        </validation-provider>
                     
                     </b-form-group>
                 
@@ -148,7 +148,6 @@
 <script>
 // import cookie from 'js-cookie'
 import myUpload from 'vue-image-crop-upload/upload-2.vue'
-import {  ValidationProvider } from 'vee-validate'
 import BaseInput from '../../components/Inputs/BaseInput'
 import BaseSelect from '../../components/Inputs/BaseSelect'
 
@@ -156,8 +155,7 @@ export default {
     components: {
         BaseInput,
         BaseSelect,
-        'my-upload': myUpload,
-        ValidationProvider
+        'my-upload': myUpload
     },
     layout: 'userarea',
     data() {

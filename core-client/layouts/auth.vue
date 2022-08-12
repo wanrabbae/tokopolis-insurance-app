@@ -1,6 +1,6 @@
 <template>
 
-    <div class="auth-container d-flex flex-column justify-content-center">
+    <div class="auth-container d-flex flex-column justify-content-center py-5">
         
         <a href="/" class="mx-auto mb-4">
 

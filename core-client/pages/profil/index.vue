@@ -40,7 +40,7 @@
                             required
                         />
 
-                        <ValidationObserver v-slot="{ errors }">
+                        <validation-observer v-slot="{ errors }">
                             
                             <b-form-group>
                                 
@@ -48,7 +48,7 @@
                                     
                                 <b-input-group>
                                     
-                                    <ValidationProvider 
+                                    <validation-provider 
                                         v-slot="{ invalid, validated }"
                                         name="Tanggal Lahir" 
                                         class="col-3 p-0"
@@ -66,9 +66,9 @@
                                             style="border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important"
                                             @input="onBirthdayAndMonthInput"
                                         >
-                                    </ValidationProvider>
+                                    </validation-provider>
 
-                                    <ValidationProvider 
+                                    <validation-provider 
                                         v-slot="{ invalid, validated }"
                                         name="Bulan Lahir" 
                                         class="col-6 p-0"
@@ -82,9 +82,9 @@
                                             :class="{'is-invalid': invalid && validated}"
                                             @input="onBirthdayAndMonthInput"
                                         />
-                                    </ValidationProvider>
+                                    </validation-provider>
 
-                                    <ValidationProvider
+                                    <validation-provider
                                         v-slot="{ invalid, validated }"
                                         name="Tahun Lahir" 
                                         class="col-3 p-0"
@@ -103,7 +103,7 @@
                                             style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important"
                                             @input="onBirthyearInput"
                                         >
-                                    </ValidationProvider>
+                                    </validation-provider>
 
                                 </b-input-group>  
 
@@ -127,7 +127,7 @@
 
                             </b-form-group>
 
-                        </ValidationObserver>
+                        </validation-observer>
 
                         <BaseInput
                             v-model="phone"
@@ -216,7 +216,6 @@
 <script>
 import cookie from 'js-cookie'
 import myUpload from 'vue-image-crop-upload/upload-2.vue'
-import {  ValidationProvider, ValidationObserver } from 'vee-validate'
 import Loading from '../../components/Loading'
 import BaseInput from '../../components/Inputs/BaseInput'
 import BaseSelect from '../../components/Inputs/BaseSelect'
@@ -229,8 +228,6 @@ export default {
         BaseSelect,
         BaseTextarea,
         Loading,
-        ValidationProvider,
-        ValidationObserver,
         'my-upload': myUpload
     },
     layout: 'userarea',

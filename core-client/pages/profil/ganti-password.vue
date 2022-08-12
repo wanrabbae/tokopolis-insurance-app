@@ -20,7 +20,7 @@
 
                 <b-form-group>
                     
-                    <ValidationProvider 
+                    <validation-provider 
                         v-slot="{ errors, invalid, validated }"
                         vid="Password Baru"
                         name="Password Baru"
@@ -41,13 +41,13 @@
                             {{ errors[0] }}
                         </div>
                     
-                    </ValidationProvider>
+                    </validation-provider>
                 
                 </b-form-group>
 
                 <b-form-group>
                     
-                    <ValidationProvider 
+                    <validation-provider 
                         v-slot="{ errors, invalid, validated }"
                         name="Konfirmasi Password Baru"
                         :rules="{ required: true, confirmed: 'Password Baru' }"
@@ -67,7 +67,7 @@
                             {{ errors[0] }}
                         </div>
 
-                    </ValidationProvider>
+                    </validation-provider>
                 
                 </b-form-group>
 
@@ -82,13 +82,11 @@
 </template>
 
 <script>
-import {  ValidationProvider } from 'vee-validate'
 import BaseInput from '../../components/Inputs/BaseInput'
 
 export default {
     components: { 
-        BaseInput,
-        ValidationProvider
+        BaseInput
     },
     layout: 'userarea',
     data() {

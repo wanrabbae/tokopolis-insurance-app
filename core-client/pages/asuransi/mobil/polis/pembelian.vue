@@ -12,7 +12,7 @@
 
                 </div> <!-- card-header ends-->
 
-                <ValidationObserver 
+                <validation-observer 
                     v-slot="{ invalid }"
                     tag="div"
                     class="card-body"
@@ -187,7 +187,7 @@
 
                     <BaseButton :disabled="invalid || invalidDocumentsValidation" block @click="postTranscation">Lanjutkan</BaseButton>
 
-                </ValidationObserver> <!-- card-body ends -->
+                </validation-observer> <!-- card-body ends -->
 
             </div> <!-- card ends -->
 
@@ -199,15 +199,13 @@
 </template>
 
 <script>
-import { ValidationObserver } from 'vee-validate'
 import BaseInput from '../../../../components/Inputs/BaseInput'
 import BaseTextarea from '../../../../components/Inputs/BaseTextarea'
 
 export default {
     components: {
         BaseInput,
-        BaseTextarea,
-        ValidationObserver
+        BaseTextarea
     },
     data () {
         return {

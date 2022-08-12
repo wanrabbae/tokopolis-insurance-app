@@ -14,7 +14,7 @@
         
         </b-alert>
         
-        <ValidationObserver v-slot="{ invalid }">
+        <validation-observer v-slot="{ invalid }">
             
             <b-form role="form" method="post" @submit.prevent="doLogin">
 
@@ -47,7 +47,7 @@
 
             </b-form>
 
-        </ValidationObserver>
+        </validation-observer>
 
     </div>
     
@@ -56,13 +56,11 @@
 <script>
 import cookie from 'js-cookie'
 import atob from 'atob'
-import { ValidationObserver } from 'vee-validate'
 import BaseInput from '../components/Inputs/BaseInput'
 
 export default {
     components: { 
-        BaseInput,
-        ValidationObserver
+        BaseInput
     },
     layout: 'auth',
     middleware:'guest',
