@@ -14,59 +14,75 @@
         
         </b-alert>
 
-        <b-form role="form" method="post" @submit.prevent="register">
+        <validation-observer v-slot="{ invalid }">
 
-            <BaseInput
-                v-model="fullname"
-                name="Nama Lengkap"
-                placeholder="Nama Lengkap"
-                :rules="{required: true, fullname: true}"
-            />
+            <b-form role="form" method="post" @submit.prevent="register">
 
-            <BaseInput
-                v-model="email"
-                name="Email"
-                placeholder="Email"
-                :rules="{required: true, email: true}"
-            />
+                <BaseInput
+                    v-model="fullname"
+                    name="Nama Lengkap"
+                    placeholder="Nama Lengkap"
+                    rules="required"
+                />
 
-            <BaseInput
-                v-model="phone"
-                type="number"
-                name="Nomor Telepon"
-                placeholder="Nomor Telepon"
-                :rules="{required: true, phone: true}"
-            />
+                <BaseInput
+                    v-model="email"
+                    name="Email"
+                    placeholder="Email"
+                    rules="required|email"
+                />
 
-            <BaseInput
-                v-model="password"
-                type="password"
-                name="Kata Sandi"
-                placeholder="Kata Sandi"
-                :rules="{required: true, min: 8}"
-            />
+                <BaseInput
+                    v-model="phone"
+                    type="number"
+                    name="Nomor Telepon"
+                    placeholder="Nomor Telepon"
+                    rules="required"
+                />
 
-            <BaseInput
-                v-model="confirm_password"
-                type="password"
-                name="Konfirmasi Kata Sandi"
-                placeholder="Konfirmasi Kata Sandi"
-                :rules="{required: true, min: 8}"
-            />
+                <BaseInput
+                    v-model="password"
+                    type="password"
+                    name="Kata Sandi"
+                    placeholder="Kata Sandi"
+                    rules="required|min:8"
+                />
 
-            <b-form-checkbox v-model="eula" class="mb-3">
-                Saya setuju dengan <a href='#'>Kebijakan Pengguna</a>
-            </b-form-checkbox>
+                <BaseInput
+                    v-model="confirm_password"
+                    type="password"
+                    name="Konfirmasi Kata Sandi"
+                    placeholder="Konfirmasi Kata Sandi"
+                    rules="required|confirmed:Kata Sandi"
+                />
 
-            <BaseButton native-type="submit" class="mb-3" :disabled='!eula' block>
-                Daftar
-            </BaseButton>
+                 <ValidationProvider
+                    v-slot="{ valid }"
+                    tag="div"
+                    :rules="{ required: { allowFalse: false } }"
+                    name="Kebijakan Pengguna"
+                    class="custom-control custom-checkbox mb-3"
+                >
 
-            <div class="text-center">
-                Sudah Memiliki Akun? <a href="/login">Masuk</a>   
-            </div>
+                    <input id="eula" v-model="eula" type="checkbox" :valid="valid" class="custom-control-input">
+                    
+                    <label for="eula" class="custom-control-label">
+                        Saya setuju dengan <a href='#'>Kebijakan Pengguna</a>  {{ v }}
+                    </label>
 
-        </b-form>
+                </ValidationProvider>
+
+                <BaseButton native-type="submit" class="mb-3" :disabled='invalid' block>
+                    Daftar
+                </BaseButton>
+
+                <div class="text-center">
+                    Sudah Memiliki Akun? <a href="/login">Masuk</a>   
+                </div>
+
+            </b-form>
+
+        </validation-observer>
 
     </div>
 
@@ -78,7 +94,10 @@ import BaseInput from '../components/Inputs/BaseInput'
 import BaseButton from '../components/BaseButton'
 
 export default {
-    components: { BaseInput, BaseButton },
+    components: { 
+        BaseInput, 
+        BaseButton
+    },
     layout: 'auth',
     middleware:'guest',
     data () {
@@ -104,11 +123,6 @@ export default {
                 }
             ]
         };
-    },
-    computed : {
-        isDisabled(){
-            return !this.eula;
-        }
     },
     methods: {
         async register() {

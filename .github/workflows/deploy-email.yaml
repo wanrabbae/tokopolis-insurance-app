@@ -1,0 +1,44 @@
+name: Deploy Email Service
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    paths:
+      - 'email-service/**'
+
+env:
+  folderPath: /var/www/html/tokopolis
+  folderName: email-service
+  pmName: tokopolis-email
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Copy Repository Contents via SCP
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "${{ env.folderName }}/*"
+        target: "${{ env.folderPath }}"
+
+    - name: Executing Remote Command
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}/${{ env.folderName }}
+          go build main.go
+          pm2 delete ${{ env.pmName }}
+          pm2 start ./main --name "${{ env.pmName }}"

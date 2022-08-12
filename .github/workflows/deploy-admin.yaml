@@ -1,0 +1,45 @@
+name: Deploy Core Admin
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    paths:
+      - 'core-admin/**'
+
+env:
+  folderPath: /var/www/html/tokopolis
+  folderName: core-admin
+  pmName: tokopolis-admin
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Copy Repository Contents via SCP
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "${{ env.folderName }}/*"
+        target: "${{ env.folderPath }}"
+
+    - name: Executing Remote Command
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}/${{ env.folderName }}
+          npm run packaging
+          npm run build
+          pm2 delete ${{ env.pmName }}
+          pm2 start npm --name "${{ env.pmName }}" -- start

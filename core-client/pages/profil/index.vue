@@ -40,7 +40,7 @@
                             required
                         />
 
-                        <ValidationObserver v-slot="{ errors }">
+                        <validation-observer v-slot="{ errors }">
                             
                             <b-form-group>
                                 
@@ -127,7 +127,7 @@
 
                             </b-form-group>
 
-                        </ValidationObserver>
+                        </validation-observer>
 
                         <BaseInput
                             v-model="phone"

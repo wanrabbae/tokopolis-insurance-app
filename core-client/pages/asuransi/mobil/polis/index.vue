@@ -8,7 +8,7 @@
 
                 <h2>Asuransi Mobil</h2>
 
-                <div class="text-primary">Temukan asuransi yang cocok denganmu</div>
+                <div class="text-dark-blue">Temukan asuransi yang cocok denganmu</div>
 
             </header>
 
@@ -95,9 +95,9 @@
                                         <BaseButton
                                             type="link"
                                             classes="text-left p-0"
-                                            @click="isLoggedIn ? detailProduct(product.id) : openGuestSignInModal(product.id)"
+                                            @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
                                         >
-                                            <span class="fs-lg-4 fw-bold text-primary">{{ product.name }}</span>
+                                            <span class="fs-lg-4 fw-bold text-dark">{{ product.name }}</span>
                                         </BaseButton>
 
                                         <span class="text-dark fw-bold">
@@ -129,7 +129,7 @@
                                             <!-- <BaseButton
                                                 type="link"
                                                 classes="text-primary fw-bold p-0"
-                                                @click="isLoggedIn ? detailProduct(product.id) : openGuestSignInModal(product.id)"
+                                                @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
                                             >
                                                 Selengkapnya
                                             </BaseButton> -->
@@ -146,14 +146,14 @@
                                             @change="() => {
                                                 if(!isLoggedIn) {
                                                     productToCompare = [];
-                                                    openGuestSignInModal(product.id);
+                                                    openLoginModal(product.id);
                                                 }
                                             }"
                                         >
                                             Bandingkan
                                         </b-form-checkbox>
 
-                                        <BaseButton  @click="isLoggedIn ? detailProduct(product.id) : openGuestSignInModal(product.id)">
+                                        <BaseButton  @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
                                             Pilih Produk
                                         </BaseButton>
 
@@ -271,9 +271,8 @@
 
         </b-modal>
 
-        <GuestSignInModal
+        <LoginModal
             id="modal-guest-sign-in"
-            @submit="onSubmitGuestSignInModal"
         />
 
         <Loading :show="loading"/>
@@ -285,14 +284,14 @@
 <script>
 import HtmlContent from '../../../../components/HtmlContent'
 import Loading from '../../../../components/Loading'
-import GuestSignInModal from '../../../../components/GuestSignInModal'
+import LoginModal from '../../../../components/LoginModal'
 import CloseIcon from '../../../../assets/svg/close.svg'
 
 export default {
     components: {
         Loading,
         HtmlContent,
-        GuestSignInModal,
+        LoginModal,
         CloseIcon
     },
     props: {
@@ -534,25 +533,25 @@ export default {
                 this.$router.push({name: "asuransi-mobil"})
             })
         },
-        openGuestSignInModal(productIndex) {
+        openLoginModal(productIndex) {
             this.productIndex = productIndex
             this.$bvModal.show('modal-guest-sign-in')
         },
-        async onSubmitGuestSignInModal(event, formData) {
-            // on submit guest sign in modal method here
-            console.log(formData);
+        // async onSubmitLoginModal(event, formData) {
+        //     // on submit guest sign in modal method here
+        //     console.log(formData);
 
-            await this.$axios.$post('api/guest', {
-                fullname: formData.fullName,
-                email: formData.email,
-                phone: formData.phoneNumber,
-            }).catch (error => {
-                console.log(error)
-            })
+        //     await this.$axios.$post('api/guest', {
+        //         fullname: formData.fullName,
+        //         email: formData.email,
+        //         phone: formData.phoneNumber,
+        //     }).catch (error => {
+        //         console.log(error)
+        //     })
 
-            this.$bvModal.hide('modal-guest-sign-in')
-            this.detailPayment(this.productIndex)
-        }
+        //     this.$bvModal.hide('modal-guest-sign-in')
+        //     this.detailPayment(this.productIndex)
+        // }
     }
 }
 </script>
