@@ -193,8 +193,8 @@ exports.getPaymentFee = async (req, res) => {
     if (validate.error) return res.errorValidation(validate.details)
 
     const paymentRequest = await paymentService.getFee({
-        platform: req.body.platform,
-        total: req.body.total,
+        platform: req.query.platform,
+        total: req.query.total,
     })
 
     return res.jsonData(paymentRequest.data)
