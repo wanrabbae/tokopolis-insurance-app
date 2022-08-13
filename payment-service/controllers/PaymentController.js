@@ -9,7 +9,7 @@ let midtransService = new MidtransService()
 let percentToDecimal = (number) => number / parseFloat(100)
 let calculateFeePercentage = (price, percentage) => (price / parseFloat(1 - percentage) - price) / parseFloat(price) * 1.11 // Add VAT 11%
 
-let getPaymentFee = (platform, rawPrice) => {
+let calculatePaymentFee = (platform, rawPrice) => {
     switch (platform) {
         case 'bca':
         case 'bni':
@@ -33,7 +33,19 @@ let getPaymentFee = (platform, rawPrice) => {
 
         case 'gopay':
             return Math.ceil(rawPrice * calculateFeePercentage(rawPrice, percentToDecimal(2)))
+
+        default:
+            return null
     }
+}
+
+exports.getPaymentFee = async (req, res) => {
+    const platform = req.query.platform
+    const total = req.query.total
+
+    return res.status(200).send({
+        data: calculatePaymentFee(platform, total)
+    })
 }
 
 exports.createPayment = async (req, res) => {
@@ -44,7 +56,7 @@ exports.createPayment = async (req, res) => {
     }
 
     const total = parseInt(req.body.total)
-    const paymentFee = getPaymentFee(req.body.platform, total)
+    const paymentFee = calculatePaymentFee(req.body.platform, total)
 
     const requestPayment = async (platform) => {
         switch (platform) {

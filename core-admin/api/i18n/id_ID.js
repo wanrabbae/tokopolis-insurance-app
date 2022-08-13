@@ -58,7 +58,11 @@ const id_ID_strings = {
 
             'transaction.id': 'ID Transaksi',
             'transaction.status': 'Status Transaksi',
+            'transaction.condition': 'Kondisi Kendaraan',
+            'transaction.client': 'Data Pemegang Polis',
 
+            'transaction.bastk': 'File BASTK',
+            'transaction.identity': 'Foto Identitas',
             'transaction.stnk': 'Foto STNK',
             'transaction.front': 'Foto Bagian Depan',
             'transaction.back': 'Foto Bagian Belakang',

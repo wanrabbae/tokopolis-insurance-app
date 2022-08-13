@@ -1,7 +1,6 @@
 const moment = require('moment')
 
 import AccountService from '../services/AccountService'
-import VehicleService from '../services/VehicleService'
 import TransactionService from '../services/TransactionService'
 import PaymentService from '../services/PaymentService'
 import PdfService from '../services/PdfService'
@@ -12,7 +11,6 @@ const { getHost, getMoment, moneyFormat,
 
 const service = new TransactionService()
 const accountService = new AccountService()
-const vehicleService = new VehicleService()
 const paymentService = new PaymentService()
 const pdfService = new PdfService()
 
@@ -70,27 +68,10 @@ exports.getAll = async (req, res) => {
 
 exports.transaction = async (req, res) => {
     if (req.session.product?.price == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
-
-    var account = {}
-
-    if (req.account != null) {
-        const data = await accountService.getAccountData(req.account._id)
-
-        account = {
-            fullname: data.fullname,
-            email: data.email,
-            phone: data.profile?.phone,
-        }
-    }
-    else if (req.session.account != null) {
-        account = req.session.account
-    }
-    else {
-        return res.errorBadRequest(req.polyglot.t('error.auth'))
-    }
+    if (req.account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
     return res.jsonData({
-        account: account,
+        plate: req.session.vehicle?.plate,
         price: req.session.product?.price
     })
 }
@@ -98,11 +79,22 @@ exports.transaction = async (req, res) => {
 exports.postOffer = async (req, res) => {
     const account = await accountService.getAccount(req.account._id)
 
+    const vehicle = {
+        year: req.session.vehicle.year,
+        plate: req.session.vehicle.plate,
+        price: req.session.vehicle.price,
+    }
+
     const transaction = await service.createOffer({
         agent_id: account.id,
+        vehicle_id: req.session.vehicle.id,
         product_id: req.body.product_id,
+        is_new_condition: true,
+        vehicle_data: vehicle,
         start_date: req.session.product.start_date,
         price: req.session.product.price,
+        discount_format: req.body.discount_format,
+        discount_total: req.body.discount_total || null,
         loading_rate: req.session.product.loading_rate,
         expansions: req.session.product.expansion,
         total: req.session.product.price +
@@ -120,48 +112,31 @@ exports.postTransaction = async (req, res) => {
 
     if (req.session.vehicle == null) return res.errorBadRequest(req.polyglot.t('error.vehicle.data'))
     if (req.query.product_id == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
+    if (req.account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    var account = null
+    const account = await accountService.getAccount(req.account._id)
+    const condition = req.body.condition == "new" ? true : false
 
-    if (req.account != null) {
-        account = await accountService.getAccount(req.account._id)
+    const validateFile = condition ? validation.fileNew(req) : validation.fileOld(req)
+    if (validateFile.error) return res.errorValidation(validateFile.details)
+
+    const vehicle = {
+        year: req.session.vehicle.year,
+        plate: req.session.vehicle.plate,
+        plate_detail: req.body.plate_detail,
+        color: req.body.vehicle_color,
+        machine_number: req.body.machine_number,
+        skeleton_number: req.body.skeleton_number,
+        price: req.session.vehicle.price,
     }
-    else {
-        const validate = validation.account(req)
-        if (validate.error) return res.errorValidation(validate.details)
-
-        const body = () => {
-            if (req.session.account != null) {
-                return req.session.account
-            }
-
-            return req.body
-        }
-
-        account = await accountService.createAccount({
-            fullname: body().fullname,
-            email: body().email,
-            password: randomString(10),
-            phone: body().phone,
-        })
-
-        req.session.account = null
-    }
-
-    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
-
-    req.session.vehicle.plate_detail = req.body.plate_detail
-    req.session.vehicle.vehicle_color = req.body.vehicle_color
-    req.session.vehicle.machine_number = req.body.machine_number
-    req.session.vehicle.skeleton_number = req.body.skeleton_number
-
-    const vehicleId = await vehicleService.saveAccountVehicle(account.id,
-        req.session.vehicle.id, req.session.vehicle)
 
     const transaction = await service.createTransaction({
-        account_id: account.id,
+        agent_id: account.id,
+        vehicle_id: req.session.vehicle.id,
         product_id: req.query.product_id,
-        account_vehicle_id: vehicleId,
+        client_data: req.body.client,
+        is_new_condition: condition,
+        vehicle_data: vehicle,
         start_date: req.session.product.start_date,
         price: req.session.product.price,
         loading_rate: req.session.product.loading_rate,
@@ -182,30 +157,25 @@ exports.review = async (req, res) => {
     const account = await accountService.getAccountData(req.account._id)
     if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    const transaction = await service.getTransaction(account.id, req.query.transaction_id)
+    const transaction = await service.getAgentTransaction(account.id, req.query.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
-    const vehicle = await vehicleService.getAccountVehicle(transaction.account_vehicle_id)
-    if (vehicle == null) return res.errorBadRequest(req.polyglot.t('error.vehicle.data'))
-
     return res.jsonData({
-        account: {
-            fullname: account.fullname,
-            email: account.email,
-            phone: account.profile?.phone,
+        client: {
+            fullname: transaction.client_data.fullname
         },
         vehicle: {
-            brand: vehicle[0].brand,
-            model: vehicle[0].model,
-            sub_model: vehicle[0].sub_model,
-            year: vehicle[0].year,
-            price: vehicle[0].price,
-            plate: vehicle[0].plate,
-            plate_detail: vehicle[0].plate_detail,
+            brand: transaction.vehicle.brand,
+            model: transaction.vehicle.model,
+            sub_model: transaction.vehicle.sub_model,
+            year: transaction.vehicle_data.year,
+            price: transaction.vehicle_data.price,
+            plate: transaction.vehicle_data.plate,
+            plate_detail: transaction.vehicle_data.plate_detail,
             protection: transaction.product.type,
-            vehicle_color: vehicle[0].vehicle_color,
-            machine_number: vehicle[0].machine_number,
-            skeleton_number: vehicle[0].skeleton_number,
+            vehicle_color: transaction.vehicle_data.vehicle_color,
+            machine_number: transaction.vehicle_data.machine_number,
+            skeleton_number: transaction.vehicle_data.skeleton_number,
         },
         transaction: {
             id: transaction.id,
@@ -218,6 +188,15 @@ exports.review = async (req, res) => {
     })
 }
 
+exports.getPaymentFee = async (req, res) => {
+    const validate = validation.getPaymentFee(req)
+    if (validate.error) return res.errorValidation(validate.details)
+
+    const paymentRequest = await paymentService.getFee(payload)
+
+    return res.jsonData(paymentRequest.data)
+}
+
 exports.doPayment = async (req, res) => {
     const validate = validation.createPayment(req)
     if (validate.error) return res.errorValidation(validate.details)
@@ -225,67 +204,32 @@ exports.doPayment = async (req, res) => {
     const account = await accountService.getAccountData(req.account._id)
     if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    const transaction = await service.getTransaction(account.id, req.body.transaction_id)
+    const transaction = await service.getAgentTransaction(account.id, req.body.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
-    const customer = {
-        fullname: account.fullname,
-        firstname: account.firstname,
-        lastname: account.lastname,
-        email: account.email,
-        phone: phoneFormat(account.profile?.phone),
-    }
     const payload = {
-        // order_id: transaction.code,
-        order_id: randomString(6),
-        customer: customer,
-        platformName: req.body.platform,
-        amount: transaction.total,
+        order_id: randomString(20),
+        customer: {
+            fullname: transaction.client_data.fullname,
+            email: transaction.client_data.email || account.email,
+            phone: transaction.client_data.phone || '+6285123456789',
+        },
+        platform: req.body.platform,
+        total: transaction.total,
     }
 
-    const platformList = async () => {
-        if (['bca', 'bri', 'bni', 'mandiri', 'permata'].includes(req.body.platform))
-            return await paymentService.midtransBankRequest(payload)
-        else if (['ovo', 'dana', 'shopeepay', 'linkaja'].includes(req.body.platform))
-            return await paymentService.xenditEWalletRequest(payload)
-        else if (['alfamart', 'indomaret'].includes(req.body.platform))
-            return await paymentService.midtransRetailRequest(payload)
-        else if (['gopay', 'qris'].includes(req.body.platform)) {
-            return await paymentService.midtransEWalletRequest(payload)
-        }
-    }
+    const paymentRequest = await paymentService.createRequest(payload)
 
-    if (transaction.pg_data != null && transaction.status == 'waiting') {
-        // Cancel Midtrans Exists Payment
-        if (!['ovo', 'dana', 'shopeepay', 'linkaja'].includes(req.body.platform)) {
-            await paymentService.midtransCancel(payload.order_id)
-        }
-    }
+    if (paymentRequest.data) {
+        const data = Object.assign({}, paymentRequest.data)
 
-    const paymentRequest = await platformList()
+        delete data['transaction_id']
+        delete data['status']
 
-    if (paymentRequest.status) {
-        const paymentData = paymentRequest.data
-        const platformName = paymentService.getPlatformName(paymentData.name)
-        const paymentDue = getMoment().add(1, 'd')
-
-        const data = {
-            name: paymentData.name,
-            fee: 0,
-            due: paymentDue.format('YYYY-MM-DD HH:mm:ss'),
-            date: null
-        }
-
-        if (paymentData['virtual_number'] != null) {
-            data['virtual_number'] = paymentData.virtual_number
-        }
-
-        if (paymentRequest['links'] != null) {
-            data['links'] = paymentRequest.links
-        }
+        data['due'] = getMoment().add(1, 'd').format('YYYY-MM-DD HH:mm:ss')
 
         await service.setPaymentData(transaction.id, {
-            pg_transaction_id: paymentData.transaction_id,
+            pg_transaction_id: paymentRequest.data.transaction_id,
             pg_data: data,
             status: 'waiting'
         })
@@ -295,16 +239,25 @@ exports.doPayment = async (req, res) => {
             target: account.email,
             title: req.polyglot.t('mail.payment.created'),
             data: {
-                name: account.firstname,
-                platform: platformName,
-                virtual_number: paymentData.virtual_number,
-                total: moneyFormat(transaction.total),
-                date: paymentDue.format('D MMMM YYYY h:mm:ss')
+                name: transaction.client_data.fullname,
+                platform: data.name,
+                virtual_number: data.virtual_number,
+                total: moneyFormat(data.amount),
+                date: data.due
             }
         })
     }
 
-    return res.jsonData(paymentRequest)
+    return res.jsonData(paymentRequest.data)
+}
+
+exports.getPaymentDetail = async (req, res) => {
+    const validate = validation.getPaymentDetail(req)
+    if (validate.error) return res.errorValidation(validate.details)
+
+    const data = await service.getAgentPaymentData(req.account._id, req.query.transaction_id)
+
+    return res.jsonData(data)
 }
 
 exports.webhookMidtrans = async (req, res) => {
@@ -405,13 +358,4 @@ exports.webhookXendit = async (req, res) => {
     }
 
     return res.jsonSuccess(req.polyglot.t('success.webhook.xendit'))
-}
-
-exports.getPayment = async (req, res) => {
-    const validate = validation.getPayment(req)
-    if (validate.error) return res.errorValidation(validate.details)
-
-    const data = await service.getPaymentData(req.account._id, req.query.transaction_id)
-
-    return res.jsonData(data)
 }

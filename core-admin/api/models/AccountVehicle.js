@@ -44,12 +44,6 @@ module.exports = (sequelize, Sequelize) => {
 
 	AccountVehicle.associate = function(models) {
 		AccountVehicle.belongsTo(models.Vehicle, { foreignKey: 'vehicle_id' })
-		AccountVehicle.hasMany(models.Transaction, {
-			as: 'transactions',
-			sourceKey: 'id',
-			foreignKey: 'account_vehicle_id',
-			onDelete: 'CASCADE'
-		})
 	}
 
 	return AccountVehicle
