@@ -3,7 +3,8 @@
     <validation-provider v-slot="{errors, valid, invalid, validated}" :rules="rules" :name="name">
       <slot name="label">
         <label v-if="label" :class="labelClasses">
-          {{label}}
+          {{label}} 
+          <span v-if="required && asterix" class="text-danger">*</span>
         </label>
       </slot>
       <div :class="[
@@ -74,7 +75,11 @@
     props: {
       required: {
         type: Boolean,
-        description: "Whether input is required (adds an asterix *)"
+        description: "Whether input is required"
+      },
+      asterix: {
+        type: Boolean,
+        description: 'Add asterisk (*) on required field'
       },
       group: {
         type: Boolean,
