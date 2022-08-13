@@ -38,7 +38,6 @@ const en_US_strings = {
             'model': 'Model',
             'sub_model': 'Sub Model',
             'price': 'Price',
-            'total': 'Price Total',
             'plate': 'Plate',
             'plate_detail': 'Plate Detail',
             'color': 'Color',
