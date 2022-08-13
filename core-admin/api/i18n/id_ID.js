@@ -38,7 +38,6 @@ const id_ID_strings = {
             'model': 'Model',
             'sub_model': 'Sub Model',
             'price': 'Harga',
-            'total': 'Total Harga',
             'plate': 'Plat Nomor',
             'plate_detail': 'Detail Plat Nomor',
             'color': 'Warna',
