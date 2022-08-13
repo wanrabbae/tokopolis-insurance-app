@@ -188,6 +188,15 @@ exports.review = async (req, res) => {
     })
 }
 
+exports.getPaymentFee = async (req, res) => {
+    const validate = validation.getPaymentFee(req)
+    if (validate.error) return res.errorValidation(validate.details)
+
+    const paymentRequest = await paymentService.getFee(payload)
+
+    return res.jsonData(paymentRequest.data)
+}
+
 exports.doPayment = async (req, res) => {
     const validate = validation.createPayment(req)
     if (validate.error) return res.errorValidation(validate.details)
@@ -240,6 +249,15 @@ exports.doPayment = async (req, res) => {
     }
 
     return res.jsonData(paymentRequest.data)
+}
+
+exports.getPaymentDetail = async (req, res) => {
+    const validate = validation.getPaymentDetail(req)
+    if (validate.error) return res.errorValidation(validate.details)
+
+    const data = await service.getAgentPaymentData(req.account._id, req.query.transaction_id)
+
+    return res.jsonData(data)
 }
 
 exports.webhookMidtrans = async (req, res) => {
@@ -340,13 +358,4 @@ exports.webhookXendit = async (req, res) => {
     }
 
     return res.jsonSuccess(req.polyglot.t('success.webhook.xendit'))
-}
-
-exports.getPayment = async (req, res) => {
-    const validate = validation.getPayment(req)
-    if (validate.error) return res.errorValidation(validate.details)
-
-    const data = await service.getAgentPaymentData(req.account._id, req.query.transaction_id)
-
-    return res.jsonData(data)
 }

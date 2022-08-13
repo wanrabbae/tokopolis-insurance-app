@@ -3,8 +3,8 @@ const verify = require('../middlewares/verifyToken')
 const { uploadFile } = require('../middlewares/uploadFile')
 
 const { getAll, transaction, postTransaction, postOffer,
-    review, doPayment, webhookMidtrans,
-    webhookXendit, getPayment } = require('../controllers/TransactionController')
+    review, doPayment, getPaymentFee, getPaymentDetail,
+    webhookMidtrans, webhookXendit } = require('../controllers/TransactionController')
 
 const router = Router()
 const auth = verify()
@@ -22,7 +22,8 @@ router.post('/transaction', auth,
     ]), postTransaction)
 router.post('/transaction/offer', auth, postOffer)
 router.get('/transaction/review', auth, review)
-router.get('/transaction/payment', auth, getPayment)
+router.get('/transaction/fee', auth, getPaymentFee)
+router.get('/transaction/payment', auth, getPaymentDetail)
 router.post('/transaction/payment', auth, doPayment)
 
 router.post('/transaction/midtrans', webhookMidtrans)

@@ -1,25 +1,46 @@
 const request = require('request-promise')
 
 export default class PaymentService {
-    async createRequest(payload) {
+    constructor () {
         const host = process.env.PAYMENT_SERVICE_HOST
         const port = process.env.PAYMENT_SERVICE_PORT
 
+        this.url = `http://${host}:${port}`
+    }
+
+    async getFee(payload) {
         var clientServerOptions = {
-            uri: `http://${host}:${port}/payment`,
-            body: JSON.stringify(payload),
-            method: 'POST',
+            uri: `${this.url}/payment`,
+            qs: payload,
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            json: true
         }
 
-        const response = await request(clientServerOptions, function (error, response) {
+        return await request(clientServerOptions, function (error, response) {
             if (error != null) return error
 
             return response.body
         })
+    }
 
-        return JSON.parse(response)
+    async createRequest(payload) {
+        var clientServerOptions = {
+            uri: `${this.url}/payment`,
+            body: payload,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            json: true
+        }
+
+        return await request(clientServerOptions, function (error, response) {
+            if (error != null) return error
+
+            return response.body
+        })
     }
 }

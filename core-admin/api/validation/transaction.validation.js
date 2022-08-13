@@ -195,7 +195,28 @@ const account = (req) => {
     }))
 }
 
-const getPayment = (req) => {
+const getPaymentFee = (req) => {
+    const schema = Joi.object({
+        platform: Joi.valid('bca', 'bni', 'bri',
+            'bsi', 'bjb', 'mandiri', 'permata', 'gopay', 'qris',
+            'ovo', 'dana', 'shopeepay', 'linkaja')
+            .required()
+            .label(req.polyglot.t('field.payment.platform')),
+        total: Joi.number()
+            .required()
+            .label(req.polyglot.t('field.total')),
+    })
+
+    return joiResponse(schema.validate(req.query, {
+        abortEarly: false,
+        messages: joiErrorMessages(),
+        errors: {
+            language: req.locale.language
+        }
+    }))
+}
+
+const getPaymentDetail = (req) => {
     const schema = Joi.object({
         transaction_id: Joi.number()
             .required()
@@ -217,9 +238,8 @@ const createPayment = (req) => {
             .required()
             .label(req.polyglot.t('field.transaction.id')),
         platform: Joi.valid('bca', 'bni', 'bri',
-            'mandiri', 'permata', 'gopay', 'qris',
-            'ovo', 'dana', 'shopeepay', 'linkaja',
-            'indomaret', 'alfamart')
+            'bsi', 'bjb', 'mandiri', 'permata', 'gopay', 'qris',
+            'ovo', 'dana', 'shopeepay', 'linkaja')
             .required()
             .label(req.polyglot.t('field.payment.platform')),
     })
@@ -276,6 +296,6 @@ const xendit = (req) => {
 }
 
 module.exports = {
-    post, fileNew, fileOld, review, account, getPayment,
-    createPayment, midtrans, xendit
+    post, fileNew, fileOld, review, account, getPaymentFee,
+    getPaymentDetail, createPayment, midtrans, xendit
 }
