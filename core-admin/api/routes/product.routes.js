@@ -8,7 +8,7 @@ const { productCalculation, getProductData,
 const router = Router()
 const auth = verify()
 
-router.get('/product', productCalculation, getProductData)
+router.get('/product', auth, productCalculation, getProductData)
 router.post('/product', auth, postProductData)
 router.get('/product/detail', auth, productCalculation, getProductDetail)
 router.get('/product/compare', auth, productCalculation, compareProduct)
