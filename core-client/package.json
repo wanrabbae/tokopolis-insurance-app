@@ -14,14 +14,13 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
-    "@nuxt/content": "^1.15.1",
     "@nuxt/http": "latest",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/dayjs": "^1.4.1",
     "atob": "^2.1.2",
     "axios": "^0.21.4",
-    "bootstrap": "^4.6.0",
-    "bootstrap-vue": "^2.5.0",
+    "bootstrap": "^4.6.1",
+    "bootstrap-vue": "^2.22.0",
     "cookie": "^0.4.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
@@ -50,7 +49,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^7.17.0",
     "prettier": "^2.4.0",
-    "sass": "^1.32.13",
     "sass-loader": "^10.1.1",
     "vue-svg-loader": "^0.16.0"
   }

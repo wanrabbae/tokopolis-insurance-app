@@ -1,21 +1,17 @@
 <template>
-    <component :is="tag">
+    <component :is="tag" :class="['container', classes]">
         
-        <div class="row no-gutters">
+        <div class="row">
             
-            <div v-for="(list, id) in serviceList" :key="id" class="col-3">
+            <div v-for="(list, id) in serviceList" :key="id" class="col" style="max-width: 20%;">
                 
-                <a :href="list.link" class="card border-lg p-lg-3">
+                <a :href="list.link" class="d-flex flex-column align-items-center border-lg p-lg-3">
                     
-                    <div class="card-image mb-3">
+                    <b-img-lazy :src="list.image" :alt="list.text" class="service-image" />
+                    
+                    <div class="text-center mt-lg-3 mt-2">
                         
-                        <b-img-lazy :src="list.image" :alt="list.text" />
-                    
-                    </div>
-                    
-                    <div class="text-center">
-                        
-                        <span class="fw-lg-bold text-dark">{{ list.text }}</span>
+                        <span class="fs-small fs-lg-5 fw-lg-bold text-dark">{{ list.text }}</span>
                     
                     </div>
                 
@@ -36,6 +32,10 @@ export default {
             type: String,
             default: 'div',
             description: 'html tag'
+        },
+        classes: {
+            type: String,
+            default: ''
         },
         serviceList: {
             type: Array,

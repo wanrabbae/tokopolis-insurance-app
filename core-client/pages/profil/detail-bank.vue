@@ -6,43 +6,46 @@
             
             <h2>Detail Bank</h2>
 
-            <b-form>
+            <validation-observer v-slot="{ handleSubmit, invalid }" tag="div" class="d-block">
+                
+                <b-form @submit.prevent="handleSubmit(onSubmit)">
 
-                <BaseSelect
-                    v-model="model.bank"
-                    name="Nama Bank"
-                    label="Nama Bank"
-                    :options="banks"
-                    class="w-100 w-lg-75"
-                    :rules="{ required: true }"
-                    required
-                />
+                    <BaseSelect
+                        v-model="model.bank"
+                        name="Nama Bank"
+                        label="Nama Bank"
+                        :options="banks"
+                        class="w-100 w-lg-75"
+                        rules="required"
+                    />
 
-                <BaseInput
-                    v-model="model.bank_number"
-                    type="number"
-                    label="Nomor Rekening"
-                    name="Nomor Rekening"
-                    input-classes="custom-number"
-                    placeholder="Masukkan Nomor Rekening"
-                    class="w-100 w-lg-75"
-                    :rules="{required: true}"
-                    required
-                />
+                    <BaseInput
+                        v-model="model.bank_number"
+                        type="number"
+                        label="Nomor Rekening"
+                        name="Nomor Rekening"
+                        input-classes="custom-number"
+                        placeholder="Masukkan Nomor Rekening"
+                        class="w-100 w-lg-75"
+                        rules="required"
+                        required
+                    />
 
-                <BaseInput
-                    v-model="model.bank_name"
-                    name="Nama Rekening"
-                    label="Nama Rekening"
-                    placeholder="Masukkan Nama Rekening"
-                    class="w-100 w-lg-75"
-                    :rules="{required: true}"
-                    required
-                />
+                    <BaseInput
+                        v-model="model.bank_name"
+                        name="Nama Rekening"
+                        label="Nama Rekening"
+                        placeholder="Masukkan Nama Rekening"
+                        class="w-100 w-lg-75"
+                        rules="required"
+                        required
+                    />
 
-                <BaseButton native-type="submit" classes="w-100 w-lg-auto">Update</BaseButton>
+                    <BaseButton native-type="submit" classes="w-100 w-lg-auto" :disabled="invalid">Update</BaseButton>
 
-            </b-form>
+                </b-form>
+
+            </validation-observer>
 
         </div> <!-- card-body ends -->
         
@@ -81,6 +84,11 @@ export default {
                 }
             ]
         };
+    },
+    methods: {
+        onSubmit() {
+            console.log("Detail bank telah diperbarui");
+        }
     }
 }
 </script>

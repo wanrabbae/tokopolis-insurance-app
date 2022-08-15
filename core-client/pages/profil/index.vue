@@ -2,22 +2,26 @@
     
     <div>
         
-        <div class="card-body">
+        <div id="profile" class="card-body">
 
             <h2>Profil</h2>
             
             <div class="row flex-column-reverse flex-lg-row">
                 
-                <div class="col-12 col-lg-8">
+                <validation-observer 
+                    v-slot="observer" 
+                    tag="div"
+                    class="col-12 col-lg-8"
+                >
                     
-                    <b-form role="profile" method="post" @submit.prevent="submitFile">
+                    <b-form method="post" @submit.prevent="observer.handleSubmit(submitFile)">
                         
                         <BaseInput
                             v-model="email"
                             name="Email"
                             label="Email"
                             placeholder="Masukkan Email"
-                            :rules="{required: true, email: true}"
+                            rules="required|email"
                             required
                         />
 
@@ -26,7 +30,7 @@
                             name="Nama Lengkap"
                             label="Nama Lengkap"
                             placeholder="Masukkan Nama Lengkap"
-                            :rules="{required: true}"
+                            rules="required"
                             required
                         >
                         </BaseInput>
@@ -35,97 +39,98 @@
                             v-model="gender"
                             name="Jenis Kelamin"
                             label="Jenis Kelamin"
-                            :options="genders"
-                            :rules="{ required: true }"
-                            required
+                            :options="[
+                                { text: 'Pilih Jenis Kelamin', value: null },
+                                { text: 'Pria', value: 'male' },
+                                { text: 'Wanita', value: 'female' },
+                            ]"
                         />
 
-                        <validation-observer v-slot="{ errors }">
+                        <validation-observer 
+                            v-slot="{ errors }" 
+                            tag="fieldset" 
+                            class="form-group"
+                        >
                             
-                            <b-form-group>
+                            <label class="form-control-label">Tanggal Lahir</label>
+                                    
+                            <div class="row no-gutters has-label">
+                    
+                                <validation-provider 
+                                    v-slot="{ invalid, validated }"
+                                    tag="div"
+                                    name="Tanggal Lahir"
+                                    class="col-3"
+                                    :rules="{ integer: true }"
+                                >
+
+                                    <input 
+                                        v-model="birthday"
+                                        type="number"
+                                        placeholder="DD"
+                                        min="1"
+                                        :max="maxDay"
+                                        class="form-control"
+                                        :class="{'is-invalid': invalid && validated}"
+                                        style="border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important"
+                                        @input="onBirthdayInput"
+                                    >
+
+                                </validation-provider>
+
+                                <validation-provider
+                                    v-slot="{ invalid, validated }"
+                                    tag="div" 
+                                    name="Bulan Lahir"
+                                    class="col"
+                                    :rules="{ required_if: birthday >= 1 && birthday <= maxDay || birthyear >= 1970 && birthyear <= maxYear }"
+                                >
+
+                                    <b-form-select
+                                        v-model="birthmonth"
+                                        label-field="Bulan"
+                                        :options="months"
+                                        class="rounded-0"
+                                        :class="{ 'is-invalid' : invalid && validated }"
+                                        @change="onBirthmonthChange"
+                                    />
+
+                                </validation-provider>
                                 
-                                <label class="form-control-label">Tanggal Lahir</label>
-                                    
-                                <b-input-group>
-                                    
-                                    <validation-provider 
-                                        v-slot="{ invalid, validated }"
-                                        name="Tanggal Lahir" 
-                                        class="col-3 p-0"
-                                        :rules="{ required: true }"
+                                <validation-provider 
+                                    v-slot="{ invalid, validated }"
+                                    tag="div"
+                                    name="Tahun Lahir"
+                                    class="col-3"
+                                    :rules="{ integer: true }"
+                                >
+
+                                    <input
+                                        v-model="birthyear"
+                                        type="number"
+                                        name="birthyear"
+                                        min="1970"
+                                        :max="maxYear"
+                                        placeholder="YYYY"
+                                        class="form-control"
+                                        :class="{'is-invalid': invalid && validated}"
+                                        style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important"
+                                        @input="onBirthyearInput"
                                     >
-                                        <input 
-                                            v-model="birthday"
-                                            type="number"
-                                            placeholder="DD"
-                                            min="1"
-                                            :max="maxDay"
-                                            step="1"
-                                            class="form-control"
-                                            :class="{'is-invalid': invalid && validated}"
-                                            style="border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important"
-                                            @input="onBirthdayAndMonthInput"
-                                        >
-                                    </validation-provider>
 
-                                    <validation-provider 
-                                        v-slot="{ invalid, validated }"
-                                        name="Bulan Lahir" 
-                                        class="col-6 p-0"
-                                        :rules="{ required: true }"
-                                    >
-                                        <b-form-select
-                                            v-model="birthmonth"
-                                            label-field="Bulan"
-                                            :options="months"
-                                            class="rounded-0"
-                                            :class="{'is-invalid': invalid && validated}"
-                                            @input="onBirthdayAndMonthInput"
-                                        />
-                                    </validation-provider>
+                                </validation-provider>
 
-                                    <validation-provider
-                                        v-slot="{ invalid, validated }"
-                                        name="Tahun Lahir" 
-                                        class="col-3 p-0"
-                                        :rules="{ required: true  }"
-                                    >
-                                        <input
-                                            v-model="birthyear"
-                                            type="number"
-                                            name="birthyear"
-                                            min="1"
-                                            :max="maxYear"
-                                            step="1"
-                                            placeholder="YYYY"
-                                            class="form-control"
-                                            :class="{'is-invalid': invalid && validated}"
-                                            style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important"
-                                            @input="onBirthyearInput"
-                                        >
-                                    </validation-provider>
+                            </div> 
 
-                                </b-input-group>  
-
-                                <div v-if="errors != null" class="invalid-feedback" style="display: block;">
+                            <ul v-if="errors" class="d-block invalid-feedback mt-1">
+                                  
+                                <li v-for="(error, i) in errors" :key="i" :class="{ 'd-none' : !error[0] }">
                                     
-                                    <ul style="padding-left: 16px">
-                                        
-                                        <div v-for="(error, index) in errors" :key="index">
-                                            
-                                            <li v-if="error[0]">
-                                                
-                                                <span>{{ error[0] }}</span>
-                                            
-                                            </li>
-                                        
-                                        </div>
+                                    <span>{{ error[0] }}</span>
 
-                                    </ul>
+                                </li>
 
-                                </div>
-
-                            </b-form-group>
+                            </ul>
 
                         </validation-observer>
 
@@ -135,10 +140,8 @@
                             name="Nomor Telepon"
                             label="Nomor Telepon"
                             placeholder="081XXXXXXXXX"
-                            :rules="{ required: true }"
-                            input-classes="form-control custom-number"
-                            onkeypress="if(this.value.length==14) return false;"
-                            required
+                            input-classes="custom-number"
+                            onkeypress="if(value.length==14) return false;"
                         />
 
                         <BaseInput
@@ -146,8 +149,6 @@
                             name="Provinsi"
                             label="Provinsi"
                             placeholder="Masukkan Provinsi"
-                            :rules="{ required: true }"
-                            required
                         />
                         
                         <BaseInput
@@ -155,8 +156,6 @@
                             name="Kota"
                             placeholder="Masukkan Kota"
                             label="Kota"
-                            :rules="{required: true}"
-                            required
                         />
 
                         <BaseTextarea 
@@ -164,42 +163,38 @@
                             label="Alamat Lengkap"
                             name="Alamat Lengkap"
                             placeholder="Masukkan Alamat Lengkap"
-                            :rules="{ required: true }"
                             rows="4"
-                            required
                         />
 
-                        <BaseButton native-type="submit" classes="w-100 w-lg-auto">Update</BaseButton>
+                        <BaseButton 
+                            native-type="submit" 
+                            classes="w-100 w-lg-auto"
+                            :disabled="observer.invalid"
+                        >
+                            Update
+                        </BaseButton>
                     
                     </b-form>
 
-                </div> <!-- col-12.col-lg-8 ends -->
+                </validation-observer> <!-- col-12.col-lg-8 ends -->
                 
                 <div class="col-12 col-lg-4 mb-3 mb-lg-5 text-center">
                     
-                    <client-only>
+                    <b-img 
+                        v-if="upload" 
+                        :src="photo" 
+                        alt="Profile Picture" 
+                        class="avatar rounded-circle mb-4" 
+                    />
+
+                    <b-img 
+                        v-else 
+                        :src="imgDataUrl" 
+                        alt="Profile Picture" 
+                        class="avatar rounded-circle mb-4" 
+                    />
                         
-                        <b-img v-if="upload" :src="photo" class="rounded-circle mb-4" alt="Profile Picture" style="width: 120px !important; height: 120px !important" />
-                        
-                        <b-img v-else :src="imgDataUrl" class="rounded-circle mb-4" alt="Profile Picture" style="width: 120px !important; height: 120px !important" />
-                        
-                        <BaseButton block @click="toggleShow">Pilih Gambar</BaseButton>
-                        
-                        <my-upload 
-                            v-model="show"
-                            no-square
-                            no-circle
-                            field="img"
-                            :width="300"
-                            :height="300"
-                            ki="0"
-                            img-format="png"
-                            :lang-ext="vueCropImageLangExt.id"
-                            class="custom-image-crop-upload"
-                            @crop-success="cropSuccess"
-                        />
-                    
-                    </client-only>
+                    <BaseButton @click="toggleShow">Pilih Gambar</BaseButton>
                 
                 </div> <!-- col-12.col-4 ends -->
             
@@ -208,6 +203,24 @@
         </div> <!-- card-body ends -->
         
         <Loading :show="loading"/>
+        
+        <client-only>
+            
+            <my-upload 
+                v-model="show"
+                no-square
+                no-circle
+                field="img"
+                :width="300"
+                :height="300"
+                ki="0"
+                img-format="png"
+                :lang-ext="vciLocaleId"
+                class="custom-image-crop-upload"
+                @crop-success="cropSuccess"
+            />
+        
+        </client-only>
     
     </div>
 
@@ -249,45 +262,38 @@ export default {
             photo : null,
             formData: null,
             loading: true,
-            genders: [
-                { text: 'Pilih Jenis Kelamin', value: null },
-                { text: 'Pria', value: 'male' },
-                { text: 'Wanita', value: 'female' },
-            ],
             months: [
                 { text: 'Pilih Bulan', value: null },
-                { text: 'Januari', value: "01" },
-                { text: 'Februari', value: "02" },
-                { text: 'Maret', value: "03" },
-                { text: 'April', value: "04" },
-                { text: 'Mei', value: "05" },
-                { text: 'Juni', value: "06" },
-                { text: 'Juli', value: "07" },
-                { text: 'Agustus', value: "08" },
-                { text: 'September', value: "09" },
-                { text: 'Oktober', value: "10" },
-                { text: 'November', value: "11" },
-                { text: 'Desember', value: "12" },
+                { text: 'Januari', value: "0" },
+                { text: 'Februari', value: "1" },
+                { text: 'Maret', value: "2" },
+                { text: 'April', value: "3" },
+                { text: 'Mei', value: "4" },
+                { text: 'Juni', value: "5" },
+                { text: 'Juli', value: "6" },
+                { text: 'Agustus', value: "7" },
+                { text: 'September', value: "8" },
+                { text: 'Oktober', value: "9" },
+                { text: 'November', value: "10" },
+                { text: 'Desember', value: "11" },
             ],
-            vueCropImageLangExt: {
-                id: {
-                    hint: 'Klik atau seret gambar di sini untuk mengunggah',
-                    loading: 'Mengunggah…',
-                    noSupported: 'Browser tidak mendukung, gunakan IE10+ atau browser yang lainnya',
-                    success: 'Berhasil mengunggah',
-                    fail: 'Gagal mengunggah',
-                    preview: 'Pratayang',
-                    btn: {
-                        off: 'Batal',
-                        close: 'Tutup',
-                        back: 'Kembali',
-                        save: 'Simpan'
-                    },
-                    error: {
-                        onlyImg: 'Hanya gambar',
-                        outOfSize: 'Batas ukuran gambar: ',
-                        lowestPx: 'Ukuran gambar terlalu rendah. Setidaknya dibutuhkan: '
-                    }
+            vciLocaleId: {
+                hint: 'Klik atau seret gambar di sini untuk mengunggah',
+                loading: 'Mengunggah…',
+                noSupported: 'Browser tidak mendukung, gunakan IE10+ atau browser yang lainnya',
+                success: 'Berhasil mengunggah',
+                fail: 'Gagal mengunggah',
+                preview: 'Pratayang',
+                btn: {
+                    off: 'Batal',
+                    close: 'Tutup',
+                    back: 'Kembali',
+                    save: 'Simpan'
+                },
+                error: {
+                    onlyImg: 'Hanya dapat mengunggah gambar',
+                    outOfSize: 'Batas ukuran gambar: ',
+                    lowestPx: 'Ukuran gambar terlalu rendah. Setidaknya dibutuhkan: '
                 }
             }
         }
@@ -308,8 +314,8 @@ export default {
         maxDay() {
             const selectedMonth = parseInt(this.birthmonth);
 
-            if(selectedMonth < 8) {
-                if(selectedMonth === 2) {
+            if(selectedMonth < 7) {
+                if(selectedMonth === 1) {
                     // cek tahun kabisat
                     if (this.isLeapYear) {
                         return 29;
@@ -317,13 +323,13 @@ export default {
                         return 28;
                     }
 
-                } else if(selectedMonth % 2 === 0) {
+                } else if(selectedMonth % 2 === 1) {
                     return 30;
                 } else {
                     return 31;
                 }
-            } else if(selectedMonth >= 8) {
-                if(selectedMonth % 2 === 0) {
+            } else if(selectedMonth >= 7) {
+                if(selectedMonth % 2 === 1) {
                     return 31;
                 } else {
                     return 30;
@@ -369,12 +375,10 @@ export default {
                         this.gender = response.data.profile.gender
 
                         if (response.data.profile.birth_date != null) {
-                            const birthDate = response.data.profile.birth_date;
-                            const splitdate = birthDate.split('-')
-
-                            this.birthday = splitdate[2]
-                            this.birthmonth = splitdate[1]
-                            this.birthyear = splitdate[0]
+                            const birthdate = this.$dayjs(response.data.profile.birth_date)
+                            this.birthday = birthdate.get('day')
+                            this.birthmonth =  birthdate.get('month')
+                            this.birthyear =  birthdate.get('year')
                         }
 
                         this.phone = response.data.profile.phone
@@ -403,7 +407,10 @@ export default {
             this.checkFieldValue('email', this.email)
             this.checkFieldValue('fullname', this.fullname)
             this.checkFieldValue('gender',this.gender)
-            this.checkFieldValue('birth_date',this.birthyear + "-" + this.birthmonth + "-" + this.birthday)
+
+            const birthdate = this.$dayjs().date(this.birthday).month(this.birthmonth).year(this.birthyear)
+            this.checkFieldValue('birth_date', birthdate.format('YYYY-MM-DD'))
+
             this.checkFieldValue('address',this.address)
             this.checkFieldValue('phone',this.phone)
             this.checkFieldValue('province',this.province)
@@ -426,17 +433,23 @@ export default {
                 window.location.reload(true)
             })
         },
-        onBirthdayAndMonthInput() {
-            this.birthday = this.limitValue(this.birthday, 0, this.maxDay);
+        onBirthdayInput(e) {
+            if(e.inputType === 'insertText') {
+                this.birthday = this.limitValue(this.birthday, this.maxDay);
+            }
         },
-        onBirthyearInput() {
-            this.birthyear = this.limitValue(this.birthyear, 0, this.maxYear);
-            this.birthday = this.limitValue(this.birthday, 0, this.maxDay);
+        onBirthmonthChange() {
+            this.birthday = this.limitValue(this.birthday, this.maxDay);
         },
-        limitValue(value, min, max) {
-            if(value < min) {
-                return min;
-            } else if(value > max) {
+        onBirthyearInput(e) {
+            this.birthday = this.limitValue(this.birthday, this.maxDay);
+
+            if(e.inputType === 'insertText') {
+                this.birthyear = this.limitValue(this.birthyear, this.maxYear);
+            }
+        },
+        limitValue(value, max) {
+            if(value > max) {
                 return max;
             } else {
                 return value;

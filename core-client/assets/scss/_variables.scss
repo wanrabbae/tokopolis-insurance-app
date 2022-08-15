@@ -141,13 +141,16 @@ $display5-size:               $h5-font-size !default;
 $display-font-weight:         $font-weight-bold !default;
 $display-line-height:         $headings-line-height !default;
 
+$small-font-size:             80% !default;
+
 $display-font-sizes: () !default;
 $display-font-sizes: map-merge((
   1: $display1-size,
   2: $display2-size,
   3: $display3-size,
   4: $display4-size,
-  5: $display5-size
+  5: $display5-size,
+  'small': $small-font-size
 ), $display-font-sizes);
 
 $paragraph-font-size:         0.625rem !default;

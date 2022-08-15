@@ -6,7 +6,7 @@
         
         <b-alert :show="showAlert" variant="danger" class="alert mb-3">
 
-            <b-list-group class="alert danger">
+            <b-list-group class="alert text-white">
 
                 <b-list-group-item v-for="error in errors" :key="error.message" class="list-item-alert-danger">• {{error.message}}</b-list-group-item>
             
@@ -14,9 +14,9 @@
         
         </b-alert>
 
-        <validation-observer v-slot="{ invalid }">
+        <validation-observer v-slot="{ handleSubmit, invalid }">
 
-            <b-form role="form" method="post" @submit.prevent="register">
+            <b-form role="form" method="post" @submit.prevent="handleSubmit(register)">
 
                 <BaseInput
                     v-model="fullname"
@@ -56,21 +56,25 @@
                     rules="required|confirmed:Kata Sandi"
                 />
 
-                 <ValidationProvider
-                    v-slot="{ valid }"
+                 <validation-provider
                     tag="div"
                     :rules="{ required: { allowFalse: false } }"
                     name="Kebijakan Pengguna"
                     class="custom-control custom-checkbox mb-3"
                 >
 
-                    <input id="eula" v-model="eula" type="checkbox" :valid="valid" class="custom-control-input">
+                    <input 
+                        id="eula" 
+                        v-model="eula" 
+                        type="checkbox" 
+                        class="custom-control-input"
+                    >
                     
                     <label for="eula" class="custom-control-label">
-                        Saya setuju dengan <a href='#'>Kebijakan Pengguna</a>  {{ v }}
+                        Saya setuju dengan <a href='#'>Kebijakan Pengguna</a>
                     </label>
 
-                </ValidationProvider>
+                </validation-provider>
 
                 <BaseButton native-type="submit" class="mb-3" :disabled='invalid' block>
                     Daftar

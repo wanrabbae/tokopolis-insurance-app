@@ -1,6 +1,6 @@
 <template>
     
-    <component :is="tag">
+    <component :is="tag" :class="['container', classes]">
         
         <div class="row align-items-center">
             
@@ -58,6 +58,10 @@ export default {
             type: String,
             default: 'div',
             description: 'html tag'
+        },
+        classes: {
+            type: String,
+            default: ''
         },
         title: {
             type: String,

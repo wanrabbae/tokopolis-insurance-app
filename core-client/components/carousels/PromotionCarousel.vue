@@ -1,32 +1,36 @@
 <template>
+
+    <component :is="tag" id="promotion" :class="['container', classes]">
     
-    <div class="promotion-carousel">
-        
-        <div v-swiper:promotionCarousel="swiperOption" class="swiper">
+        <div class="promotion-carousel">
             
-            <div class="swiper-wrapper">
+            <div v-swiper:promotionCarousel="swiperOption" class="swiper rounded">
                 
-                <div v-for="(image, index) in images" :key="index" class="swiper-slide">
+                <div class="swiper-wrapper">
+                    
+                    <div v-for="(image, index) in images" :key="index" class="swiper-slide">
 
-                    <div class="swiper-image">
+                        <div class="swiper-image">
 
-                        <b-img :src="image.src" :alt="image.alt" />
+                            <b-img :src="image.src" :alt="image.alt" />
 
-                    </div> <!-- swiper-image ends -->
+                        </div> <!-- swiper-image ends -->
+                    
+                    </div> <!-- swiper-slide ends -->
                 
-                </div> <!-- swiper-slide ends -->
+                </div> <!-- swiper-wrapper ends -->   
+                
+                <div id="promotion-swiper-button-prev" slot="button-prev" class="swiper-button-prev"></div>
+                
+                <div id="promotion-swiper-button-next" slot="button-next" class="swiper-button-next"></div>
+                
+                <div id="promotion-swiper-pagination" slot="pagination" class="swiper-pagination"></div>
             
-            </div> <!-- swiper-wrapper ends -->   
-            
-            <div id="promotion-swiper-button-prev" slot="button-prev" class="swiper-button-prev"></div>
-            
-            <div id="promotion-swiper-button-next" slot="button-next" class="swiper-button-next"></div>
-            
-            <div id="promotion-swiper-pagination" slot="pagination" class="swiper-pagination"></div>
+            </div> <!-- swiper ends -->  
         
-        </div> <!-- swiper ends -->  
-    
-    </div> <!-- promotion-carousel ends -->  
+        </div> <!-- promotion-carousel ends -->  
+
+    </component>
 
 </template>
 
@@ -34,6 +38,15 @@
 export default {
     name: 'PromotionCarousel',
     props: {
+        tag: {
+            type: String,
+            default: 'div',
+            description: 'html tag'
+        },
+        classes: {
+            type: String,
+            default: ''
+        },
         images: { 
             type: Array,
             default: null

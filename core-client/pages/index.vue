@@ -2,23 +2,23 @@
 
     <main class="main-content">
 
-        <section id="promotion">
-            
-            <PromotionCarousel :images="promotionImages"/>
-        
-        </section>
+        <PromotionCarousel 
+            tag="section" 
+            :images="promotionImages"
+            classes="py-4"
+        />
 
         <Service 
             id="service"
             tag="section"
-            class="container py-lg-0 py-4"
+            classes="py-1"
             :service-list="serviceList"
         />
         
         <TrackClaim 
             id="track-claim"
             tag="section"
-            class="container py-lg-5 py-2"
+            class="pt-4 py-lg-5"
         />
 
         <section id="videos" class="container py-5">
@@ -106,25 +106,19 @@ export default {
         BrandCarousel,
         TestimonialCarousel
     },
-    layout: 'homepage',
     data() {
         return {
             promotionImages: [
                 {
-                    src: "img/promotion-banner-1.png",
+                    src: "img/promotion-1.png",
                     alt: "Promotion Banner 1"
                 },
                 {
-                    src: "img/promotion-banner-2.png",
+                    src: "img/promotion-2.png",
                     alt: "Promotion Banner 2"
                 }
             ],
             serviceList: [
-                {
-                    image: "svg/new/polis-smartphone-locked.svg",
-                    text: "Smartphone",
-                    link: "#"
-                },
                 {
                     image: "svg/new/polis-car.svg",
                     text: "Mobil",
@@ -136,28 +130,18 @@ export default {
                     link: "#"
                 },
                 {
+                    image: "svg/new/polis-smartphone-locked.svg",
+                    text: "Smartphone",
+                    link: "#"
+                },
+                {
                     image: "svg/health-coming-soon.svg",
                     text: "Kesehatan",
                     link: "#"
                 },
                 {
-                    image: "svg/cash-compensation-coming-soon.svg",
-                    text: "Santunan Tunai",
-                    link: "#"
-                },
-                {
                     image: "svg/life-coming-soon.svg",
-                    text: "Kesehatan",
-                    link: "#"
-                },
-                {
-                    image: "svg/tropical-disease-coming-soon.svg",
-                    text: "Penyakit Tropis",
-                    link: "#"
-                },
-                {
-                    image: "svg/trip-coming-soon.svg",
-                    text: "Perjalanan",
+                    text: "Jiwa",
                     link: "#"
                 }
             ],

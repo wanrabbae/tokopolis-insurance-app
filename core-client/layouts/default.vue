@@ -1,15 +1,21 @@
 <template>
     <div>
         <Header :mobile-view="mobileView" :logged-in="isLoggedIn" :photo="userPhoto" />
-        <NuxtChild :mobile-view="mobileView" keep-alive/>
+        <Nuxt class="main-wrapper" :mobile-view="mobileView" keep-alive/>
         <Footer />
     </div>
 </template>
 
 <script>
 import cookie from 'js-cookie';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default {
+    components: {
+        Header,
+        Footer
+    },
     data() {
         return {
             mobileBreakpoint: 972,

@@ -2,80 +2,55 @@
 
     <div>
         
-        <div class="card-body">
+        <validation-observer v-slot="{ handleSubmit, invalid }" tag="div" class="card-body">
 
             <h2>Ganti Password</h2>
 
-            <b-form role="form" method="post" class="w-100 w-lg-75" @submit.prevent="changePassword">
+            <b-form 
+                method="post" 
+                class="w-100 w-lg-75" 
+                @submit.prevent="handleSubmit(changePassword)"
+            >
                 
                 <BaseInput
-                    v-model="oldPassword"
+                    v-model="model.oldPassword"
                     type="password"
                     name="Password Lama"
                     label="Password Lama"
                     placeholder="Masukkan Password Lama"
-                    :rules="{required: true}"
+                    rules="required"
                     required
                 />
 
-                <b-form-group>
-                    
-                    <validation-provider 
-                        v-slot="{ errors, invalid, validated }"
-                        vid="Password Baru"
-                        name="Password Baru"
-                        :rules="{ required: true, min: 6, max: 35 }"
-                    >
-                        
-                        <label class="form-control-label">Password Baru</label>
-                        
-                        <input 
-                            v-model="newPassword" 
-                            type="password"
-                            class="form-control"
-                            placeholder="Masukkan Password Baru"
-                            :class="{'is-invalid': invalid && validated}"
-                        />
-                        
-                        <div v-if="errors[0]" class="invalid-feedback" style="display: block;">
-                            {{ errors[0] }}
-                        </div>
-                    
-                    </validation-provider>
-                
-                </b-form-group>
+                <BaseInput
+                    v-model="model.newPassword"
+                    name="Password Baru"
+                    type="password"
+                    label="Password Baru"
+                    placeholder="Password Baru"
+                    rules="required|min:8|max:35"
+                />
 
-                <b-form-group>
-                    
-                    <validation-provider 
-                        v-slot="{ errors, invalid, validated }"
-                        name="Konfirmasi Password Baru"
-                        :rules="{ required: true, confirmed: 'Password Baru' }"
-                    >
-                        
-                        <label class="form-control-label">Konfirmasi Password Baru</label>
-                        
-                        <input 
-                            v-model="confirmPassword" 
-                            type="password"
-                            class="form-control"
-                            placeholder="Konfirmasi Password Baru"
-                            :class="{'is-invalid': invalid && validated}"
-                        />
-                        
-                        <div v-if="errors[0]" class="invalid-feedback" style="display: block;">
-                            {{ errors[0] }}
-                        </div>
-
-                    </validation-provider>
-                
-                </b-form-group>
-
-                <BaseButton native-type="submit" classes="w-100 w-lg-auto">Update</BaseButton>
+                <BaseInput
+                    v-model="model.confirmPassword"
+                    name="Konfirmasi Password Baru"
+                    type="password"
+                    label="Konfirmasi Password Baru"
+                    placeholder="Konfirmasi Password Baru"
+                    rules="required|confirmed:Password Baru"
+                />
+                       
+                <BaseButton 
+                    native-type="submit" 
+                    classes="w-100 w-lg-auto" 
+                    :disabled="invalid"
+                >
+                    Update
+                </BaseButton>
 
             </b-form>
 
-        </div> <!-- card-body ends -->
+        </validation-observer> <!-- card-body ends -->
 
     </div>
 
@@ -91,10 +66,12 @@ export default {
     layout: 'userarea',
     data() {
         return {
-            oldPassword: '',
-            newPassword:'',
-            confirmPassword:'',
+            model: {
+                oldPassword: null,
+                newPassword: null,
+                confirmPassword: null
             }
+        }
     },
     head() {
         return {
@@ -111,12 +88,11 @@ export default {
     methods: {
         async changePassword() {
             await this.$axios.$post('api/user/change-password', {
-                password : this.oldPassword,
-                password_new : this.newPassword,
-                password_confirmation : this.confirmPassword
+                password : this.model.oldPassword,
+                password_new : this.model.newPassword,
+                password_confirmation : this.model.confirmPassword
             }).then ((response)=> {
                 window.location.reload(true)
-                
             })
 
         }

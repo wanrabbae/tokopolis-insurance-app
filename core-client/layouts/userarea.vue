@@ -4,7 +4,7 @@
     
     <Header :mobile-view="mobileView" :logged-in="isLoggedIn" :photo="userPhoto" />
     
-    <main class="main-content" style="background-color: #f6f5fc">
+    <main class="main-wrapper" style="background-color: #f6f5fc">
         
         <div class="container py-4 py-lg-5">
             
@@ -18,7 +18,7 @@
                 
                 <div class="col-12 col-lg-8">
 
-                    <NuxtChild class="card" />
+                    <Nuxt class="card border" />
                 
                 </div> <!-- col-12.col-lg-8 ends -->
             
