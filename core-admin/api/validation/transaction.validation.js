@@ -11,15 +11,21 @@ const post = (req) => {
         fullname: Joi.string()
             .required()
             .label(req.polyglot.t('field.transaction.client.fullname')),
-        phone: Joi.string()
-            .allow(null)
-            .min(11)
-            .max(13)
-            .pattern(/^[0-9]+$/)
+        phone: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .min(11)
+                    .max(13)
+                    .pattern(/^[0-9]+$/),
+                Joi.allow(null)
+            )
             .label(req.polyglot.t('field.transaction.client.phone')),
-        email: Joi.string()
-            .allow(null)
-            .email()
+        email: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .email(),
+                Joi.allow(null)
+            )
             .label(req.polyglot.t('field.transaction.client.email')),
         plate_detail: Joi.string()
             .required()
@@ -63,14 +69,22 @@ const fileNew = (req) => {
         fullname: Joi.string()
             .required()
             .label(req.polyglot.t('field.transaction.fullname')),
-        phone: Joi.string()
-            .min(11)
-            .max(13)
-            .pattern(/^[0-9]+$/)
-            .label(req.polyglot.t('field.transaction.phone')),
-        email: Joi.string()
-            .email()
-            .label(req.polyglot.t('field.transaction.email')),
+        phone: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .min(11)
+                    .max(13)
+                    .pattern(/^[0-9]+$/),
+                Joi.allow(null)
+            )
+            .label(req.polyglot.t('field.transaction.client.phone')),
+        email: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .email(),
+                Joi.allow(null)
+            )
+            .label(req.polyglot.t('field.transaction.client.email')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -140,14 +154,22 @@ const fileOld = (req) => {
         fullname: Joi.string()
             .required()
             .label(req.polyglot.t('field.transaction.fullname')),
-        phone: Joi.string()
-            .min(11)
-            .max(13)
-            .pattern(/^[0-9]+$/)
-            .label(req.polyglot.t('field.transaction.phone')),
-        email: Joi.string()
-            .email()
-            .label(req.polyglot.t('field.transaction.email')),
+        phone: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .min(11)
+                    .max(13)
+                    .pattern(/^[0-9]+$/),
+                Joi.allow(null)
+            )
+            .label(req.polyglot.t('field.transaction.client.phone')),
+        email: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .email(),
+                Joi.allow(null)
+            )
+            .label(req.polyglot.t('field.transaction.client.email')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
