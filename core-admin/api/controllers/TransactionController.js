@@ -134,7 +134,11 @@ exports.postTransaction = async (req, res) => {
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
         product_id: req.query.product_id,
-        client_data: req.body.client,
+        client_data: {
+            fullname: req.body.fullname,
+            email: req.body.email,
+            phone: req.body.phone,
+        },
         is_new_condition: condition,
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,

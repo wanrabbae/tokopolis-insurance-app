@@ -60,7 +60,10 @@ const en_US_strings = {
             'transaction.id': 'Transaction ID',
             'transaction.status': 'Transaction Status',
             'transaction.condition': 'Vehicle Condition',
-            'transaction.client': 'Client Data',
+
+            'transaction.client.fullname': 'Nama Lengkap Pemegang Polis',
+            'transaction.client.email': 'Email Pemegang Polis',
+            'transaction.client.phone': 'Nomor Telepon Pemegang Polis',
 
             'transaction.bastk': 'BASTK File',
             'transaction.identity': 'Identity Photo',

@@ -60,7 +60,10 @@ const id_ID_strings = {
             'transaction.id': 'ID Transaksi',
             'transaction.status': 'Status Transaksi',
             'transaction.condition': 'Kondisi Kendaraan',
-            'transaction.client': 'Data Pemegang Polis',
+
+            'transaction.client.fullname': 'Nama Lengkap Pemegang Polis',
+            'transaction.client.email': 'Email Pemegang Polis',
+            'transaction.client.phone': 'Nomor Telepon Pemegang Polis',
 
             'transaction.bastk': 'File BASTK',
             'transaction.identity': 'Foto Identitas',
