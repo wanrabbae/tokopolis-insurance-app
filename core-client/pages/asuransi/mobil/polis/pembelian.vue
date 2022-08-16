@@ -447,7 +447,9 @@ export default {
                     this.loading = false
                 })
                 .catch (error => {
-                    console.log(error)
+                    if(error.response.status === 400){
+                        this.$router.push({name: "asuransi-mobil-polis"})
+                    }
                 })
         },
         postTranscation() {

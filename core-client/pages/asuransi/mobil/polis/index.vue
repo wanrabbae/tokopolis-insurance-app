@@ -526,32 +526,18 @@ export default {
                         workshop_count : element.workshop_count
                     })
                 })
+                
                 this.loading = false
-
             }).catch (error => {
-                console.log(error)
-                this.$router.push({name: "asuransi-mobil"})
+                if(error.response.status === 400){
+                    this.$router.push({name: "asuransi-mobil"})
+                }
             })
         },
         openLoginModal(productIndex) {
             this.productIndex = productIndex
             this.$bvModal.show('modal-guest-sign-in')
         },
-        // async onSubmitLoginModal(event, formData) {
-        //     // on submit guest sign in modal method here
-        //     console.log(formData);
-
-        //     await this.$axios.$post('api/guest', {
-        //         fullname: formData.fullName,
-        //         email: formData.email,
-        //         phone: formData.phoneNumber,
-        //     }).catch (error => {
-        //         console.log(error)
-        //     })
-
-        //     this.$bvModal.hide('modal-guest-sign-in')
-        //     this.detailPayment(this.productIndex)
-        // }
     }
 }
 </script>
