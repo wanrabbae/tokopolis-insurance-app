@@ -134,7 +134,7 @@
                         </div>
 
                         <BaseInput
-                            v-if="accessories.length !== 0"
+                            v-if="model.accessories.length !== 0"
                             v-model="model.totalAccessoriesPrice"
                             label="Aksesoris"
                             class="col-12 col-lg-6"
@@ -721,11 +721,10 @@ export default {
         },
         modalAccessoriesSubmitHandler(accessoriesData, totalPrice) {
             this.model.accessories = []
-            this.accessoriesData.forEach((data) => {
+            accessoriesData.forEach((data) => {
                 this.model.accessories.push(data.brand + ','+ data.type + ',' + data.price)
             })
-
-            this.model.totalAccessoriesPrice = totalPrice
+            this.model.totalAccessoriesPrice = this.formatPrice(totalPrice)
         }
     }
 }

@@ -308,6 +308,7 @@ export default {
                 district: null,
                 urban: null,
                 plateDetail: null,
+                licensePlate:null,
                 vehicleColor: null,
                 machineNumber: null
             },
@@ -440,7 +441,8 @@ export default {
         async getDataTransaction() {
             await this.$axios.$get('api/transaction')
                 .then ((response) => {
-
+                    console.log(response)
+                    this.model.licensePlate = response.data.plate
                     this.model.totalPremium = this.formatPrice(response.data.price)
                     this.loading = false
                 })
