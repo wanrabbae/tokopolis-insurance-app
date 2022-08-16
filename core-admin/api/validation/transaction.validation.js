@@ -10,15 +10,17 @@ const post = (req) => {
             .label(req.polyglot.t('field.transaction.condition')),
         fullname: Joi.string()
             .required()
-            .label(req.polyglot.t('field.transaction.fullname')),
+            .label(req.polyglot.t('field.transaction.client.fullname')),
         phone: Joi.string()
+            .allow(null)
             .min(11)
             .max(13)
             .pattern(/^[0-9]+$/)
-            .label(req.polyglot.t('field.transaction.phone')),
+            .label(req.polyglot.t('field.transaction.client.phone')),
         email: Joi.string()
+            .allow(null)
             .email()
-            .label(req.polyglot.t('field.transaction.email')),
+            .label(req.polyglot.t('field.transaction.client.email')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
