@@ -8,13 +8,17 @@ const post = (req) => {
         condition: Joi.valid('new', 'old')
             .required()
             .label(req.polyglot.t('field.transaction.condition')),
-        client: Joi.object({
-                fullname: Joi.string()
-                    .required()
-                    .label(req.polyglot.t('field.fullname')),
-            })
+        fullname: Joi.string()
             .required()
-            .label(req.polyglot.t('field.transaction.client')),
+            .label(req.polyglot.t('field.transaction.fullname')),
+        phone: Joi.string()
+            .min(11)
+            .max(13)
+            .pattern(/^[0-9]+$/)
+            .label(req.polyglot.t('field.transaction.phone')),
+        email: Joi.string()
+            .email()
+            .label(req.polyglot.t('field.transaction.email')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -54,13 +58,17 @@ const fileNew = (req) => {
             .required()
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t('field.transaction.identity')),
-        client: Joi.object({
-                fullname: Joi.string()
-                    .required()
-                    .label(req.polyglot.t('field.fullname')),
-            })
+        fullname: Joi.string()
             .required()
-            .label(req.polyglot.t('field.transaction.client')),
+            .label(req.polyglot.t('field.transaction.fullname')),
+        phone: Joi.string()
+            .min(11)
+            .max(13)
+            .pattern(/^[0-9]+$/)
+            .label(req.polyglot.t('field.transaction.phone')),
+        email: Joi.string()
+            .email()
+            .label(req.polyglot.t('field.transaction.email')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -127,13 +135,17 @@ const fileOld = (req) => {
         optional4: Joi.string()
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t('field.transaction.optional')),
-        client: Joi.object({
-                fullname: Joi.string()
-                    .required()
-                    .label(req.polyglot.t('field.fullname')),
-            })
+        fullname: Joi.string()
             .required()
-            .label(req.polyglot.t('field.transaction.client')),
+            .label(req.polyglot.t('field.transaction.fullname')),
+        phone: Joi.string()
+            .min(11)
+            .max(13)
+            .pattern(/^[0-9]+$/)
+            .label(req.polyglot.t('field.transaction.phone')),
+        email: Joi.string()
+            .email()
+            .label(req.polyglot.t('field.transaction.email')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
