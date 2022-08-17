@@ -12,7 +12,7 @@
 
                 </div> <!-- card-header ends-->
 
-                <validation-observer 
+                <validation-observer
                     v-slot="{ invalid }"
                     tag="div"
                     class="card-body"
@@ -35,10 +35,10 @@
                             </div>
 
                             <div class="mb-4">
-                                
-                                <b-form-radio-group     
+
+                                <b-form-radio-group
                                     v-model="model.vehicleCondition"
-                                    :options="vehicleConditionOptions" 
+                                    :options="vehicleConditionOptions"
                                     button-variant="primary"
                                     buttons
                                 ></b-form-radio-group>
@@ -51,11 +51,11 @@
 
                             <div class="p-0 p-lg-3 rounded border-0 border-lg">
 
-                                <validation-provider 
-                                    v-for="(field, i) in documentFields" 
-                                    :key="i" v-slot="{ errors, validate }" 
+                                <validation-provider
+                                    v-for="(field, i) in documentFields"
+                                    :key="i" v-slot="{ errors, validate }"
                                     rules="required|image"
-                                    tag="fieldset" 
+                                    tag="fieldset"
                                     class="form-group"
                                     :name="field.label"
                                 >
@@ -71,7 +71,7 @@
                                         </div>
 
                                         <label :for="field.key" class="flex-grow-1 mb-0">
-                                            {{ field.label }} 
+                                            {{ field.label }}
                                             <span v-if="field.required" class="text-danger">*</span>
                                         </label>
 
@@ -87,7 +87,7 @@
                                         />
 
                                         <BaseButton tag="label" classes="mb-0" :for="field.key">Upload</BaseButton>
-                                        
+
                                     </div>
 
                                     <div v-if="errors[0]" class="invalid-feedback" style="display: block;">
@@ -109,7 +109,7 @@
                             <div class="p-0 p-lg-3 rounded border-0 border-lg mb-4">
 
                                 <BaseInput
-                                    v-model="model.name"
+                                    v-model="model.client.fullname"
                                     name="Nama"
                                     label="Nama"
                                     placeholder="Josua Jostar"
@@ -119,7 +119,7 @@
                                 />
 
                                 <BaseInput
-                                    v-model="model.phone"
+                                    v-model="model.client.phone"
                                     type="number"
                                     name="Nomor Telepon"
                                     label="Nomor Telepon"
@@ -129,7 +129,7 @@
                                 />
 
                                 <BaseInput
-                                    v-model="model.email"
+                                    v-model="model.client.email"
                                     name="Email"
                                     label="Email"
                                     placeholder="user@email.com"
@@ -299,14 +299,18 @@ export default {
             model: {
                 totalPremium: this.formatPrice(0),
                 vehicleCondition: 'new',
-                name: null,
-                phone: null,
-                email: null,
+                client: {
+                  fullname: null,
+                  email: null,
+                  phone: null,
+                },
                 fullAddress: null,
                 province: null,
                 city: null,
                 district: null,
                 urban: null,
+                postalCode: null,
+                useAdressToShip: false,
                 plateDetail: null,
                 licensePlate:null,
                 vehicleColor: null,
@@ -342,7 +346,7 @@ export default {
             ],
             newVehicleDocumentFields: [
                 {
-                    key: "recordOfTransfer",
+                    key: "bastk",
                     label: "BASTK",
                     required: true
                 },
@@ -458,7 +462,7 @@ export default {
 
             // silahkan diperbaiki kalau ada yang salah
             if(this.model.vehicleCondition === 'new') {
-                this.formData.append('record_of_transfer',this.model.recordOfTransfer)
+                this.formData.append('bastk',this.model.bastk)
                 this.formData.append('identity_card',this.model.identityCard)
             } else {
                 this.formData.append('stnk',this.model.stnk)
@@ -469,6 +473,12 @@ export default {
                 this.formData.append('dashboard',this.model.dashboard)
             }
 
+            this.formData.append('fullname', this.model.client.fullname)
+            this.formData.append('email', this.model.client.email)
+            this.formData.append('phone', this.model.client.phone)
+
+            this.formData.append('use_address_to_ship',this.model.useAdressToShip)
+            this.formData.append('condition',this.model.vehicleCondition)
             this.formData.append('vehicle_color',this.model.vehicleColor)
             this.formData.append('plate_detail',this.model.plateDetail)
             this.formData.append('machine_number',this.model.machineNumber)
@@ -484,9 +494,6 @@ export default {
 
             })
         },
-        test() {
-            console.log(this.model.customModalData)
-        }
     }
 }
-</script>   
+</script>
