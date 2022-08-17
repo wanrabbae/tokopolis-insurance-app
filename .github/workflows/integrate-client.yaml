@@ -19,5 +19,5 @@ jobs:
       - name: Install & Build Packages
         working-directory: core-client
         run: |
-          npm install
+          npm install -f
           npm run build
