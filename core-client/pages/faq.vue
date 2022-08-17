@@ -18,13 +18,13 @@
                                     >
 
                                     <b-input-group-append class="d-flex align-items-center">
-                                        <BaseButton 
-                                            type="secondary" 
-                                            native-type="submit" 
+                                        <BaseButton
+                                            type="secondary"
+                                            native-type="submit"
                                             class="px-3 bg-transparent border-0 shadow-none"
                                         >
                                             <fa icon="search"/>
-                                        </BaseButton> 
+                                        </BaseButton>
                                     </b-input-group-append>
                                 </b-input-group>
                             </b-form-group>
@@ -73,6 +73,7 @@
 export default {
     data() {
         return {
+            title: 'FAQ',
             search: null,
             questions: [
                 "Bagaimana Cara Mendaftar Di PIQO?",
@@ -133,15 +134,8 @@ export default {
     },
     head() {
         return {
-            title: 'FAQ - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     }
 }
 </script>

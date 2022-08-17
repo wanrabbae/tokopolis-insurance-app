@@ -43,6 +43,7 @@
 export default {
     data() {
         return {
+            title: 'Tentang',
             coreValueCards: [
                 {
                     icon: "/svg/costumer-first.svg",
@@ -74,15 +75,8 @@ export default {
     },
     head() {
         return {
-            title: 'Tentang - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     }
 }
 </script>

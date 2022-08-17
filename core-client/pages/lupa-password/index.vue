@@ -1,33 +1,33 @@
 <template>
-    
+
     <div>
-        
+
         <h2>Lupa Password</h2>
 
         <p>Kami akan mengirimkan tautan ke email anda untuk mengubah Password</p>
-        
+
         <b-alert :show="showAlertSuccess" variant="success" class="mb-3">
-            
+
             <b-list-group class="alert text-white">
-                
+
                 <b-list-group-item class="list-item-alert-success">Kami telah mengirim link untuk reset password ke email anda</b-list-group-item>
-            
+
             </b-list-group>
 
         </b-alert>
-        
+
         <b-alert :show="showAlertError" variant="danger" class="mb-3">
-            
+
             <b-list-group class="alert text-white">
-            
+
                 <b-list-group-item v-for="notification in notifications" :key="notification.message" class="list-item-alert-danger">• {{notification.message}}</b-list-group-item>
-            
+
             </b-list-group>
-        
+
         </b-alert>
-        
+
         <b-form method="post" @submit.prevent="forgetPassword">
-            
+
             <BaseInput
                 v-model="email"
                 name="Email"
@@ -47,13 +47,14 @@
 import BaseInput from '../../components/Inputs/BaseInput'
 
 export default {
-    components: { 
-        BaseInput 
+    components: {
+        BaseInput
     },
     layout: 'auth',
     middleware:'guest',
     data () {
         return {
+            title: 'Lupa Password',
             email: '',
             showAlertSuccess:false,
             showAlertError:false,
@@ -62,15 +63,8 @@ export default {
     },
     head() {
         return {
-            title: 'Lupa Password - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     methods: {
         async forgetPassword () {
@@ -80,7 +74,7 @@ export default {
                 }).then((response) => {
                     this.showAlertSuccess = true
                     this.showAlertError = false
-                    }    
+                    }
                 )
 
             } catch (e) {

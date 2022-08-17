@@ -3,15 +3,15 @@
     <div>
 
         <h2>Daftar Akun</h2>
-        
+
         <b-alert :show="showAlert" variant="danger" class="alert mb-3">
 
             <b-list-group class="alert text-white">
 
                 <b-list-group-item v-for="error in errors" :key="error.message" class="list-item-alert-danger">• {{error.message}}</b-list-group-item>
-            
+
             </b-list-group>
-        
+
         </b-alert>
 
         <validation-observer v-slot="{ handleSubmit, invalid }">
@@ -71,13 +71,13 @@
                     class="custom-control custom-checkbox mb-3"
                 >
 
-                    <input 
-                        id="eula" 
-                        v-model="model.eula" 
-                        type="checkbox" 
+                    <input
+                        id="eula"
+                        v-model="model.eula"
+                        type="checkbox"
                         class="custom-control-input"
                     >
-                    
+
                     <label for="eula" class="custom-control-label">
                         Saya setuju dengan <a href='#'>Kebijakan Pengguna</a>
                     </label>
@@ -89,7 +89,7 @@
                 </BaseButton>
 
                 <div class="text-center">
-                    Sudah Memiliki Akun? <a href="/login">Masuk</a>   
+                    Sudah Memiliki Akun? <a href="/login">Masuk</a>
                 </div>
 
             </b-form>
@@ -106,14 +106,15 @@ import BaseInput from '../components/Inputs/BaseInput'
 import BaseButton from '../components/BaseButton'
 
 export default {
-    components: { 
-        BaseInput, 
+    components: {
+        BaseInput,
         BaseButton
     },
     layout: 'auth',
     middleware:'guest',
     data () {
         return {
+            title: 'Register',
             model: {
                 policy_number: null,
                 fullname: null,
@@ -129,15 +130,8 @@ export default {
     },
     head() {
         return {
-            title: 'Register - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     created() {
         if(this.$route.query.no_polis) {
@@ -160,14 +154,14 @@ export default {
                         cookie.set('token', accessToken, { expires: expired })
                         this.$store.commit('setToken',accessToken)
                         this.$router.go('/');
-                        
+
                     }
                 })
 
             } catch (e) {
                 if (e.response.data.message == null) {
                     this.errors = e.response.data.data
-                } 
+                }
                 else {
                     this.errors=[]
                     this.errors.push({

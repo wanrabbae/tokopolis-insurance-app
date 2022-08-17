@@ -3,11 +3,11 @@
     <div>
 
         <div class="card-body">
-            
+
             <h2>Detail Bank</h2>
 
             <validation-observer v-slot="{ handleSubmit, invalid }" tag="div" class="d-block">
-                
+
                 <b-form @submit.prevent="handleSubmit(onSubmit)">
 
                     <BaseSelect
@@ -48,9 +48,9 @@
             </validation-observer>
 
         </div> <!-- card-body ends -->
-        
+
     </div>
-    
+
 </template>
 
 <script>
@@ -65,6 +65,7 @@ export default {
     layout: 'userarea',
     data() {
         return {
+            title: 'Detail Bank',
             model: {
                 bank:null,
                 bank_number:'',
@@ -75,15 +76,8 @@ export default {
     },
     head() {
         return {
-            title: 'Detail Bank - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     methods: {
         onSubmit() {

@@ -1,24 +1,24 @@
 <template>
     <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
-        
+
         <div class="container">
-            
+
             <div class="card border">
-                
+
                 <div class="card-header border-bottom">
-                    
+
                     <h2 class="mb-0">Form Laporan Claim</h2>
-                
+
                 </div> <!-- card-header ends -->
-            
+
                 <b-form class="card-body" @submit.prevent="submitHandler">
-                    
+
                     <div class="row">
 
                         <div class="col-12 col-lg-6 mb-4">
-                            
+
                             <div class="p-0 p-lg-3 rounded border-0 border-lg">
-                                
+
                                 <BaseInput
                                     v-model="model.policyHolder"
                                     name="Nama Pemegang Polis"
@@ -62,7 +62,7 @@
                                                 >
 
                                                 <b-input-group-append>
-                                                    
+
                                                     <b-form-datepicker
                                                         locale="id"
                                                         v-bind="calendarLabels"
@@ -95,8 +95,8 @@
                                                 >
 
                                                 <b-input-group-append>
-                                                
-                                                    <b-form-timepicker 
+
+                                                    <b-form-timepicker
                                                         class="custom-timepicker"
                                                         locale="ID"
                                                         hide-header
@@ -112,7 +112,7 @@
                                                 </b-input-group-append>
 
                                             </b-input-group>
-                                            
+
                                         </div> <!-- col ends -->
 
                                     </div> <!-- row ends -->
@@ -139,29 +139,29 @@
                                 />
 
                             </div>
-                            
+
                         </div> <!-- col ends -->
-                        
+
                         <div class="col-12 col-lg-6 mb-4">
 
                             <div class="p-0 p-lg-3 rounded border-0 border-lg mb-4">
-                                
-                                <div 
-                                    v-for="(field, id) in documentFields" 
-                                    :key="id" 
-                                    class="d-flex align-items-center" 
+
+                                <div
+                                    v-for="(field, id) in documentFields"
+                                    :key="id"
+                                    class="d-flex align-items-center"
                                     :class="{ 'mb-3' : id < documentFields.length - 1 }"
                                 >
-                                    
+
                                     <div class="mr-3" style="min-width: 32px; max-width: 32px;">
                                         <img v-if="documentImages[field.key]" :src="documentImages[field.key]">
                                         <img v-else src="/svg/picture.svg">
                                     </div>
-                                    
+
                                     <div class="flex-grow-1">
                                         <span>{{ field.label }}</span>
                                     </div>
-                                    
+
                                     <div class="d-block">
                                         <b-form-file
                                             :id="field.key"
@@ -193,7 +193,7 @@
                     </div> <!-- row ends -->
 
                 </b-form>
-                
+
             </div>
 
         </div> <!-- container ends -->
@@ -214,6 +214,7 @@ export default {
     },
     data() {
         return {
+            title: 'Form Laporan Klaim',
             model: {
                 policyHolder: null,
                 piqoId: null,
@@ -281,15 +282,8 @@ export default {
     },
     head() {
         return {
-            title: 'Form Laporan Claim - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     methods: {
         datepickerContextHandler(ctx) {

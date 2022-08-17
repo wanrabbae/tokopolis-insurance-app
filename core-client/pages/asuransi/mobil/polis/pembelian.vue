@@ -292,6 +292,7 @@ export default {
     },
     data () {
         return {
+            title: 'Pembelian',
             id: null,
             formData: null,
             url: [],
@@ -408,15 +409,8 @@ export default {
     },
     head() {
         return {
-            title: 'Pembelian - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         documentFields() {

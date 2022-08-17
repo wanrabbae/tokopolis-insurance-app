@@ -1,21 +1,21 @@
 <template>
-    
+
     <div>
-        
+
         <h2>Buat Password Baru</h2>
-        
+
         <b-alert :show="showAlertError" variant="danger" class="mb-3">
 
             <b-list-group class="alert text-white">
-                
+
                 <b-list-group-item v-for="notification in notifications" :key="notification.message" class="list-item-alert-danger">• {{notification.message}}</b-list-group-item>
-            
+
             </b-list-group>
-        
+
         </b-alert>
 
         <b-form v-show="showForm" method="post" @submit.prevent="resetPassword">
-            
+
             <BaseInput
                 v-model="password"
                 type="password"
@@ -50,13 +50,14 @@
 import BaseInput from '../../components/Inputs/BaseInput'
 
 export default {
-    components: { 
-        BaseInput 
+    components: {
+        BaseInput
     },
     layout: 'auth',
     middleware:'guest',
     data () {
         return {
+            title: 'Reset Password',
             password: '',
             password_confirmation:'',
             showAlertError:false,
@@ -64,24 +65,16 @@ export default {
             showButton:false,
             notifications:[],
             token:''
-            
+
         }
     },
     head() {
-            return {
-                title: 'Reset Password - Pico Insurtech',
-                meta: [
-                    {
-                        hid: 'description',
-                        name: 'description',
-                        content: 'Deskripsi Halaman'
-                    }
-                ]
-            };
-        },
+        return {
+            titleTemplate: `${this.title} | %s`,
+        }
+    },
     mounted() {
         this.checkToken()
-
     },
 
     methods: {
@@ -93,7 +86,7 @@ export default {
                         this.token = this.$nuxt.$route.params.id
                         this.showForm=true
                         this.showButton=false
-                        
+
                     }
                 })
             } catch(e) {
@@ -132,7 +125,7 @@ export default {
                         message: e.response.data.message
                     })
                 }
-                
+
                 this.showAlertError = true
             }
         }

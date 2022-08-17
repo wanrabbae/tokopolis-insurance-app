@@ -110,6 +110,7 @@ export default {
 },
     data() {
         return {
+            title: 'Daftar Polis',
             loading : true,
             model: {
                 search: null,
@@ -147,15 +148,8 @@ export default {
     },
     head() {
         return {
-            title: 'Daftar Polis - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     mounted() {
         this.getTransactions()
@@ -180,7 +174,7 @@ export default {
                     })
                 })
 
-                
+
                 console.log(this.policies)
                 this.loading = false
 

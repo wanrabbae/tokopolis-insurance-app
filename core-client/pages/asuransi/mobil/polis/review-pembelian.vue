@@ -361,6 +361,7 @@ export default {
     },
     data () {
         return {
+            title: 'Review Pembelian',
             loading : true,
             idTransaction : null,
             model: {
@@ -689,15 +690,8 @@ export default {
     },
     head() {
         return {
-            title: 'Review Pembelian - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         totalPrice() {

@@ -1,17 +1,17 @@
 <template>
 
     <div>
-        
+
         <validation-observer v-slot="{ handleSubmit, invalid }" tag="div" class="card-body">
 
             <h2>Ganti Password</h2>
 
-            <b-form 
-                method="post" 
-                class="w-100 w-lg-75" 
+            <b-form
+                method="post"
+                class="w-100 w-lg-75"
                 @submit.prevent="handleSubmit(changePassword)"
             >
-                
+
                 <BaseInput
                     v-model="model.oldPassword"
                     type="password"
@@ -39,10 +39,10 @@
                     placeholder="Konfirmasi Password Baru"
                     rules="required|confirmed:Password Baru"
                 />
-                       
-                <BaseButton 
-                    native-type="submit" 
-                    classes="w-100 w-lg-auto" 
+
+                <BaseButton
+                    native-type="submit"
+                    classes="w-100 w-lg-auto"
                     :disabled="invalid"
                 >
                     Update
@@ -60,12 +60,13 @@
 import BaseInput from '../../components/Inputs/BaseInput'
 
 export default {
-    components: { 
+    components: {
         BaseInput
     },
     layout: 'userarea',
     data() {
         return {
+            title: 'Ganti Password',
             model: {
                 oldPassword: null,
                 newPassword: null,
@@ -75,14 +76,7 @@ export default {
     },
     head() {
         return {
-            title: 'Ganti Password - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
+            titleTemplate: `${this.title} | %s`,
         }
     },
     methods: {

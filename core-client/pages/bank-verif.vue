@@ -5,9 +5,9 @@
         <h2>Verifikasi Detail Bank</h2>
 
         <b-form>
-            
+
             <b-form-group>
-                
+
                 <b-form-select
                     v-model="model.bank"
                     :options="banks"
@@ -36,7 +36,7 @@
             <a href="#" class="d-block text-center">Lewati</a>
 
         </b-form>
-            
+
     </div>
 
 </template>
@@ -45,23 +45,29 @@
 import BaseInput from '../components/Inputs/BaseInput'
 
 export default {
-    components: { 
-        BaseInput 
+    components: {
+        BaseInput
     },
     layout: 'auth',
-    data () {
+    data() {
         return {
+            title: 'Verifikasi Bank',
             model: {
                 bank: null,
                 bankNumber: null,
                 bankName: null,
             },
             banks: [
-                { text: 'Nama Bank', value: null }, 
+                { text: 'Nama Bank', value: null },
                 'BCA', 'BNI', 'MANDIRI' ,'BRI' , 'BTN' , 'CIMB'
             ],
         }
-    }
+    },
+    head() {
+        return {
+            titleTemplate: `${this.title} | %s`,
+        }
+    },
 }
 </script>
 

@@ -200,6 +200,7 @@ export default {
     },
     data() {
         return {
+            title: 'Konfirmasi Pembayaran',
             loading : true,
             paymentData: {
                 // "type": "ewallet",
@@ -238,15 +239,8 @@ export default {
     },
     head() {
         return {
-            title: 'Konfirmasi Pembayaran - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         formattedTimeLeft() {

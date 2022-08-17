@@ -1,21 +1,21 @@
 <template>
-    
+
     <div>
-        
+
         <div id="profile" class="card-body">
 
             <h2>Profil</h2>
-            
+
             <div class="row flex-column-reverse flex-lg-row">
-                
-                <validation-observer 
-                    v-slot="observer" 
+
+                <validation-observer
+                    v-slot="observer"
                     tag="div"
                     class="col-12 col-lg-8"
                 >
-                    
+
                     <b-form method="post" @submit.prevent="observer.handleSubmit(submitFile)">
-                        
+
                         <BaseInput
                             v-model="email"
                             name="Email"
@@ -46,17 +46,17 @@
                             ]"
                         />
 
-                        <validation-observer 
-                            v-slot="{ errors }" 
-                            tag="fieldset" 
+                        <validation-observer
+                            v-slot="{ errors }"
+                            tag="fieldset"
                             class="form-group"
                         >
-                            
+
                             <label class="form-control-label">Tanggal Lahir</label>
-                                    
+
                             <div class="row no-gutters has-label">
-                    
-                                <validation-provider 
+
+                                <validation-provider
                                     v-slot="{ invalid, validated }"
                                     tag="div"
                                     name="Tanggal Lahir"
@@ -64,7 +64,7 @@
                                     :rules="{ integer: true }"
                                 >
 
-                                    <input 
+                                    <input
                                         v-model="birthday"
                                         type="number"
                                         placeholder="DD"
@@ -80,7 +80,7 @@
 
                                 <validation-provider
                                     v-slot="{ invalid, validated }"
-                                    tag="div" 
+                                    tag="div"
                                     name="Bulan Lahir"
                                     class="col"
                                     :rules="{ required_if: birthday >= 1 && birthday <= maxDay || birthyear >= 1970 && birthyear <= maxYear }"
@@ -96,8 +96,8 @@
                                     />
 
                                 </validation-provider>
-                                
-                                <validation-provider 
+
+                                <validation-provider
                                     v-slot="{ invalid, validated }"
                                     tag="div"
                                     name="Tahun Lahir"
@@ -120,12 +120,12 @@
 
                                 </validation-provider>
 
-                            </div> 
+                            </div>
 
                             <ul v-if="errors" class="d-block invalid-feedback mt-1">
-                                  
+
                                 <li v-for="(error, i) in errors" :key="i" :class="{ 'd-none' : !error[0] }">
-                                    
+
                                     <span>{{ error[0] }}</span>
 
                                 </li>
@@ -150,7 +150,7 @@
                             label="Provinsi"
                             placeholder="Masukkan Provinsi"
                         />
-                        
+
                         <BaseInput
                             v-model="city"
                             name="Kota"
@@ -158,7 +158,7 @@
                             label="Kota"
                         />
 
-                        <BaseTextarea 
+                        <BaseTextarea
                             v-model="address"
                             label="Alamat Lengkap"
                             name="Alamat Lengkap"
@@ -166,47 +166,47 @@
                             rows="4"
                         />
 
-                        <BaseButton 
-                            native-type="submit" 
+                        <BaseButton
+                            native-type="submit"
                             classes="w-100 w-lg-auto"
                             :disabled="observer.invalid"
                         >
                             Update
                         </BaseButton>
-                    
+
                     </b-form>
 
                 </validation-observer> <!-- col-12.col-lg-8 ends -->
-                
+
                 <div class="col-12 col-lg-4 mb-3 mb-lg-5 text-center">
-                    
-                    <b-img 
-                        v-if="upload" 
-                        :src="photo" 
-                        alt="Profile Picture" 
-                        class="avatar rounded-circle mb-4" 
+
+                    <b-img
+                        v-if="upload"
+                        :src="photo"
+                        alt="Profile Picture"
+                        class="avatar rounded-circle mb-4"
                     />
 
-                    <b-img 
-                        v-else 
-                        :src="imgDataUrl" 
-                        alt="Profile Picture" 
-                        class="avatar rounded-circle mb-4" 
+                    <b-img
+                        v-else
+                        :src="imgDataUrl"
+                        alt="Profile Picture"
+                        class="avatar rounded-circle mb-4"
                     />
-                        
+
                     <BaseButton @click="toggleShow">Pilih Gambar</BaseButton>
-                
+
                 </div> <!-- col-12.col-4 ends -->
-            
+
             </div> <!-- row ends -->
-        
+
         </div> <!-- card-body ends -->
-        
+
         <Loading :show="loading"/>
-        
+
         <client-only>
-            
-            <my-upload 
+
+            <my-upload
                 v-model="show"
                 no-square
                 no-circle
@@ -219,9 +219,9 @@
                 class="custom-image-crop-upload"
                 @crop-success="cropSuccess"
             />
-        
+
         </client-only>
-    
+
     </div>
 
 </template>
@@ -246,6 +246,7 @@ export default {
     layout: 'userarea',
     data () {
         return {
+            title: 'Profil',
             upload:true,
             fullname : null,
             gender: null,
@@ -300,15 +301,8 @@ export default {
     },
     head() {
         return {
-            title: 'Profil - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         maxDay() {
@@ -403,7 +397,7 @@ export default {
         },
         submitFile() {
             this.formData = new FormData()
-            
+
             this.checkFieldValue('email', this.email)
             this.checkFieldValue('fullname', this.fullname)
             this.checkFieldValue('gender',this.gender)
@@ -420,7 +414,7 @@ export default {
                 this.formData.append('photo', this.photo,this.photo.name)
             }
 
-            
+
             this.$axios.$post('api/user', this.formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
@@ -429,7 +423,7 @@ export default {
                     const photo = response.data.photo
                     cookie.set('photo', photo, { expires: 1 })
                 }
-            
+
                 window.location.reload(true)
             })
         },
@@ -459,7 +453,7 @@ export default {
             if(value !== '' && value !== undefined && value != null){
                 this.formData.append(name, value)
             }
-            
+
         },
 
     }

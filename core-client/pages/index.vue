@@ -2,85 +2,85 @@
 
     <main class="main-content">
 
-        <PromotionCarousel 
-            tag="section" 
+        <PromotionCarousel
+            tag="section"
             :images="promotionImages"
             classes="py-4"
         />
 
-        <Service 
+        <Service
             id="service"
             tag="section"
             classes="py-1"
             :service-list="serviceList"
         />
-        
-        <TrackClaim 
+
+        <TrackClaim
             id="track-claim"
             tag="section"
             class="pt-4 py-lg-5"
         />
 
         <section id="videos" class="container py-5">
-            
+
             <VideoCarousel :videos="videos" />
-        
+
         </section>
 
         <section id="claim-assistance">
-            
-            <ClaimAssistance 
+
+            <ClaimAssistance
                 :claim-assistance-list="claimAssistanceList"
-                class="container px-4 px-lg-5 py-lg-5 py-4" 
+                class="container px-4 px-lg-5 py-lg-5 py-4"
             />
-        
+
         </section>
 
         <section class="container py-5">
-            
-            <WhyUs 
+
+            <WhyUs
                 id="why-us"
                 :why-us-list="whyUsList"
                 class="px-lg-5 pb-4"
             />
 
             <div id="partners" class="py-4">
-                
+
                 <h2 class="fs-lg-1 fs-3 text-center">Partner Kami</h2>
-                
+
                 <BrandCarousel :brand-images="partnerBrandImages"/>
-            
+
             </div>
 
             <div id="covered-by" class="pt-4">
-                
-                <h2 class="fs-lg-1 fs-3 text-center">Telah Diliput Oleh</h2>           
-                
+
+                <h2 class="fs-lg-1 fs-3 text-center">Telah Diliput Oleh</h2>
+
                 <BrandCarousel :brand-images="coveredByImages"/>
-            
+
             </div>
-        
+
         </section>
 
         <section id="testimonial" class="bg-dark-blue py-5">
-            
+
             <div class="container">
-                
+
                 <h2 class="fs-lg-1 fs-3 text-center text-white">Apa Kata Mereka?</h2>
-                
+
                 <TestimonialCarousel :testimonials="testimonials"/>
-            
+
             </div>
-        
+
         </section>
 
-        <CallToAction 
-            id="call-to-action" 
+        <CallToAction
+            id="call-to-action"
             tag="section"
         />
 
     </main>
-    
+
 </template>
 
 <script>
@@ -248,14 +248,7 @@ export default {
     },
     head() {
         return {
-            title: 'Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
+            titleTemplate: `%s`,
         };
     }
 }

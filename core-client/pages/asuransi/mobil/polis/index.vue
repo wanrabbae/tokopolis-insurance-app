@@ -302,6 +302,7 @@ export default {
     },
     data () {
         return {
+            title: 'Asuransi Mobil',
             model: {
                 brand: null,
                 type: null,
@@ -408,15 +409,8 @@ export default {
     },
     head() {
         return {
-            title: 'Asuransi Mobil - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed:{
         shownProducts() {
@@ -526,7 +520,7 @@ export default {
                         workshop_count : element.workshop_count
                     })
                 })
-                
+
                 this.loading = false
             }).catch (error => {
                 if(error.response.status === 400){
