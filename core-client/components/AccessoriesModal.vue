@@ -162,8 +162,8 @@ export default {
                         type: field.type,
                         price: this.formatNumber(field.price)
                     }
-
                     this.accessoriesData = [...this.accessoriesData, data];
+                    
                 }
             });
 

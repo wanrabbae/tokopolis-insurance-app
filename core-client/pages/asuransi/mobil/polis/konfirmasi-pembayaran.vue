@@ -321,8 +321,9 @@ export default {
                     this.loading = false
                 })
                 .catch (error => {
-                    console.log(error)
-                    this.$router.push({name: "asuransi-mobil-polis-review-pembelian"})
+                    if(error.response.status === 400){
+                        this.$router.push({name: "asuransi-mobil-polis-review-pembelian"})
+                    }
                 })
         },
         confirmPayment(){

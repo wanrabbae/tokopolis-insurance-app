@@ -51,21 +51,29 @@
 
                             <div class="p-0 p-lg-3 rounded border-0 border-lg">
 
-                                <div v-for="(field, i) in documentFields" :key="i" class="d-flex align-items-center" :class="{ 'mb-3' : i !== documentFields.length - 1 }">
+                                <validation-provider 
+                                    v-for="(field, i) in documentFields" 
+                                    :key="i" v-slot="{ errors, validate }" 
+                                    rules="required|image"
+                                    tag="fieldset" 
+                                    class="form-group"
+                                    :name="field.label"
+                                >
 
-                                    <div class="mr-3" style="min-width: 32px; max-width: 32px;">
+                                    <div class="d-flex align-items-center">
 
-                                        <img v-if="url[field.key]" :src="url[field.key]">
+                                        <div class="mr-3" style="width: 32px; width: 32px;">
 
-                                        <img v-else src="/svg/new/item-pictures.svg">
+                                            <img v-if="url[field.key]" :src="url[field.key]">
 
-                                    </div>
+                                            <img v-else src="/svg/new/item-pictures.svg">
 
-                                    <div class="flex-grow-1">
-                                        <span>{{ field.label }}</span>
-                                    </div>
+                                        </div>
 
-                                    <div class="d-block">
+                                        <label :for="field.key" class="flex-grow-1 mb-0">
+                                            {{ field.label }} 
+                                            <span v-if="field.required" class="text-danger">*</span>
+                                        </label>
 
                                         <b-form-file
                                             :id="field.key"
@@ -75,14 +83,18 @@
                                             accept="image/jpeg, image/png"
                                             plain
                                             :required="field.required"
-                                            @change="onFileChange"
+                                            @change="(e) => onFileChange(e, validate)"
                                         />
 
                                         <BaseButton tag="label" classes="mb-0" :for="field.key">Upload</BaseButton>
-
+                                        
                                     </div>
 
-                                </div>
+                                    <div v-if="errors[0]" class="invalid-feedback" style="display: block;">
+                                        {{ errors[0] }}
+                                    </div>
+
+                                </validation-provider>
 
                             </div>
 
@@ -102,6 +114,8 @@
                                     label="Nama"
                                     placeholder="Josua Jostar"
                                     rules="required"
+                                    required
+                                    asterix
                                 />
 
                                 <BaseInput
@@ -110,8 +124,7 @@
                                     name="Nomor Telepon"
                                     label="Nomor Telepon"
                                     placeholder="+62812345678"
-                                    rules="required"
-                                    input-classes="form-control custom-number"
+                                    input-classes="custom-number"
                                     onkeypress="if(this.value.length==14) return false;"
                                 />
 
@@ -119,19 +132,83 @@
                                     v-model="model.email"
                                     name="Email"
                                     label="Email"
-                                    placeholder="user@gmail.com"
-                                    rules="required|email"
-                                    required
+                                    placeholder="user@email.com"
+                                    rules="email"
                                 />
 
+                            </div>
+
+                            <div class="mb-lg-2 mb-3">
+                                <span class="fw-bold">Alamat Pemegang Polis</span>
+                            </div>
+
+                            <div class="p-0 p-lg-3 rounded border-0 border-lg mb-4">
+
                                 <BaseTextarea
-                                    v-model="model.address"
+                                    v-model="model.fullAddress"
                                     name="Alamat Lengkap"
                                     label="Alamat Lengkap"
-                                    placeholder="Jl. TB Simatupang Banjarsari I no. 8C, Kelurahan Cilandak Barat, Kecamatan Cilandak, Kota Jakarta Selatan, DKI Jakarta 12430"
+                                    placeholder="Jl. TB Simatupang Banjarsari I no. 8C"
                                     rules="required"
-                                    rows="4"
+                                    rows="2"
                                     required
+                                    asterix
+                                />
+
+                                <BaseSelect
+                                    v-model="model.province"
+                                    name="Provinsi"
+                                    label="Provinsi"
+                                    rules="required"
+                                    :options="provinceOptions"
+                                    required
+                                    asterix
+                                />
+
+                                <BaseSelect
+                                    v-model="model.city"
+                                    name="Kota/Kabupaten"
+                                    label="Kota/Kabupaten"
+                                    rules="required"
+                                    :options="cityOptions"
+                                    :disabled="!model.province"
+                                    required
+                                    asterix
+                                />
+
+                                <BaseSelect
+                                    v-model="model.district"
+                                    name="Kecamatan"
+                                    label="Kecamatan"
+                                    rules="required"
+                                    :options="districtOptions"
+                                    :disabled="!model.city"
+                                    required
+                                    asterix
+                                />
+
+                                <BaseSelect
+                                    v-model="model.urban"
+                                    name="Kelurahan"
+                                    label="Kelurahan"
+                                    rules="required"
+                                    :options="urbanOptions"
+                                    :disabled="!model.district"
+                                    required
+                                    asterix
+                                />
+
+                                <BaseInput
+                                    v-model="model.postalCode"
+                                    type="number"
+                                    name="Kode Pos"
+                                    label="Kode Pos"
+                                    placeholder="12500"
+                                    rules="required|digits:5"
+                                    input-classes="custom-number"
+                                    required
+                                    asterix
+                                    onkeypress="if(this.value.length==5) return false;"
                                 />
 
                             </div>
@@ -149,7 +226,8 @@
                                     placeholder="Putih"
                                     rules="required"
                                     required
-                                ></BaseInput>
+                                    asterix
+                                />
 
                                 <BaseInput
                                     v-model="model.plateDetail"
@@ -159,6 +237,7 @@
                                     placeholder="1234 WW"
                                     rules="required"
                                     required
+                                    asterix
                                 />
 
                                 <BaseInput
@@ -168,6 +247,7 @@
                                     placeholder="SDR72V2500W2017060104R"
                                     rules="required"
                                     required
+                                    asterix
                                 />
 
                                 <BaseInput
@@ -177,6 +257,7 @@
                                     placeholder="1HGBH41JXMN109186"
                                     rules="required"
                                     required
+                                    asterix
                                 />
 
                             </div>
@@ -185,7 +266,7 @@
 
                     </div> <!-- row ends-->
 
-                    <BaseButton :disabled="invalid || invalidDocumentsValidation" block @click="postTranscation">Lanjutkan</BaseButton>
+                    <BaseButton :disabled="invalid" block @click="postTranscation">Lanjutkan</BaseButton>
 
                 </validation-observer> <!-- card-body ends -->
 
@@ -200,11 +281,13 @@
 
 <script>
 import BaseInput from '../../../../components/Inputs/BaseInput'
+import BaseSelect from '../../../../components/Inputs/BaseSelect'
 import BaseTextarea from '../../../../components/Inputs/BaseTextarea'
 
 export default {
     components: {
         BaseInput,
+        BaseSelect,
         BaseTextarea
     },
     data () {
@@ -219,8 +302,13 @@ export default {
                 name: null,
                 phone: null,
                 email: null,
-                address: null,
+                fullAddress: null,
+                province: null,
+                city: null,
+                district: null,
+                urban: null,
                 plateDetail: null,
+                licensePlate:null,
                 vehicleColor: null,
                 machineNumber: null
             },
@@ -228,10 +316,34 @@ export default {
                 { text: 'Baru', value: 'new' },
                 { text: 'Bekas', value: 'used' },
             ],
+            provinceOptions: [
+                { text: 'Pilih Provinsi', value: null },
+                { text: 'DKI Jakarta', value: 'dki-jakarta' },
+                { text: 'Jawa Barat', value: 'jawa-barat' },
+                { text: 'DI Yogyakarta', value: 'di-yogyakarta' },
+                { text: 'Jawa Tengah', value: 'jawa-tengah' },
+                { text: 'Jawa Timur', value: 'banyuwangi' },
+            ],
+            cityOptions: [
+                { text: 'Pilih Kota/Kabupaten', value: null },
+                { text: 'Surabaya', value: 'surabaya' },
+                { text: 'Sidoarjo', value: 'sidoarjo' },
+                { text: 'Malang', value: 'malang' },
+                { text: 'Banyuwangi', value: 'banyuwangi' },
+            ],
+            districtOptions: [
+                { text: 'Pilih Kecamatan', value: null },
+                { text: 'Wonokromo', value: 'wonokromo' },
+                { text: 'Waru', value: 'waru' }
+            ],
+            urbanOptions: [
+                { text: 'Pilih Kelurahan', value: null },
+                { text: 'Sidokepung', value: 'sidokepung' }
+            ],
             newVehicleDocumentFields: [
                 {
                     key: "recordOfTransfer",
-                    label: "Berita Acara Serah Terima Kendaraan (BASTK)",
+                    label: "BASTK",
                     required: true
                 },
                 {
@@ -273,19 +385,19 @@ export default {
                 },
                 {
                     key: "optional_1",
-                    label: "Foto Tambahan (Opsional)"
+                    label: "Foto Tambahan"
                 },
                 {
                     key: "optional_2",
-                    label: "Foto Tambahan (Opsional)"
+                    label: "Foto Tambahan"
                 },
                 {
                     key: "optional_3",
-                    label: "Foto Tambahan (Opsional)"
+                    label: "Foto Tambahan"
                 },
                 {
                     key: "optional_4",
-                    label: "Foto Tambahan (Opsional)"
+                    label: "Foto Tambahan"
                 }
             ]
         }
@@ -305,17 +417,6 @@ export default {
     computed: {
         documentFields() {
             return this.model.vehicleCondition === 'new' ? this.newVehicleDocumentFields : this.usedVehicledocumentFields;
-        },
-        invalidDocumentsValidation(){
-            let invalid = false
-
-            this.documentFields.forEach(field => {
-                if (field.required && (this.model[field.key] === undefined || this.model[field.key] === null || this.model[field.key] === '')){
-                    invalid = true
-                }
-            })
-
-            return invalid
         }
     },
     deactivated(){
@@ -331,20 +432,24 @@ export default {
         reviewPayment() {
             this.$router.push({name: "asuransi-mobil-polis-review-pembelian"})
         },
-        onFileChange(e) {
-            const file = e.target.files[0];
-            this.url[e.target.id] = URL.createObjectURL(file);
-
+        onFileChange(e, validate) {
+            if(!e.target.files[0]) return;
+            this.url[e.target.id] = URL.createObjectURL(e.target.files[0])
+            validate();
+            console.log(e);
         },
         async getDataTransaction() {
             await this.$axios.$get('api/transaction')
                 .then ((response) => {
-
+                    console.log(response)
+                    this.model.licensePlate = response.data.plate
                     this.model.totalPremium = this.formatPrice(response.data.price)
                     this.loading = false
                 })
                 .catch (error => {
-                    console.log(error)
+                    if(error.response.status === 400){
+                        this.$router.push({name: "asuransi-mobil-polis"})
+                    }
                 })
         },
         postTranscation() {

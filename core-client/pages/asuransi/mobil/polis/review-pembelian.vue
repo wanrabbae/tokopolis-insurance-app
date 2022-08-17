@@ -154,181 +154,183 @@
 
                             </div>
 
-                            <div class="rounded border mb-3 mb-lg-4">
+                           <div class="rounded border mb-3 mb-lg-4">
 
-                                <div v-b-toggle.promotion-accordion class="position-relative d-flex align-items-center chevron pointer p-3">
+                               <div v-b-toggle.promotion-accordion class="position-relative d-flex align-items-center chevron pointer p-3">
 
-                                    <div class="mr-3">
-                                        <PercentIcon width="24px" height="24px" />
-                                    </div>
+                                   <div class="mr-3">
+                                       <PercentIcon width="24px" height="24px" />
+                                   </div>
 
-                                    <div class="text-dark fs-4 fw-bold">Makin Hemat Dengan Promo</div>
+                                   <div class="text-dark fs-4 fw-bold">Makin Hemat Dengan Promo</div>
 
-                                </div>
+                               </div>
 
-                                <b-collapse id="promotion-accordion" visible>
+                               <b-collapse id="promotion-accordion" visible>
 
-                                    <b-form class="px-3 pb-3">
+                                   <b-form class="px-3 pb-3">
 
-                                        <b-input-group>
+                                       <b-input-group>
 
-                                            <input
-                                                v-model="model.promotionCode"
-                                                placeholder="Masukkan Kode Promo"
-                                                class="form-control"
-                                            />
+                                           <input
+                                               v-model="model.promotionCode"
+                                               placeholder="Masukkan Kode Promo"
+                                               class="form-control"
+                                           />
 
-                                            <b-input-group-append>
+                                           <b-input-group-append>
 
-                                                <BaseButton native-type="submit">Periksa</BaseButton>
+                                               <BaseButton native-type="submit">Periksa</BaseButton>
 
-                                            </b-input-group-append>
+                                           </b-input-group-append>
 
-                                        </b-input-group>
+                                       </b-input-group>
 
-                                    </b-form>
+                                   </b-form>
 
-                                </b-collapse>
+                               </b-collapse>
 
-                            </div>
+                           </div>
 
-                            <div class="rounded border mb-3 mb-lg-4">
 
-                                <div class="p-3">
-                                    <span class="fw-bold">Ringkasan Pembelian</span>
-                                </div>
 
-                                <div class="border-top p-3">
+                           <div class="rounded border mb-3 mb-lg-4">
 
-                                    <div class="d-flex justify-content-between mb-2 mb-last-0">
-                                        <span class="fw-bold">ID Transaksi</span>
-                                        <span class="fw-bold">{{ transactionId }}</span>
-                                    </div>
+                               <div class="p-3">
+                                   <span class="fw-bold">Metode Pembayaran</span>
+                               </div>
 
-                                    <div v-for="field in purchaseSummaryFields" :key="field.key" class="d-flex justify-content-between mb-2 mb-last-0">
-                                        <span>{{ field.label }}</span>
-                                        <span>{{ formatPrice(purchaseSummaryDatas[field.key]) }}</span>
-                                    </div>
+                               <div class="border-top px-3 py-1">
 
-                                    <div class="d-flex justify-content-between mb-2 mb-last-0">
-                                        <span class="text-primary fw-bold">Total Pembelian</span>
-                                        <span class="text-primary fw-bold">{{ formatPrice(totalPrice) }}</span>
-                                    </div>
+                                   <b-form-radio-group
+                                       id="payment-method"
+                                       v-model="model.paymentMethod"
+                                       :aria-describedby="ariaDescribedby"
+                                       stacked
+                                   >
 
-                                </div>
+                                       <div v-b-toggle.virtual-account-accordion role="tab" class="position-relative d-flex flex-column justify-content-center pointer border-bottom chevron" style="min-height: 52px">
+                                           Virtual Account
+                                       </div>
 
-                            </div>
+                                       <b-collapse id="virtual-account-accordion" accordion="payment-method-accordion" role="tabpanel" visible>
 
-                            <div class="rounded border mb-3 mb-lg-4">
+                                           <div class="border-bottom py-3">
 
-                                <div class="p-3">
-                                    <span class="fw-bold">Metode Pembayaran</span>
-                                </div>
+                                               <b-form-radio v-for="option in virtualAccountOptions" :key="option.value" :value="option.value" class="mb-3 mb-last-0">
 
-                                <div class="border-top px-3 py-1">
+                                                   <div class="d-flex align-items-center justify-content-center">
 
-                                    <b-form-radio-group
-                                        id="payment-method"
-                                        v-model="model.paymentMethod"
-                                        :aria-describedby="ariaDescribedby"
-                                        stacked
-                                    >
+                                                       <div style="width: 64px" class="mr-3">
+                                                           <b-img :src="option.img" class="max-height: 100%" />
+                                                       </div>
 
-                                        <div v-b-toggle.virtual-account-accordion role="tab" class="position-relative d-flex flex-column justify-content-center pointer border-bottom chevron" style="min-height: 52px">
-                                            Virtual Account
-                                        </div>
+                                                       <div class="d-block">
+                                                           <span>{{ option.text }}</span>
+                                                       </div>
 
-                                        <b-collapse id="virtual-account-accordion" accordion="payment-method-accordion" role="tabpanel" visible>
+                                                   </div>
 
-                                            <div class="border-bottom py-3">
+                                               </b-form-radio>
 
-                                                <b-form-radio v-for="option in virtualAccountOptions" :key="option.value" :value="option.value" class="mb-3 mb-last-0">
 
-                                                    <div class="d-flex">
+                                           </div>
 
-                                                        <div style="width: 64px" class="mr-3">
-                                                            <b-img :src="option.img" class="max-height: 100%" />
-                                                        </div>
+                                       </b-collapse>
+                                       <div v-b-toggle.emoney-accordion role="tab" class="position-relative d-flex flex-column justify-content-center pointer chevron" style="min-height: 52px">
+                                           E-Money
+                                       </div>
 
-                                                        <div class="d-block">
-                                                            <span>{{ option.text }}</span>
-                                                        </div>
+                                       <b-collapse id="emoney-accordion" accordion="payment-method-accordion" role="tabpanel" >
 
-                                                    </div>
+                                           <div class="py-3">
 
-                                                </b-form-radio>
+                                               <b-form-radio v-for="option in emoneyOptions" :key="option.value" :value="option.value" class="mb-3 mb-last-0">
 
+                                                   <div class="d-flex">
 
-                                            </div>
+                                                       <div style="width: 64px" class="mr-3">
+                                                           <b-img :src="option.img" class="max-height: 100%" />
+                                                       </div>
 
-                                        </b-collapse>
-                                        <div v-b-toggle.emoney-accordion role="tab" class="position-relative d-flex flex-column justify-content-center border-bottom pointer chevron" style="min-height: 52px">
-                                            E-Money
-                                        </div>
+                                                       <div class="d-block">
+                                                           <span>{{ option.text }}</span>
+                                                       </div>
 
-                                        <b-collapse id="emoney-accordion" accordion="payment-method-accordion" role="tabpanel" >
+                                                   </div>
 
-                                            <div class="border-bottom py-3">
+                                               </b-form-radio>
 
-                                                <b-form-radio v-for="option in emoneyOptions" :key="option.value" :value="option.value" class="mb-3 mb-last-0">
+                                           </div>
 
-                                                    <div class="d-flex">
+                                       </b-collapse>
 
-                                                        <div style="width: 64px" class="mr-3">
-                                                            <b-img :src="option.img" class="max-height: 100%" />
-                                                        </div>
+                                       <div v-if="retailOptions.length" v-b-toggle.retail-accordion role="tab" class="position-relative d-flex flex-column justify-content-center pointer chevron" style="min-height: 52px">
 
-                                                        <div class="d-block">
-                                                            <span>{{ option.text }}</span>
-                                                        </div>
+                                           <div>Gerai Retail</div>
 
-                                                    </div>
+                                           <div>
+                                               <small class="text-muted">Verifikasi membutuhkan waktu 2x24 Jam</small>
+                                           </div>
 
-                                                </b-form-radio>
+                                       </div>
 
-                                            </div>
+                                       <b-collapse id="retail-accordion" accordion="payment-method-accordion" role="tabpanel">
 
-                                        </b-collapse>
+                                           <div class="border-top py-3">
 
-                                        <div v-b-toggle.retail-accordion role="tab" class="position-relative d-flex flex-column justify-content-center pointer chevron" style="min-height: 52px">
+                                               <b-form-radio v-for="option in retailOptions" :key="option.value" :value="option.value" class="mb-3 mb-last-0">
 
-                                            <div>Gerai Retail</div>
+                                                   <div class="d-flex">
 
-                                            <div>
-                                                <small class="text-muted">Verifikasi membutuhkan waktu 2x24 Jam</small>
-                                            </div>
+                                                       <div style="width: 64px" class="mr-3">
+                                                           <b-img :src="option.img" class="max-height: 100%" />
+                                                       </div>
 
-                                        </div>
+                                                       <div class="d-block">
+                                                           <span>{{ option.text }}</span>
+                                                       </div>
 
-                                        <b-collapse id="retail-accordion" accordion="payment-method-accordion" role="tabpanel">
+                                                   </div>
 
-                                            <div class="border-top py-3">
+                                               </b-form-radio>
 
-                                                <b-form-radio v-for="option in retailOptions" :key="option.value" :value="option.value" class="mb-3 mb-last-0">
+                                           </div>
 
-                                                    <div class="d-flex">
+                                       </b-collapse>
 
-                                                        <div style="width: 64px" class="mr-3">
-                                                            <b-img :src="option.img" class="max-height: 100%" />
-                                                        </div>
+                                   </b-form-radio-group>
 
-                                                        <div class="d-block">
-                                                            <span>{{ option.text }}</span>
-                                                        </div>
+                               </div>
 
-                                                    </div>
+                           </div>
 
-                                                </b-form-radio>
+                           <div class="rounded border mb-3 mb-lg-4">
 
-                                            </div>
+                               <div class="p-3">
+                                   <span class="fw-bold">Ringkasan Pembelian</span>
+                               </div>
 
-                                        </b-collapse>
+                               <div class="border-top p-3">
 
-                                    </b-form-radio-group>
+                                   <div class="d-flex justify-content-between mb-2 mb-last-0">
+                                       <span class="fw-bold">ID Transaksi</span>
+                                       <span class="fw-bold">{{ transactionId }}</span>
+                                   </div>
 
-                                </div>
+                                   <div v-for="field in purchaseSummaryFields" :key="field.key" class="d-flex justify-content-between mb-2 mb-last-0">
+                                       <span>{{ field.label }}</span>
+                                       <span>{{ formatPrice(purchaseSummaryDatas[field.key]) }}</span>
+                                   </div>
 
-                            </div>
+                                   <div class="d-flex justify-content-between mb-2 mb-last-0">
+                                       <span class="text-primary fw-bold">Total Pembelian</span>
+                                       <span class="text-primary fw-bold">{{ formatPrice(totalPrice) }}</span>
+                                   </div>
+
+                               </div>
+
+                           </div>
 
                            <BaseButton block @click="CreatePayment">Bayar Sekarang</BaseButton>
 
@@ -558,6 +560,10 @@ export default {
                     key: "administrationCost",
                     label: "Biaya Admin"
                 },
+                {
+                    key: "pgPrice",
+                    label: "Biaya Transfer"
+                },
                 // {
                 //     key: "discount",
                 //     label: "Diskon"
@@ -571,6 +577,7 @@ export default {
                 premiPrice: 0,
                 expTotal: 0,
                 administrationCost: 0,
+                pgPrice: 0,
                 // discount: 0,
                 // promo: 0
             },
@@ -623,6 +630,16 @@ export default {
                     value: 'bri'
                 },
                 {
+                    img: '/img/logo-bsi.png',
+                    text: 'BSI Virtual Account',
+                    value: 'bsi'
+                },
+                {
+                    img: '/img/logo-bjb.png',
+                    text: 'BJB Virtual Account',
+                    value: 'bjb'
+                },
+                {
                     img: '/img/logo-payment-others.png',
                     text: 'Virtual Account Lainnya',
                     value: 'permata'
@@ -656,17 +673,17 @@ export default {
                 },
             ],
             retailOptions: [
-                {
-                    img: '/img/logo-indomaret.png',
-                    text: 'Indomaret',
-                    value: 'indomaret'
-                },
-                {
-                    img: '/img/logo-alfamart.png',
-                    text: 'Alfamart',
-                    value: 'alfamart'
-                },
-
+            //     {
+            //         img: '/img/logo-indomaret.png',
+            //         text: 'Indomaret',
+            //         value: 'indomaret'
+            //     },
+            //     {
+            //         img: '/img/logo-alfamart.png',
+            //         text: 'Alfamart',
+            //         value: 'alfamart'
+            //     },
+            //
             ]
         }
     },
@@ -754,8 +771,9 @@ export default {
                     this.loading = false
                 })
                 .catch (error => {
-                    console.log(error)
-                    this.$router.push({name: "asuransi-mobil-polis-pembelian"})
+                    if(error.response.status === 400){
+                        this.$router.push({name: "asuransi-mobil-polis-pembelian"})
+                    }
                 })
         },
         CreatePayment() {

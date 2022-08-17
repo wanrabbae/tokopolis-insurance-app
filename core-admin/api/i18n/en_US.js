@@ -38,6 +38,7 @@ const en_US_strings = {
             'model': 'Model',
             'sub_model': 'Sub Model',
             'price': 'Price',
+            'total': 'Price Total',
             'plate': 'Plate',
             'plate_detail': 'Plate Detail',
             'color': 'Color',
@@ -59,7 +60,10 @@ const en_US_strings = {
             'transaction.id': 'Transaction ID',
             'transaction.status': 'Transaction Status',
             'transaction.condition': 'Vehicle Condition',
-            'transaction.client': 'Client Data',
+
+            'transaction.client.fullname': 'Nama Lengkap Pemegang Polis',
+            'transaction.client.email': 'Email Pemegang Polis',
+            'transaction.client.phone': 'Nomor Telepon Pemegang Polis',
 
             'transaction.bastk': 'BASTK File',
             'transaction.identity': 'Identity Photo',
