@@ -4,11 +4,11 @@
     
         <div class="promotion-carousel">
             
-            <div v-swiper:promotionCarousel="swiperOption" class="swiper rounded">
+            <div v-swiper:promotionCarousel="swiperOption" class="swiper">
                 
                 <div class="swiper-wrapper">
                     
-                    <div v-for="(image, index) in images" :key="index" class="swiper-slide">
+                    <div v-for="(image, i) in images" :key="i" class="swiper-slide">
 
                         <div class="swiper-image">
 

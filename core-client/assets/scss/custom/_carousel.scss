@@ -29,6 +29,8 @@
     position: relative;
     width: 100%;
     background-color: $gray-100;
+    border-radius: $spacer;
+    overflow: hidden;
 
     .swiper-image {
         position: relative;
@@ -173,5 +175,11 @@
             width: 8px !important;
             height: 8px !important;
         }
+    }
+}
+
+@include media-breakpoint-down(md){
+    .promotion-carousel {
+        border-radius: $spacer * .5;
     }
 }
