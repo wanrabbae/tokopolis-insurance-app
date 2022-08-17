@@ -439,9 +439,9 @@ export default {
         async getDataTransaction() {
             await this.$axios.$get('api/transaction')
                 .then ((response) => {
-                    console.log(response)
                     this.model.licensePlate = response.data.plate
                     this.model.totalPremium = this.formatPrice(response.data.price)
+
                     this.loading = false
                 })
                 .catch (error => {

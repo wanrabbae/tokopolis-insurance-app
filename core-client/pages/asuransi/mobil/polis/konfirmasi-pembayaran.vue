@@ -296,15 +296,15 @@ export default {
         async getTransactionReview() {
             await this.$axios.$get(`api/transaction/payment?transaction_id=${this.transactionId}`)
                 .then ((response) => {
-                    console.log(response)
                     if(response.data.status !=="waiting"){
                         this.$router.push({name: "index"})
                         this.$store.commit('setProductId',null)
                         this.$store.commit('setTransactionId',null)
                     }
+
                     this.paymentData = response.data.pg_data
                     this.paymentData.amount = response.data.total
-                    console.log(this.paymentData)
+
                     this.timeLeft = new Date(this.paymentData.due).getTime()
                     // this.dueDateTime = new Date(paymentData.due).getTime()
                     // this.account.name = paymentData.name

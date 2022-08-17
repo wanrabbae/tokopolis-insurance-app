@@ -493,7 +493,6 @@ export default {
             await this.$axios.$get('api/product', {
                 params: param()
             }).then ((response) => {
-                console.log(response.data)
                 this.products = []
 
                 if(response.data.pagination != null){

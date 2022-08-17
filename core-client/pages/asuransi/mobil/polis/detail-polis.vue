@@ -296,7 +296,6 @@ export default {
     mounted(){
         this.getProduct()
         this.getExpansionDetail()
-        console.log(this.product)
     },
     methods: {
         async getExpansionDetail(){
@@ -339,7 +338,6 @@ export default {
             const self = this
             await this.$axios.$get(`api/product/detail?id=${this.id}`)
             .then ((response) => {
-                console.log(response)
                 this.product.name = response.data.name
                 this.product.description = response.data.description
                 this.product.feature = response.data.features
@@ -362,12 +360,8 @@ export default {
             })
         },
         expansionModalCloseHandler(data) {
-            console.log(data)
-            // put any code here
         },
         expansionModalSubmitHandler(data) {
-            console.log(data)
-            // put any code here
             this.model.expansionData = data
         },
         toggleAddDiscount() {

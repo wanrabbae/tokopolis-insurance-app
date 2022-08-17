@@ -159,7 +159,6 @@ export default {
             // const self = this
             await this.$axios.$get(`api/user/transactions`)
             .then ((response) => {
-                console.log(response.data)
                 this.policies = []
 
                 response.data.forEach((field) => {
@@ -174,13 +173,10 @@ export default {
                     })
                 })
 
-
-                console.log(this.policies)
                 this.loading = false
 
             }).catch (function () {
                 // self.$router.push({name: "produk-cari-mobil"})
-
             })
         },
     }

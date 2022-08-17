@@ -348,16 +348,16 @@ export default {
 				this.show = !this.show;
 			},
         cropSuccess(imgDataUrl){
-            console.log('-------- crop success --------')
             this.upload = false
-            fetch(imgDataUrl)
-            .then(res => res.blob())
-            .then(blob => {
-                const file = new File([blob], this.fullname+' '+new Date().toISOString()+'.jpg',{ type: "image/jpg" })
-                this.photo = file
-            })
-            this.imgDataUrl = imgDataUrl
 
+            fetch(imgDataUrl)
+                .then(res => res.blob())
+                .then(blob => {
+                    const file = new File([blob], this.fullname+' '+new Date().toISOString()+'.jpg',{ type: "image/jpg" })
+                    this.photo = file
+                })
+
+            this.imgDataUrl = imgDataUrl
         },
         async getDataProfil() {
             await this.$axios.$get('api/user')
@@ -382,7 +382,6 @@ export default {
 
                         if (response.data.profile.photo != null) {
                             this.photo = this.$config.baseAPI+ response.data.profile.photo
-                            console.log(this.photo)
                         }
                         else {
                             this.photo = '/img/DefaultProfile.png'

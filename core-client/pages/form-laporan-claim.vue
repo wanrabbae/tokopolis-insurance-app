@@ -299,10 +299,9 @@ export default {
             }
         },
         onFileChange(e) {
-            console.log(e.target.id)
             const file = e.target.files[0];
+
             this.documentImages[e.target.id] = URL.createObjectURL(file);
-            console.log(this.documentImages[e] )
         },
     }
 }
