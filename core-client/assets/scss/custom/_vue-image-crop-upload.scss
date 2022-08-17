@@ -26,9 +26,9 @@
                 padding: 64px $padding-base-horizontal;
                 border: none;
 
-                .vicp-icon1 {
-                    width: 66px;
-                    height: 66px;
+                .vicp-icon1 {    
+                    width: 32px;
+                    height: 32px;
                     background: url('/svg/upload.svg') no-repeat center;
                     margin: 0 auto $margin-base-vertical;
 
@@ -134,10 +134,10 @@
                         }
 
                         .vicp-icon5, .vicp-icon6 {
-                            background-color: rgba($primary, 0.08);
+                            background-color: rgba($primary, 0.25);
 
                             &:hover {
-                                background-color: rgba($primary, 0.14);
+                                background-color: rgba($primary, 0.45);
                             }
                         }
                     }

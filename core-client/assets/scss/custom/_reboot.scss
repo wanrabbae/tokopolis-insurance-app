@@ -33,3 +33,8 @@ ol, ul, dl {
 .mb-last-0:last-child {
     margin-bottom: 0 !important;
 }
+
+#header + .main-wrapper {
+    // image height + image padding + navbar padding
+    margin-top: calc(38px + #{$navbar-brand-padding-y * 2} + #{$navbar-padding-y * 2});
+}

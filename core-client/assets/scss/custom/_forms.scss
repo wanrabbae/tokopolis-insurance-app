@@ -33,39 +33,6 @@ form .form-group:last-child,
     }
 }
 
-.identity-file-label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    width: 100%;
-    height: 100%;
-
-    .identity-image {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 99;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: .5rem;
-    }
-
-    .identity-upload-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 99;
-        display: flex;
-        width: 100%;
-        height: 100%;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-    }
-}
-
 .checkbox-centered .custom-control-label {
     &::before, &::after {
         content: "";

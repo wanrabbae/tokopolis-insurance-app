@@ -1,17 +1,31 @@
 <template>
-    <div class="loading-wrapper d-flex flex-column justify-content-center align-items-center" :class="{ 'show' : show }">
+    
+    <div 
+        class="loading-wrapper d-flex flex-column justify-content-center align-items-center" 
+        :class="{ 'show' : show }"
+    >
+
         <slot>
+            
             <div class="mb-2">
+                
                 <b-spinner 
                     v-bind="$attrs" 
                     :type="type" 
                     :variant="variant" 
-                    :label="label">
-                </b-spinner>
+                    :label="label"
+                ></b-spinner>
+
             </div>
+
         </slot>
+
         <slot name="label">
-            <div :class="labelClass">{{ label }}</div>
+
+            <div :class="labelClass">
+                {{ label }}
+            </div>
+
         </slot>
     </div>
 </template>

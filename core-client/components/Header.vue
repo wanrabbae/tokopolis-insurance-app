@@ -1,14 +1,8 @@
 <template>
     
-    <header id="header">
+    <header id="header" class="fixed-top">
         
-        <nav
-            class="navbar navbar-expand-lg d-block"
-            :class="[
-                { ['fixed-lg-top']: transparent },
-                transparent && !scrolled && !mobileView ? 'bg-transparent border-bottom-0' : 'bg-white',
-            ]"
-        >
+        <nav class="d-block navbar navbar-expand-lg bg-white">
 
             <div class="navbar-container d-flex align-items-center">
 
@@ -44,7 +38,7 @@
 
                     <b-nav-item href="/profil" class="ml-3">
         
-                        <b-img :src="photo" class="avatar" />
+                        <b-img :src="photo" class="avatar rounded-circle" />
         
                     </b-nav-item>
 
@@ -148,7 +142,7 @@
 
                                 <template #button-content>
                                     
-                                    <b-img :src="photo" class="avatar" />
+                                    <b-img :src="photo" class="avatar rounded-circle" />
                                     
                                     <div class="ml-2">
     
@@ -203,10 +197,6 @@ export default {
             type: Boolean,
             default: false
         },
-        transparent: {
-            type: Boolean,
-            default: false
-        },
         loggedIn: {
             type: Boolean,
             default: false
@@ -227,15 +217,6 @@ export default {
                 { link: "/daftar-claim", text: "Claim" },
             ]
         }
-    },
-    beforeMount() {
-        if(this.transparent) window.addEventListener('scroll', this.handleScroll);
-    },
-    mounted() {
-        if (this.transparent) this.handleScroll();
-    },
-    beforeDestroy() {
-        if (this.transparent) window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
         handleScroll(event) {

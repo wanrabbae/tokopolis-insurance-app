@@ -2,9 +2,9 @@
 
     <div class="auth-container d-flex flex-column justify-content-center py-5">
         
-        <a href="/" class="mx-auto mb-4">
+        <a href="/" class="mx-auto mb-5">
 
-            <TokopolisLogo class="text-white" height="150px" />
+            <TokopolisLogo class="text-white" height="32px" />
         
         </a>
 

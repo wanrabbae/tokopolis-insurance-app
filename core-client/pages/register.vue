@@ -6,7 +6,7 @@
         
         <b-alert :show="showAlert" variant="danger" class="alert mb-3">
 
-            <b-list-group class="alert danger">
+            <b-list-group class="alert text-white">
 
                 <b-list-group-item v-for="error in errors" :key="error.message" class="list-item-alert-danger">• {{error.message}}</b-list-group-item>
             
@@ -14,26 +14,34 @@
         
         </b-alert>
 
-        <validation-observer v-slot="{ invalid }">
+        <validation-observer v-slot="{ handleSubmit, invalid }">
 
-            <b-form role="form" method="post" @submit.prevent="register">
+            <b-form role="form" method="post" @submit.prevent="handleSubmit(register)">
 
                 <BaseInput
-                    v-model="fullname"
+                    v-if="model.policy_number"
+                    v-model="model.policy_number"
+                    name="Nomor Polis"
+                    placeholder="Nomor Polis"
+                    readonly
+                />
+
+                <BaseInput
+                    v-model="model.fullname"
                     name="Nama Lengkap"
                     placeholder="Nama Lengkap"
                     rules="required"
                 />
 
                 <BaseInput
-                    v-model="email"
+                    v-model="model.email"
                     name="Email"
                     placeholder="Email"
                     rules="required|email"
                 />
 
                 <BaseInput
-                    v-model="phone"
+                    v-model="model.phone"
                     type="number"
                     name="Nomor Telepon"
                     placeholder="Nomor Telepon"
@@ -41,7 +49,7 @@
                 />
 
                 <BaseInput
-                    v-model="password"
+                    v-model="model.password"
                     type="password"
                     name="Kata Sandi"
                     placeholder="Kata Sandi"
@@ -49,28 +57,32 @@
                 />
 
                 <BaseInput
-                    v-model="confirm_password"
+                    v-model="model.confirm_password"
                     type="password"
                     name="Konfirmasi Kata Sandi"
                     placeholder="Konfirmasi Kata Sandi"
                     rules="required|confirmed:Kata Sandi"
                 />
 
-                 <ValidationProvider
-                    v-slot="{ valid }"
+                 <validation-provider
                     tag="div"
                     :rules="{ required: { allowFalse: false } }"
                     name="Kebijakan Pengguna"
                     class="custom-control custom-checkbox mb-3"
                 >
 
-                    <input id="eula" v-model="eula" type="checkbox" :valid="valid" class="custom-control-input">
+                    <input 
+                        id="eula" 
+                        v-model="model.eula" 
+                        type="checkbox" 
+                        class="custom-control-input"
+                    >
                     
                     <label for="eula" class="custom-control-label">
-                        Saya setuju dengan <a href='#'>Kebijakan Pengguna</a>  {{ v }}
+                        Saya setuju dengan <a href='#'>Kebijakan Pengguna</a>
                     </label>
 
-                </ValidationProvider>
+                </validation-provider>
 
                 <BaseButton native-type="submit" class="mb-3" :disabled='invalid' block>
                     Daftar
@@ -102,13 +114,16 @@ export default {
     middleware:'guest',
     data () {
         return {
-            fullname: '',
-            email: '',
-            phone: '',
-            password: '',
-            confirm_password: '',
+            model: {
+                policy_number: null,
+                fullname: null,
+                email: null,
+                phone: null,
+                password: null,
+                confirm_password: null,
+                eula: false,
+            },
             showAlert:false,
-            eula:false,
             errors: []
         }
     },
@@ -124,15 +139,20 @@ export default {
             ]
         };
     },
+    created() {
+        if(this.$route.query.no_polis) {
+            this.model.policy_number = this.$route.query.no_polis
+        }
+    },
     methods: {
         async register() {
             try {
                 await this.$axios.post('api/register', {
-                    fullname: this.fullname,
-                    email: this.email,
-                    phone : this.phone,
-                    password: this.password,
-                    password_confirmation : this.confirm_password
+                    fullname: this.model.fullname,
+                    email: this.model.email,
+                    phone : this.model.phone,
+                    password: this.model.password,
+                    password_confirmation : this.model.confirm_password
                 }).then((response) => {
                     if (response.status === 200 && response.data.data.token!=null) {
                         const accessToken = response.data.data.token

@@ -1,12 +1,12 @@
 <template>
     
     <div class="pb-4 pb-lg-5" style="background-color: #f6f5fc">
-        
-        <section class="mb-4 mb-lg-5">
-            
-            <PromotionCarousel :images="promotionImages" />
-        
-        </section>
+          
+        <PromotionCarousel 
+            tag="section"
+            :images="promotionImages"
+            class="py-4"
+        />
 
         <main ref="main" class="container mb-4 mb-lg-5">
             
@@ -149,8 +149,8 @@
                                 v-model="model.startDatePeriod"
                                 v-bind="calendarLabels"
                                 locale="id"
-                                :min="new Date()"
-                                :open-date="new Date()"
+                                :min="$dayjs().format('YYYY-MM-DD')"
+                                :open-date="$dayjs().format('YYYY-MM-DD')"
                                 class="w-lg-50 mb-4"
                                 placeholder="Pilih Tanggal Mulai"
                                 nav-button-variant="primary"
@@ -321,7 +321,7 @@ export default {
         return {
             promotionImages: [
                 {
-                    src: "/img/promotion-banner-1.png",
+                    src: "/img/promotion-1.png",
                     alt: "Promotion Banner 1"
                 }
             ],
@@ -525,7 +525,7 @@ export default {
     },
     methods: {
         getYear(){
-            const year = new Date().getFullYear()
+            const year = this.$dayjs().get('year')
             for( let i = year ; i > 2005 ; i--){
                 this.years.push({
                     text: i,

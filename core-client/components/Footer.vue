@@ -10,7 +10,7 @@
                     
                     <div class="mb-4">
     
-                        <TokopolisLogo class="text-white" height="150px"/>
+                        <TokopolisLogo class="text-white" height="28px"/>
 
                     </div>
                     

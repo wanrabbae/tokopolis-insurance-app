@@ -14,19 +14,19 @@
         
         </b-alert>
         
-        <validation-observer v-slot="{ invalid }">
+        <validation-observer v-slot="{ handleSubmit, invalid }">
             
-            <b-form role="form" method="post" @submit.prevent="doLogin">
+            <b-form role="form" method="post" @submit.prevent="handleSubmit(doLogin)">
 
                 <BaseInput
-                  v-model="email"
+                  v-model="model.email"
                   name="Email"
                   placeholder="Email"
                   rules="required|email"
                 />
 
                 <BaseInput
-                  v-model="password"
+                  v-model="model.password"
                   type="password"
                   name="Password"
                   placeholder="Password"
@@ -66,9 +66,11 @@ export default {
     middleware:'guest',
     data() {
         return {
-            email: '',
-            password: '',
-            showAlert:false,
+            model: {
+                email: '',
+                password: '',
+            },
+            showAlert: false,
             errors : []
         }
     },
@@ -93,8 +95,8 @@ export default {
         async doLogin(e) {
             try{
 				await this.$axios.post('/api/login', {
-					email: this.email,
-					password: this.password
+					email: this.model.email,
+					password: this.model.password
 				}).then((response) => {
 					const accessToken = response.data.data.token
 					const payload = JSON.parse(atob(accessToken.split('.')[1]))

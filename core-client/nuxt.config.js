@@ -28,12 +28,21 @@ export default {
   */
   css: [
     '~assets/scss/piqo.scss',
-    'swiper/css/swiper.min.css',
+    'swiper/css/swiper.min.css'
   ],
 
-  router: {
-  middleware: 'routing'
+  /*
+  ** Disable bootstrap vue from importing Bootstrap compiled CSS
+  */
+  bootstrapVue: {
+    bootstrapCSS: false,
+    bootstrapVueCSS: true
   },
+
+  router: {
+    middleware: 'routing'
+  },
+  
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins
@@ -59,9 +68,11 @@ export default {
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    ['@nuxtjs/eslint-module', {
-      fix: true
-    }]
+    [
+      '@nuxtjs/eslint-module', {
+        fix: true
+      }
+    ]
   ],
 
   /*
@@ -71,11 +82,10 @@ export default {
     // Doc: https://http.nuxtjs.org
     '@nuxt/http',
     '@nuxtjs/axios',
-    'nuxt-session',
-    'bootstrap-vue/nuxt',
-    'nuxt-fontawesome',
-    '@nuxt/content',
     '@nuxtjs/dayjs',
+    'bootstrap-vue/nuxt',
+    'nuxt-session',
+    'nuxt-fontawesome',
   ],
 
   fontawesome: {
