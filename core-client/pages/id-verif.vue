@@ -1,11 +1,11 @@
 <template>
-    
+
     <div>
-        
+
         <h2>Verifikasi Identitas</h2>
 
         <b-form>
-            
+
             <b-form-group>
 
                 <b-form-select
@@ -13,7 +13,7 @@
                     :options="identities"
                     required
                 />
-                
+
             </b-form-group>
 
             <BaseInput
@@ -47,12 +47,13 @@
 import BaseInput from "../components/Inputs/BaseInput"
 
 export default {
-    components: { 
-        BaseInput 
+    components: {
+        BaseInput
     },
     layout: "auth",
     data() {
         return {
+            title: 'Verifikasi ID',
             model: {
                 identity: null,
                 identityNumber: "",
@@ -62,7 +63,12 @@ export default {
                 { text: "Jenis Identitas", value: null },
                 "KTP", "Paspor", "SIM",
             ],
-        };
-    }
+        }
+    },
+    head() {
+        return {
+            titleTemplate: `${this.title} | %s`,
+        }
+    },
 };
 </script>

@@ -1,17 +1,17 @@
 <template>
-    
+
     <div class="pb-4 pb-lg-5" style="background-color: #f6f5fc">
-          
-        <PromotionCarousel 
+
+        <PromotionCarousel
             tag="section"
             :images="promotionImages"
             class="py-4"
         />
 
         <main ref="main" class="container mb-4 mb-lg-5">
-            
+
             <div class="card border">
-                
+
                 <div class="card-body">
 
                     <h2>Masukkan Detail Mobil</h2>
@@ -86,7 +86,7 @@
                         />
 
                         <div class="col-12 col-lg-6 mb-3">
-                            
+
                             <BaseInputPrice
                                 v-model="model.price"
                                 name="Harga Mobil"
@@ -96,21 +96,21 @@
                                 required
                                 @blur="checkMinMaxPrice"
                             >
-                                
+
                                 <template #label>
-                                    
+
                                     <div class="row">
-                                        
+
                                         <div class="col-4 pr-0">
-                                            
+
                                             <label class="form-control-label">Harga Mobil</label>
-                                        
+
                                         </div> <!-- col-4 ends -->
-                                        
+
                                         <div class="col-8 d-flex justify-content-end align-items-center text-right" style="font-size: 12px; color: #9a9b9c">
-                                            
+
                                             {{ model.minPrice }} - {{ model.maxPrice }}
-                                        
+
                                         </div> <!-- col-8 ends -->
 
                                     </div> <!-- row ends -->
@@ -120,7 +120,7 @@
                             </BaseInputPrice>
 
                             <b-input-group>
-                                
+
                                 <b-form-checkbox
                                     v-model="model.addAccessories"
                                     :disabled="formatNumber(model.price) == 0 || model.price == null"
@@ -140,9 +140,9 @@
                             class="col-12 col-lg-6"
                             disabled
                         />
-                            
+
                         <div class="col-12">
-                            
+
                             <label class="form-control-label">Periode Asuransi</label>
 
                             <b-form-datepicker
@@ -158,15 +158,15 @@
                                 hide-header
                                 required
                             >
-                                
+
                                 <template #button-content>
-                                    
+
                                     <CalendarIcon style="color:#FF7900; width: 1.4rem" />
-                                
+
                                 </template>
 
                             </b-form-datepicker>
-                        
+
                         </div>
 
                         <b-form-group
@@ -175,41 +175,41 @@
                             label-class="custom-label"
                             class="col-12 mb-0"
                         >
-                            
+
                             <b-form-radio-group
                                 id="insurance-package"
                                 v-model="model.insurancePackage"
                                 :aria-describedby="ariaDescribedby"
                                 class="row"
                             >
-                                
+
                                 <div class="col-12 col-lg-6 mb-4">
-                                    
+
                                     <div class="rounded border p-3">
 
-                                        <b-form-radio 
+                                        <b-form-radio
                                             value="comprehensive"
-                                            :disabled="!condition.comprehensive" 
+                                            :disabled="!condition.comprehensive"
                                         >
 
                                             <div class="mb-2">
-                                                
+
                                                 <span class="fw-bold">Komprehensif</span>
-                                            
+
                                             </div>
 
                                             <div class="row">
-                                                
+
                                                 <div class="col-12 col-lg-4 d-none d-lg-block">
 
                                                     <b-img src="/svg/new/car-komprehensif.svg" alt="Komprehensif" />
-                                                
+
                                                 </div> <!-- col-12.col-lg-8 ends -->
-                                                
+
                                                 <div class="col-12 col-lg-8">
-                                                    
+
                                                     <span>Menjamin segala jenis kerusakan pada mobil Anda termasuk kerusakan ringan, berat maupun kehilangan total akibat pencurian.</span>
-                                                
+
                                                 </div> <!-- col-12.col-lg-4 ends -->
 
                                             </div> <!-- row ends -->
@@ -217,36 +217,36 @@
                                         </b-form-radio>
 
                                     </div> <!-- rounded.border ends -->
-                                
+
                                 </div> <!-- col-12.col-lg-6 ends -->
 
                                 <div class="col-12 col-lg-6 mb-4">
 
                                     <div class="rounded border p-3">
 
-                                        <b-form-radio 
+                                        <b-form-radio
                                             value="tlo"
-                                            :disabled="!condition.tlo" 
+                                            :disabled="!condition.tlo"
                                         >
 
                                             <div class="mb-2">
-                                                
+
                                                 <span class="fw-bold">Kerugian Total / TLO</span>
-                                            
+
                                             </div>
 
                                             <div class="row">
-                                                
+
                                                 <div class="col-12 col-lg-4 d-none d-lg-block">
 
                                                     <b-img src="/svg/new/car-tlo.svg" alt="tlo" />
-                                                
+
                                                 </div> <!-- col-12.col-lg-4 ends -->
-                                                
+
                                                 <div class="col-12 col-lg-8">
-                                                    
+
                                                     <span>Menjamin kerugian/kerusakan di mana biaya perbaikan ≥ 75% dari harga mobil termasuk kehilangan total akibat pencurian.</span>
-                                                
+
                                                 </div> <!-- col-12.col-lg-8 ends -->
 
                                             </div> <!-- row ends -->
@@ -254,37 +254,37 @@
                                         </b-form-radio>
 
                                     </div> <!-- rounded.border ends -->
-                                
+
                                 </div> <!-- col-12.col-lg-6 ends -->
-                            
+
                             </b-form-radio-group>  <!-- row ends -->
-                        
+
                         </b-form-group>
 
                         <div class="col-12">
-                    
-                            <BaseButton 
+
+                            <BaseButton
                                 native-type="submit"
-                                :disabled="model.insurancePackage === null || model.licensePlate === null || model.usage === null || model.startDatePeriod === null" 
+                                :disabled="model.insurancePackage === null || model.licensePlate === null || model.usage === null || model.startDatePeriod === null"
                                 block
                             >
                                 Cari
                             </BaseButton>
 
                         </div>
-                    
+
                     </b-form> <!-- row ends -->
 
                 </div> <!-- card-body ends -->
 
             </div> <!-- card ends -->
-        
+
         </main> <!-- container ends -->
 
         <div class="container">
-            
+
             <FAQ :title="faq.title" :contents="faq.contents" />
-        
+
         </div>
 
         <AccessoriesModal
@@ -319,6 +319,7 @@ export default {
     },
     data () {
         return {
+            title: 'Asuransi Mobil',
             promotionImages: [
                 {
                     src: "/img/promotion-1.png",
@@ -350,23 +351,6 @@ export default {
             },
             years: [
                 { text: 'Pilih', value: null },
-                // { text: '2022', value: "2022" },
-                // { text: '2021', value: "2021" },
-                // { text: '2020', value: "2020" },
-                // { text: '2019', value: "2019" },
-                // { text: '2018', value: "2018" },
-                // { text: '2017', value: "2017" },
-                // { text: '2016', value: "2016" },
-                // { text: '2015', value: "2015" },
-                // { text: '2014', value: "2014" },
-                // { text: '2013', value: "2013" },
-                // { text: '2012', value: "2012" },
-                // { text: '2011', value: "2011" },
-                // { text: '2010', value: "2010" },
-                // { text: '2009', value: "2009" },
-                // { text: '2008', value: "2008" },
-                // { text: '2007', value: "2007" },
-                // { text: '2006', value: "2006" }
             ],
             brandCar: [{ text: 'Pilih', value: null }, ],
             typeCar: [{ text: 'Pilih', value: null }, ],
@@ -502,15 +486,8 @@ export default {
     },
     head() {
         return {
-            title: 'Asuransi Mobil - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         maxAccessoriesPrice() {
@@ -521,7 +498,6 @@ export default {
         this.getPlates()
         this.scrollToMain()
         this.getYear()
-        console.log(this.years)
     },
     methods: {
         getYear(){
@@ -546,7 +522,6 @@ export default {
             this.model.price = this.formatPrice(0, 'id-ID', 'decimal')
             this.model.minPrice = this.formatPrice(0)
             this.model.maxPrice = this.formatPrice(0)
-            console.log(this.model)
         },
         async getBrandCar(){
             this.resetField()
@@ -688,7 +663,7 @@ export default {
         searchPolis() {
             const newModel = this.model
             newModel.price =this.formatNumber(newModel.price)
-            console.log(newModel)
+
             this.$router.push({name: "asuransi-mobil-polis", params: { data: newModel }})
         },
         checkMinMaxPrice(){

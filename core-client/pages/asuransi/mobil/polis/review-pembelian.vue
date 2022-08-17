@@ -361,6 +361,7 @@ export default {
     },
     data () {
         return {
+            title: 'Review Pembelian',
             loading : true,
             idTransaction : null,
             model: {
@@ -689,15 +690,8 @@ export default {
     },
     head() {
         return {
-            title: 'Review Pembelian - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         totalPrice() {
@@ -723,7 +717,6 @@ export default {
         async getTransactionReview() {
             await this.$axios.$get(`api/transaction/review?transaction_id=${this.idTransaction}`)
                 .then ((response) => {
-                    console.log(response)
                     this.policyHolderDetail.name = response.data.account.fullname
                     this.policyHolderDetail.phone = response.data.account.phone
                     this.policyHolderDetail.email = response.data.account.email
@@ -781,11 +774,7 @@ export default {
                 transaction_id : this.idTransaction,
                 platform : this.model.paymentMethod,
             }).then ((response)=> {
-
-                console.log(response)
                 this.$router.push({name: "asuransi-mobil-polis-konfirmasi-pembayaran"})
-                // window.location.reload(true)
-
             })
 
         }

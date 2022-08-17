@@ -11,7 +11,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Tokopolis',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -42,7 +42,7 @@ export default {
   router: {
     middleware: 'routing'
   },
-  
+
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins
@@ -124,7 +124,7 @@ export default {
       // You can extend webpack config here
       config.resolve.alias.vue$ = "vue/dist/vue.esm.js";
 
-      // rule for vue-svg-loader 
+      // rule for vue-svg-loader
       const svgRule = config.module.rules.find(rule => rule.test.test('.svg'));
 
       svgRule.test = /\.(png|jpe?g|gif|webp)$/;

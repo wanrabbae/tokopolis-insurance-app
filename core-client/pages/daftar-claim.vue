@@ -174,6 +174,7 @@ export default {
 },
     data() {
         return {
+            title: 'Daftar Klaim',
             model: {
                 search: null,
                 status: null,
@@ -219,20 +220,13 @@ export default {
     },
     head() {
         return {
-            title: 'Daftar Claim - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     mounted(){
     },
     methods:{
-        
+
     }
 
 }

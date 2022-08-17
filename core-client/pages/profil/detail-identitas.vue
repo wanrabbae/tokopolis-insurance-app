@@ -1,24 +1,24 @@
 <template>
-    
+
     <div id="identity-details">
-        
+
         <validation-observer v-slot="observer" tag="div" class="card-body">
 
             <h2>Detail Identitas</h2>
-            
+
             <b-form method="post" @submit.prevent="observer.handleSubmit(onSubmit)">
-                
+
                 <div class="row">
-                    
+
                     <BaseSelect
                         v-model="model.identityType"
                         name="Jenis Identitas"
                         label="Jenis Identitas"
                         :options="[
-                            { text: 'Pilih Jenis Identitas', value: null, disabled:model.verified }, 
+                            { text: 'Pilih Jenis Identitas', value: null, disabled:model.verified },
                             { text: 'KTP', value: 'ktp', disabled:model.verified },
                             { text: 'Paspor', value: 'passport', disabled:model.verified },
-                            { text: 'NPWP', value: 'npwp', disabled:model.verified } 
+                            { text: 'NPWP', value: 'npwp', disabled:model.verified }
                         ]"
                         class="col-12 col-lg-6"
                         rules="required"
@@ -27,13 +27,13 @@
                     />
 
                     <b-form-group class="col-12 col-lg-6 mb-3">
-                        
-                        <validation-provider 
+
+                        <validation-provider
                             v-slot="{ errors, invalid, validated }"
                             name="Nomor Identitas"
                             :rules="{ required: true, regex: identityNumberRegex}"
                         >
-                                
+
                             <label class="form-control-label">Nomor Identitas</label>
 
                             <input
@@ -52,23 +52,23 @@
                             </div>
 
                         </validation-provider>
-                    
+
                     </b-form-group>
-                
+
                 </div> <!-- row ends -->
 
-                <validation-provider 
+                <validation-provider
                     v-slot="{ errors, validate }"
-                    tag="fieldset" 
+                    tag="fieldset"
                     name="Foto Identitas"
                     rules="required|image"
                     class="form-group w-lg-50"
                 >
-                            
+
                     <label class="form-control-label">Foto Identitas</label>
 
                     <div class="uploader" :class="{'pointer': !model.verified}" @click="() => {if(model.verified) return; toggleShowCropper();}">
-                        
+
                         <input
                             id="identity-image"
                             type="file"
@@ -81,19 +81,19 @@
                         <b-img v-if="model.imgDataUrl" class="uploader-bg" :src="model.imgDataUrl" />
 
                         <IDCardBackground v-else class="uploader-bg" />
-                        
-                        <label 
-                            v-if="!model.verified" 
-                            for="identity-image" 
+
+                        <label
+                            v-if="!model.verified"
+                            for="identity-image"
                             class="upload-icon-container"
                         >
-                            
+
                             <div class="upload-icon">
-                                
+
                                 <UploadIcon />
 
                             </div>
-                        
+
                         </label>
 
                     </div>
@@ -103,38 +103,38 @@
                     </div>
 
                     <div v-if="model.verified" class="mt-2" style="color:#37e65f">
-                        
+
                         <span class="mr-1"><fa icon="circle-check" style="width: 16px; height: 16px;"/></span>
-                        
+
                         <span class="fw-bold">Terverifikasi</span>
-                    
+
                     </div>
 
                     <div v-else class="mt-2" style="color:#d42f2f">
-                        
+
                         <span class="mr-1"><fa icon="circle-xmark" style="width: 16px; height: 16px;"/></span>
-                        
+
                         <span class="fw-bold">Belum Terverifikasi</span>
-                    
+
                     </div>
 
                 </validation-provider>
 
-                <BaseButton 
-                    v-if="!model.verified" 
-                    native-type="submit" 
+                <BaseButton
+                    v-if="!model.verified"
+                    native-type="submit"
                     classes="w-100 w-lg-auto"
                     :disabled="observer.invalid"
                 >
                     Update
                 </BaseButton>
-                
+
             </b-form>
-            
+
         </validation-observer> <!-- card-body ends -->
 
         <Loading :show="loading"/>
-    
+
     </div>
 
 </template>
@@ -154,6 +154,7 @@ export default {
     layout: 'userarea',
     data() {
         return {
+            title: 'Detail Identitas',
             model: {
                 identityType : null,
                 identityNumber : null,
@@ -189,15 +190,8 @@ export default {
     },
     head() {
         return {
-            title: 'Detail Identitas - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         identityNumberRegex() {
@@ -238,7 +232,7 @@ export default {
                     }
                     this.loading = false
                 })
-                
+
         },
         toggleShowCropper() {
             this.model.showCropper = !this.model.showCropper;
@@ -312,7 +306,7 @@ export default {
             const formData = new FormData();
 
             formData.append('identity_number', this.model.identityNumber)
-            
+
             if (this.model.imgDataUrl) {
                 formData.append('image', this.model.identityImage, this.model.identityImage.name)
             }

@@ -1,7 +1,7 @@
 <template>
-   
+
     <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
-        
+
         <div class="container">
 
             <div class="container-header header-tabs mb-4">
@@ -19,11 +19,11 @@
                     </li>
 
                     <li role="presentation" class="nav-item">
-                        
+
                         <a href="/daftar-claim" class="nav-link active" tabindex="-1">
-                            
+
                             <h2 class="tab-title">Daftar Claim</h2>
-                        
+
                         </a>
 
                     </li>
@@ -35,7 +35,7 @@
             <div class="card">
 
                 <div class="card-header d-flex justify-content-between border-bottom">
-                    
+
                     <span class="fw-bold">No. Claim {{ policyData.claimNumber }}</span>
 
                     <span class="fw-bold">
@@ -43,25 +43,25 @@
                     </span>
 
                 </div> <!-- card-header ends -->
-                
+
                 <div class="card-body border-bottom">
-                    
+
                     <div class="row align-items-center">
-                        
+
                         <div class="col-12 col-lg-6 d-flex align-items-center">
-                            
+
                             <div class="d-inline-block mr-3">
-                                
+
                                 <b-img :src="policyData.image" alt="Mobil" class="rounded-circle" style="max-height: 96px"></b-img>
-                            
+
                             </div>
-                            
+
                             <div class="d-inline-block">
-                                
+
                                 <div class="fs-4 fw-bold mb-1">{{ policyData.holder }}</div>
-                                
+
                                 <div class="fs-5 fw-bold mb-1">{{ policyData.name }}</div>
-                            
+
                             </div>
 
                         </div> <!-- col-12.col-lg-6 ends -->
@@ -69,21 +69,21 @@
                         <div class="col-12 col-lg-6 text-right">
 
                             <div class="mb-2">{{ policyData.period }}</div>
-                            
+
                             <div class="badge py-2 px-3 rounded-pill mr-1" :class="policyData.isActive ? 'badge-success' : 'badge-warning'" >
                                 {{ policyData.isActive ? 'Aktif' : 'Belum Aktif' }}
                             </div>
-                            
+
                             <div class="badge py-2 px-3 rounded-pill mr-1" :class="policyData.isPaid ? 'badge-info' : 'badge-warning'" >
                                 {{ policyData.isPaid ? 'Pembayaran Lunas' : 'Belum Lunas' }}
                             </div>
-                            
+
                             <div class="d-inline-block">
-                                
+
                                 <fa icon="share-nodes" width="16px" height="16px" />
-                            
+
                             </div>
-                        
+
                         </div> <!-- col-12.col-lg-6 ends -->
 
                     </div> <!-- row ends -->
@@ -93,10 +93,10 @@
                 <div class="card-body">
 
                     <div class="fs-4 fw-bold mb-2">Proses Claim</div>
-                    
-                    <StepNavigation 
-                        :steps="policyData.steps" 
-                        :current-step="policyData.currentStep" 
+
+                    <StepNavigation
+                        :steps="policyData.steps"
+                        :current-step="policyData.currentStep"
                         class="py-4"
                         @nav-click="navClickHandler"
                     />
@@ -120,8 +120,8 @@ export default {
     },
     data() {
         return {
-            policyData: 
-            {
+            title: 'Detail Klaim',
+            policyData: {
                 claimNumber: "12345678912345678911237",
                 holder: "John Doe",
                 name: "Garda Oto Comprehensive",
@@ -167,15 +167,8 @@ export default {
     },
     head() {
         return {
-            title: 'Detail Claim - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     methods: {
         navClickHandler(id) {

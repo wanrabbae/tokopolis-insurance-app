@@ -302,6 +302,7 @@ export default {
     },
     data () {
         return {
+            title: 'Asuransi Mobil',
             model: {
                 brand: null,
                 type: null,
@@ -408,15 +409,8 @@ export default {
     },
     head() {
         return {
-            title: 'Asuransi Mobil - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed:{
         shownProducts() {
@@ -499,7 +493,6 @@ export default {
             await this.$axios.$get('api/product', {
                 params: param()
             }).then ((response) => {
-                console.log(response.data)
                 this.products = []
 
                 if(response.data.pagination != null){
@@ -526,7 +519,7 @@ export default {
                         workshop_count : element.workshop_count
                     })
                 })
-                
+
                 this.loading = false
             }).catch (error => {
                 if(error.response.status === 400){

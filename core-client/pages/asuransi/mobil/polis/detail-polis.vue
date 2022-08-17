@@ -13,66 +13,66 @@
                     <div class="card border mb-4">
 
                         <b-tabs content-class="p-4" fill>
-                            
+
                             <b-tab title="Deskripsi" title-link-class="py-3" active>
-                                
+
                                 <HtmlContent v-if="!loading" :html="product.description"/>
-                            
+
                             </b-tab>
-                            
+
                             <b-tab title="S&K" title-link-class="py-3">
-                                
+
                                 <HtmlContent v-if="!loading" :html="product.tnc"/>
-                            
+
                             </b-tab>
-                            
+
                             <b-tab title="Claim" title-link-class="py-3">
-                                
+
                                 <HtmlContent v-if="!loading" :html="product.claim"/>
-                            
+
                             </b-tab>
-                        
+
                         </b-tabs>
-                    
+
                     </div>
 
                     <div class="card border mb-4">
-                        
+
                         <div class="card-header border-bottom py-3">
-                            
+
                             <div class="fs-4 fw-bold">Fitur</div>
-                        
+
                         </div>
 
                         <div class="card-body">
-                            
+
                             <div v-if="!loading">
 
                                 <div class="fw-bold mb-1">{{ product.feature[0].name }}</div>
-                            
+
                                 <HtmlContent :html="product.feature[0].description"/>
 
                                 <b-collapse v-if="product.feature.length > 1" id="feature-collapse" v-model="model.feature_collapse_visible">
-                                    
+
                                     <div v-for="feature in product.feature.slice(1, product.feature.length)" :key="feature" class="mb-3">
-                                        
+
                                         <div class="fw-bold mb-1">{{ feature.name }}</div>
 
                                         <HtmlContent :html="feature.description"/>
 
                                     </div>
-                                
+
                                 </b-collapse>
-                                
-                                <span 
-                                    class="text-primary fw-bold pointer" 
+
+                                <span
+                                    class="text-primary fw-bold pointer"
                                     :aria-expanded="model.feature_collapse_visible ? 'true' : 'false'"
-                                    aria-controls="feature-collapse" 
+                                    aria-controls="feature-collapse"
                                     @click="model.feature_collapse_visible = !model.feature_collapse_visible"
                                 >
                                     {{ model.feature_collapse_visible ? 'Lebih Sedikit' : 'Selengkapnya' }}
                                 </span>
-                            
+
                             </div>
 
                         </div>
@@ -80,19 +80,19 @@
                     </div>
 
                     <div v-if="condition.workshop" class="card border mb-4">
-                        
+
                         <div class="card-body d-flex justify-content-between align-items-center py-3">
-   
+
                             <div class="d-block">
-                                
+
                                 <div class="fs-4 fw-bold mb-2">{{product.workshop_count}} Bengkel Tersedia</div>
-                                
+
                                 <div class="d-block">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-                            
+
                             </div>
-                            
+
                             <BaseButton tag="a" target='_blank' :href="product.workshop_file">Lihat</BaseButton>
-                    
+
                         </div>
 
                     </div>
@@ -134,9 +134,9 @@
                             <div v-if="addDiscount">
 
                                 <BaseButton classes="mr-1" @click="submitDiscount">{{ discount ? 'Ubah' : 'Terapkan' }}</BaseButton>
-    
+
                                 <BaseButton type="secondary" classes="text-primary border-primary" @click="toggleAddDiscount">Batal</BaseButton>
-    
+
                             </div>
 
                             <BaseButton v-else @click="toggleAddDiscount">Tambahkan</BaseButton>
@@ -237,6 +237,7 @@ export default {
     },
     data() {
         return {
+            title: 'Detail Polis',
             loading: true,
             id: null,
             product:{
@@ -254,7 +255,7 @@ export default {
             condition:{
                 workshop:false,
                 brochure:false
-            }, 
+            },
             model:{
                 discount: null,
                 feature_collapse_visible: false,
@@ -268,15 +269,8 @@ export default {
     },
     head() {
         return {
-            title: 'Detail Polis - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         totalExpansionPrice() {
@@ -302,7 +296,6 @@ export default {
     mounted(){
         this.getProduct()
         this.getExpansionDetail()
-        console.log(this.product)
     },
     methods: {
         async getExpansionDetail(){
@@ -345,7 +338,6 @@ export default {
             const self = this
             await this.$axios.$get(`api/product/detail?id=${this.id}`)
             .then ((response) => {
-                console.log(response)
                 this.product.name = response.data.name
                 this.product.description = response.data.description
                 this.product.feature = response.data.features
@@ -368,12 +360,8 @@ export default {
             })
         },
         expansionModalCloseHandler(data) {
-            console.log(data)
-            // put any code here
         },
         expansionModalSubmitHandler(data) {
-            console.log(data)
-            // put any code here
             this.model.expansionData = data
         },
         toggleAddDiscount() {

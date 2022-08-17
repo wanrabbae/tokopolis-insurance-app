@@ -1,21 +1,21 @@
 <template>
-    
+
     <div>
 
         <h2>Masuk</h2>
-        
+
         <b-alert :show="showAlert" variant="danger" class="alert mb-3">
-            
+
             <b-list-group class="alert text-white">
-                
+
                 <b-list-group-item v-for="error in errors" :key="error.message" class="list-item-alert-danger">{{error.message}}</b-list-group-item>
-    
+
             </b-list-group>
-        
+
         </b-alert>
-        
+
         <validation-observer v-slot="{ handleSubmit, invalid }">
-            
+
             <b-form role="form" method="post" @submit.prevent="handleSubmit(doLogin)">
 
                 <BaseInput
@@ -50,7 +50,7 @@
         </validation-observer>
 
     </div>
-    
+
 </template>
 
 <script>
@@ -59,13 +59,14 @@ import atob from 'atob'
 import BaseInput from '../components/Inputs/BaseInput'
 
 export default {
-    components: { 
+    components: {
         BaseInput
     },
     layout: 'auth',
     middleware:'guest',
     data() {
         return {
+            title: 'Login',
             model: {
                 email: '',
                 password: '',
@@ -76,15 +77,8 @@ export default {
     },
     head() {
         return {
-            title: 'Login - Pico Insurtech',
-            meta: [
-                {
-                    hid: 'description',
-                    name: 'description',
-                    content: 'Deskripsi Halaman'
-                }
-            ]
-        };
+            titleTemplate: `${this.title} | %s`,
+        }
     },
     computed: {
         isLogin() {
