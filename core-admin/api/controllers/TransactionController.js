@@ -138,6 +138,10 @@ exports.postTransaction = async (req, res) => {
             fullname: req.body.fullname,
             email: req.body.email,
             phone: req.body.phone,
+            address: {
+                detail: req.body.address_detail,
+                use_to_ship: req.body.use_address_to_ship ? true : false,
+            },
         },
         is_new_condition: condition,
         vehicle_data: vehicle,
@@ -166,7 +170,10 @@ exports.review = async (req, res) => {
 
     return res.jsonData({
         client: {
-            fullname: transaction.client_data.fullname
+            fullname: transaction.client_data.fullname,
+            email: transaction.client_data.email,
+            phone: transaction.client_data.phone,
+            address: transaction.client_data.address,
         },
         vehicle: {
             brand: transaction.vehicle.brand,

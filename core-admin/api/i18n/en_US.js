@@ -49,6 +49,9 @@ const en_US_strings = {
             'accessories': 'Vehicle Accessories',
             'start_date': 'Start Date',
 
+            'address_detail': 'Address Detail',
+            'use_address_to_ship': 'Use of Address for Delivery',
+
             'product.id': 'Product Id',
             'product.expansion': 'Product Expansion',
             'product.tnc': 'Terms and Condition',
