@@ -27,6 +27,10 @@ const post = (req) => {
                 Joi.allow(null)
             )
             .label(req.polyglot.t('field.transaction.client.email')),
+        address_detail: Joi.string()
+            .label(req.polyglot.t('field.address_detail')),
+        use_address_to_ship: Joi.boolean()
+            .label(req.polyglot.t('field.use_address_to_ship')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -85,6 +89,10 @@ const fileNew = (req) => {
                 Joi.allow(null)
             )
             .label(req.polyglot.t('field.transaction.client.email')),
+        address_detail: Joi.string()
+            .label(req.polyglot.t('field.address_detail')),
+        use_address_to_ship: Joi.boolean()
+            .label(req.polyglot.t('field.use_address_to_ship')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -170,6 +178,10 @@ const fileOld = (req) => {
                 Joi.allow(null)
             )
             .label(req.polyglot.t('field.transaction.client.email')),
+        address_detail: Joi.string()
+            .label(req.polyglot.t('field.address_detail')),
+        use_address_to_ship: Joi.boolean()
+            .label(req.polyglot.t('field.use_address_to_ship')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
