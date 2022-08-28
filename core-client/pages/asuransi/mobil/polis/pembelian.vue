@@ -211,6 +211,10 @@
                                     onkeypress="if(this.value.length==5) return false;"
                                 />
 
+                                <b-form-checkbox v-model="model.useAdressToShip">
+                                    Kirim File Polis dalam bentuk Hard Copy menuju alamat ini
+                                </b-form-checkbox>
+
                             </div>
 
                             <div class="mb-lg-2 mb-3">
