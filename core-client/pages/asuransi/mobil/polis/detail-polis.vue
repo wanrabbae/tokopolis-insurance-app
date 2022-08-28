@@ -54,7 +54,7 @@
 
                                 <b-collapse v-if="product.feature.length > 1" id="feature-collapse" v-model="model.feature_collapse_visible">
 
-                                    <div v-for="feature in product.feature.slice(1, product.feature.length)" :key="feature" class="mb-3">
+                                    <div v-for="(feature, i) in product.feature.slice(1, product.feature.length)" :key="i" class="mb-3">
 
                                         <div class="fw-bold mb-1">{{ feature.name }}</div>
 
@@ -110,15 +110,19 @@
                         <div v-if="model.expansionData.length > 0" class="card-body py-3">
 
                             <ul  class="list-unstyled mb-3">
-                                <li v-for="(expansion, index) in model.expansionData" :key="index" class="d-flex justify-content-between">
+
+                                <li v-for="(expansion, i) in model.expansionData" :key="i" class="d-flex justify-content-between">
                                     <span>{{ expansion.label }}</span>
                                     <span class="fw-bold">{{ formatPrice(expansion.price) }}</span>
                                 </li>
+
                             </ul>
 
                             <div class="d-flex justify-content-between">
+
                                 <span class="text-primary fw-bold">Total</span>
                                 <span class="fw-bold">{{ formatPrice(totalExpansionPrice) }}</span>
+                            
                             </div>
 
                         </div> <!-- card-body ends -->
@@ -145,15 +149,50 @@
 
                         <div v-if="addDiscount" class="card-body py-3">
 
-                            <BaseInputPrice
-                                v-model="model.discount"
-                                name="Diskon"
-                                :rules="{ price_between: [formatPrice(0), formatPrice(maxDiscount)] }"
-                                :placeholder="'Max. ' + formatPrice(maxDiscount, 'id-ID', 'decimal')"
-                                currency="IDR"
-                                :disabled="!addDiscount && discount"
-                                @blur="onBlurDiscount"
-                            ></BaseInputPrice>
+                            <div class="form-row">
+                            
+                                <div class="col-12 col-lg-auto mb-3 mb-lg-0">
+                                    
+                                    <b-form-radio-group
+                                        v-model="model.discountType"
+                                        :options="[
+                                            { text: 'Nominal', value: 'amount' },
+                                            { text: 'Persen', value: 'percent' }
+                                        ]"
+                                        buttons
+                                        button-variant="primary"
+                                        @change="onDiscountTypeChange"
+                                    />
+
+                                </div>
+
+                                <BaseInputPrice
+                                    v-if="model.discountType === 'amount'"
+                                    v-model="model.discountAmount"
+                                    name="Nominal Diskon"
+                                    :rules="{ price_between: [formatPrice(0), formatPrice(maxDiscount)] }"
+                                    :placeholder="'Maksimum ' + formatPrice(maxDiscount, 'id-ID', 'decimal')"
+                                    currency="IDR"
+                                    class="col-12 col-lg mb-0"
+                                    :disabled="!addDiscount && discount"
+                                    @blur="onBlurDiscount"
+                                />
+
+                                <BaseInput
+                                    v-if="model.discountType === 'percent'"
+                                    v-model="model.discountPercentage"
+                                    type="number"
+                                    name="Persentase Diskon"
+                                    :rules="{ percent_between: [0, 100 * maxPercentageDiscount]}"
+                                    :placeholder="'Maksimum ' + 100 * maxPercentageDiscount"
+                                    input-classes="custom-number"
+                                    suffix-text="%"
+                                    class="col-12 col-lg mb-0"
+                                    :disabled="!addDiscount && discount"
+                                    @blur="onBlurDiscount"
+                                />
+
+                            </div>
 
                         </div> <!-- card-body.row ends -->
 
@@ -161,7 +200,7 @@
 
                 </div> <!-- col-12.col-lg-8 ends -->
 
-                <sidebar class="col-12 col-lg-4">
+                <div class="col-12 col-lg-4">
 
                     <div class="card border p-3">
 
@@ -204,7 +243,7 @@
 
                     </div> <!-- card ends -->
 
-                </sidebar> <!-- sidebar ends -->
+                </div> <!-- sidebar ends -->
 
             </div> <!-- row ends -->
 
@@ -225,13 +264,16 @@
 
 <script>
 import BaseInputPrice from '../../../../components/Inputs/BaseInputPrice'
+import BaseInput from '../../../../components/Inputs/BaseInput'
 import ExpansionModal from '../../../../components/ExpansionModal'
 import Loading from '../../../../components/Loading'
 import HtmlContent from '../../../../components/HtmlContent'
+
 export default {
     components:{
         HtmlContent,
         BaseInputPrice,
+        BaseInput,
         ExpansionModal,
         Loading
     },
@@ -257,10 +299,13 @@ export default {
                 brochure:false
             },
             model:{
-                discount: null,
+                discountAmount: null,
+                discountPercentage: null,
+                discountType: 'amount',
                 feature_collapse_visible: false,
                 expansionData: [],
             },
+            maxPercentageDiscount: .25, // 25%
             discount: null,
             addDiscount: false,
             administration_cost: 10000,
@@ -284,7 +329,7 @@ export default {
             return this.product.price + this.totalExpansionPrice - this.discount + this.administration_cost;
         },
         maxDiscount() {
-            return this.product.price * .25;
+            return this.product.price * this.maxPercentageDiscount;
         }
     },
      deactivated(){
@@ -371,13 +416,35 @@ export default {
                 this.discount = null;
             }
         },
-        onBlurDiscount(){
-            if(this.model.discount === null) return
-            const value = this.formatNumber(this.model.discount)
-            this.model.discount = this.formatPrice(this.limit(value, 0, this.maxDiscount), 'id-ID', 'decimal');
+        onDiscountTypeChange() {
+            if(this.model.discountType === 'amount') {
+                this.model.discountAmount = null
+            } else if(this.model.discountType === 'percent') {
+                this.model.discountPercentage = null
+            }
+
+            this.discount = null
+        },
+        onBlurDiscount() {
+            if(!this.model.discountAmount || !this.model.discountPercentage) 
+                this.discount = null
+
+            if(this.model.discountType === 'amount') {
+                const value = this.formatNumber(this.model.discountAmount)
+                this.model.discountAmount = this.formatPrice(this.limit(value, 0, this.maxDiscount), 'id-ID', 'decimal')
+            } else if(this.model.discountType === 'percent') {
+                this.model.discountPercentage = this.limit(this.model.discountPercentage, 0, 25)
+            }
         },
         submitDiscount() {
-            this.discount = this.formatNumber(this.model.discount);
+            if(!this.model.discountAmount || !this.model.discountPercentage) 
+                this.discount = null
+
+            if(this.model.discountType === 'amount') {
+                this.discount = this.formatNumber(this.model.discountAmount)
+            } else if(this.model.discountType === 'percent') {
+                this.discount = this.product.price * (this.model.discountPercentage / 100)
+            }
         },
         postData() {
             const self = this

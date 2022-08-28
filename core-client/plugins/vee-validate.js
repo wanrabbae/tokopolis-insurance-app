@@ -20,5 +20,13 @@ extend('price_between', {
     message: '{_field_} harus di antara {min} dan {max}'
 });
 
+extend('percent_between', {
+  validate(value, { min, max }) {
+      return min <= value && max >= value;
+  },
+  params: ['min', 'max'],
+  message: '{_field_} harus di antara {min}% dan {max}%'
+});
+
 Vue.component('ValidationProvider', ValidationProvider)
 Vue.component('ValidationObserver', ValidationObserver)

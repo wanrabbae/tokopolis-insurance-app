@@ -8,9 +8,11 @@
         </label>
       </slot>
       <div :class="[
-        'input-group',
+        'input-group addon-combined',
         {'focused': focused},
         {'has-label': label || $slots.label},
+        {'is-valid': hasAddon && valid && validated && successMessage},
+        {'is-invalid': hasAddon && invalid && validated},
         inputGroupClasses
       ]">
         <div v-if="prependIcon || $slots.prepend" class="input-group-prepend">
@@ -36,8 +38,8 @@
             :required="required"
             class="form-control"
             :class="[
-              {'is-valid': valid && validated && successMessage}, 
-              {'is-invalid': invalid && validated},
+              {'is-valid': !hasAffix && valid && validated && successMessage}, 
+              {'is-invalid': !hasAffix && invalid && validated},
               inputClasses
             ]"
             :style="[
@@ -50,6 +52,13 @@
           <slot name="append">
             <span class="input-group-text">
               <fa :icon="appendIcon"/>
+            </span>
+          </slot>
+        </div>
+        <div v-if="suffixText || $slots.append" class="input-group-append">
+          <slot name="append">
+            <span class="input-group-text">
+              {{ suffixText }}
             </span>
           </slot>
         </div>
@@ -128,6 +137,10 @@
         type: String,
         description: "Prepend icon (left)"
       },
+      suffixText: {
+        type: String,
+        description: "Suffix text (right)"
+      },
       prefixText: {
         type: String,
         description: "Prefix text (left)"
@@ -164,14 +177,26 @@
           ...this.listeners
         };
       },
-      hasIcon() {
+      hasAddon() {
         const { append, prepend } = this.$slots;
         return (
           append !== undefined ||
           prepend !== undefined ||
-          this.appendIcon !== undefined ||
-          this.prependIcon !== undefined ||
+          this.hasIcon ||
+          this.hasAffix ||
           this.group
+        );
+      },
+      hasAffix() {
+        return (
+          this.suffixText !== undefined ||
+          this.prefixText !== undefined
+        );
+      },
+      hasIcon() {
+        return (
+          this.appendIcon !== undefined ||
+          this.prependIcon !== undefined
         );
       }
     },
