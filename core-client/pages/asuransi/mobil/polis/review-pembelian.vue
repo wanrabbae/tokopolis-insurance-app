@@ -30,25 +30,47 @@
 
                                 <b-collapse id="document-accordion" class="border-top" visible>
 
-                                    <div class="p-3">
+                                    <div v-if="condition == true" class="p-3">
 
-                                        <div v-for="field in documentFields" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
+                                        <div v-for="field in documentFieldsNew" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
 
                                             <div class="mr-3" style="min-width: 32px; max-width: 32px;">
 
-                                                <b-img v-if="documentImages[field.key]" :src="documentImages[field.key]"></b-img>
+                                                <b-img v-if="documentImagesNew[field.key]" :src="documentImagesNew[field.key]"></b-img>
 
                                                 <b-img v-else src="/svg/picture.svg"></b-img>
 
                                             </div>
 
-                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImages[field.key] ? documentImages[field.key] : '#'">
+                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImagesNew[field.key] ? documentImagesNew[field.key] : '#'">
                                                     {{ field.label }}
                                             </a>
+                                            
 
                                         </div>
 
                                     </div>
+                                    <div v-if="condition == false" class="p-3">
+
+                                        <div v-for="field in documentFieldsOld" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
+
+                                            <div class="mr-3" style="min-width: 32px; max-width: 32px;">
+
+                                                <b-img v-if="documentImagesOld[field.key]" :src="documentImagesOld[field.key]"></b-img>
+
+                                                <b-img v-else src="/svg/picture.svg"></b-img>
+
+                                            </div>
+
+                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImagesOld[field.key] ? documentImagesOld[field.key] : '#'">
+                                                    {{ field.label }}
+                                            </a>
+                                            
+
+                                        </div>
+
+                                    </div>
+                                    
 
                                 </b-collapse>
 
@@ -207,6 +229,7 @@
                                        v-model="model.paymentMethod"
                                        :aria-describedby="ariaDescribedby"
                                        stacked
+                                       @change="getPaymentFee"
                                    >
 
                                        <div v-b-toggle.virtual-account-accordion role="tab" class="position-relative d-flex flex-column justify-content-center pointer border-bottom chevron" style="min-height: 52px">
@@ -325,7 +348,7 @@
 
                                    <div class="d-flex justify-content-between mb-2 mb-last-0">
                                        <span class="text-primary fw-bold">Total Pembelian</span>
-                                       <span class="text-primary fw-bold">{{ formatPrice(totalPrice) }}</span>
+                                       <span class="text-primary fw-bold">{{ formatPrice(model.totalPriceWithFee) }}</span>
                                    </div>
 
                                </div>
@@ -366,10 +389,12 @@ export default {
             idTransaction : null,
             model: {
                 promotionCode: null,
-                paymentMethod: null
+                paymentMethod: null,
+                totalPriceWithFee: null
             },
-            transactionId: "32141312",
-            documentFields: [
+            condition:false,
+            transactionId: null,
+            documentFieldsNew: [
                 {
                     key: "stnk",
                     label: "Foto STNK"
@@ -411,7 +436,18 @@ export default {
                     label: "Foto Tambahan (Opsional)"
                 }
             ],
-            documentImages: {
+            documentFieldsOld: [
+                {
+                    key: "bastk",
+                    label: "Foto BASTK"
+                },
+                {
+                    key: "identityCard",
+                    label: "Foto Kartu Identitas"
+                },
+                
+            ],
+            documentImagesNew: {
                 stnk: null,
                 vehicleFront: null,
                 vehicleRight: null,
@@ -422,6 +458,10 @@ export default {
                 optionalPhoto2: null,
                 optionalPhoto3: null,
                 optionalPhoto4: null,
+            },
+            documentImagesOld: {
+                bastk: null,
+                identityCard: null,
             },
             policyHolderFields: [
                 {
@@ -435,12 +475,12 @@ export default {
                 {
                     key: "email",
                     label: "Email"
-                }
+                },
             ],
             policyHolderDetail: {
-                name: "John Doe",
-                phone: "08123456789",
-                email: "johndoe@email.com"
+                name: null,
+                phone: null,
+                email: null
             },
             vehicleFields: [
                 {
@@ -464,15 +504,11 @@ export default {
                     label: "Harga"
                 },
                 {
-                    key: "lisencePlateId",
-                    label: "Kode Plat"
-                },
-                {
                     key: "plateNumber",
                     label: "Nomor Plat"
                 },
                 {
-                    key: "selectedPackage",
+                    key: "protection",
                     label: "Paket"
                 },
                 {
@@ -489,17 +525,17 @@ export default {
                 }
             ],
             vehicleDetail: {
-                brand: "TOYOTA",
-                type: "AGYA",
-                series: "G A/T",
-                productionYear: "2017",
-                price: 8865500,
-                lisencePlateId: "B (DKI Jakarta)",
-                plateNumber : "-",
-                selectedPackage: "Komprehensif",
-                color: "Silver",
-                machineNumber: "F430ID271263",
-                vehicleIdentificationNumber: "MH8FD125X472"
+                // brand: "TOYOTA",
+                // type: "AGYA",
+                // series: "G A/T",
+                // productionYear: "2017",
+                // price: 8865500,
+                // lisencePlateId: "B (DKI Jakarta)",
+                // plateNumber : "-",
+                // selectedPackage: "Komprehensif",
+                // color: "Silver",
+                // machineNumber: "F430ID271263",
+                // vehicleIdentificationNumber: "MH8FD125X472"
             },
             expansionFields: [
                 // {
@@ -673,19 +709,7 @@ export default {
                     value: 'others'
                 },
             ],
-            retailOptions: [
-            //     {
-            //         img: '/img/logo-indomaret.png',
-            //         text: 'Indomaret',
-            //         value: 'indomaret'
-            //     },
-            //     {
-            //         img: '/img/logo-alfamart.png',
-            //         text: 'Alfamart',
-            //         value: 'alfamart'
-            //     },
-            //
-            ]
+            retailOptions: [] // img, text, value
         }
     },
     head() {
@@ -694,14 +718,17 @@ export default {
         }
     },
     computed: {
-        totalPrice() {
+        totalPriceWithoutFee() {
             let total = 0;
             const keys = Object.keys(this.purchaseSummaryDatas);
             keys.forEach((key, index) => {
                 total += this.purchaseSummaryDatas[key];
             });
-            return total;
-        }
+
+            return total ;
+            
+        },
+        
     },
     deactivated(){
         this.$destroy()
@@ -717,9 +744,10 @@ export default {
         async getTransactionReview() {
             await this.$axios.$get(`api/transaction/review?transaction_id=${this.idTransaction}`)
                 .then ((response) => {
-                    this.policyHolderDetail.name = response.data.account.fullname
-                    this.policyHolderDetail.phone = response.data.account.phone
-                    this.policyHolderDetail.email = response.data.account.email
+                    console.log(response)
+                    this.policyHolderDetail.name = response.data.client.fullname
+                    this.policyHolderDetail.phone = response.data.client.phone
+                    this.policyHolderDetail.email = response.data.client.email
 
                     this.vehicleDetail.brand = response.data.vehicle.brand
                     this.vehicleDetail.type = response.data.vehicle.model
@@ -727,22 +755,25 @@ export default {
                     this.vehicleDetail.productionYear = response.data.vehicle.year
                     this.vehicleDetail.price = this.formatPrice(response.data.vehicle.price)
                     this.vehicleDetail.lisencePlateId = response.data.vehicle.plate
-                    this.vehicleDetail.plateNumber = response.data.vehicle.plate_detail
-                    this.vehicleDetail.protection = response.data.vehicle.selectedPackage
-                    this.vehicleDetail.color = response.data.vehicle.vehicle_color
+                    this.vehicleDetail.plateNumber = response.data.vehicle.plate + " " + response.data.vehicle.plate_detail
+                    if(response.data.vehicle.protection === "comprehensive"){
+                        this.vehicleDetail.protection = "Komprehensif"
+                    }else{
+                        this.vehicleDetail.protection = "Kerugian Total"
+                    }
+                    this.vehicleDetail.color = response.data.vehicle.color
                     this.vehicleDetail.machineNumber = response.data.vehicle.machine_number
                     this.vehicleDetail.vehicleIdentificationNumber = response.data.vehicle.skeleton_number
+                    this.condition = response.data.vehicle.condition
 
                     this.purchaseSummaryDatas.premiPrice = response.data.transaction.price
                     this.transactionId = response.data.transaction.code
-                    // this.purchaseSummaryDatas.administrationCost = response.data.transaction.price
-                    // this.purchaseSummaryDatas.discount = response.data.transaction.price
-                    // this.purchaseSummaryDatas.promo = response.data.transaction.price
 
                     const expan = response.data.transaction.expansions
 
                     this.expansions = {}
                     this.expansionFields = []
+                    
                     for (const value of expan){
                         this.expansionFields.push({
                             key: value.code,
@@ -751,24 +782,44 @@ export default {
 
                         this.expansions[value.code] = value.price
                         this.purchaseSummaryDatas.expTotal += value.price
-
                     }
-
+                    
                     const file = response.data.transaction.documents
-                    this.documentImages.stnk = this.$config.baseAPI + file.stnk
-                    this.documentImages.vehicleFront = this.$config.baseAPI +file.front_side
-                    this.documentImages.vehicleRight = this.$config.baseAPI +file.right_side
-                    this.documentImages.vehicleLeft = this.$config.baseAPI +file.left_side
-                    this.documentImages.vehicleBehind = this.$config.baseAPI +file.back_side
-                    this.documentImages.vehicleDasboard = this.$config.baseAPI +file.dashboard
+
+                    if(this.condition === true){
+                        this.documentImagesNew.stnk = this.$config.baseAPI + file.stnk
+                        this.documentImagesNew.vehicleFront = this.$config.baseAPI +file.front_side
+                        this.documentImagesNew.vehicleRight = this.$config.baseAPI +file.right_side
+                        this.documentImagesNew.vehicleLeft = this.$config.baseAPI +file.left_side
+                        this.documentImagesNew.vehicleBehind = this.$config.baseAPI +file.back_side
+                        this.documentImagesNew.vehicleDasboard = this.$config.baseAPI +file.dashboard
+                    }else{
+                        this.documentImagesOld.bastk = this.$config.baseAPI +file.bastk
+                        this.documentImagesOld.identityCard = this.$config.baseAPI +file.identity_card
+                    }
+                    this.totalPriceWithFee()
                     this.loading = false
                 })
                 .catch (error => {
+                    console.log(error)
                     if(error.response.status === 400){
                         this.$router.push({name: "asuransi-mobil-polis-pembelian"})
                     }
                 })
         },
+        async getPaymentFee(){
+            this.loading = true
+            await this.$axios.$get(`api/transaction/fee?platform=${this.model.paymentMethod}&total=${this.totalPriceWithoutFee}`)
+                .then ((response) => {
+                    this.purchaseSummaryDatas.pgPrice = response.data
+                    this.totalPriceWithFee()
+                    this.loading = false
+                })
+                .catch (error => {
+                    console.log(error)
+                })
+        },
+        
         CreatePayment() {
             this.$axios.$post('api/transaction/payment', {
                 transaction_id : this.idTransaction,
@@ -777,6 +828,15 @@ export default {
                 this.$router.push({name: "asuransi-mobil-polis-konfirmasi-pembayaran"})
             })
 
+        },
+
+        totalPriceWithFee(){
+            if(this.model.totalPriceWithFee == null){
+                this.model.totalPriceWithFee = this.totalPriceWithoutFee
+
+            }
+            this.model.totalPriceWithFee = this.totalPriceWithoutFee + this.purchaseSummaryDatas.pgPrice
+            
         }
     }
 }

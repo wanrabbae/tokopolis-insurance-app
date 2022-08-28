@@ -296,6 +296,7 @@ export default {
         async getTransactionReview() {
             await this.$axios.$get(`api/transaction/payment?transaction_id=${this.transactionId}`)
                 .then ((response) => {
+                    console.log(response)
                     if(response.data.status !=="waiting"){
                         this.$router.push({name: "index"})
                         this.$store.commit('setProductId',null)
