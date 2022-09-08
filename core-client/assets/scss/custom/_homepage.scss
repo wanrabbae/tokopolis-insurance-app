@@ -1,81 +1,71 @@
-#service .service-image {
-    max-width: 132px;
-    max-height: 132px;
-}
-
-#why-us .card-image {
-    width: 96px;
-    height: 96px;
-}
-
-#claim-assistance .card-image {
-    width: 42px;
-    height: 42px;
-}
-
-#claim-assistance {
+.claim-assistance-wrapper {
     background-color: $light-blue;
 }
 
-#call-to-action {
+.why-us-wrapper .why-us-card {
     position: relative;
-
-    .overlay-img {
-        position: relative;
-        height: 100%;
-        object-fit: cover;
-        object-position: right;
-    }
-
-    .overlay-gradient,
-    .overlay-content {
+    width: 176px;
+    height: 176px;
+    
+    &::before {
+        content: '';
+        display: block;
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 50%;
+        height: 50%;
+        border-top: 4px solid $primary;
+        border-left: 4px solid $primary;
+        border-top-left-radius: $border-radius-lg;
     }
 
-    .overlay-gradient {
-        background: #ADBEDC;
-        background: linear-gradient(80deg, #94A2BA 10%, #ADBEDC 50%, #FECB89 65%, rgba(255, 255, 255, 0) 85%);
-    }
-
-    .overlay-content {
-        display: flex;
-        align-items: center;
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 50%;
+        height: 50%;
+        border-right: 4px solid $primary;
+        border-bottom: 4px solid $primary;
+        border-bottom-right-radius: $border-radius-lg;
     }
 }
 
-@include media-breakpoint-up(lg) {
-    #call-to-action {
-        height: 300px;
+.testimonial-wrapper {
+    .testimonial-quotation-mark {
+        text-align: center;
+        color: $primary;
+        font-size: 1rem;
+
+        &::after {
+            content: "";
+            padding: 0 0.5em;
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='currentFill'%3E%3Cpath d='M27.5568 3.08859V14.5794C27.5568 16.1383 26.3825 17.4028 24.933 17.4028C19.7648 17.4028 16.955 23.1047 16.5659 34.3597H24.933C26.3825 34.3597 27.5568 35.6227 27.5568 37.1833V61.4456C27.5568 63.0044 26.3825 64.2671 24.933 64.2671H2.62387C1.17431 64.2671 0 63.0044 0 61.4456V37.1833C0 31.7879 0.50509 26.8341 1.50032 22.461C2.5215 17.9802 4.08809 14.0611 6.15527 10.813C8.28392 7.47683 10.947 4.85712 14.0706 3.03306C17.2145 1.19839 20.8691 0.26709 24.9347 0.26709C26.3825 0.26709 27.5568 1.53097 27.5568 3.08859ZM61.3795 0.26709C57.3154 0.26709 53.6591 1.19808 50.5154 3.03306C47.3916 4.85712 44.7285 7.47683 42.6001 10.813C40.5315 14.063 38.9661 17.9802 37.9435 22.4644C36.9482 26.8371 36.4448 31.7876 36.4448 37.183V61.4453C36.4448 63.0041 37.6194 64.2668 39.067 64.2668H61.3781C62.8257 64.2668 64 63.0041 64 61.4453V37.183C64 35.6224 62.8257 34.3594 61.3781 34.3594H53.1286C53.5127 23.1043 56.2832 17.4025 61.3781 17.4025C62.8257 17.4025 64 16.138 64 14.5791V3.08859C64.0017 1.53097 62.8274 0.26709 61.3795 0.26709Z' fill='currentFill'/%3E%3C/svg%3E");
+            mask-repeat: no-repeat;
+            mask-position: center;
+            background-color: currentColor;
+        }
+    }
+
+    .testimonial-separator {
+        width: 32px;
+        height: 1px;
+        background-color: $primary;
     }
 }
 
-@include media-breakpoint-down(md) {
-    #service .service-image {
-        max-width: 48px;
-        max-height: 48px;
-    }
-    
-    #why-us {
+@include media-breakpoint-down(sm) {
+    .why-us-wrapper {
         .row .col-6:nth-child(2) ~ .col-6 {
-            padding-top: $spacer * 1.5;
+            padding-top: $spacer * 3;
         }
 
-        .card-image {
-            width: 64px;
-            height: 64px;
+        .why-us-card {
+            width: 144px;
+            height: 144px;
         }
-    }
-
-    #claim-assistance .card-image {
-        width: 28px;
-        height: 28px;
-    }
-
-    #call-to-action {
-        height: 260px;
     }
 }

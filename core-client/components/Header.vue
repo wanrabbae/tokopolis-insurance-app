@@ -2,13 +2,18 @@
     
     <header id="header" class="fixed-top">
         
-        <nav class="d-block navbar navbar-expand-lg bg-white">
+        <nav class="d-block navbar navbar-expand-md bg-white">
 
-            <div class="navbar-container d-flex align-items-center">
+            <div class="container d-flex align-items-center">
 
                 <a href="/" target="_self" class="navbar-brand">
-                    
-                    <TokopolisLogo class="text-primary" height="38px"/>
+
+                    <nuxt-img  
+                        format="svg"
+                        height="25" 
+                        src="svg/logo-tokopolis.svg"
+                        alt="Tokopolis Logo" 
+                    />
                 
                 </a> <!-- navbar-brand ends -->
 
@@ -38,7 +43,13 @@
 
                     <b-nav-item href="/profil" class="ml-3">
         
-                        <b-img :src="photo" class="avatar rounded-circle" />
+                        <nuxt-img 
+                            preset="default"
+                            :src="photo"
+                            alt="User Avatar"
+                            sizes="30" 
+                            class="rounded-circle"
+                        />
         
                     </b-nav-item>
 
@@ -70,11 +81,11 @@
                     id="navbar-sidebar" 
                     width="100%" 
                     bg-variant="white" 
-                    class="position-lg-relative h-lg-auto flex-grow-1"
-                    sidebar-class="d-lg-flex flex-lg-row position-lg-relative h-lg-auto"
-                    header-class="d-lg-none"
-                    body-class="my-lg-auto p-lg-0"
-                    footer-class="my-lg-auto p-lg-0"
+                    class="position-md-relative h-md-auto flex-grow-1"
+                    sidebar-class="d-md-flex flex-md-row position-md-relative h-md-auto"
+                    header-class="d-md-none"
+                    body-class="my-md-auto p-md-0"
+                    footer-class="my-md-auto p-md-0"
                 >
                     
                     <template #header="{ hide }">
@@ -87,13 +98,13 @@
                     
                     </template>
 
-                    <b-navbar-nav class="justify-content-lg-center">
+                    <b-navbar-nav class="justify-content-md-center">
                         
                         <b-nav-item 
                             v-for="(menu, id) in menus" 
                             :key="id" 
                             :href="menu.link" 
-                            class="mx-lg-2 mb-1 mb-lg-0"
+                            class="mx-md-2 mb-1 mb-md-0"
                         >
                             {{ menu.text }}
                         </b-nav-item>
@@ -142,7 +153,13 @@
 
                                 <template #button-content>
                                     
-                                    <b-img :src="photo" class="avatar rounded-circle" />
+                                    <nuxt-img 
+                                        preset="default"
+                                        :src="photo"
+                                        alt="User Avatar"
+                                        sizes="30" 
+                                        class="rounded-circle"
+                                    />
                                     
                                     <div class="ml-2">
     
@@ -162,7 +179,7 @@
 
                         <b-navbar-nav v-if="!loggedIn">
                             
-                            <b-nav-item href="/login" class="text-center mb-1 mb-lg-0 mx-lg-3">Masuk</b-nav-item>
+                            <b-nav-item href="/login" class="text-center mb-1 mb-md-0 mx-md-3">Masuk</b-nav-item>
                             
                             <li class="nav-item">
 
@@ -186,12 +203,8 @@
 
 <script>
 import cookie from 'js-cookie'
-import TokopolisLogo from '../assets/svg/tokopolis-logo.svg'
 
 export default {
-    components: {
-        TokopolisLogo
-    },
     props: {
         mobileView: {
             type: Boolean,
@@ -203,7 +216,7 @@ export default {
         },
         photo: {
             type: String,
-            default: '/img/DefaultProfile.png'
+            default: '/svg/avatar-default.svg'
         }
     },
     data() {

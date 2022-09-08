@@ -1,7 +1,7 @@
 <template>
     <div>
         <Header :mobile-view="mobileView" :logged-in="isLoggedIn" :photo="userPhoto" />
-        <Nuxt class="main-wrapper" :mobile-view="mobileView" keep-alive/>
+        <NuxtChild class="main-wrapper" :mobile-view="mobileView" keep-alive />
         <Footer />
     </div>
 </template>
@@ -18,7 +18,7 @@ export default {
     },
     data() {
         return {
-            mobileBreakpoint: 972,
+            mobileBreakpoint: 768,
             mobileView: false,
         }
     },
@@ -61,7 +61,9 @@ export default {
             }
         },
         handleResize(event) {
-            if (document.documentElement.clientWidth < this.mobileBreakpoint) {
+            const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            
+            if (width < this.mobileBreakpoint) {
                 this.mobileView = true;
             } else {
                 this.mobileView = false;

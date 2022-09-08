@@ -28,7 +28,7 @@ export default {
   */
   css: [
     '~assets/scss/piqo.scss',
-    'swiper/css/swiper.min.css'
+    '~assets/css/swiper.css'
   ],
 
   /*
@@ -37,6 +37,26 @@ export default {
   bootstrapVue: {
     bootstrapCSS: false,
     bootstrapVueCSS: true
+  },
+
+  /*
+  ** @nuxt-js/image configurations
+  */
+  image: {
+    presets: {
+      default: {
+        modifiers: {
+          format: 'webp',
+          quality: '60'
+        }
+      }
+    },
+    screens: {
+      xs: 0,
+      sm: 576,
+      md: 768,
+      lg: 992
+    }
   },
 
   router: {
@@ -83,6 +103,7 @@ export default {
     '@nuxt/http',
     '@nuxtjs/axios',
     '@nuxtjs/dayjs',
+    '@nuxt/image',
     'bootstrap-vue/nuxt',
     'nuxt-session',
     'nuxt-fontawesome',
@@ -158,4 +179,3 @@ export default {
     ]
   }
 }
-

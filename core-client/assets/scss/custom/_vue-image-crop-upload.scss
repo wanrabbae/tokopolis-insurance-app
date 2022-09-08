@@ -188,7 +188,7 @@
     }
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(sm) {
     .vue-image-crop-upload .custom-image-crop-upload .vicp-wrap {
         width: 80vw;
 

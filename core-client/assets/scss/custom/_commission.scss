@@ -9,7 +9,7 @@
     }
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(sm) {
     .commission-stats .icon {
         width: 18px;
         height: 18px;

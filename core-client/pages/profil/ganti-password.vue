@@ -8,7 +8,7 @@
 
             <b-form
                 method="post"
-                class="w-100 w-lg-75"
+                class="w-100 w-md-75"
                 @submit.prevent="handleSubmit(changePassword)"
             >
 
@@ -42,7 +42,7 @@
 
                 <BaseButton
                     native-type="submit"
-                    classes="w-100 w-lg-auto"
+                    classes="w-100 w-md-auto"
                     :disabled="invalid"
                 >
                     Update

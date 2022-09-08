@@ -1,32 +1,55 @@
 <template>
     
-    <component :is="tag">
+    <component :is="tag" class="container">
         
-        <h2 class="fs-lg-1 fs-3 text-center">{{ title }}</h2>
-        
-        <div class="row justify-content-center">
+        <div class="claim-assistance-wrapper rounded-5 px-3 px-md-6 py-5">
             
-            <div v-for="(list, id) in claimAssistanceList" :key="id" class="col-12 col-lg-4">
-                
-                <a :href="list.link" class="card d-flex flex-row align-items-center p-3 mb-3">
-                        
-                    <div class="card-image">
-                        
-                        <b-img-lazy :src="list.image" :alt="list.text" />
+            <div class="row align-items-center">
+
+                <div class="col-12 col-md-4 mb-3 mb-md-0">
                     
-                    </div> <!-- card-image ends -->
-                    
-                    <div class="fs-lg-4 fs-5 fw-bold flex-grow-1 text-center text-dark">
+                    <h2 class="text-center text-md-left">Claim Assistance</h2>
+
+                </div>
+
+                <div class="col-12 col-md-8">
+
+                    <div class="row justify-content-center">
                         
-                        {{ list.text }}
+                        <component
+                            :is="item.link ? 'a' : 'span'" 
+                            v-for="(item, i) in assistanceList" 
+                            :key="i" 
+                            class="col-4 d-flex flex-column align-items-center"
+                        >
+                            
+                            <div class="bg-white rounded-5 overflow-hidden">
+                                
+                                <nuxt-img 
+                                    preset="default"
+                                    :src="item.image"
+                                    :alt="item.alt ? item.alt : 'Claim Assistance Icon - ' + item.text" 
+                                    sizes="md:48px lg:96px"
+                                    loading="lazy"
+                                />
+                            
+                            </div> <!-- card-image ends -->
+                            
+                            <div class="text-center mt-2">
+                                
+                                <span class="fw-bold text-dark">{{ item.text }}</span>
+                            
+                            </div>
+                        
+                        </component> <!-- col-12.col-md-4 ends -->
                     
-                    </div>
-                
-                </a> <!-- card ends -->
-            
-            </div> <!-- col-12.col-lg-4 ends -->
-        
-        </div> <!-- row ends -->
+                    </div> <!-- row ends -->
+
+                </div>
+
+            </div>
+
+        </div>
     
     </component>
 
@@ -38,16 +61,25 @@ export default {
     props: {
         tag: {
             type: String,
-            default: 'div',
-            description: 'html tag'
-        },
-        title: {
-            type: String,
-            default: 'Claim Assistance'
-        },
-        claimAssistanceList: {
-            type: Array,
-            default: null
+            default: 'div'
+        }
+    },
+    data() {
+        return {
+            assistanceList: [
+                {
+                    image: "img/claim-assistance-icon-report.png",
+                    text: "Lapor Claim"
+                },
+                {
+                    image: "img/claim-assistance-icon-status.png",
+                    text: "Claim Status"
+                },
+                {
+                    image: "img/claim-assistance-icon-emergency.png",
+                    text: "Emergency"
+                }
+            ],
         }
     }
 }

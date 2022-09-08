@@ -5,3 +5,9 @@
         }
     }
 }
+
+@each $size, $value in $rounded-radius {
+    .rounded-#{$size} {
+        border-radius: $value !important;
+    }
+}

@@ -4,40 +4,46 @@
 
         <h2>Verifikasi Identitas</h2>
 
-        <b-form>
+        <validation-observer v-slot="{ handleSubmit, invalid }">
+            
+            <b-form @submit.prevent="handleSubmit(submit)">
 
-            <b-form-group>
+                <b-form-group>
 
-                <b-form-select
-                    v-model="model.identity"
-                    :options="identities"
-                    required
+                    <b-form-select
+                        v-model="model.identity"
+                        :options="identities"
+                        required
+                    />
+
+                </b-form-group>
+
+                <BaseInput
+                    v-model="model.identityNumber"
+                    name="Nomor Identitas"
+                    placeholder="Nomor Identitas"
+                    :rules="{ required: true }"
                 />
 
-            </b-form-group>
+                <BaseInput
+                    v-model="model.password"
+                    name="Password"
+                    type="password"
+                    placeholder="Password"
+                    :rules="{ required: true, min: 6 }"
+                />
 
-            <BaseInput
-                v-model="model.identityNumber"
-                name="Nomor Identitas"
-                placeholder="Nomor Identitas"
-                :rules="{ required: true }"
-            />
+                <BaseButton native-type="submit" :disabled="invalid" block>
+                    Simpan
+                </BaseButton>
 
-            <BaseInput
-                v-model="model.password"
-                name="Password"
-                type="password"
-                placeholder="Password"
-                :rules="{ required: true, min: 6 }"
-            />
+                <BaseButton tag="a" href="#" type="link" block>
+                    Lewati
+                </BaseButton>
 
-            <BaseButton native-type="submit" classes="mb-3" block>
-                Simpan
-            </BaseButton>
+            </b-form>
 
-            <a href="#" class="d-block text-center">Lewati</a>
-
-        </b-form>
+        </validation-observer>
 
     </div>
 
@@ -70,5 +76,10 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
+    methods: {
+        submit() {
+            // put code here
+        }
+    }
 };
 </script>

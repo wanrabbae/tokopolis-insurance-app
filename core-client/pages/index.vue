@@ -2,246 +2,125 @@
 
     <main class="main-content">
 
-        <PromotionCarousel
-            tag="section"
-            :images="promotionImages"
-            classes="py-4"
-        />
+        <Hero id="hero" tag="section" class="my-5 my-md-6" />
 
-        <Service
-            id="service"
-            tag="section"
-            classes="py-1"
-            :service-list="serviceList"
-        />
-
-        <TrackClaim
-            id="track-claim"
-            tag="section"
-            class="pt-4 py-lg-5"
-        />
-
-        <section id="videos" class="container py-5">
-
-            <VideoCarousel :videos="videos" />
+        <PromotionCarousel id="promotion" tag="section" :images="promotionImages" class="my-5 my-md-6" />
+        
+        <section id="partner" class="container my-5 my-md-6">
+            
+            <BrandCarousel :brand-images="partnerImages" grayscale />
 
         </section>
 
-        <section id="claim-assistance">
+        <Process id="process" tag="section" class="my-5 my-md-6"/>
 
-            <ClaimAssistance
-                :claim-assistance-list="claimAssistanceList"
-                class="container px-4 px-lg-5 py-lg-5 py-4"
-            />
+        <ClaimAssistance id="claim-assistance" tag="section" class="my-5 my-md-6" />
 
-        </section>
+        <WhyUs id="why-us" class="my-5 my-md-6" />
 
-        <section class="container py-5">
+        <section id="coverer" class="container my-5 my-md-6 py-3">
 
-            <WhyUs
-                id="why-us"
-                :why-us-list="whyUsList"
-                class="px-lg-5 pb-4"
-            />
+            <div class="row align-items-center">
 
-            <div id="partners" class="py-4">
+                <div class="col-12 col-md-3 mb-3 mb-md-0">
 
-                <h2 class="fs-lg-1 fs-3 text-center">Partner Kami</h2>
+                    <h2 class="fs-3 text-center text-md-left">Telah Diliput oleh</h2>
 
-                <BrandCarousel :brand-images="partnerBrandImages"/>
+                </div>
 
-            </div>
+                <div class="col-12 col-md-9">
+            
+                    <BrandCarousel :brand-images="covererImages"/>
 
-            <div id="covered-by" class="pt-4">
-
-                <h2 class="fs-lg-1 fs-3 text-center">Telah Diliput Oleh</h2>
-
-                <BrandCarousel :brand-images="coveredByImages"/>
+                </div>
 
             </div>
 
         </section>
 
-        <section id="testimonial" class="bg-dark-blue py-5">
-
-            <div class="container">
-
-                <h2 class="fs-lg-1 fs-3 text-center text-white">Apa Kata Mereka?</h2>
-
-                <TestimonialCarousel :testimonials="testimonials"/>
-
-            </div>
-
-        </section>
-
-        <CallToAction
-            id="call-to-action"
-            tag="section"
-        />
+        <Testimonial id="testimonial" class="my-5 my-md-6"/>
 
     </main>
 
 </template>
 
 <script>
-import Service from '../components/Service'
-import TrackClaim from '../components/TrackClaim'
-import WhyUs from '../components/WhyUs'
-import ClaimAssistance from '../components/ClaimAssistance'
-import CallToAction from '../components/CallToAction'
+import Hero from '../components/Hero'
 import PromotionCarousel from '../components/carousels/PromotionCarousel'
-import VideoCarousel from '../components/carousels/VideoCarousel'
 import BrandCarousel from '../components/carousels/BrandCarousel'
-import TestimonialCarousel from '../components/carousels/TestimonialCarousel'
+import Process from '../components/Process'
+import ClaimAssistance from '../components/ClaimAssistance'
+import WhyUs from '../components/WhyUs'
+import Testimonial from '../components/Testimonial'
 
 export default {
     components: {
-        Service,
-        TrackClaim,
-        WhyUs,
-        ClaimAssistance,
-        CallToAction,
+        Hero,
         PromotionCarousel,
-        VideoCarousel,
         BrandCarousel,
-        TestimonialCarousel
+        Process,
+        ClaimAssistance,
+        WhyUs,
+        Testimonial
     },
     data() {
         return {
             promotionImages: [
                 {
-                    src: "img/promotion-1.png",
+                    source: "/img/promotion-banner-1.png",
                     alt: "Promotion Banner 1"
                 },
                 {
-                    src: "img/promotion-2.png",
+                    source: "/img/promotion-banner-2.png",
                     alt: "Promotion Banner 2"
+                },
+                {
+                    source: "/img/promotion-banner-3.png",
+                    alt: "Promotion Banner 3"
                 }
             ],
-            serviceList: [
+            partnerImages: [
                 {
-                    image: "svg/new/polis-car.svg",
-                    text: "Mobil",
-                    link: "/asuransi/mobil"
-                },
-                {
-                    image: "svg/motorcycle-coming-soon.svg",
-                    text: "Motor",
-                    link: "#"
-                },
-                {
-                    image: "svg/new/polis-smartphone-locked.svg",
-                    text: "Smartphone",
-                    link: "#"
-                },
-                {
-                    image: "svg/health-coming-soon.svg",
-                    text: "Kesehatan",
-                    link: "#"
-                },
-                {
-                    image: "svg/life-coming-soon.svg",
-                    text: "Jiwa",
-                    link: "#"
-                }
-            ],
-            videos: [
-                "https://www.youtube.com/embed/FpAM4fYj-4g",
-            ],
-            claimAssistanceList: [
-                {
-                    image: "svg/new/claim-report.svg",
-                    text: "Lapor Claim",
-                    link: "#"
-                },
-                {
-                    image: "svg/new/claim-status.svg",
-                    text: "Claim Status",
-                    link: "#"
-                },
-                {
-                    image: "svg/new/emergency.svg",
-                    text: "Emergency",
-                    link: "#"
-                }
-            ],
-            whyUsList: [
-                {
-                    image: "svg/new/fast-time.svg",
-                    text: "Praktis dan Proses Cepat"
-                },
-                {
-                    image: "svg/new/cooperation.svg",
-                    text: "40+ Partner Asuransi"
-                },
-                {
-                    image: "svg/new/file.svg",
-                    text: "Bandingkan Dengan Mudah"
-                },
-                {
-                    image: "svg/new/headset.svg",
-                    text: "Digital Claim Assistance"
-                }
-            ],
-            partnerBrandImages: [
-                {
-                    src: "svg/Tugu.svg",
+                    source: "/svg/brands/logo-tugu.svg",
                     alt: "Tugu Insurance"
                 },
                 {
-                    src: "svg/Adira.svg",
+                    source: "/svg/brands/logo-adira.svg",
                     alt: "Adira Insurance"
                 },
                 {
-                    src: "svg/Sinarmas.svg",
+                    source: "/svg/brands/logo-sinarmas.svg",
                     alt: "Asuransi Sinarmas"
                 },
                 {
-                    src: "svg/GreatEastern.svg",
+                    source: "/svg/brands/logo-great-eastern.svg",
                     alt: "Great Eastern"
                 },
                 {
-                    src: "svg/CiputraLife.svg",
+                    source: "/img/brands/logo-ciputra-life.png",
                     alt: "Ciputra Life"
                 }
             ],
-            coveredByImages: [
+            covererImages: [
                 {
-                    src: "svg/Liputan6.svg",
+                    source: "/svg/brands/logo-liputan-6.svg",
                     alt: "Liputan 6"
                 },
                 {
-                    src: "svg/TechinAsia.svg",
-                    alt: "Techin Asia"
+                    source: "/svg/brands/logo-tech-in-asia.svg",
+                    alt: "Tech in Asia"
                 },
                 {
-                    src: "svg/kompas.svg",
+                    source: "/svg/brands/logo-kompas.svg",
                     alt: "Kompas"
                 },
                 {
-                    src: "svg/Detik.svg",
+                    source: "/svg/brands/logo-detik.svg",
                     alt: "Detik"
                 },
                 {
-                    src: "svg/TechCrunch.svg",
+                    source: "/svg/brands/logo-tech-crunch.svg",
                     alt: "Tech Crunch"
-                }
-            ],
-            testimonials: [
-                {
-                    name: "Ferdinand Hasibuan ",
-                    img: "img/testimoni-1.jpg",
-                    review: "Saya sangat terbantu ketika pengajuan klaim asuransi, proses sangat mudah dan cepat, berkat digitalisasi sistem asuransi di tokopolis yang diberikan saya merasa puas. "
-                },
-                {
-                    name: "Hesti Ariani",
-                    img: "img/testimoni-2.jpg",
-                    review: "Sesuai ekspektasi proses asuransi yang dibantu tokopolis, dengan kemudahan fitur komparasi memudahkan saya menentukan asuransi terbaik."
-                },
-                {
-                    name: "Liza Rahma",
-                    img: "img/testimoni-3.jpg",
-                    review: "Makasih tokopolis! budget asuransi saya yang pas-pasan, namun tetap dibantu secara maksimal menentukan asuransi mobil terbaik."
                 }
             ]
         }

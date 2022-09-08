@@ -1,6 +1,6 @@
 <template>
 
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <main role="main" class="container">
 
@@ -8,7 +8,7 @@
 
             <div class="row">
 
-                <div class="col-12 col-lg-8 mb-4 mb-lg-0">
+                <div class="col-12 col-md-8 mb-4 mb-md-0">
 
                     <div class="card border mb-4">
 
@@ -139,7 +139,7 @@
 
                                 <BaseButton classes="mr-1" @click="submitDiscount">{{ discount ? 'Ubah' : 'Terapkan' }}</BaseButton>
 
-                                <BaseButton type="secondary" classes="text-primary border-primary" @click="toggleAddDiscount">Batal</BaseButton>
+                                <BaseButton type="white" classes="text-primary border-primary" @click="toggleAddDiscount">Batal</BaseButton>
 
                             </div>
 
@@ -151,7 +151,7 @@
 
                             <div class="form-row">
                             
-                                <div class="col-12 col-lg-auto mb-3 mb-lg-0">
+                                <div class="col-12 col-md-auto mb-3 mb-md-0">
                                     
                                     <b-form-radio-group
                                         v-model="model.discountType"
@@ -173,7 +173,7 @@
                                     :rules="{ price_between: [formatPrice(0), formatPrice(maxDiscount)] }"
                                     :placeholder="'Maksimum ' + formatPrice(maxDiscount, 'id-ID', 'decimal')"
                                     currency="IDR"
-                                    class="col-12 col-lg mb-0"
+                                    class="col-12 col-md mb-0"
                                     :disabled="!addDiscount && discount"
                                     @blur="onBlurDiscount"
                                 />
@@ -187,7 +187,7 @@
                                     :placeholder="'Maksimum ' + 100 * maxPercentageDiscount"
                                     input-classes="custom-number"
                                     suffix-text="%"
-                                    class="col-12 col-lg mb-0"
+                                    class="col-12 col-md mb-0"
                                     :disabled="!addDiscount && discount"
                                     @blur="onBlurDiscount"
                                 />
@@ -198,9 +198,9 @@
 
                     </div> <!-- card ends -->
 
-                </div> <!-- col-12.col-lg-8 ends -->
+                </div> <!-- col-12.col-md-8 ends -->
 
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-md-4">
 
                     <div class="card border p-3">
 
@@ -237,7 +237,7 @@
 
                         </div>
 
-                        <BaseButton type="secondary" classes="text-primary border-primary mb-1" block>Buat Penawaran</BaseButton>
+                        <BaseButton type="white" classes="text-primary border-primary mb-1" block>Buat Penawaran</BaseButton>
 
                         <BaseButton block @click="postData">Beli Sekarang</BaseButton>
 

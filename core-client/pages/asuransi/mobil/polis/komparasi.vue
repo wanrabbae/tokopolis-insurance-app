@@ -1,22 +1,27 @@
 <template>
 
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <div class="container">
 
-            <div class="comparison comparison-table">
+            <div class="comparison-table">
 
-                <b-table-simple class="bg-secondary rounded border mb-3 mb-lg-4">
+                <b-table-simple class="bg-white rounded border mb-3 mb-md-4">
 
                     <b-tr>
 
-                        <b-td v-if="!mobileView" :class="`col-lg-${ 12 / (products.length + 1) }`"></b-td>
+                        <b-td v-if="!mobileView" :class="`col-md-${ 12 / (products.length + 1) }`"></b-td>
 
-                        <b-td v-for="(product, i) in productsToCompare" :key="i" :class="`col-4 col-lg-${ 12 / (productsToCompare.length + 1) }`" class="text-center border-left">
+                        <b-td v-for="(product, i) in productsToCompare" :key="i" :class="`col-4 col-md-${ 12 / (productsToCompare.length + 1) }`" class="text-center border-left">
 
-                            <div class="product-image d-inline-flex justify-content-center align-items-center my-2">
+                            <div class="product-image my-2">
 
-                                <b-img :src="product.image" :alt="product.name" />
+                                <nuxt-img 
+                                    preset="default"
+                                    height="48"
+                                    :src="product.image" 
+                                    :alt="product.name" 
+                                />
 
                             </div>
 
@@ -28,7 +33,7 @@
 
                             <b-card-text class="product-price mb-2">{{ formatPrice(product.price) }} / {{ product.period }}</b-card-text>
 
-                            <BaseButton classes="w-100 w-lg-auto" @click="detailPayment(i)">Pilih Produk</BaseButton>
+                            <BaseButton classes="w-100 w-md-auto" @click="detailPayment(i)">Pilih Produk</BaseButton>
 
                         </b-td>
 
@@ -36,17 +41,17 @@
 
                 </b-table-simple>
 
-                <b-table-simple v-if="!mobileView" class="bg-secondary rounded border">
+                <b-table-simple v-if="!mobileView" class="bg-white rounded border">
 
                     <b-tr v-for="(field, i) in comparisonFields" :key="i">
 
-                        <b-td :class="`col-lg-${ 12 / (productsToCompare.length + 1) }`" class="align-middle">
+                        <b-td :class="`col-md-${ 12 / (productsToCompare.length + 1) }`" class="align-middle">
 
                             <span v-if="field.label" class="comparison-label">{{ field.label }}</span>
 
                         </b-td>
 
-                        <b-td v-for="(product, j) in productsToCompare" :key="j" :class="`col-lg-${ 12 / (productsToCompare.length + 1) }`" class="text-center align-middle border-left">
+                        <b-td v-for="(product, j) in productsToCompare" :key="j" :class="`col-md-${ 12 / (productsToCompare.length + 1) }`" class="text-center align-middle border-left">
 
                             <div v-if="field.key" class="d-block">
 
@@ -70,7 +75,7 @@
 
                 <div v-else class="d-block">
 
-                    <b-table-simple v-for="(field, i) in comparisonFields" :key="i" class="bg-secondary rounded border">
+                    <b-table-simple v-for="(field, i) in comparisonFields" :key="i" class="bg-white rounded border">
 
                         <b-tr>
 

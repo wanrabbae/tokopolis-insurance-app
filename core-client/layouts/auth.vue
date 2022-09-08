@@ -4,7 +4,13 @@
         
         <a href="/" class="mx-auto mb-5">
 
-            <TokopolisLogo class="text-white" height="32px" />
+            <nuxt-img  
+                format="svg"
+                height="36"
+                src="svg/logo-tokopolis-white.svg"
+                alt="Logo Tokopolis"
+                loading="lazy"
+            />
         
         </a>
 
@@ -12,11 +18,11 @@
 
             <div class="row justify-content-center">
 
-                <div class="col-12 col-lg-5 col-md-8">
+                <div class="col-12 col-md-8 col-lg-6">
 
-                    <Nuxt class="card p-4 p-lg-5" />
+                    <NuxtChild class="card p-4 p-md-5" keep-alive />
 
-                </div> <!-- col-12.col-lg-5.col-md-8 ends -->
+                </div> <!-- col-12.col-md-5.col-md-8 ends -->
 
             </div> <!-- row ends -->
 
@@ -25,13 +31,3 @@
     </div> <!-- auth-container ends -->
 
 </template>
-
-<script>
-import TokopolisLogo from '../assets/svg/tokopolis-logo-white.svg'
-
-export default {
-    components: {
-        TokopolisLogo
-    }
-}
-</script>

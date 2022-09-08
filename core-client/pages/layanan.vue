@@ -8,13 +8,13 @@
 
             <div class="row align-items-center mb-4">
 
-                <div class="col-12 col-lg-3 text-right">
+                <div class="col-12 col-md-3 text-right">
 
                     <b-img src="/svg/computer.svg" alt="Computer Icon"  style="max-height: 160px" />
 
-                </div> <!-- col-12.col-lg-3 ends -->
+                </div> <!-- col-12.col-md-3 ends -->
 
-                <div class="col-12 col-lg-9 text-right">
+                <div class="col-12 col-md-9 text-right">
 
                     <p>
                         Menyediakan informasi, peralatan fitur aplikasi, hingga kecerdasan buatan yang
@@ -24,19 +24,19 @@
                         digital dan real-time atas proses yang sedang berlangsung
                     </p>
 
-                </div> <!-- col-12.col-lg-9 ends -->
+                </div> <!-- col-12.col-md-9 ends -->
 
             </div> <!-- row ends -->
 
             <div class="row align-items-center mb-4">
 
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-md-3">
 
                     <b-img src="/svg/claim.svg" alt="Claim Icon"  style="max-height: 160px"/>
 
                 </div>
 
-                <div class="col-12 col-lg-9">
+                <div class="col-12 col-md-9">
 
                     <p>
                         Menyediakan jasa konsultansi, rekomendasi, hingga memberikan bantuan
@@ -49,13 +49,13 @@
 
             <div class="row align-items-center mb-4">
 
-                <div class="col-12 col-lg-3 text-right">
+                <div class="col-12 col-md-3 text-right">
 
                     <b-img src="/svg/insurance.svg" alt="Insurance Icon"  style="max-height: 160px"></b-img>
 
                 </div>
 
-                <div class="col-12 col-lg-9">
+                <div class="col-12 col-md-9">
 
                     <p>
                         Menyediakan berbagai produk asuransi sesuai kebutuhan anda
@@ -67,32 +67,32 @@
 
             <div class="row align-items-center mb-4">
 
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-md-3">
 
                     <b-img src="/svg/payment.svg" alt="Payment Icon"  style="max-height: 160px" />
 
-                </div> <!-- col-12 col-lg-3 ends -->
+                </div> <!-- col-12 col-md-3 ends -->
 
-                <div class="col-12 col-lg-9">
+                <div class="col-12 col-md-9">
 
                     <p>
                         Menyediakan sistem pembayaran yang aman, mudah, dan simple sesuai
                         dengan kebutuhan anda
                     </p>
 
-                </div> <!-- col-12 col-lg-9 ends -->
+                </div> <!-- col-12 col-md-9 ends -->
 
             </div> <!-- row ends -->
 
             <div class="row align-items-center mb-4">
 
-                <div class="col-12 col-lg-3 text-right">
+                <div class="col-12 col-md-3 text-right">
 
                     <b-img src="/svg/shield.svg" alt="Shield Icon"  style="max-height: 160px"></b-img>
 
-                </div> <!-- col-12 col-lg-3 ends -->
+                </div> <!-- col-12 col-md-3 ends -->
 
-                <div class="col-12 col-lg-9">
+                <div class="col-12 col-md-9">
 
                     <p>
                         Menyediakan sistem bantuan proses klaim secara digital yang diakses melalui
@@ -101,7 +101,7 @@
                         kepada anda.
                     </p>
 
-                </div> <!-- col-12 col-lg-9 ends -->
+                </div> <!-- col-12 col-md-9 ends -->
 
             </div> <!-- row ends -->
 

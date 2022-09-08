@@ -1,10 +1,10 @@
 <template>
 
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <div class="container">
 
-            <header class="mb-4 mb-lg-5">
+            <header class="mb-4 mb-md-5">
 
                 <h2>Asuransi Mobil</h2>
 
@@ -12,11 +12,11 @@
 
             </header>
 
-            <div class="row mb-3 mb-lg-4">
+            <div class="row mb-3 mb-md-4">
 
-                <div v-if="!mobileView" class="col-12 col-lg-4">
+                <div class="d-none d-md-block col-12 col-md-4">
 
-                   <div class="bg-secondary rounded border">
+                   <div class="bg-white rounded border">
 
                         <div class="p-3 border-bottom">
 
@@ -37,11 +37,11 @@
 
                     </div> <!-- card ends -->
 
-                </div> <!-- col-12.col-lg-4 ends -->
+                </div> <!-- col-12.col-md-4 ends -->
 
-                <div class="col-12 col-lg-8">
+                <div class="col-12 col-md-8">
 
-                    <b-form class="mb-3 mb-lg-4">
+                    <b-form class="mb-3 mb-md-4">
 
                         <b-input-group class="addon-combined">
 
@@ -64,7 +64,7 @@
 
                     </b-form>
 
-                    <div v-if="mobileView" v-b-modal.modal-sort class="d-flex justify-content-between bg-secondary rounded border p-3 mb-3 mb-lg-4">
+                    <div v-b-modal.modal-sort class="d-flex d-md-none justify-content-between bg-white rounded border p-3 mb-3 mb-md-4">
 
                         <span>Urut Berdasarkan</span>
 
@@ -86,9 +86,9 @@
                             name="selected-products"
                         >
 
-                            <div v-for="(product, i) in shownProducts" :key="product.id" class="position-relative mb-3 mb-lg-4">
+                            <div v-for="(product, i) in shownProducts" :key="product.id" class="position-relative mb-3 mb-md-4">
 
-                                <div class="bg-secondary rounded border" :class="{ 'blur-active' : blurActive(i) }">
+                                <div class="bg-white rounded border" :class="{ 'blur-active' : blurActive(i) }">
 
                                     <div class="d-flex justify-content-between p-3">
 
@@ -97,7 +97,7 @@
                                             classes="text-left p-0"
                                             @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
                                         >
-                                            <span class="fs-lg-4 fw-bold text-dark">{{ product.name }}</span>
+                                            <span class="fs-md-4 fw-bold text-dark">{{ product.name }}</span>
                                         </BaseButton>
 
                                         <span class="text-dark fw-bold">
@@ -110,7 +110,13 @@
 
                                         <div  class="col-4 d-flex justify-content-center align-items-center">
 
-                                            <b-img-lazy :src="product.image" :alt="product.name" style="max-height: 96px" />
+                                            <nuxt-img 
+                                                preset="default"
+                                                height="96"
+                                                :src="product.image" 
+                                                :alt="product.name" 
+                                                loading="lazy"
+                                            />
 
                                         </div> <!-- col-4 ends -->
 
@@ -191,32 +197,41 @@
 
         </div>
 
-        <div v-if="compareProducts.length > 0" class="comparison comparison-wrapper py-4">
+        <div v-if="compareProducts.length > 0" class="comparison-wrapper py-4">
 
             <div class="container">
 
-                <div class="row justify-content-center no-gutters mb-3">
+                <div class="row justify-content-center no-gutters mx-n1 mb-3">
 
-                    <div v-for="(product, i) in compareProducts" :key="i" class="col-6 col-lg-4">
+                    <div v-for="(product, i) in compareProducts" :key="i" class="col-6 col-md-4 px-1">
 
-                        <div class="card d-flex flex-row flex-lg-column justify-content-center align-items-center p-2 p-lg-3">
+                        <div class="h-100 bg-white rounded p-2 p-md-3">
 
-                            <div class="product-image d-flex justify-content-center align-items-lg-center my-lg-2">
+                            <div class="row no-gutters">
+                                
+                                <div class="col col-md-12 product-image mr-2 mr-md-0 mb-md-2">
 
-                                <b-img :src="product.image" :alt="product.name" />
+                                    <nuxt-img 
+                                        preset="default"
+                                        :src="product.image" 
+                                        :alt="product.name"
+                                        sizes="md:32px lg:192px"
+                                    />
+
+                                </div>
+
+                                <div class="col col-md-12 product-name text-left text-md-center">
+
+                                    <span>{{ product.name }}</span>
+
+                                </div>
 
                             </div>
 
-                            <div class="product-name ml-2 ml-lg-0 mb-lg-1">
-
-                                <span class="fw-bold text-dark">{{ product.name }}</span>
-
-                            </div>
-
-                            <div v-if="!mobileView" class="d-block">
-
-                                <span>{{ formatPrice(product.price) }} / {{ product.period }}</span>
-
+                            <div class="d-none d-md-block text-center">
+                            
+                                {{ formatPrice(product.price) }} / {{ product.period }}
+                            
                             </div>
 
                         </div> <!-- card ends -->
@@ -229,7 +244,7 @@
 
                     <BaseButton
                         :disabled="compareProducts.length < 2"
-                        classes="mx-auto px-5 w-100 w-lg-auto"
+                        classes="mx-auto px-5 w-100 w-md-auto"
                         @click="comparePolis"
                     >
                         Bandingkan

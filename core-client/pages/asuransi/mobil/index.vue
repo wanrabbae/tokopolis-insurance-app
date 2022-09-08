@@ -8,7 +8,7 @@
             class="py-4"
         />
 
-        <main ref="main" class="container mb-4 mb-lg-5">
+        <main ref="main" class="container mb-4 mb-md-5">
 
             <div class="card border">
 
@@ -22,7 +22,7 @@
                             v-model="model.yearProduction"
                             name="Tahun Produksi"
                             label="Tahun Produksi"
-                            class="col-12 col-lg-4"
+                            class="col-12 col-md-4"
                             :options="years"
                             :rules="{ required: true }"
                             required
@@ -33,7 +33,7 @@
                             v-model="model.brand"
                             name="Merek Mobil"
                             label="Merek Mobil"
-                            class="col-12 col-lg-4"
+                            class="col-12 col-md-4"
                             :options="brandCar"
                             :rules="{ required: true }"
                             required
@@ -45,7 +45,7 @@
                             v-model="model.type"
                             name="Tipe Mobil"
                             label="Tipe Mobil"
-                            class="col-12 col-lg-4"
+                            class="col-12 col-md-4"
                             :options="typeCar"
                             :rules="{ required: true }"
                             required
@@ -57,7 +57,7 @@
                             v-model="model.series"
                             name="Seri Mobil"
                             label="Seri Mobil"
-                            class="col-12 col-lg-4"
+                            class="col-12 col-md-4"
                             :options="seriesCar"
                             :rules="{ required: true }"
                             required
@@ -69,7 +69,7 @@
                             v-model="model.licensePlate"
                             name="Plat Nomor"
                             label="Plat Nomor"
-                            class="col-12 col-lg-4"
+                            class="col-12 col-md-4"
                             :options="plateCar"
                             :rules="{ required: true }"
                             required
@@ -79,13 +79,13 @@
                             v-model="model.usage"
                             name="Penggunaan Mobil"
                             label="Penggunaan Mobil"
-                            class="col-12 col-lg-4"
+                            class="col-12 col-md-4"
                             :options="userCar"
                             :rules="{ required: true }"
                             required
                         />
 
-                        <div class="col-12 col-lg-6 mb-3">
+                        <div class="col-12 col-md-6 mb-3">
 
                             <BaseInputPrice
                                 v-model="model.price"
@@ -137,7 +137,7 @@
                             v-if="model.accessories.length !== 0"
                             v-model="model.totalAccessoriesPrice"
                             label="Aksesoris"
-                            class="col-12 col-lg-6"
+                            class="col-12 col-md-6"
                             disabled
                         />
 
@@ -151,7 +151,7 @@
                                 locale="id"
                                 :min="$dayjs().format('YYYY-MM-DD')"
                                 :open-date="$dayjs().format('YYYY-MM-DD')"
-                                class="w-lg-50 mb-4"
+                                class="w-md-50 mb-4"
                                 placeholder="Pilih Tanggal Mulai"
                                 nav-button-variant="primary"
                                 :date-format-options="{ 'day': 'numeric', 'month': 'long', 'year': 'numeric' }"
@@ -183,7 +183,7 @@
                                 class="row"
                             >
 
-                                <div class="col-12 col-lg-6 mb-4">
+                                <div class="col-12 col-md-6 mb-4">
 
                                     <div class="rounded border p-3">
 
@@ -200,17 +200,23 @@
 
                                             <div class="row">
 
-                                                <div class="col-12 col-lg-4 d-none d-lg-block">
+                                                <div class="col-12 col-md-4 d-none d-md-block">
 
-                                                    <b-img src="/svg/new/car-komprehensif.svg" alt="Komprehensif" />
+                                                    <nuxt-img 
+                                                        preset="default"
+                                                        sizes="lg:122px" 
+                                                        src="/svg/car-insurance-comprehensive.svg"
+                                                        alt="Asuransi Komprenhensif"
+                                                        loading="lazy" 
+                                                    />
 
-                                                </div> <!-- col-12.col-lg-8 ends -->
+                                                </div> <!-- col-12.col-md-8 ends -->
 
-                                                <div class="col-12 col-lg-8">
+                                                <div class="col-12 col-md-8">
 
                                                     <span>Menjamin segala jenis kerusakan pada mobil Anda termasuk kerusakan ringan, berat maupun kehilangan total akibat pencurian.</span>
 
-                                                </div> <!-- col-12.col-lg-4 ends -->
+                                                </div> <!-- col-12.col-md-4 ends -->
 
                                             </div> <!-- row ends -->
 
@@ -218,9 +224,9 @@
 
                                     </div> <!-- rounded.border ends -->
 
-                                </div> <!-- col-12.col-lg-6 ends -->
+                                </div> <!-- col-12.col-md-6 ends -->
 
-                                <div class="col-12 col-lg-6 mb-4">
+                                <div class="col-12 col-md-6 mb-4">
 
                                     <div class="rounded border p-3">
 
@@ -237,17 +243,23 @@
 
                                             <div class="row">
 
-                                                <div class="col-12 col-lg-4 d-none d-lg-block">
+                                                <div class="col-12 col-md-4 d-none d-md-block">
 
-                                                    <b-img src="/svg/new/car-tlo.svg" alt="tlo" />
+                                                    <nuxt-img 
+                                                        preset="default"
+                                                        sizes="lg:122px" 
+                                                        src="/svg/car-insurance-total-loss-only.svg"
+                                                        alt="Asuransi Kerugian Total / TLO (Total Loss Only)"
+                                                        loading="lazy" 
+                                                    />
 
-                                                </div> <!-- col-12.col-lg-4 ends -->
+                                                </div> <!-- col-12.col-md-4 ends -->
 
-                                                <div class="col-12 col-lg-8">
+                                                <div class="col-12 col-md-8">
 
                                                     <span>Menjamin kerugian/kerusakan di mana biaya perbaikan ≥ 75% dari harga mobil termasuk kehilangan total akibat pencurian.</span>
 
-                                                </div> <!-- col-12.col-lg-8 ends -->
+                                                </div> <!-- col-12.col-md-8 ends -->
 
                                             </div> <!-- row ends -->
 
@@ -255,7 +267,7 @@
 
                                     </div> <!-- rounded.border ends -->
 
-                                </div> <!-- col-12.col-lg-6 ends -->
+                                </div> <!-- col-12.col-md-6 ends -->
 
                             </b-form-radio-group>  <!-- row ends -->
 
@@ -322,9 +334,9 @@ export default {
             title: 'Asuransi Mobil',
             promotionImages: [
                 {
-                    src: "/img/promotion-1.png",
-                    alt: "Promotion Banner 1"
-                }
+                    source: "img/promotion-banner-3.png",
+                    alt: "Promotion Banner 3"
+                },
             ],
             model: {
                 brand: null,

@@ -1,58 +1,81 @@
 <template>
     
-    <div class="carousel-wrapper video-carousel">
-        
-        <div class="row no-gutters" :class="videos.length > 1 ? 'mb-4' : ''">
-            
-            <div class="col-1 col-lg-2 d-flex justify-content-start align-items-center">
+    <component :is="tag">
                 
-                <div id="video-swiper-button-prev" slot="button-prev" class="swiper-button-prev"></div>
+        <client-only>
+
+            <div class="video-carousel-wrapper">
+
+                <swiper ref="promotionCarousel" :options="{...swiperOptions, loop}">
+
+                    <swiper-slide v-for="(video, i) in videos" :key="i" class="swiper-slide d-flex justify-content-center">
+
+                        <div class="swiper-video">
+
+                            <div class="iframe-container">
+
+                                <iframe 
+                                    :src="video" 
+                                    title="YouTube video player" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen
+                                ></iframe>
+
+                            </div>
+
+                        </div>
+
+                    </swiper-slide> <!-- swiper-slide ends -->
+
+                    <div v-if="videos.length > 1" id="video-carousel-button-prev" slot="button-prev" class="swiper-button-prev"></div>
+
+                    <div v-if="videos.length > 1" id="video-carousel-button-next" slot="button-next" class="swiper-button-next"></div> 
+
+                </swiper> <!-- swiper ends --> 
             
-            </div> <!-- col-1.col-lg-2 ends -->
-            
-            <div class="col-10 col-lg-8">
+                <div class="d-flex justify-content-center mt-2">
+
+                    <div v-if="videos.length > 1" id="video-carousel-pagination" class="swiper-pagination"></div>
+
+                </div>
                 
-                <div v-swiper:videoCarousel="swiperOption" class="swiper">
-                    
-                    <div class="swiper-wrapper">
-                        
-                        <div v-for="(video, id) in videos" :key="id" class="swiper-slide">
+            </div>
+
+            <!-- loading indicator, rendered on server-side -->
+            <template slot="placeholder">
+
+                <div class="video-carousel-wrapper">
+
+                    <div class="swiper-container is-loading">
+
+                        <div class="swiper-wrapper">
                             
-                            <div class="swiper-video">
-                                
-                                <div class="video-container">
-                                    
-                                    <iframe 
-                                        :src="video" 
-                                        title="YouTube video player" 
-                                        frameborder="0" 
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                        allowfullscreen
-                                    ></iframe>
-                                
-                                </div> <!-- video-container ends -->
+                            <div class="swiper-slide d-flex justify-content-center">
+
+                                <div class="swiper-video">
+
+                                    <div class="iframe-container lazy-loading">
+                                        
+                                        <iframe src="" frameborder="0"></iframe>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
                             
-                            </div> <!-- swiper-video ends -->
-                        
-                        </div> <!-- swiper-slide ends -->
-                    
-                    </div> <!-- swiper-wrapper ends -->
+                    </div>
                 
-                </div>  <!-- swiper ends -->
-            
-            </div> <!-- col-10.col-lg-8 ends -->
-            
-            <div class="col-1 col-lg-2 d-flex justify-content-end align-items-center">
-                
-                <div id="video-swiper-button-next" slot="button-next" class="video-swiper-button-next swiper-button-next"></div>
-            
-            </div> <!-- col-1.col-lg-2 ends -->
+                </div>
+
+            </template>
         
-        </div> <!-- row ends -->
-        
-        <div v-if="videos.length > 1" id="video-swiper-pagination" slot="pagination" class="swiper-pagination"></div>
-    
-    </div> <!-- carousel-wrapper.video-carousel -->
+        </client-only>
+
+    </component>
 
 </template>
 
@@ -60,6 +83,10 @@
 export default {
     name: 'VideoCarousel',
     props: {
+        tag: {
+            type: String,
+            default: 'div'
+        },
         videos: { 
             type: Array,
             default: null
@@ -67,19 +94,24 @@ export default {
     },
     data() {
         return {
-             swiperOption: {
-                loop: true,
-                slidesPerView: 1,
+            swiperOptions: {
+                slidesPerView: 'auto',
+                centeredSlides: true,
                 pagination: {
-                    el: '#video-swiper-pagination',
+                    el: '#video-carousel-pagination',
                     clickable: true
                 },
                 navigation: {
-                    nextEl: '#video-swiper-button-next',
-                    prevEl: '#video-swiper-button-prev'
+                    nextEl: '#video-carousel-button-prev',
+                    prevEl: '#video-carousel-button-next'
                 }
             }
         }
     },
+    computed: {
+        loop() {
+            return this.videos.length > 1;
+        }
+    }
 }
 </script>

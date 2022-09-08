@@ -5,9 +5,9 @@
 
 // Color system
 $white     : #fff !default;
-$gray-100  : #f9f3fd !default;  
-$gray-200  : #dadfe4 !default;  // footer color
-$gray-300  : #e3e3e3 !default;
+$gray-100  : #f4f6ff !default;  
+$gray-200  : #e7ebff !default;  // footer color
+$gray-300  : #dce1f5 !default;
 $gray-400  : #c6c6d0 !default;
 $gray-500  : #adb5bd !default;
 $gray-600  : #6c757d !default;   // Line footer color
@@ -20,7 +20,7 @@ $dark-blue : #435A8C !default;
 
 $blue:    #5e72e4 !default;
 $indigo:  #5603ad !default;
-$orange:  #FF7900 !default; // primary
+$orange:  #ff7900 !default; // primary
 $pink:    #ff8d72 !default;
 $red:     #eb3751 !default;
 $orange:  #fb6340 !default;
@@ -30,7 +30,7 @@ $teal:    #1d8cf8 !default;
 $cyan:    #42b883 !default;
 
 $primary:       $orange !default;
-$secondary:     $white !default;
+$secondary:     $dark-blue !default;
 $success:       $green !default;
 $info:          $teal !default;
 $warning:       $yellow !default;
@@ -77,6 +77,25 @@ $body-color: $gray-700 !default;
 // You can add more entries to the $spacers map, should you need more variation.
 
 $spacer: 1rem !default;
+// Spacing
+//
+// Control the default styling of most Bootstrap elements by modifying these
+// variables. Mostly focused on spacing.
+// You can add more entries to the $spacers map, should you need more variation.
+
+$spacer: 1rem !default;
+$spacers: () !default;
+$spacers: map-merge(
+  (
+    0: 0,
+    1: ($spacer * .25),
+    2: ($spacer * .5),
+    3: $spacer,
+    4: ($spacer * 1.5),
+    5: ($spacer * 2),
+    6: ($spacer * 3)
+  ), $spacers
+);
 
 $padding-base-vertical:        .5rem !default;
 $padding-base-horizontal:      .7rem !default;
@@ -91,6 +110,18 @@ $margin-base-vertical:         15px !default;
 // Style anchor elements.
 
 $link-hover-decoration:     none !default;
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px
+) !default;
 
 // Fonts
 $font-family-sans-serif:      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
@@ -128,7 +159,7 @@ $h5-font-size:                $font-size-base !default;
 $h6-font-size:                $font-size-base * 0.85 !default;
 
 $headings-font-weight:        $font-weight-bold !default;
-$headings-margin-bottom:      $spacer !default;
+$headings-margin-bottom:      $spacer * .5 !default;
 $headings-line-height:        1.5 !default;
 $headings-color:              $gray-800 !default;
 
@@ -170,6 +201,17 @@ $opacity-values: map-merge((
   100: 1,
 ), $opacity-values);
 
+// Grid containers
+//
+// Define the maximum width of `.container` for different screen sizes.
+
+$container-max-widths: (
+  sm: 320px,
+  md: 480px,
+  lg: 768px,
+  xl: 1024px
+) !default;
+
 // Grid columns
 //
 // Set the number of columns and specify the width of the gutters.
@@ -192,6 +234,16 @@ $border-radius-xl:            0.875rem !default;
 $border-radius-lg:            0.4285rem !default;
 $border-radius-sm:            0.2857rem !default;
 $border-radius-xs:            0.1428rem !default;
+
+$rounded-radius: () !default;
+$rounded-radius: map-merge((
+  1: $border-radius-xs,
+  2: $border-radius,
+  3: $border-radius-sm,
+  4: $border-radius-lg,
+  5: $border-radius-xl
+), $rounded-radius);
+
 
 $box-shadow-sm:               0 .125rem .25rem rgba($black, .075);
 $box-shadow:                  0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);

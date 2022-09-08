@@ -2,7 +2,7 @@
     <div>
         <section class="bg-primary py-5">
             <b-container class="my-3">
-                <h1 class="text-center text-secondary mb-4">Halo, ada yang bisa kami bantu?</h1>
+                <h1 class="text-center text-white mb-4">Halo, ada yang bisa kami bantu?</h1>
 
                 <b-row class="justify-content-center">
                     <b-col cols="8">
@@ -19,7 +19,7 @@
 
                                     <b-input-group-append class="d-flex align-items-center">
                                         <BaseButton
-                                            type="secondary"
+                                            type="white"
                                             native-type="submit"
                                             class="px-3 bg-transparent border-0 shadow-none"
                                         >
@@ -41,7 +41,7 @@
                 <b-row align-h="center">
                     <b-col v-for="(question, index) in questions" :key="index" cols="4" class="mb-4">
                         <a href="#">
-                            <b-card bg-variant="secondary" align="center" class="h-100" body-class="d-flex justify-content-center align-items-center">
+                            <b-card bg-variant="white" align="center" class="h-100" body-class="d-flex justify-content-center align-items-center">
                                 {{ question }}
                             </b-card>
                         </a>
@@ -54,10 +54,10 @@
             <b-container class="bv-example-row">
                 <h1 class="text-center mb-5">Kategori</h1>
 
-                <b-row align-h="center" class="px-0 px-md-5 mx-0 mx-lg-5">
+                <b-row align-h="center" class="px-0 px-md-5 mx-0 mx-md-5">
                     <b-col v-for="(card, index) in questionCategoryCards" :key="index" cols="4" class="mb-4">
                         <a :href="card.link">
-                            <b-card bg-variant="secondary" align="center" class="h-100 py-3">
+                            <b-card bg-variant="white" align="center" class="h-100 py-3">
                                 <b-card-img :src="card.icon" :alt="card.text" class="mb-4" style="max-width: 130px"></b-card-img>
                                 <b-card-title title-tag="h5" class="mb-0">{{ card.text }}</b-card-title>
                             </b-card>

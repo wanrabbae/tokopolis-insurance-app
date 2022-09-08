@@ -6,12 +6,12 @@
 
             <h2>Profil</h2>
 
-            <div class="row flex-column-reverse flex-lg-row">
+            <div class="row flex-column-reverse flex-md-row">
 
                 <validation-observer
                     v-slot="observer"
                     tag="div"
-                    class="col-12 col-lg-8"
+                    class="col-12 col-md-8"
                 >
 
                     <b-form method="post" @submit.prevent="observer.handleSubmit(submitFile)">
@@ -168,7 +168,7 @@
 
                         <BaseButton
                             native-type="submit"
-                            classes="w-100 w-lg-auto"
+                            classes="w-100 w-md-auto"
                             :disabled="observer.invalid"
                         >
                             Update
@@ -176,22 +176,27 @@
 
                     </b-form>
 
-                </validation-observer> <!-- col-12.col-lg-8 ends -->
+                </validation-observer> <!-- col-12.col-md-8 ends -->
 
-                <div class="col-12 col-lg-4 mb-3 mb-lg-5 text-center">
+                <div class="col-12 col-md-4 d-flex flex-column align-items-center mb-3 mb-md-5">
 
-                    <b-img
+                    <nuxt-img
                         v-if="upload"
+                        width="120"
+                        height="120"
+                        preset="default"
                         :src="photo"
                         alt="Profile Picture"
-                        class="avatar rounded-circle mb-4"
+                        class="rounded-circle mb-4"
                     />
 
-                    <b-img
+                    <nuxt-img
                         v-else
+                        width="120"
+                        height="120"
                         :src="imgDataUrl"
                         alt="Profile Picture"
-                        class="avatar rounded-circle mb-4"
+                        class="rounded-circle mb-4"
                     />
 
                     <BaseButton @click="toggleShow">Pilih Gambar</BaseButton>
@@ -260,7 +265,7 @@ export default {
             city: null,
             imgDataUrl: null,
             show:false,
-            photo : null,
+            photo : '/svg/avatar-default.svg',
             formData: null,
             loading: true,
             months: [
@@ -384,7 +389,7 @@ export default {
                             this.photo = this.$config.baseAPI+ response.data.profile.photo
                         }
                         else {
-                            this.photo = '/img/DefaultProfile.png'
+                            this.photo = '/svg/avatar-default.svg'
                         }
                         this.loading = false
                     }

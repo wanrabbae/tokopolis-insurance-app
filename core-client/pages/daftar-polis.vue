@@ -1,5 +1,5 @@
 <template>
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
         <b-container>
             <div class="container-header header-tabs mb-4">
                 <ul class="nav nav-tabs">
@@ -18,7 +18,7 @@
 
             <div class="container-content">
                 <div class="row no-gutters">
-                    <div class="col-lg-9 pr-lg-1 mb-2">
+                    <div class="col-md-9 pr-md-1 mb-2">
                         <b-input-group class="addon-combined">
                             <input
                                 v-model="model.search"
@@ -33,7 +33,7 @@
                         </b-input-group>
                     </div>
 
-                    <div class="col-lg-3 pl-lg-1 mb-2">
+                    <div class="col-md-3 pl-md-1 mb-2">
                         <BaseSelect
                             v-model="model.status"
                             name="Status"
@@ -53,12 +53,12 @@
                 <div v-for="(policy, id) in policies" :key="id" class="card" :class="{ 'mb-4': id < policies.length - 1 }">
                     <div class="card-header border-bottom">
                         <div class="row">
-                            <div class="col-lg-8">
+                            <div class="col-md-8">
                                 <span class="fw-bold">
                                     No. Polis {{ policy.polisNumber }}
                                 </span>
                             </div>
-                            <div class="col-lg-4 text-lg-right">
+                            <div class="col-md-4 text-md-right">
                                 <span class="fw-bold">
                                     Berakhir dalam 28 Hari
                                 </span>

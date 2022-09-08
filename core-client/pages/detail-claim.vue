@@ -1,6 +1,6 @@
 <template>
 
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <div class="container">
 
@@ -48,11 +48,18 @@
 
                     <div class="row align-items-center">
 
-                        <div class="col-12 col-lg-6 d-flex align-items-center">
+                        <div class="col-12 col-md-6 d-flex align-items-center">
 
                             <div class="d-inline-block mr-3">
 
-                                <b-img :src="policyData.image" alt="Mobil" class="rounded-circle" style="max-height: 96px"></b-img>
+                                <nuxt-img 
+                                    width="96"
+                                    height="96"
+                                    preset="default"
+                                    class="rounded-circle"
+                                    :src="policyData.image" 
+                                    alt="Mobil" 
+                                />
 
                             </div>
 
@@ -64,9 +71,9 @@
 
                             </div>
 
-                        </div> <!-- col-12.col-lg-6 ends -->
+                        </div> <!-- col-12.col-md-6 ends -->
 
-                        <div class="col-12 col-lg-6 text-right">
+                        <div class="col-12 col-md-6 text-right">
 
                             <div class="mb-2">{{ policyData.period }}</div>
 
@@ -84,7 +91,7 @@
 
                             </div>
 
-                        </div> <!-- col-12.col-lg-6 ends -->
+                        </div> <!-- col-12.col-md-6 ends -->
 
                     </div> <!-- row ends -->
 

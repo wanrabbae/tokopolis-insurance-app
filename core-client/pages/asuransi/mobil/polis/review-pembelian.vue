@@ -1,6 +1,6 @@
 <template>
 
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <div class="container">
 
@@ -15,14 +15,14 @@
                <div class="card-body">
 
                    <div class="mb-3">
-                        <span class="fs-4 fs-lg-3 fw-bold text-dark">Garda Orto Comprehensive</span>
+                        <span class="fs-4 fs-md-3 fw-bold text-dark">Garda Orto Comprehensive</span>
                     </div>
 
                    <div class="row">
 
-                       <div class="col-12 col-lg-6">
+                       <div class="col-12 col-md-6">
 
-                            <div class="rounded border mb-3 mb-lg-4">
+                            <div class="rounded border mb-3 mb-md-4">
 
                                 <div v-b-toggle.document-accordion class="position-relative chevron pointer p-3">
                                     <span class="fw-bold">Dokumen yang Diperlukan</span>
@@ -34,13 +34,22 @@
 
                                         <div v-for="field in documentFieldsNew" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
 
-                                            <div class="mr-3" style="min-width: 32px; max-width: 32px;">
+                                            <nuxt-img 
+                                                v-if="documentImagesNew[field.key]"
+                                                width="32"
+                                                height="32"
+                                                :src="documentImagesNew[field.key]"
+                                                class="mr-3"
+                                            />
 
-                                                <b-img v-if="documentImagesNew[field.key]" :src="documentImagesNew[field.key]"></b-img>
-
-                                                <b-img v-else src="/svg/picture.svg"></b-img>
-
-                                            </div>
+                                            <nuxt-img 
+                                                v-else
+                                                format="svg"
+                                                width="32"
+                                                height="32"
+                                                src="/svg/picture.svg"
+                                                class="mr-3"
+                                            />
 
                                             <a class="d-block flex-grow-1" target="_blank" :href="documentImagesNew[field.key] ? documentImagesNew[field.key] : '#'">
                                                     {{ field.label }}
@@ -76,7 +85,7 @@
 
                             </div>
 
-                            <div class="rounded border mb-3 mb-lg-4">
+                            <div class="rounded border mb-3 mb-md-4">
 
                                 <div v-b-toggle.policy-holder-accordion class="position-relative chevron pointer p-3">
                                     <span class="fw-bold">Detail Pemegang Polis</span>
@@ -88,11 +97,11 @@
 
                                         <div v-for="field in policyHolderFields" :key="field.key" class="row mb-3 mb-last-0">
 
-                                            <div class="col-6 col-lg-4">
+                                            <div class="col-6 col-md-4">
                                                 <span class="fw-bold">{{ field.label }}</span>
                                             </div>
 
-                                            <div class="col-6 col-lg-8">
+                                            <div class="col-6 col-md-8">
                                                 <span>{{ policyHolderDetail[field.key] ? policyHolderDetail[field.key] : '-' }}</span>
                                             </div>
 
@@ -104,7 +113,7 @@
 
                             </div>
 
-                            <div class="rounded border mb-3 mb-lg-4">
+                            <div class="rounded border mb-3 mb-md-4">
 
                                 <div v-b-toggle.vehicle-detail-accordion class="position-relative chevron pointer p-3">
                                     <span class="fw-bold">Detail Kendaraan</span>
@@ -116,11 +125,11 @@
 
                                         <div v-for="field in vehicleFields" :key="field.key" class="row mb-3 mb-last-0">
 
-                                            <div class="col-6 col-lg-4">
+                                            <div class="col-6 col-md-4">
                                                 <span class="fw-bold">{{ field.label }}</span>
                                             </div>
 
-                                            <div class="col-6 col-lg-8">
+                                            <div class="col-6 col-md-8">
                                                 <span>{{ vehicleDetail[field.key] ? vehicleDetail[field.key] : '-' }}</span>
                                             </div>
 
@@ -132,11 +141,11 @@
 
                             </div>
 
-                       </div> <!-- col-12.col-lg-6 ends-->
+                       </div> <!-- col-12.col-md-6 ends-->
 
-                       <div class="col-12 col-lg-6">
+                       <div class="col-12 col-md-6">
 
-                            <div class="rounded border mb-3 mb-lg-4">
+                            <div class="rounded border mb-3 mb-md-4">
 
                                 <div v-b-toggle.period-accordion class="position-relative chevron pointer p-3">
                                     <span class="fw-bold">Periode Asuransi</span>
@@ -152,7 +161,7 @@
 
                             </div>
 
-                           <div v-if="expansionFields.length > 0" class="rounded border mb-3 mb-lg-4">
+                           <div v-if="expansionFields.length > 0" class="rounded border mb-3 mb-md-4">
 
                                 <div v-b-toggle.expansion-accordion class="position-relative chevron pointer p-3">
                                     <span class="fw-bold">Perluasan Resiko Tambahan</span>
@@ -176,7 +185,7 @@
 
                             </div>
 
-                           <div class="rounded border mb-3 mb-lg-4">
+                           <div class="rounded border mb-3 mb-md-4">
 
                                <div v-b-toggle.promotion-accordion class="position-relative d-flex align-items-center chevron pointer p-3">
 
@@ -216,7 +225,7 @@
 
 
 
-                           <div class="rounded border mb-3 mb-lg-4">
+                           <div class="rounded border mb-3 mb-md-4">
 
                                <div class="p-3">
                                    <span class="fw-bold">Metode Pembayaran</span>
@@ -328,7 +337,7 @@
 
                            </div>
 
-                           <div class="rounded border mb-3 mb-lg-4">
+                           <div class="rounded border mb-3 mb-md-4">
 
                                <div class="p-3">
                                    <span class="fw-bold">Ringkasan Pembelian</span>
@@ -357,7 +366,7 @@
 
                            <BaseButton block @click="CreatePayment">Bayar Sekarang</BaseButton>
 
-                       </div> <!-- col-12 col-lg-6 ends -->
+                       </div> <!-- col-12 col-md-6 ends -->
 
                    </div> <!-- row ends -->
 

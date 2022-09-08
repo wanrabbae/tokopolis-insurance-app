@@ -3,16 +3,18 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-img, svg, iframe {
-    max-width: 100%;
-    border: 0;
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;;
+    height: auto;
 }
 
-figcaption, figure, main {
+figcaption, figure {
     display: block;
 }
 
 main {
+    display: block;
 	overflow: hidden;
 }
 
@@ -36,5 +38,11 @@ ol, ul, dl {
 
 #header + .main-wrapper {
     // image height + image padding + navbar padding
-    margin-top: calc(38px + #{$navbar-brand-padding-y * 2} + #{$navbar-padding-y * 2});
+    margin-top: calc(25px + #{$navbar-brand-padding-y * 2} + #{$navbar-padding-y * 2});
+}
+
+@each $size, $value in $opacity-values {
+    .opacity-#{$size} {
+        opacity: $value !important;
+    }    
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <div class="container">
 
@@ -15,9 +15,9 @@
 
                     <div class="row">
 
-                        <div class="col-12 col-lg-6 mb-4">
+                        <div class="col-12 col-md-6 mb-4">
 
-                            <div class="p-0 p-lg-3 rounded border-0 border-lg">
+                            <div class="p-0 p-md-3 rounded border-0 border-md">
 
                                 <BaseInput
                                     v-model="model.policyHolder"
@@ -142,9 +142,9 @@
 
                         </div> <!-- col ends -->
 
-                        <div class="col-12 col-lg-6 mb-4">
+                        <div class="col-12 col-md-6 mb-4">
 
-                            <div class="p-0 p-lg-3 rounded border-0 border-lg mb-4">
+                            <div class="p-0 p-md-3 rounded border-0 border-md mb-4">
 
                                 <div
                                     v-for="(field, id) in documentFields"

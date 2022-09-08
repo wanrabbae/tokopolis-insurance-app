@@ -15,7 +15,7 @@
                         name="Nama Bank"
                         label="Nama Bank"
                         :options="banks"
-                        class="w-100 w-lg-75"
+                        class="w-100 w-md-75"
                         rules="required"
                     />
 
@@ -26,7 +26,7 @@
                         name="Nomor Rekening"
                         input-classes="custom-number"
                         placeholder="Masukkan Nomor Rekening"
-                        class="w-100 w-lg-75"
+                        class="w-100 w-md-75"
                         rules="required"
                         required
                     />
@@ -36,12 +36,12 @@
                         name="Nama Rekening"
                         label="Nama Rekening"
                         placeholder="Masukkan Nama Rekening"
-                        class="w-100 w-lg-75"
+                        class="w-100 w-md-75"
                         rules="required"
                         required
                     />
 
-                    <BaseButton native-type="submit" classes="w-100 w-lg-auto" :disabled="invalid">Update</BaseButton>
+                    <BaseButton native-type="submit" classes="w-100 w-md-auto" :disabled="invalid">Update</BaseButton>
 
                 </b-form>
 

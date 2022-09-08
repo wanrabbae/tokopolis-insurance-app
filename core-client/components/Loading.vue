@@ -48,7 +48,7 @@ export default {
         },
         labelClass: {
             type: String,
-            default: "text-secondary"
+            default: "text-white"
         },
         label: {
             type: String,

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <div class="container">
 
@@ -36,7 +36,7 @@
 
                 <div class="row no-gutters">
 
-                    <div class="col-12 col-lg-9 pr-lg-1 mb-2">
+                    <div class="col-12 col-md-9 pr-md-1 mb-2">
 
                         <b-input-group class="addon-combined">
 
@@ -53,9 +53,9 @@
 
                         </b-input-group>
 
-                    </div> <!-- col-12.col-lg-9 ends -->
+                    </div> <!-- col-12.col-md-9 ends -->
 
-                    <div class="col-12 col-lg-3 pl-lg-1 mb-2">
+                    <div class="col-12 col-md-3 pl-md-1 mb-2">
 
                         <BaseSelect
                             v-model="model.status"
@@ -63,7 +63,7 @@
                             :options="statusOptions"
                         />
 
-                    </div> <!-- col-12.col-lg-3 ends -->
+                    </div> <!-- col-12.col-md-3 ends -->
 
                 </div> <!-- row ends -->
 
@@ -81,17 +81,17 @@
 
                         <div class="row">
 
-                            <div class="col-12 col-lg-8">
+                            <div class="col-12 col-md-8">
 
                                 <span class="fw-bold">No. Claim {{ policy.claimNumber }}</span>
 
-                            </div> <!-- col-12.col-lg-8 ends -->
+                            </div> <!-- col-12.col-md-8 ends -->
 
-                            <div class="col-12 col-lg-4 text-lg-right">
+                            <div class="col-12 col-md-4 text-md-right">
 
                                 <span class="fw-bold">Berakhir dalam 28 Hari</span>
 
-                            </div> <!-- col-12.col-lg-4 ends -->
+                            </div> <!-- col-12.col-md-4 ends -->
 
                         </div> <!-- row ends -->
 

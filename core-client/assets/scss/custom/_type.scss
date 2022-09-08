@@ -12,12 +12,6 @@
     }
 }
 
-@each $size, $value in $opacity-values {
-    .opacity-#{$size} {
-        opacity: $value !important;
-    }    
-}
-
 @each $weight, $value in $font-weights {
     .fw-#{$weight} {
         font-weight: $value !important;
@@ -32,7 +26,7 @@
     }
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(sm) {
     h1, .h1 {
         font-size: $h1-font-size * 0.714;
     }
@@ -62,5 +56,12 @@
     .card label, .card .custom-label, 
     label, .custom-label, .custom-select {
         font-size: $font-size-sm;
+    }
+}
+
+h1, .h1, h2, .h2, h3, .h3, 
+h4, .h4, h5, .h5 , h6, .h6 { 
+    &:last-child {
+        margin-bottom: 0;
     }
 }

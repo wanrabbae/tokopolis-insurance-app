@@ -6,11 +6,17 @@
 
             <div class="row">
 
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-md-3">
                     
                     <div class="mb-4">
     
-                        <TokopolisLogo class="text-white" height="28px"/>
+                        <nuxt-img  
+                            format="svg"
+                            height="25"
+                            src="svg/logo-tokopolis-white.svg"
+                            alt="Logo Tokopolis"
+                            loading="lazy"
+                        />
 
                     </div>
                     
@@ -55,10 +61,13 @@
                             
                             <a href="#">
                                 
-                                <img 
-                                    src="https://lh3.googleusercontent.com/cjsqrWQKJQp9RFO7-hJ9AfpKzbUb_Y84vXfjlP0iRHBvladwAfXih984olktDhPnFqyZ0nu9A5jvFwOEQPXzv7hr3ce3QVsLN8kQ2Ao=s0"
+                                <nuxt-img  
+                                    format="svg"
+                                    height="24" 
+                                    src="svg/badge-google-play.svg"
                                     alt="Get it on Google Play" 
-                                >
+                                    loading="lazy"
+                                />
 
                             </a>
 
@@ -68,9 +77,12 @@
 
                             <a href="#">
                                 
-                                <img 
-                                    src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                                <nuxt-img  
+                                    format="svg"
+                                    height="24" 
+                                    src="svg/badge-app-store.svg"
                                     alt="Download on the App Store" 
+                                    loading="lazy"
                                 />
 
                             </a>
@@ -78,9 +90,9 @@
                         </div>
                     </div>
                     
-                </div> <!-- col-12.col-lg-3 ends -->
+                </div> <!-- col-12.col-md-3 ends -->
 
-                <div class="col-lg-3">
+                <div class="col-md-3">
 
                     <div class="mb-4">
 
@@ -128,9 +140,9 @@
                         
                     </div>
 
-                </div> <!-- col-12.col-lg-3 ends -->
+                </div> <!-- col-12.col-md-3 ends -->
 
-                <div class="col-lg-3">
+                <div class="col-md-3">
 
                     <div class="mb-4">
                         
@@ -152,9 +164,9 @@
 
                     </div>
 
-                </div> <!-- col-12.col-lg-3 ends -->
+                </div> <!-- col-12.col-md-3 ends -->
 
-                <div class="col-lg-3">
+                <div class="col-md-3">
                     
                     <div class="mb-4">
                         
@@ -176,13 +188,19 @@
                         
                         <div style="width: 120px">
 
-                            <b-img-lazy src="/svg/OJK.svg" alt="Logo OJK White" />
+                            <nuxt-img  
+                                format="svg"
+                                width="120"
+                                src="svg/brands/logo-ojk.svg"
+                                alt="Logo Otoritas Jasa Keuangan"
+                                loading="lazy"
+                            />
                         
                         </div>
 
                     </div>
 
-                </div> <!-- col-12.col-lg-3 ends -->
+                </div> <!-- col-12.col-md-3 ends -->
 
             </div> <!-- row ends -->
             
@@ -195,13 +213,3 @@
     </footer>
 
 </template>
-
-<script>
-import TokopolisLogo from '../assets/svg/tokopolis-logo-white.svg'
-
-export default {
-    components: {
-        TokopolisLogo
-    }    
-}
-</script>

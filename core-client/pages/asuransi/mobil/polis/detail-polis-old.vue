@@ -1,8 +1,8 @@
 <template>
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
-        <b-container class="mb-4 mb-lg-5">
+    <div class="py-6" style="background-color: #f6f5fc">
+        <b-container class="mb-4 mb-md-5">
             <header tag="header" role="tab" class="d-flex align-items-center">
-                <div v-if="!loading" class="bg-secondary rounded px-4 py-3 mr-4">
+                <div v-if="!loading" class="bg-white rounded px-4 py-3 mr-4">
                     <b-img :src="product.image" :alt="product.name" style="max-height: 81px"/>
                 </div>
                 <h2 class="mb-0">{{ loading ? '-' : product.name }}</h2>
@@ -49,7 +49,7 @@
         </b-container>
 
         <b-container v-if="condition.workshop" class="mb-4">
-            <b-card class="bg-secondary p-4" no-body>
+            <b-card class="bg-white p-4" no-body>
                 <b-row>
                     <b-col cols="9">
                         <h4>{{product.workshop_count}} Bengkel Tersedia</h4>
@@ -65,7 +65,7 @@
         </b-container>
 
         <b-container v-if="condition.brochure" class="mb-4">
-            <b-card class="bg-secondary p-4" no-body>
+            <b-card class="bg-white p-4" no-body>
                 <b-row>
                     <b-col cols="9" class="d-flex align-items-center">
                         <h4 class="mb-0">Brosur Produk</h4>

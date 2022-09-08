@@ -1,4 +1,23 @@
 .error-container {
+    .error-code, .error-title {
+        font-weight: $font-weight-bold;
+        color: $dark;
+        line-height: 1;
+        text-align: center;
+    }
+
+    .error-code {
+        font-size: $font-size-base * 9;
+    }
+
+    .error-title {
+        font-size: $font-size-base * 3;
+    }
+
+    .error-message {
+        text-align: center;
+    }
+
     &::before {
         content: "";
         position: absolute;
@@ -6,7 +25,7 @@
         left: 0;
         width: 32%;
         height: 100%;
-        background: url('/svg/cable-left.svg') no-repeat;
+        background: url('/svg/404-error-cable-left.svg') no-repeat;
         background-position-x: center;
         background-position-y: center;
         background-size: contain;
@@ -19,7 +38,7 @@
         right: 0;
         width: 32%;
         height: 100%;
-        background: url('/svg/cable-right.svg') no-repeat;
+        background: url('/svg/404-error-cable-right.svg') no-repeat;
         background-position-x: center;
         background-position-y: center;
         background-size: contain;

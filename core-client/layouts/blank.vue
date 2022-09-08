@@ -1,3 +1,3 @@
 <template>
-    <Nuxt />
+    <NuxtChild keep-alive/>
 </template>

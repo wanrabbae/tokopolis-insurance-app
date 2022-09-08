@@ -20,13 +20,13 @@
                             { text: 'Paspor', value: 'passport', disabled:model.verified },
                             { text: 'NPWP', value: 'npwp', disabled:model.verified }
                         ]"
-                        class="col-12 col-lg-6"
+                        class="col-12 col-md-6"
                         rules="required"
                         required
                         @change="onIdentityTypeChange"
                     />
 
-                    <b-form-group class="col-12 col-lg-6 mb-3">
+                    <b-form-group class="col-12 col-md-6 mb-3">
 
                         <validation-provider
                             v-slot="{ errors, invalid, validated }"
@@ -62,7 +62,7 @@
                     tag="fieldset"
                     name="Foto Identitas"
                     rules="required|image"
-                    class="form-group w-lg-50"
+                    class="form-group w-md-50"
                 >
 
                     <label class="form-control-label">Foto Identitas</label>
@@ -123,7 +123,7 @@
                 <BaseButton
                     v-if="!model.verified"
                     native-type="submit"
-                    classes="w-100 w-lg-auto"
+                    classes="w-100 w-md-auto"
                     :disabled="observer.invalid"
                 >
                     Update

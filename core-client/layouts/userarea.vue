@@ -6,21 +6,21 @@
     
     <main class="main-wrapper" style="background-color: #f6f5fc">
         
-        <div class="container py-4 py-lg-5">
+        <div class="container py-5 py-md-6">
             
             <div class="row">
                 
-                <div class="col-12 col-lg-4 mb-3 mb-lg-5">
+                <div class="col-12 col-md-4 mb-3 mb-md-5">
 
                     <NavigationSidebar :user="user" :mobile-view="mobileView"/>
 
-                </div> <!-- col-12.col-lg-4 ends -->
+                </div> <!-- col-12.col-md-4 ends -->
                 
-                <div class="col-12 col-lg-8">
+                <div class="col-12 col-md-8">
 
-                    <Nuxt class="card border" />
+                    <NuxtChild class="card border" keep-alive />
                 
-                </div> <!-- col-12.col-lg-8 ends -->
+                </div> <!-- col-12.col-md-8 ends -->
             
             </div> <!-- row ends -->
         

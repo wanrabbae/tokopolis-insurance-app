@@ -25,7 +25,7 @@
             <b-container>
                 <h1 class="text-center mb-5">Core Value PIQO - 5C</h1>
 
-                <b-row class="justify-content-center px-0 px-md-5 mx-0 mx-lg-5">
+                <b-row class="justify-content-center px-0 px-md-5 mx-0 mx-md-5">
                     <b-col v-for="(card, index) in coreValueCards" :key="index" cols="12" md="6" lg="4" class="mb-4">
                         <b-card bg-variant="secondary" align="center" class="h-100 py-4 border shadow-none">
                             <b-card-img :src="card.icon" :alt="card.title" class="mb-4" style="max-width: 96px"></b-card-img>

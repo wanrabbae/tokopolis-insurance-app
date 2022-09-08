@@ -1,6 +1,6 @@
 <template>
 
-    <div class="py-4 py-lg-5" style="background-color: #f6f5fc">
+    <div class="py-6" style="background-color: #f6f5fc">
 
         <div class="container">
 
@@ -20,7 +20,7 @@
 
                     <div class="row">
 
-                       <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                       <div class="col-12 col-md-6 mb-4 mb-md-0">
 
                             <div class="fw-bold mb-3">Tata Cara Pembayaran</div>
 
@@ -29,7 +29,11 @@
                                 <div class="d-block border-bottom">
 
                                     <div class="mb-3">
-                                        <b-img :src="paymentImages[paymentData.name]" style="max-height: 48px" />
+                                        <nuxt-img 
+                                            preset="default"
+                                            height="48"
+                                            :src="paymentImages[paymentData.name]" 
+                                        />
                                     </div>
                                     <div v-if="paymentData.name != 'gopay' || paymentData.name != 'ovo' || paymentData.name != 'shopeepay' || paymentData.name != 'linkaja' || paymentData.name != 'qris'" class="d-block">
                                         <div class="fw-bold mb-1">
@@ -118,7 +122,11 @@
                                         <li>Sed justo odio, ornare sit amet dapibus pellentesque.</li>
                                     </ol>
 
-                                    <b-img :src="paymentLinks.qrcode ? paymentLinks.qrcode : paymentLinks.deeplink" alt="QR Code" />
+                                    <nuxt-img 
+                                        preset="default"
+                                        :src="paymentLinks.qrcode ? paymentLinks.qrcode : paymentLinks.deeplink" 
+                                        alt="QR Code" 
+                                    />
 
                                 </div>
 
@@ -137,9 +145,9 @@
 
                             </div>
 
-                       </div> <!-- col-12.col-lg-6 ends -->
+                       </div> <!-- col-12.col-md-6 ends -->
 
-                       <div class="col-12 col-lg-6">
+                       <div class="col-12 col-md-6">
 
                             <div class="fw-bold mb-3">Ringkasan Pembelian</div>
 
@@ -175,7 +183,7 @@
 
                             </div>
 
-                       </div> <!-- col-12.col-lg-6 ends -->
+                       </div> <!-- col-12.col-md-6 ends -->
 
                    </div> <!-- row ends -->
 

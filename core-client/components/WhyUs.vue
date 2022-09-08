@@ -1,31 +1,41 @@
 <template>
     
-    <component :is="tag">
+    <component :is="tag" class="container">
         
-        <h2 class="fs-3 fs-lg-1 text-center">{{ title }}</h2>
-        
-        <div class="row">
+        <div class="why-us-wrapper">
             
-            <div v-for="(list, id) in whyUsList" :key="id" class="col-6 col-lg-3">
+            <h2 class="fs-3 fs-md-2 text-center mb-5">Kenapa Kami?</h2>
+            
+            <div class="row justify-content-center">
                 
-                <div class="card">
+                <div v-for="(item, i) in whyUsList" :key="i" class="col-6 col-md-3 d-flex justify-content-center">
                     
-                    <div class="d-flex flex-column align-items-center">
-                        
-                        <div class="card-image d-flex align-items-center mb-3">
+                    <div class="why-us-card px-4">
                             
-                            <b-img-lazy :src="list.image" :alt="list.text + ' Icon'" />
-                        
+                        <div class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
+                            
+                            <nuxt-img
+                                preset="default"
+                                :src="item.image"
+                                :alt="item.alt ? item.alt : 'Why Us Icon - ' + item.text" 
+                                sizes="md:70px lg:96px"
+                                loading="lazy"
+                            />
+                            
+                            <div class="text-center mt-2">
+                                
+                                <span class="fw-bold text-dark">{{ item.text }}</span>
+                            
+                            </div>
+
                         </div>
-                        
-                        <div class="fs-lg-4 text-center">{{ list.text }}</div>
                     
                     </div>
                 
                 </div>
             
             </div>
-        
+
         </div>
     
     </component>
@@ -38,16 +48,29 @@ export default {
     props: {
         tag: {
             type: String,
-            default: 'div',
-            description: 'html tag'
-        },
-        title: {
-            type: String,
-            default: 'Kenapa Kami?'
-        },
-        whyUsList: {
-        type: Array,
-        default: null
+            default: 'div'
+        }
+    },
+    data() {
+        return {
+            whyUsList: [
+                {
+                    image: "img/why-us-icon-fast.png",
+                    text: "Praktis dan Proses Cepat"
+                },
+                {
+                    image: "img/why-us-icon-cooperation.png",
+                    text: "40+ Partner Asuransi"
+                },
+                {
+                    image: "img/why-us-icon-compare.png",
+                    text: "Bandingkan dengan Mudah"
+                },
+                {
+                    image: "img/why-us-icon-customer-service.png",
+                    text: "Digital Claim Assistance"
+                }
+            ]
         }
     }
 }

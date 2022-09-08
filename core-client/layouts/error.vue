@@ -2,19 +2,11 @@
 
     <div class="error-container d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh">
 
-        <div style="font-size: 6rem">
+        <h2 class="error-code">{{ error.statusCode }}</h2>
 
-            <span class="fw-bold text-dark">{{ error.statusCode }}</span>
+        <div class="error-title mb-4">Oops</div>
 
-        </div>
-
-        <div class="mb-4" style="font-size: 3rem">
-
-            <span class="fw-bold text-dark">Oops</span>
-
-        </div>
-
-        <div class="text-center w-50 w-lg-75 mb-4">
+        <div class="error-message w-50 w-md-75 mb-5">
 
             <span v-if="error.statusCode === 404">
                 Halaman tidak dapat ditemukan

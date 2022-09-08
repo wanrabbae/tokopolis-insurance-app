@@ -1,128 +1,190 @@
-// override default swiper style
-.swiper {
-    overflow: hidden !important;
-    
-    .swiper-slide {
-        height: auto !important;
+$promotion-carousel-image-ratio: 33.3%; // in percentage, example 16:9 = 56.25%
+$promotion-carousel-width: 50%;
+$promotion-carousel-height: calc($promotion-carousel-width * $promotion-carousel-image-ratio / 100%);
+$promotion-carousel-inactive-opacity: .5;
+$promotion-carousel-inactive-scale: .84;
+$promotion-carousel-navigation-x: calc((100% - $promotion-carousel-width) / 2);
+$promotion-carousel-offset: -1 * ($promotion-carousel-width - $promotion-carousel-navigation-x);
+
+$promotion-carousel-mobile-width: 90%;
+$promotion-carousel-mobile-height: calc($promotion-carousel-mobile-width * $promotion-carousel-image-ratio / 100%);
+$promotion-carousel-mobile-inactive-scale: .95;
+$promotion-carousel-mobile-navigation-x: calc((100% - $promotion-carousel-mobile-width) / 2);
+$promotion-carousel-mobile-offset: -1 * ($promotion-carousel-mobile-width - $promotion-carousel-mobile-navigation-x);
+
+$promotion-carousel-navigation-padding: $spacer;
+$promotion-carousel-navigation-color: $white;
+$promotion-carousel-navigation-size: $font-size-base;
+
+$video-carousel-ratio: 56.25%; // in percentage, example 16:9 = 56.25%
+
+$video-carousel-width: 80%;
+$video-carousel-navigation-x: calc((100% - $video-carousel-width) / 2);
+
+$video-carousel-mobile-width: 90%;
+$video-carousel-mobile-navigation-x: calc((100% - $video-carousel-mobile-width) / 2);
+
+$video-carousel-pagination-bullet-size: 8px;
+
+.promotion-carousel-wrapper,
+.video-carousel-wrapper {
+    .swiper-button-next,
+    .swiper-button-prev {
+        padding: $promotion-carousel-navigation-padding;
+        width: $promotion-carousel-navigation-size;
+        height: $promotion-carousel-navigation-size;
+        background-color: rgb(161 173 198 / 50%);
+        border-radius: 50%;
+
+        &::after {
+            color: $promotion-carousel-navigation-color;
+            font-size: $promotion-carousel-navigation-size;
+        }
     }
 }
 
-.swiper-pagination-bullets {
-    .swiper-pagination-bullet {
-        width: 12px !important;
-        height: 12px !important;
-        background-color: $primary !important;
-        opacity: .25 !important;
-    }
-
-    .swiper-pagination-bullet-active {
-        opacity: .75 !important;
-    }
-}
-
-.swiper-button-prev,
-.swiper-button-next {
-    color: $primary !important;
-}
-
-.promotion-carousel {
+.promotion-carousel-wrapper {  
     position: relative;
     width: 100%;
-    background-color: $gray-100;
-    border-radius: $spacer;
-    overflow: hidden;
+    height: $promotion-carousel-height;
+    
+    .swiper-container {
+        &.is-loading .swiper-wrapper {
+            transform: translateX(calc(-1 * $promotion-carousel-width / 2));
+        }
 
-    .swiper-image {
-        position: relative;
-        width: 100%;
-        padding-top: 33.3%;
-
-        img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        &.is-ready .swiper-slide {
+            transition: all .3s ease-in-out;
         }
     }
 
-    .swiper-button-prev,
+    .swiper-slide {
+        position: relative;
+        width: $promotion-carousel-width;
+        opacity: $promotion-carousel-inactive-opacity;
+        transform: scale($promotion-carousel-inactive-scale);
+        
+        &.swiper-slide-active {  
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .swiper-image {
+            position: relative;
+            width: 100%;
+            padding-top: $promotion-carousel-image-ratio;
+    
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
     .swiper-button-next {
-        color: $white !important;
-        opacity: .5;
+        right: $promotion-carousel-navigation-x;
     }
 
     .swiper-button-prev {
-        left: 24px;
+        left: $promotion-carousel-navigation-x;
     }
+}
 
-    .swiper-button-next {
-        right: 24px;
-    }
+@include media-breakpoint-down(sm) {
+    .promotion-carousel-wrapper {
+        height: $promotion-carousel-mobile-height;
 
-    .swiper-pagination-bullets {
-        .swiper-pagination-bullet {
-            background-color: $white !important;
-            opacity: 1 !important;
+        .swiper-container.is-loading .swiper-wrapper {
+            transform: translateX($promotion-carousel-mobile-offset);
         }
 
-        .swiper-pagination-bullet-active {
-            background-color: $primary !important;
-            opacity: 1 !important;
+        .swiper-slide {
+            width: $promotion-carousel-mobile-width;
+            transform: scale($promotion-carousel-mobile-inactive-scale);
+        }
+
+        .swiper-button-next {
+            right: $promotion-carousel-mobile-navigation-x;
+        }
+    
+        .swiper-button-prev {
+            left: $promotion-carousel-mobile-navigation-x;
         }
     }
 }
 
-.video-carousel,
-.testimonial-carousel {
-    .swiper-button-prev, 
-    .swiper-button-next {
-        display: inline-block !important;
-        position: relative !important;
-        width: auto !important;
-        height: auto !important;
-        top: auto !important;
-        right: auto !important;
-        left: auto !important;
-        bottom: auto !important;
-        margin: 0 !important;
+.video-carousel-wrapper { 
+    .swiper-video {
+        position: relative;
+        width: $video-carousel-width;
     }
-}
 
-.video-carousel {
+    .iframe-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: $video-carousel-ratio;
+
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .swiper-button-next {
+        right: $video-carousel-navigation-x;
+    }
+
+    .swiper-button-prev {
+        left: $video-carousel-navigation-x;
+    }
+
     .swiper-pagination {
         position: relative;
+        line-height: 0;
     }
 
-    .swiper-pagination-bullets {
-        bottom: auto;
+    .swiper-pagination-fraction,
+    .swiper-pagination-custom,
+    .swiper-container-horizontal > .swiper-pagination-bullets {
+        bottom: 0;
     }
 
-    .swiper-video {
-        position: relative; 
-        max-width: 560px; 
-        max-height: 315px; 
-        margin: 0 auto;
+    .swiper-pagination-bullet {
+        width: $video-carousel-pagination-bullet-size;
+        height: $video-carousel-pagination-bullet-size;
+        margin-right: $spacer * .5;
     }
 
-    .video-container {
-        position: relative;
-        padding-bottom: 56.25%; /* 16:9 */
-        height: 0;
-    }
-
-    .video-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+    .swiper-pagination-bullet:last-child {
+        margin-right: 0;
     }
 }
 
-.brand-carousel .brand-image {
+@include media-breakpoint-down(sm) {
+    .video-carousel-wrapper {
+        .swiper-video {
+            width: $video-carousel-mobile-width;
+        }
+        
+        .swiper-button-next {
+            right: $video-carousel-mobile-navigation-x;
+        }
+    
+        .swiper-button-prev {
+            left: $video-carousel-mobile-navigation-x;
+        }
+    }
+}
+
+.brand-carousel-wrapper .brand-image {
     position: relative;
     display: flex;
     width: 100%;
@@ -148,38 +210,5 @@
     .swiper-button-prev, 
     .swiper-button-next {
         color: $white !important;
-    }
-}
-
-@include media-breakpoint-down(md) {
-    .swiper-button-next {
-        right: 5px !important;
-        
-        &::after {
-            font-size: 1.2rem !important;
-        }
-    }
-
-    .swiper-button-prev {
-        left: 5px !important;
-
-        &::after {
-            font-size: 1.2rem !important;
-        }
-    }
-
-    .swiper-pagination-bullets {
-        bottom: .2rem !important;
-        
-        .swiper-pagination-bullet {
-            width: 8px !important;
-            height: 8px !important;
-        }
-    }
-}
-
-@include media-breakpoint-down(md){
-    .promotion-carousel {
-        border-radius: $spacer * .5;
     }
 }
