@@ -73,7 +73,7 @@
 
                                 </div>
 
-                                <div v-if="paymentData.name === 'mandiri' || paymentData.name === 'bni' || paymentData.name === 'bca' || paymentData.name === 'bri' || paymentData.name === 'permata'">
+                                <div v-if="paymentData.name === 'mandiri' || paymentData.name === 'bni' || paymentData.name === 'bca' || paymentData.name === 'bri' || paymentData.name === 'bsi' || paymentData.name === 'bjb' || paymentData.name === 'permata'">
 
                                     <div v-b-toggle.atm-payment-accordion class="position-relative border-bottom chevron pointer py-3">
                                         <span class="fw-bold">Melalui ATM</span>
@@ -229,6 +229,8 @@ export default {
                 bni: "/img/logo-large-bni.png",
                 bca: "/img/logo-large-bca.png",
                 bri: "/img/logo-large-bri.png",
+                bsi: "/img/logo-bsi.png",
+                bjb: "/img/logo-bjb.png",
                 permata: "/img/logo-large-permata.png",
                 qris: "/img/logo-large-qris.png",
                 gopay: "/img/logo-large-gopay.png",

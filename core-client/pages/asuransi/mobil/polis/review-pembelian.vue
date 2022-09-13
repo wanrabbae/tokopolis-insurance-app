@@ -65,6 +65,26 @@
 
                                             <div class="mr-3" style="min-width: 32px; max-width: 32px;">
 
+                                                <b-img v-if="documentImagesNew[field.key]" :src="documentImagesNew[field.key]"></b-img>
+
+                                                <b-img v-else src="/svg/picture.svg"></b-img>
+
+                                            </div>
+
+                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImagesNew[field.key] ? documentImagesNew[field.key] : '#'">
+                                                    {{ field.label }}
+                                            </a>
+                                            
+
+                                        </div>
+
+                                    </div>
+                                    <div v-if="condition == false" class="p-3">
+
+                                        <div v-for="field in documentFieldsOld" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
+
+                                            <div class="mr-3" style="min-width: 32px; max-width: 32px;">
+
                                                 <b-img v-if="documentImagesOld[field.key]" :src="documentImagesOld[field.key]"></b-img>
 
                                                 <b-img v-else src="/svg/picture.svg"></b-img>
