@@ -28,7 +28,7 @@ exports.updateAccountData = async (req, res) => {
             randomString(40))
 
         service.sendEmailProfile({
-            host: getHost(req),
+            host: req.fullhost,
             target: account.email,
             title: req.polyglot.t('mail.email'),
             data: {

@@ -176,6 +176,7 @@ exports.review = async (req, res) => {
             address: transaction.client_data.address,
         },
         vehicle: {
+            condition: transaction.is_new_condition ? true : false,
             brand: transaction.vehicle.brand,
             model: transaction.vehicle.model,
             sub_model: transaction.vehicle.sub_model,
@@ -184,7 +185,7 @@ exports.review = async (req, res) => {
             plate: transaction.vehicle_data.plate,
             plate_detail: transaction.vehicle_data.plate_detail,
             protection: transaction.product.type,
-            vehicle_color: transaction.vehicle_data.vehicle_color,
+            color: transaction.vehicle_data.color,
             machine_number: transaction.vehicle_data.machine_number,
             skeleton_number: transaction.vehicle_data.skeleton_number,
         },
@@ -249,7 +250,7 @@ exports.doPayment = async (req, res) => {
         })
 
         service.sendEmailPayment({
-            host: getHost(req),
+            host: req.fullhost,
             target: account.email,
             title: req.polyglot.t('mail.payment.created'),
             data: {
@@ -311,7 +312,7 @@ exports.webhookMidtrans = async (req, res) => {
 
     if (result == 'paid') {
         service.sendEmailPaymentSuccess({
-            host: getHost(req),
+            host: req.fullhost,
             target: transaction.account.email,
             title: req.polyglot.t('mail.payment.success'),
             data: {
@@ -359,7 +360,7 @@ exports.webhookXendit = async (req, res) => {
 
     if (result == 'paid') {
         service.sendEmailPaymentSuccess({
-            host: getHost(req),
+            host: req.fullhost,
             target: transaction.account.email,
             title: req.polyglot.t('mail.payment.success'),
             data: {

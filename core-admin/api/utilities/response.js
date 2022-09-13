@@ -1,4 +1,6 @@
 module.exports = function(req, res, next) {
+    req.fullhost = `${req.protocol}://${req.headers.host}`
+
     res.jsonData = (data) => {
         return res.status(200).send({ data: data })
     }

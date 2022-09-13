@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 import AccountService from '../../services/AccountService'
 
 const validation = require('../../validation/auth.validation')
-const { getHost, randomString } = require('../../utilities/functions')
+const { randomString } = require('../../utilities/functions')
 
 const service = new AccountService()
 
@@ -37,7 +37,7 @@ exports.forgetPassword = async (req, res) => {
     await service.createResetToken(account.id, token)
 
     service.sendEmailReset({
-        host: getHost(req),
+        host: req.fullhost,
         target: account.email,
         title: req.polyglot.t('mail.forget_password'),
         data: {

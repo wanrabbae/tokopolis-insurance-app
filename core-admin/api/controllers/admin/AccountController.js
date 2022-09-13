@@ -1,7 +1,7 @@
 import AccountService from '../../services/AccountService'
 
 const validation = require('../../validation/user.validation')
-const { getHost, randomString } = require('../../utilities/functions')
+const { randomString } = require('../../utilities/functions')
 
 const service = new AccountService()
 
@@ -58,7 +58,7 @@ exports.updateData = async (req, res) => {
             randomString(40))
 
         service.sendEmailProfile({
-            host: getHost(req),
+            host: req.fullhost,
             target: account.email,
             title: req.polyglot.t('mail.email'),
             data: {

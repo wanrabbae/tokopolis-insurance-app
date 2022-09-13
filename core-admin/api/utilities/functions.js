@@ -1,10 +1,6 @@
 const fs = require('fs')
 const moment = require('moment-timezone')
 
-function getHost(request) {
-    return `${request.protocol}://${request.headers.host}`
-}
-
 function getMoment() {
     return moment().locale('id').tz('Asia/Jakarta')
 }
@@ -92,8 +88,18 @@ const stringTag = (value) => {
     return lower.replace(/\s+/g, '_')
 }
 
+const titleCase = (value) => {
+    return value
+        .split(' ')
+        .map(item => {
+            return item.charAt(0).toUpperCase() + item.substr(1).toLowerCase()
+        })
+        .join(' ')
+}
+
 module.exports = {
-    getHost, getMoment, extensionHelper,
+    getMoment, extensionHelper,
     randomString, uploadHandler,
-    phoneFormat, moneyFormat, stringTag
+    phoneFormat, moneyFormat, stringTag,
+    titleCase
 }

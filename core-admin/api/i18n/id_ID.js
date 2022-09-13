@@ -113,13 +113,17 @@ const id_ID_strings = {
             'vehicle.protection': 'Proteksi Kendaraan tidak valid',
             'product': 'Produk tidak ditemukan',
             'product.data': 'Data Produk tidak tersedia',
-          'endpoint': 'Endpoint tidak ditemukan',
+            'endpoint': 'Endpoint tidak ditemukan',
             'compare.product': 'Komparasi Produk tidak valid',
             'transaction': 'Transaksi Tidak Tersedia',
-          'route.exist': 'Route sudah ada',
-          'role.exist': 'Role sudah tersedia',
-          'endpoint.notfound' : 'Data endpoint tidak ditemukan.',
-          'role.notfound' : 'Data Role tidak ditemukan.'
+            'route.exist': 'Route sudah ada',
+            'role.exist': 'Role sudah tersedia',
+            'endpoint.notfound' : 'Data endpoint tidak ditemukan.',
+            'role.notfound' : 'Data Role tidak ditemukan.',
+            'address.province': 'Data Provinsi tidak ditemukan',
+            'address.regency': 'Data Kabupaten/Kota tidak ditemukan',
+            'address.district': 'Data Kecamatan tidak ditemukan',
+            'address.village': 'Data Desa/Kelurahan tidak ditemukan',
         },
     }
 }

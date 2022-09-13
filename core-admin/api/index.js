@@ -11,6 +11,7 @@ const response = require('./utilities/response')
 // Require API routes
 const auth = require('./routes/auth.routes')
 const users = require('./routes/users.routes')
+const address = require('./routes/address.routes')
 const vehicle = require('./routes/vehicle.routes')
 const product = require('./routes/product.routes')
 const transaction = require('./routes/transaction.routes')
@@ -29,13 +30,13 @@ app.use(helmet())
 app.use(morgan('common'))
 app.use(useragent.express())
 app.use(localeMiddleware({
-  priority: ["default", "accept-language"],
-  default: "id-ID"
+    priority: ["default", "accept-language"],
+    default: "id-ID"
 }))
 app.use(polyglot)
 app.use(response)
 
-app.use(auth, users, vehicle, product, transaction)
+app.use(auth, users, address, vehicle, product, transaction)
 app.use(adminAuth, adminAccount, adminProduct, adminVehicle,
   adminEndpoint, adminRole)
 
@@ -43,9 +44,9 @@ module.exports = app
 
 // Start standalone server if directly running
 if (require.main === module) {
-  const port = process.env.PORT || 3001
-  app.listen(port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`API server listening on port ${port}`)
-  })
+    const port = process.env.PORT || 3001
+    app.listen(port, () => {
+        // eslint-disable-next-line no-console
+        console.log(`API server listening on port ${port}`)
+    })
 }
