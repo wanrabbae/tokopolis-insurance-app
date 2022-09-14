@@ -30,15 +30,15 @@
 
                                 <b-collapse id="document-accordion" class="border-top" visible>
 
-                                    <div v-if="condition == true" class="p-3">
+                                    <div v-if="condition == false" class="p-3">
 
-                                        <div v-for="field in documentFieldsNew" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
+                                        <div v-for="field in documentFieldsOld" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
 
                                             <nuxt-img 
-                                                v-if="documentImagesNew[field.key]"
+                                                v-if="documentImagesOld[field.key]"
                                                 width="32"
                                                 height="32"
-                                                :src="documentImagesNew[field.key]"
+                                                :src="documentImagesOld[field.key]"
                                                 class="mr-3"
                                             />
 
@@ -51,7 +51,7 @@
                                                 class="mr-3"
                                             />
 
-                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImagesNew[field.key] ? documentImagesNew[field.key] : '#'">
+                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImagesOld[field.key] ? documentImagesOld[field.key] : '#'">
                                                     {{ field.label }}
                                             </a>
                                             
@@ -59,7 +59,7 @@
                                         </div>
 
                                     </div>
-                                    <div v-if="condition == false" class="p-3">
+                                    <div v-if="condition == true" class="p-3">
 
                                         <div v-for="field in documentFieldsOld" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
 
@@ -81,17 +81,17 @@
                                     </div>
                                     <div v-if="condition == false" class="p-3">
 
-                                        <div v-for="field in documentFieldsOld" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
+                                        <div v-for="field in documentFieldsNew" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
 
                                             <div class="mr-3" style="min-width: 32px; max-width: 32px;">
 
-                                                <b-img v-if="documentImagesOld[field.key]" :src="documentImagesOld[field.key]"></b-img>
+                                                <b-img v-if="documentImagesNew[field.key]" :src="documentImagesNew[field.key]"></b-img>
 
                                                 <b-img v-else src="/svg/picture.svg"></b-img>
 
                                             </div>
 
-                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImagesOld[field.key] ? documentImagesOld[field.key] : '#'">
+                                            <a class="d-block flex-grow-1" target="_blank" :href="documentImagesNew[field.key] ? documentImagesNew[field.key] : '#'">
                                                     {{ field.label }}
                                             </a>
                                             
@@ -132,6 +132,33 @@
                                 </b-collapse>
 
                             </div>
+                            <div class="rounded border mb-3 mb-md-4">
+
+                                <div v-b-toggle.policy-holder-accordion class="position-relative chevron pointer p-3">
+                                    <span class="fw-bold">Alamat Pemegang Polis</span>
+                                </div>
+
+                                <b-collapse id="policy-holder-accordion" class="border-top" visible>
+
+                                    <div class="p-3">
+
+                                        <div v-for="field in addressFields" :key="field.key" class="row mb-3 mb-last-0">
+
+                                            <div class="col-6 col-md-4">
+                                                <span class="fw-bold">{{ field.label }}</span>
+                                            </div>
+
+                                            <div class="col-6 col-md-8">
+                                                <span>{{ addressDetails[field.key] ? addressDetails[field.key] : '-' }}</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </b-collapse>
+
+                            </div>
 
                             <div class="rounded border mb-3 mb-md-4">
 
@@ -162,6 +189,7 @@
                             </div>
 
                        </div> <!-- col-12.col-md-6 ends-->
+                       
 
                        <div class="col-12 col-md-6">
 
@@ -174,7 +202,7 @@
                                 <b-collapse id="period-accordion" class="border-top" visible>
 
                                     <div class="p-3">
-                                        <span>23 November 2021 - 23 November 2022</span>
+                                        <span>{{transcationDate.stringStart}} - {{transcationDate.stringEnd}}</span>
                                     </div>
 
                                 </b-collapse>
@@ -403,6 +431,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Loading from '../../../../components/Loading'
 import PercentIcon from '../../../../assets/svg/percent.svg'
 
@@ -419,7 +448,13 @@ export default {
             model: {
                 promotionCode: null,
                 paymentMethod: null,
-                totalPriceWithFee: null
+                totalPriceWithFee: null,
+                totalPriceWithoutFee:null
+            },
+            transcationDate:{
+                start:null,
+                stringStart:null,
+                stringEnd:null
             },
             condition:false,
             transactionId: null,
@@ -476,7 +511,7 @@ export default {
                 },
                 
             ],
-            documentImagesNew: {
+            documentImagesOld: {
                 stnk: null,
                 vehicleFront: null,
                 vehicleRight: null,
@@ -488,7 +523,7 @@ export default {
                 optionalPhoto3: null,
                 optionalPhoto4: null,
             },
-            documentImagesOld: {
+            documentImagesNew: {
                 bastk: null,
                 identityCard: null,
             },
@@ -510,6 +545,35 @@ export default {
                 name: null,
                 phone: null,
                 email: null
+            },
+            addressFields: [
+                {
+                    key: "detail",
+                    label: "Alamat Lengkap"
+                },
+                {
+                    key: "village",
+                    label: "Desa / Kelurahan"
+                },
+                {
+                    key: "district",
+                    label: "Kecamatan"
+                },
+                {
+                    key: "regency",
+                    label: "Kabupaten / Kota"
+                },
+                {
+                    key: "province",
+                    label: "Provinsi"
+                },
+            ],
+            addressDetails: {
+                detail: null,
+                village: null,
+                district: null,
+                regency: null,
+                province: null,
             },
             vehicleFields: [
                 {
@@ -757,6 +821,14 @@ export default {
             return total ;
             
         },
+        // currentDateTime() {
+            
+        //     return moment('2017-12-20 11:00').fromNow()
+        // },
+        // periodePolis(){
+        //     const start = 
+        //     return start 
+        // }
         
     },
     deactivated(){
@@ -765,6 +837,7 @@ export default {
     created(){
         // this.$destroy()
         this.idTransaction = this.$store.state.transaction_id
+        moment.locale('id')
     },
     mounted(){
         this.getTransactionReview()
@@ -774,6 +847,12 @@ export default {
             await this.$axios.$get(`api/transaction/review?transaction_id=${this.idTransaction}`)
                 .then ((response) => {
                     console.log(response)
+                    this.addressDetails.detail = response.data.client.address.detail
+                    this.addressDetails.village = response.data.client.address.village
+                    this.addressDetails.district = response.data.client.address.district
+                    this.addressDetails.regency = response.data.client.address.regency
+                    this.addressDetails.province = response.data.client.address.province
+
                     this.policyHolderDetail.name = response.data.client.fullname
                     this.policyHolderDetail.phone = response.data.client.phone
                     this.policyHolderDetail.email = response.data.client.email
@@ -797,6 +876,7 @@ export default {
 
                     this.purchaseSummaryDatas.premiPrice = response.data.transaction.price
                     this.transactionId = response.data.transaction.code
+                    this.transcationDate.start = response.data.transaction.start_date
 
                     const expan = response.data.transaction.expansions
 
@@ -816,17 +896,18 @@ export default {
                     const file = response.data.transaction.documents
 
                     if(this.condition === true){
-                        this.documentImagesNew.stnk = this.$config.baseAPI + file.stnk
-                        this.documentImagesNew.vehicleFront = this.$config.baseAPI +file.front_side
-                        this.documentImagesNew.vehicleRight = this.$config.baseAPI +file.right_side
-                        this.documentImagesNew.vehicleLeft = this.$config.baseAPI +file.left_side
-                        this.documentImagesNew.vehicleBehind = this.$config.baseAPI +file.back_side
-                        this.documentImagesNew.vehicleDasboard = this.$config.baseAPI +file.dashboard
-                    }else{
-                        this.documentImagesOld.bastk = this.$config.baseAPI +file.bastk
-                        this.documentImagesOld.identityCard = this.$config.baseAPI +file.identity_card
+                        this.documentImagesNew.bastk = this.$config.serverURL +file.bastk
+                        this.documentImagesNew.identityCard = this.$config.serverURL +file.identity_card
+                        }else{
+                        this.documentImagesOld.stnk = this.$config.serverURL + file.stnk
+                        this.documentImagesOld.vehicleFront = this.$config.serverURL +file.front_side
+                        this.documentImagesOld.vehicleRight = this.$config.serverURL +file.right_side
+                        this.documentImagesOld.vehicleLeft = this.$config.serverURL +file.left_side
+                        this.documentImagesOld.vehicleBehind = this.$config.serverURL +file.back_side
+                        this.documentImagesOld.vehicleDasboard = this.$config.serverURL +file.dashboard
                     }
                     this.totalPriceWithFee()
+                    this.periodPolis()
                     this.loading = false
                 })
                 .catch (error => {
@@ -838,7 +919,7 @@ export default {
         },
         async getPaymentFee(){
             this.loading = true
-            await this.$axios.$get(`api/transaction/fee?platform=${this.model.paymentMethod}&total=${this.totalPriceWithoutFee}`)
+            await this.$axios.$get(`api/transaction/fee?platform=${this.model.paymentMethod}&total=${this.model.totalPriceWithoutFee}`)
                 .then ((response) => {
                     this.purchaseSummaryDatas.pgPrice = response.data
                     this.totalPriceWithFee()
@@ -862,10 +943,15 @@ export default {
         totalPriceWithFee(){
             if(this.model.totalPriceWithFee == null){
                 this.model.totalPriceWithFee = this.totalPriceWithoutFee
+                this.model.totalPriceWithoutFee = this.totalPriceWithoutFee
 
             }
-            this.model.totalPriceWithFee = this.totalPriceWithoutFee + this.purchaseSummaryDatas.pgPrice
-            
+            this.model.totalPriceWithFee = this.model.totalPriceWithoutFee + this.purchaseSummaryDatas.pgPrice
+        },
+
+        periodPolis(){
+            this.transcationDate.stringStart = moment().format('LL')
+            this.transcationDate.stringEnd = moment(this.transcationDate.stringStart).add(1,'y').format('LL')  
         }
     }
 }

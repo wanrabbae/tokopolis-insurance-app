@@ -639,7 +639,6 @@ export default {
                     sub_model: this.model.series
                 }
             }).then ((response) => {
-                console.log(response)
                 this.model.price = this.formatPrice(response.data.price, 'id-ID', 'decimal')
                 this.model.minPrice = this.formatPrice(response.data.lowest_price)
                 this.model.maxPrice = this.formatPrice(response.data.highest_price)

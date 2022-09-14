@@ -163,6 +163,7 @@
                                     :options="provinceOptions"
                                     required
                                     asterix
+                                    @change="getCity"
                                 />
 
                                 <BaseSelect
@@ -171,9 +172,10 @@
                                     label="Kota/Kabupaten"
                                     rules="required"
                                     :options="cityOptions"
-                                    :disabled="!model.province"
+                                    :disabled="!condition.city"
                                     required
                                     asterix
+                                    @change="getDistrict"
                                 />
 
                                 <BaseSelect
@@ -182,9 +184,10 @@
                                     label="Kecamatan"
                                     rules="required"
                                     :options="districtOptions"
-                                    :disabled="!model.city"
+                                    :disabled="!condition.district"
                                     required
                                     asterix
+                                    @change="getUrban"
                                 />
 
                                 <BaseSelect
@@ -193,7 +196,7 @@
                                     label="Kelurahan"
                                     rules="required"
                                     :options="urbanOptions"
-                                    :disabled="!model.district"
+                                    :disabled="!condition.urban"
                                     required
                                     asterix
                                 />
@@ -305,9 +308,9 @@ export default {
                 totalPremium: this.formatPrice(0),
                 vehicleCondition: 'new',
                 client: {
-                  fullname: null,
-                  email: null,
-                  phone: null,
+                    fullname: null,
+                    email: null,
+                    phone: null,
                 },
                 fullAddress: null,
                 province: null,
@@ -321,24 +324,20 @@ export default {
                 vehicleColor: null,
                 machineNumber: null
             },
+            condition:{
+                city: false,
+                district: false,
+                urban: false
+            },
             vehicleConditionOptions: [
                 { text: 'Baru', value: 'new' },
                 { text: 'Bekas', value: 'used' },
             ],
             provinceOptions: [
                 { text: 'Pilih Provinsi', value: null },
-                { text: 'DKI Jakarta', value: 'dki-jakarta' },
-                { text: 'Jawa Barat', value: 'jawa-barat' },
-                { text: 'DI Yogyakarta', value: 'di-yogyakarta' },
-                { text: 'Jawa Tengah', value: 'jawa-tengah' },
-                { text: 'Jawa Timur', value: 'banyuwangi' },
             ],
             cityOptions: [
                 { text: 'Pilih Kota/Kabupaten', value: null },
-                { text: 'Surabaya', value: 'surabaya' },
-                { text: 'Sidoarjo', value: 'sidoarjo' },
-                { text: 'Malang', value: 'malang' },
-                { text: 'Banyuwangi', value: 'banyuwangi' },
             ],
             districtOptions: [
                 { text: 'Pilih Kecamatan', value: null },
@@ -429,6 +428,7 @@ export default {
     },
     mounted(){
         this.getDataTransaction()
+        this.getProvince()
     },
     methods: {
         reviewPayment() {
@@ -474,8 +474,11 @@ export default {
             this.formData.append('fullname', this.model.client.fullname)
             this.formData.append('email', this.model.client.email)
             this.formData.append('phone', this.model.client.phone)
-
+            
+            this.formData.append('address_village_id',this.model.urban)
+            this.formData.append('address_detail',this.model.fullAddress + " " + this.model.postalCode)  
             this.formData.append('use_address_to_ship',this.model.useAdressToShip)
+
             this.formData.append('condition',this.model.vehicleCondition)
             this.formData.append('vehicle_color',this.model.vehicleColor)
             this.formData.append('plate_detail',this.model.plateDetail)
@@ -492,6 +495,113 @@ export default {
 
             })
         },
+        isNull(data) {
+            return (data === null || data === "")
+        },
+        resetField(){
+            this.condition.city = false
+            this.condition.district = false
+            this.condition.urban = false
+        },
+        async getProvince(){
+            this.resetField()
+
+            this.provinceOptions = [{ text: 'Pilih Provinsi', value: null }]
+            this.model.city = null
+            this.model.district = null
+            this.model.urban = null
+
+            await this.$axios.$get('api/address/provinces')
+            .then ((response) => {
+                
+                response.data.forEach(element => {
+                    this.provinceOptions.push({
+                        text: element.name,
+                        value: element.id
+                    })
+                });
+
+
+            })
+        },
+        async getCity(){
+            this.resetField()
+
+            this.cityOptions = [{ text: 'Pilih Kota/Kabupaten', value: null }]
+            this.model.district = null
+            this.model.urban = null
+
+            if (this.isNull(this.model.province)) {
+                return
+            }
+
+            await this.$axios.$get(`api/address/regencies?province_id=${this.model.province}`)
+            .then ((response) => {
+                this.model.city = null
+                this.condition.city = true
+
+                response.data.forEach(element => {
+                    this.cityOptions.push({
+                        text: element.name,
+                        value: element.id
+                    })
+                });
+
+            })
+        },
+        async getDistrict(){
+            this.resetField()
+
+            this.condition.city = true
+
+            this.districtOptions = [{ text: 'Pilih Kecamatan', value: null }]
+            this.model.urban = null
+
+            if (this.isNull(this.model.city)) {
+                return
+            }
+
+            await this.$axios.$get(`api/address/districts?regency_id=${this.model.city}`)
+            .then ((response) => {
+                this.model.district = null
+                this.condition.district = true
+
+                response.data.forEach(element => {
+                    this.districtOptions.push({
+                        text: element.name,
+                        value: element.id
+                    })
+                });
+
+            })
+        },
+        async getUrban(){
+            this.resetField()
+
+            this.condition.city = true
+            this.condition.district = true
+
+            this.urbanOptions = [{ text: 'Pilih Kelurahan', value: null }]
+
+            if (this.isNull(this.model.district)) {
+                return
+            }
+
+            await this.$axios.$get(`api/address/villages?district_id=${this.model.district}`)
+            .then ((response) => {
+                this.model.urban = null
+                this.condition.urban = true
+
+                response.data.forEach(element => {
+                    this.urbanOptions.push({
+                        text: element.name,
+                        value: element.id
+                    })
+                });
+
+            })
+        }
+        
     }
 }
 </script>

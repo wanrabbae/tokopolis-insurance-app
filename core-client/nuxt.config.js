@@ -166,7 +166,7 @@ export default {
   },
 
   publicRuntimeConfig: {
-    baseAPI: process.env.API_SERVER_URL
+    serverURL: process.env.BASE_SERVER_URL
   },
 
   dayjs: {

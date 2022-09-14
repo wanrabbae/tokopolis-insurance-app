@@ -55,7 +55,7 @@ export default {
         },
         userPhoto() {
             if(this.$store.state.photo != null && this.$store.state.photo !== 'null') {
-                return this.$config.baseAPI+this.$store.state.photo;
+                return this.$config.serverURL+this.$store.state.photo;
             } else {
                 return '/img/DefaultProfile.png';
             }

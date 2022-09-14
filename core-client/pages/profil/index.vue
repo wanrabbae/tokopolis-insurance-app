@@ -386,7 +386,7 @@ export default {
                         this.address = response.data.profile.address
 
                         if (response.data.profile.photo != null) {
-                            this.photo = this.$config.baseAPI+ response.data.profile.photo
+                            this.photo = this.$config.serverURL+ response.data.profile.photo
                         }
                         else {
                             this.photo = '/svg/avatar-default.svg'

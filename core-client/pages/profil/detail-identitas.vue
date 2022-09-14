@@ -226,7 +226,7 @@ export default {
                         this.model.identityType = response.data.type
                         this.model.identityNumber = response.data.identity_number
                         if (response.data.image !== '') {
-                            this.model.imgDataUrl = this.$config.baseAPI + response.data.image
+                            this.model.imgDataUrl = this.$config.serverURL + response.data.image
                         }
                         this.model.verified = response.data.is_verified
                     }
