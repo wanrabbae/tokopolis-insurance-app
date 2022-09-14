@@ -275,7 +275,7 @@ const getPaymentFee = (req) => {
 
 const getPaymentDetail = (req) => {
     const schema = Joi.object({
-        transaction_id: Joi.number()
+        transaction_id: Joi.string()
             .required()
             .label(req.polyglot.t('field.transaction.id')),
     })
@@ -291,7 +291,7 @@ const getPaymentDetail = (req) => {
 
 const createPayment = (req) => {
     const schema = Joi.object({
-        transaction_id: Joi.number()
+        transaction_id: Joi.string()
             .required()
             .label(req.polyglot.t('field.transaction.id')),
         platform: Joi.valid('bca', 'bni', 'bri',

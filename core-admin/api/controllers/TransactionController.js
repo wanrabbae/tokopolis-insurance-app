@@ -7,7 +7,7 @@ import PdfService from '../services/PdfService'
 
 const validation = require('../validation/transaction.validation')
 const { getMoment, moneyFormat,
-    randomString, randomNumber } = require('../utilities/functions')
+    randomString, randomNumber, titleCase } = require('../utilities/functions')
 
 const service = new TransactionService()
 const accountService = new AccountService()
@@ -85,7 +85,12 @@ exports.postOffer = async (req, res) => {
         price: req.session.vehicle.price,
     }
 
+    const now = getMoment().format('yyyyMMDD')
+    const nowHour = getMoment().format('HHmmss')
+    const postfix = randomNumber(1111, 9999)
+
     const transaction = await service.createOffer({
+        id: `TRX-${now}-${nowHour}-${postfix}`,
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
         product_id: req.body.product_id,
@@ -172,13 +177,15 @@ exports.review = async (req, res) => {
     const transaction = await service.getAgentTransaction(account.id, req.query.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
-    const village = transaction.village
-    const district = village?.address_district
-    const regency = district?.address_regency
-    const province = regency?.address_province
+    var client = null
 
-    return res.jsonData({
-        client: {
+    if (transaction.client_data) {
+        const village = transaction.village
+        const district = village?.address_district
+        const regency = district?.address_regency
+        const province = regency?.address_province
+
+        client = {
             fullname: transaction.client_data.fullname,
             email: transaction.client_data.email != "null" ?
                 transaction.client_data.email : null,
@@ -186,12 +193,16 @@ exports.review = async (req, res) => {
                 transaction.client_data.phone : null,
             address: {
                 detail: transaction.address_detail,
-                village: village.name,
-                district: district.name,
-                regency: regency.name,
-                province: province.name,
+                village: titleCase(village.name),
+                district: titleCase(district.name),
+                regency: titleCase(regency.name),
+                province: titleCase(province.name),
             },
-        },
+        }
+    }
+
+    return res.jsonData({
+        client: client,
         vehicle: {
             condition: transaction.is_new_condition ? true : false,
             brand: transaction.vehicle.brand,
@@ -240,7 +251,7 @@ exports.doPayment = async (req, res) => {
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
     const payload = {
-        order_id: randomString(20),
+        order_id: transaction.id,
         customer: {
             fullname: transaction.client_data.fullname,
             email: transaction.client_data.email || account.email,
@@ -278,9 +289,11 @@ exports.doPayment = async (req, res) => {
                 date: data.due
             }
         })
+
+        return res.jsonData(data)
     }
 
-    return res.jsonData(paymentRequest.data)
+    return res.errorBadRequest()
 }
 
 exports.getPaymentDetail = async (req, res) => {
