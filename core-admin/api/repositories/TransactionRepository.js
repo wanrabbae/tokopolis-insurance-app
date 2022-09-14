@@ -1,4 +1,5 @@
-const { Account, Product, Vehicle,
+const { Account, AddressProvince, AddressRegency,
+    AddressDistrict, AddressVillage, Product, Vehicle,
     Transaction } = require('../models')
 
 export default class TransactionRepository {
@@ -42,6 +43,23 @@ export default class TransactionRepository {
             include: [
                 { model: Vehicle, as: 'vehicle' },
                 { model: Product, as: 'product' },
+                {
+                    model: AddressVillage,
+                    as: 'village',
+                    attributes: ['name'],
+                    include: {
+                        model: AddressDistrict,
+                        attributes: ['name'],
+                        include: {
+                            model: AddressRegency,
+                            attributes: ['name'],
+                            include: {
+                                model: AddressProvince,
+                                attributes: ['name'],
+                            }
+                        }
+                    }
+                },
             ]
         })
     }
@@ -95,7 +113,7 @@ export default class TransactionRepository {
                 id: transaction_id,
                 agent_id: agent_id
             },
-            attributes: ['total', 'pg_data', 'status']
+            attributes: ['id', 'total', 'pg_data', 'status']
         })
     }
 

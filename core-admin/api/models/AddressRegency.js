@@ -1,12 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
 	const AddressRegency = sequelize.define('address_regencies', {
 		id: {
-			type: Sequelize.INTEGER,
-			autoIncrement: true,
+			type: Sequelize.STRING,
 			primaryKey: true
 		},
 		province_id: {
-	        type: Sequelize.INTEGER,
+	        type: Sequelize.STRING,
 	        primaryKey: true
 	    },
 		name: {

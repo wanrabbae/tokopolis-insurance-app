@@ -39,6 +39,12 @@ function randomString(length = 16)
     return result
 }
 
+function randomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function uploadHandler(filePath, newPath)
 {
     const nuxtFolder = process.env.NUXT_STATIC_DIR
@@ -99,7 +105,7 @@ const titleCase = (value) => {
 
 module.exports = {
     getMoment, extensionHelper,
-    randomString, uploadHandler,
+    randomString, randomNumber, uploadHandler,
     phoneFormat, moneyFormat, stringTag,
     titleCase
 }

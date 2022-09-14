@@ -4,9 +4,8 @@ module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return queryInterface.createTable('transactions', {
 			id: {
-				type: Sequelize.INTEGER,
+				type: Sequelize.STRING,
 				primaryKey: true,
-				autoIncrement: true,
 			},
 			client_id: {
 				type: Sequelize.INTEGER,
@@ -27,13 +26,25 @@ module.exports = {
             client_data: {
                 type: Sequelize.JSON,
             },
-			start_date: {
-				type: Sequelize.DATEONLY,
-				allowNull: false,
-			},
+			address_village_id: {
+                type: Sequelize.STRING,
+                primaryKey: true,
+            },
+            address_detail: {
+                type: Sequelize.STRING,
+            },
+            is_address_used_to_ship: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
+            },
+            start_date: {
+                type: Sequelize.DATEONLY,
+                allowNull: false,
+            },
             is_new_condition: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
+                defaultValue: true,
             },
             vehicle_data: {
                 type: Sequelize.JSON,

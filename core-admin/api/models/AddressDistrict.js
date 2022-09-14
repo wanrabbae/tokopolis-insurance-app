@@ -1,12 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
 	const AddressDistrict = sequelize.define('address_districts', {
 		id: {
-			type: Sequelize.INTEGER,
-			autoIncrement: true,
+			type: Sequelize.STRING,
 			primaryKey: true
 		},
 		regency_id: {
-	        type: Sequelize.INTEGER,
+	        type: Sequelize.STRING,
 	        primaryKey: true
 	    },
 		name: {
@@ -22,7 +21,7 @@ module.exports = (sequelize, Sequelize) => {
         AddressDistrict.hasMany(models.AddressVillage, {
 			as: 'villages',
 			sourceKey: 'id',
-			foreignKey: 'village_id',
+			foreignKey: 'district_id',
 			onDelete: 'CASCADE'
 		})
 

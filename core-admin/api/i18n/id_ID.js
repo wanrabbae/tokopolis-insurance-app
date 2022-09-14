@@ -49,8 +49,9 @@ const id_ID_strings = {
             'accessories': 'Aksesoris Kendaraan',
             'start_date': 'Tanggal Mulai',
 
-            'address_detail': 'Alamat Lengkap',
-            'use_address_to_ship': 'Penggunaan Alamat untuk Pengiriman',
+            'address.village': 'Alamat Desa/Kelurahan',
+            'address.detail': 'Alamat Lengkap',
+            'address.use_to_ship': 'Penggunaan Alamat untuk Pengiriman',
 
             'product.id': 'Id Produk',
             'product.expansion': 'Perluasan Asuransi',

@@ -6,8 +6,8 @@ import PaymentService from '../services/PaymentService'
 import PdfService from '../services/PdfService'
 
 const validation = require('../validation/transaction.validation')
-const { getHost, getMoment, moneyFormat,
-    randomString, phoneFormat } = require('../utilities/functions')
+const { getMoment, moneyFormat,
+    randomString, randomNumber } = require('../utilities/functions')
 
 const service = new TransactionService()
 const accountService = new AccountService()
@@ -130,7 +130,12 @@ exports.postTransaction = async (req, res) => {
         price: req.session.vehicle.price,
     }
 
+    const now = getMoment().format('yyyyMMDD')
+    const nowHour = getMoment().format('HHmmss')
+    const postfix = randomNumber(1111, 9999)
+
     const transaction = await service.createTransaction({
+        id: `TRX-${now}-${nowHour}-${postfix}`,
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
         product_id: req.query.product_id,
@@ -138,11 +143,10 @@ exports.postTransaction = async (req, res) => {
             fullname: req.body.fullname,
             email: req.body.email,
             phone: req.body.phone,
-            address: {
-                detail: req.body.address_detail,
-                use_to_ship: req.body.use_address_to_ship ? true : false,
-            },
         },
+        address_village_id: req.body.address_village_id,
+        address_detail: req.body.address_detail,
+        is_address_used_to_ship: req.body.use_address_to_ship ? true : false,
         is_new_condition: condition,
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,
@@ -168,26 +172,39 @@ exports.review = async (req, res) => {
     const transaction = await service.getAgentTransaction(account.id, req.query.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
+    const village = transaction.village
+    const district = village?.address_district
+    const regency = district?.address_regency
+    const province = regency?.address_province
+
     return res.jsonData({
         client: {
             fullname: transaction.client_data.fullname,
-            email: transaction.client_data.email,
-            phone: transaction.client_data.phone,
-            address: transaction.client_data.address,
+            email: transaction.client_data.email != "null" ?
+                transaction.client_data.email : null,
+            phone: transaction.client_data.phone != "null" ?
+                transaction.client_data.phone : null,
+            address: {
+                detail: transaction.address_detail,
+                village: village.name,
+                district: district.name,
+                regency: regency.name,
+                province: province.name,
+            },
         },
         vehicle: {
             condition: transaction.is_new_condition ? true : false,
             brand: transaction.vehicle.brand,
             model: transaction.vehicle.model,
             sub_model: transaction.vehicle.sub_model,
-            year: transaction.vehicle_data.year,
-            price: transaction.vehicle_data.price,
-            plate: transaction.vehicle_data.plate,
-            plate_detail: transaction.vehicle_data.plate_detail,
+            year: transaction.vehicle_data?.year,
+            price: transaction.vehicle_data?.price,
+            plate: transaction.vehicle_data?.plate,
+            plate_detail: transaction.vehicle_data?.plate_detail,
             protection: transaction.product.type,
-            color: transaction.vehicle_data.color,
-            machine_number: transaction.vehicle_data.machine_number,
-            skeleton_number: transaction.vehicle_data.skeleton_number,
+            color: transaction.vehicle_data?.color,
+            machine_number: transaction.vehicle_data?.machine_number,
+            skeleton_number: transaction.vehicle_data?.skeleton_number,
         },
         transaction: {
             id: transaction.id,

@@ -2,6 +2,7 @@ const Joi = require('joi')
 
 const { joiResponse, joiErrorMessages } = require('../utilities/validation')
 const { extensionHelper } = require('../utilities/functions')
+const { required } = require('joi')
 
 const post = (req) => {
     const schema = Joi.object({
@@ -27,10 +28,14 @@ const post = (req) => {
                 Joi.allow(null)
             )
             .label(req.polyglot.t('field.transaction.client.email')),
+        address_village_id: Joi.string()
+            .label(req.polyglot.t('field.address.village'))
+            .required(),
         address_detail: Joi.string()
-            .label(req.polyglot.t('field.address_detail')),
+            .label(req.polyglot.t('field.address.detail'))
+            .required(),
         use_address_to_ship: Joi.boolean()
-            .label(req.polyglot.t('field.use_address_to_ship')),
+            .label(req.polyglot.t('field.address.use_to_ship')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -72,7 +77,7 @@ const fileNew = (req) => {
             .label(req.polyglot.t('field.transaction.identity')),
         fullname: Joi.string()
             .required()
-            .label(req.polyglot.t('field.transaction.fullname')),
+            .label(req.polyglot.t('field.transaction.client.fullname')),
         phone: Joi.alternatives()
             .try(
                 Joi.string()
@@ -89,10 +94,14 @@ const fileNew = (req) => {
                 Joi.allow(null)
             )
             .label(req.polyglot.t('field.transaction.client.email')),
+        address_village_id: Joi.string()
+            .label(req.polyglot.t('field.address.village'))
+            .required(),
         address_detail: Joi.string()
-            .label(req.polyglot.t('field.address_detail')),
+            .label(req.polyglot.t('field.address.detail'))
+            .required(),
         use_address_to_ship: Joi.boolean()
-            .label(req.polyglot.t('field.use_address_to_ship')),
+            .label(req.polyglot.t('field.address.use_to_ship')),
         plate_detail: Joi.string()
             .required()
             .label(req.polyglot.t('field.plate_detail')),
@@ -207,7 +216,7 @@ const fileOld = (req) => {
 
 const review = (req) => {
     const schema = Joi.object({
-        transaction_id: Joi.number()
+        transaction_id: Joi.string()
             .required()
             .label(req.polyglot.t('field.transaction.id')),
     })

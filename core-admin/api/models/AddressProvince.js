@@ -1,8 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
 	const AddressProvince = sequelize.define('address_provinces', {
 		id: {
-			type: Sequelize.INTEGER,
-			autoIncrement: true,
+			type: Sequelize.STRING,
 			primaryKey: true
 		},
 		name: {

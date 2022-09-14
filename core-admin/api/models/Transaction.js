@@ -1,18 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
 	const Transaction = sequelize.define('transactions', {
 		id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.STRING,
             primaryKey: true,
-            autoIncrement: true,
-        },
-        code: {
-            type: Sequelize.VIRTUAL,
-            get() {
-                var prefix = "TRX"
-                var combined = "0000000"
-
-                return prefix + (combined + this.id).slice(combined.length * -1)
-            }
         },
         client_id: {
             type: Sequelize.INTEGER,
@@ -33,6 +23,17 @@ module.exports = (sequelize, Sequelize) => {
         client_data: {
             type: Sequelize.JSON,
         },
+        address_village_id: {
+            type: Sequelize.STRING,
+            primaryKey: true,
+        },
+        address_detail: {
+            type: Sequelize.STRING,
+        },
+        is_address_used_to_ship: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+        },
         start_date: {
             type: Sequelize.DATEONLY,
             allowNull: false,
@@ -40,6 +41,7 @@ module.exports = (sequelize, Sequelize) => {
         is_new_condition: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
+            defaultValue: true,
         },
         vehicle_data: {
             type: Sequelize.JSON,
@@ -94,6 +96,7 @@ module.exports = (sequelize, Sequelize) => {
 	})
 
 	Transaction.associate = function(models) {
+        Transaction.belongsTo(models.AddressVillage, { foreignKey: 'address_village_id', as: 'village' })
         Transaction.belongsTo(models.Account, { foreignKey: 'client_id', as: 'client_transactions' })
         Transaction.belongsTo(models.Account, { foreignKey: 'agent_id', as: 'agent_transactions' })
         Transaction.belongsTo(models.Vehicle, { foreignKey: 'vehicle_id' })

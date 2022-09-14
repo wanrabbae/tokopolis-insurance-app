@@ -1,12 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
 	const AddressVillage = sequelize.define('address_villages', {
 		id: {
-			type: Sequelize.INTEGER,
-			autoIncrement: true,
+			type: Sequelize.STRING,
 			primaryKey: true
 		},
 		district_id: {
-	        type: Sequelize.INTEGER,
+	        type: Sequelize.STRING,
 	        primaryKey: true
 	    },
 		name: {
@@ -19,7 +18,14 @@ module.exports = (sequelize, Sequelize) => {
 	})
 
 	AddressVillage.associate = function(models) {
-		AddressVillage.belongsTo(models.AddressDistrict, { foreignKey: 'district_id' })
+        AddressVillage.hasMany(models.Transaction, {
+			as: 'village',
+			sourceKey: 'id',
+			foreignKey: 'address_village_id',
+			onDelete: 'CASCADE'
+		})
+
+        AddressVillage.belongsTo(models.AddressDistrict, { foreignKey: 'district_id' })
 	}
 
 	return AddressVillage
