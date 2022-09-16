@@ -1,14 +1,17 @@
 <template>
     <div>
         <section id="about-hero">
-            <b-img src="/img/about.png"></b-img>
+            <b-img src="/img/about-us-banner.jpg"></b-img>
         </section>
+
+        <br>
+        <br>
 
         <section id="about" class="my-5">
             <b-container>
-                <h1 class="mb-4">Apa itu PIQO?</h1>
+                <h1 class="mb-5">Apa itu Tokopolis?</h1>
 
-                <div class="mb-4">
+                <div class="mb-5">
                     <ul>
                         <li>Asisten terbaikmu untuk kebutuhan asuransi dan rencana keuangan </li>
                         <li> Virtual Konsultan terbaik untuk pembelian hingga proses pengajuan klaim asuransi mu</li>
@@ -21,21 +24,27 @@
             </b-container>
         </section>
 
+        <br>
+        <br>
+
         <section id="core-value" class="my-5">
             <b-container>
-                <h1 class="text-center mb-5">Core Value PIQO - 5C</h1>
+                <h1 class="text-center text-uppercase mb-5">Core Value tokopolis - 5C</h1>
 
-                <b-row class="justify-content-center px-0 px-md-5 mx-0 mx-md-5">
+                <b-row class="justify-content-center">
                     <b-col v-for="(card, index) in coreValueCards" :key="index" cols="12" md="6" lg="4" class="mb-4">
-                        <b-card bg-variant="secondary" align="center" class="h-100 py-4 border shadow-none">
-                            <b-card-img :src="card.icon" :alt="card.title" class="mb-4" style="max-width: 96px"></b-card-img>
-                            <b-card-title title-tag="h4" class="mb-4">{{ card.title }}</b-card-title>
+                        <b-card bg-variant="white" align="center" class="h-100 py-4 border shadow-none" style="border-color: #435A8C!important; border-radius: 44px">
+                            <b-card-img :src="card.icon" :alt="card.title" class="mb-4 mx-auto" style="max-width: 160px"></b-card-img>
+                            <b-card-title title-tag="h2" class="mb-4">{{ card.title }}</b-card-title>
                             <b-card-text>{{ card.description }}</b-card-text>
                         </b-card>
                     </b-col>
                 </b-row>
             </b-container>
         </section>
+
+        <br>
+        <br>
     </div>
 </template>
 
@@ -80,3 +89,18 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+h1, h2, p, li {
+    color: #2E3333;
+}
+h1 {
+    font-size: 56px;
+}
+h2 {
+    font-size: 42px;
+}
+li, p {
+    font-size: 24px;
+}
+</style>

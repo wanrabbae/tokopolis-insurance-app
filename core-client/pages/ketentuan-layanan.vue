@@ -1,7 +1,7 @@
 <template>
-    <section id="terms-of-service" class="my-5">
-        <b-container>
-            <h1 class="text-center mb-4">Ketentuan Layanan</h1>
+    <section id="terms-of-service" class="main-content">
+        <b-container class="py-5">
+            <h1 class="text-center my-4">Ketentuan Layanan</h1>
             <h3 class="text-center font-weight-normal">Terima kasih telah menggunakan layanan PIQO</h3>
 
             <p class="mb-5">PT XXX atau disebut PIQO, merupakan sebuah Platform Web Application yang memiliki fungsi dan manfaat sebagai penyedia berbagai produk asuransi dari perusahaan asuransi rekanan kami, yang oleh pengunjung/nasabah/mitra dapat dipergunakan untuk membeli produk asuransi sesuai kebutuhan, hingga keperluan bantuan untuk pengajuan klaim ke perusahaan asuransi melalui mekanisme digitalisasi yang telah kami terapkan kepada perusahaan rekanan asuransi yang produk asuransinya dipasarkan melalui platform kami.</p>
@@ -26,20 +26,20 @@
                 <li>Anda mengerti dan telah membaca atas manfaat, fitur, kententuan polis, pengecualian, hingga biaya premi asuransi atas produk asuransi yang anda beli melalui Platform PIQO.</li>
                 <li>Anda memahami dan menyetujui, apabila adanya ketidak-benaran atas informasi data personal dan data asuransi yang anda sertakan pada saat pembelian produk asuransi pada Platform PIQO, maka kami berhak menolak atau membatalkan pengajuan penutupan asuransi dan/atau bantuan pengajuan proses klaim ke pihak perusahaan asuransi. Termasuk menindaklanjuti hal tersebut melalui proses hukum dan perundang-undangan yang berlaku di Indonesia.</li>
                 <li>
-                <p>Anda memahami dan menyetujui, bahwa perusahaan asuransi berhak menolak, membatalkan dan/atau mengakhiri polis asuransi anda, apabila: </p>
-                <ul>
-                    <li>Anda diketahui memberikan informasi data yang tidak benar.</li>
-                    <li>Anda menggunakan dokumen palsu dan diragukan kebenarannya.</li>
-                    <li>Anda menggunakan sumber dana dari transaksi illegal dan/atau tidak jelas asal-usulnya dan/atau dari tindakan kriminalitas.</li>
-                </ul>
+                    <p>Anda memahami dan menyetujui, bahwa perusahaan asuransi berhak menolak, membatalkan dan/atau mengakhiri polis asuransi anda, apabila: </p>
+                    <ul>
+                        <li>Anda diketahui memberikan informasi data yang tidak benar.</li>
+                        <li>Anda menggunakan dokumen palsu dan diragukan kebenarannya.</li>
+                        <li>Anda menggunakan sumber dana dari transaksi illegal dan/atau tidak jelas asal-usulnya dan/atau dari tindakan kriminalitas.</li>
+                    </ul>
                 </li>
                 <li>
-                <p>Anda menyetujui dan memahami bahwa: </p>
-                <ol>
-                    <li>Polis asuransi yang diterbitkan berupa softcopy polis dalam bentuk (e-policy) dengan format pdf yang dikirimkan melalui email yang didaftarkan dan/atau saat pembelian polis asuransi.</li>
-                    <li>PIQO memiliki ketentuan sendiri dalam proses penerbitan polis asuransi sesuai dengan kesepakatan kerjasamanya dengan perusahaan asuransi rekanan, perihal mekanisme penerbitan softcopy polis (e-policy) hingga pengiriman dokumen cetak polis (hardcopy) sesuai kebutuhan anda.</li>
-                    <li>Apabila Anda mengajukan penerbitan dan pengiriman polis asuransi dalam bentuk dokumen cetak (hardcopy), maka PIQO dapat membebani Anda dengan biaya tambahan sesuai ketentuan dan kebijakan dari perusahaan asuransi.</li>
-                </ol>
+                    <p>Anda menyetujui dan memahami bahwa: </p>
+                    <ol>
+                        <li>Polis asuransi yang diterbitkan berupa softcopy polis dalam bentuk (e-policy) dengan format pdf yang dikirimkan melalui email yang didaftarkan dan/atau saat pembelian polis asuransi.</li>
+                        <li>PIQO memiliki ketentuan sendiri dalam proses penerbitan polis asuransi sesuai dengan kesepakatan kerjasamanya dengan perusahaan asuransi rekanan, perihal mekanisme penerbitan softcopy polis (e-policy) hingga pengiriman dokumen cetak polis (hardcopy) sesuai kebutuhan anda.</li>
+                        <li>Apabila Anda mengajukan penerbitan dan pengiriman polis asuransi dalam bentuk dokumen cetak (hardcopy), maka PIQO dapat membebani Anda dengan biaya tambahan sesuai ketentuan dan kebijakan dari perusahaan asuransi.</li>
+                    </ol>
                 </li>
                 <li>Anda dianggap telah membaca, memahami, dan setuju dengan Kebijakan Privasi dan Syarat & Ketentuan PIQO yang tersedia di dalam platform atau website kami.</li>
             </ol>
@@ -134,31 +134,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- h1, h2, h3, h4, p, ol {
-   color: #221A29;
- }
- h1 {
-   font-size: 3rem;
- }
- h2 {
-   font-size: 2.25rem;
-   color: #48414D;
- }
- h3 {
-   font-size: 1.75rem;
-   margin-bottom: 5rem;
- }
- p {
-   font-size: 1.4rem;
- }
- a {
-   color: #FF7900;
-   text-decoration: underline;
- }
- ol {
-   font-size: 1.4rem;
- }
- li {
-   padding-left: 1.5rem;
- }
+.main-content {
+    margin-top: 110px;
+}
+
+h1, h2, h3, h4, p, ol {
+    color: #221A29;
+}
+h1 {
+    font-size: 3rem;
+}
+h2 {
+    font-size: 2.25rem;
+    color: #48414D;
+}
+h3 {
+    font-size: 1.75rem;
+    margin-bottom: 5rem;
+}
+p {
+    font-size: 1.4rem;
+}
+a {
+    color: #FF7900;
+    text-decoration: underline;
+}
+ol {
+    font-size: 1.4rem;
+}
+li {
+    padding-left: 1.5rem;
+}
 </style>
