@@ -490,8 +490,7 @@ export default {
             })
             .then(function(response) {
 
-                self.$store.commit('setTransactionId',response.data.transaction_id)
-                self.$router.push({name: "asuransi-mobil-polis-review-pembelian"})
+                self.$router.push({name: "asuransi-mobil-polis-review-pembelian" , query:{id:response.data.transaction_id}})
 
             })
         },

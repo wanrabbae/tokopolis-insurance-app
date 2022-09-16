@@ -84,7 +84,6 @@
                                             <li>Di menu Utama, pilih <strong>Bayar / Beli</strong>.</li>
                                             <li>Pilih <strong>Lainnya</strong>.</li>
                                             <li>Pilih <strong>Multi Payment</strong>.</li>
-                                            <li>Masukkan <strong>70012</strong> (kode perusahaan Midtrans) dan tekan <strong>Benar</strong>.</li>
                                             <li>Masukkan Nomor Rekening <strong>{{ paymentData.virtual_number }}</strong> dan tekan <strong>Benar</strong>.</li>
                                             <li>Detail pembayaran Anda akan muncul di halaman konfirmasi pembayaran. Jika informasi benar, tekan <strong>Ya</strong>.</li>
                                         </ol>
@@ -303,7 +302,7 @@ export default {
             }
         },
         async getTransactionReview() {
-            await this.$axios.$get(`api/transaction/payment?transaction_id=${this.transactionId}`)
+            await this.$axios.$get(`api/transaction/payment?transaction_id=${this.$route.query.id}`)
                 .then ((response) => {
                     console.log(response)
                     if(response.data.status !=="waiting"){

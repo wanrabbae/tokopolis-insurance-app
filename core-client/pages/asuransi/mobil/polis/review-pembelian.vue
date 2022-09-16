@@ -824,7 +824,7 @@ export default {
     },
     methods: {
         async getTransactionReview() {
-            await this.$axios.$get(`api/transaction/review?transaction_id=${this.idTransaction}`)
+            await this.$axios.$get(`api/transaction/review?transaction_id=${this.$route.query.id}`)
                 .then ((response) => {
                     console.log(response)
                     this.addressDetails.detail = response.data.client.address.detail
@@ -912,10 +912,11 @@ export default {
         
         CreatePayment() {
             this.$axios.$post('api/transaction/payment', {
-                transaction_id : this.idTransaction,
+                transaction_id : this.$route.query.id,
                 platform : this.model.paymentMethod,
             }).then ((response)=> {
-                this.$router.push({name: "asuransi-mobil-polis-konfirmasi-pembayaran"})
+
+                this.$router.push({name: "asuransi-mobil-polis-konfirmasi-pembayaran" , query:{id:this.$route.query.id}})
             })
 
         },
