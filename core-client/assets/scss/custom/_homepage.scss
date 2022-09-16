@@ -1,3 +1,14 @@
+.hero-wrapper {
+    .hero-title {
+        margin-bottom: $spacer * 7;
+    }
+
+    .hero-body {
+        margin-top: $spacer * -7;
+        background-color: $light-blue;
+    }
+}
+
 .claim-assistance-wrapper {
     background-color: $light-blue;
 }
@@ -57,7 +68,25 @@
     }
 }
 
+.insurance-search-wrapper {
+    margin-top: $spacer * 10;
+
+    .insurance-search-header {
+        margin-top: $spacer * -10;
+    }
+}
+
 @include media-breakpoint-down(sm) {
+    .hero-wrapper {
+        .hero-title {
+            margin-bottom: $spacer;
+        }
+
+        .hero-body {
+            margin-top: 0;
+        }
+    }
+
     .why-us-wrapper {
         .row .col-6:nth-child(2) ~ .col-6 {
             padding-top: $spacer * 3;
@@ -66,6 +95,14 @@
         .why-us-card {
             width: 144px;
             height: 144px;
+        }
+    }
+
+    .insurance-search-wrapper {
+        margin-top: 0;
+    
+        .insurance-search-header {
+            margin-top: 0;
         }
     }
 }

@@ -1,293 +1,307 @@
 <template>
 
-    <div class="pb-4 pb-lg-5" style="background-color: #f6f5fc">
+    <div class="py-5 py-md-6" style="background-color: #f6f5fc">
 
-        <PromotionCarousel
-            tag="section"
-            :images="promotionImages"
-            class="py-4"
-        />
+        <main class="container mb-5 mb-md-6">
 
-        <main ref="main" class="container mb-4 mb-md-5">
+            <div class="insurance-search-wrapper bg-white rounded border">
 
-            <div class="card border">
+                <div class="insurance-search-header row pt-4 px-4 pt-md-0 mb-3">
 
-                <div class="card-body">
+                    <div class="col-12 col-md-6">
+                        
+                        <h2 class="fs-3 fs-md-1 align-self-center mb-md-6">
+                            Masukkan Detail Mobil untuk cari Asuransi
+                        </h2>
 
-                    <h2>Masukkan Detail Mobil</h2>
+                    </div>
 
-                    <b-form class="row" @submit.prevent="searchPolis">
+                    <div class="col-6 d-none d-md-block">
 
-                        <BaseSelect
-                            v-model="model.yearProduction"
-                            name="Tahun Produksi"
-                            label="Tahun Produksi"
-                            class="col-12 col-md-4"
-                            :options="years"
-                            :rules="{ required: true }"
+                        <nuxt-img 
+                            width="439" 
+                            height="215" 
+                            preset="default"
+                            src="/svg/hero-car-insurance.svg"
+                            alt="Hero Image - Car Insurance"
+                            class="position-relative"
+                            loading="lazy"
+                        />
+
+                    </div>
+
+                </div>
+
+                <b-form class="row pb-4 px-4" @submit.prevent="searchPolis">
+
+                    <BaseSelect
+                        v-model="model.yearProduction"
+                        name="Tahun Produksi"
+                        label="Tahun Produksi"
+                        class="col-12 col-md-4"
+                        :options="years"
+                        :rules="{ required: true }"
+                        required
+                        @change="getBrandCar"
+                    />
+
+                    <BaseSelect
+                        v-model="model.brand"
+                        name="Merek Mobil"
+                        label="Merek Mobil"
+                        class="col-12 col-md-4"
+                        :options="brandCar"
+                        :rules="{ required: true }"
+                        required
+                        :disabled='!condition.brand'
+                        @change="getTypeCar"
+                    />
+
+                    <BaseSelect
+                        v-model="model.type"
+                        name="Tipe Mobil"
+                        label="Tipe Mobil"
+                        class="col-12 col-md-4"
+                        :options="typeCar"
+                        :rules="{ required: true }"
+                        required
+                        :disabled='!condition.type'
+                        @change="getSeriesCar"
+                    />
+
+                    <BaseSelect
+                        v-model="model.series"
+                        name="Seri Mobil"
+                        label="Seri Mobil"
+                        class="col-12 col-md-4"
+                        :options="seriesCar"
+                        :rules="{ required: true }"
+                        required
+                        :disabled='!condition.series'
+                        @change="getPriceCar"
+                    />
+
+                    <BaseSelect
+                        v-model="model.licensePlate"
+                        name="Plat Nomor"
+                        label="Plat Nomor"
+                        class="col-12 col-md-4"
+                        :options="plateCar"
+                        :rules="{ required: true }"
+                        required
+                    />
+
+                    <BaseSelect
+                        v-model="model.usage"
+                        name="Penggunaan Mobil"
+                        label="Penggunaan Mobil"
+                        class="col-12 col-md-4"
+                        :options="userCar"
+                        :rules="{ required: true }"
+                        required
+                    />
+
+                    <div class="col-12 col-md-6 mb-3">
+
+                        <BaseInputPrice
+                            v-model="model.price"
+                            name="Harga Mobil"
+                            placeholder="Masukkan Harga Mobil"
+                            currency="IDR"
+                            :rules="{ required: true, price_between: [model.minPrice, model.maxPrice] }"
                             required
-                            @change="getBrandCar"
-                        />
-
-                        <BaseSelect
-                            v-model="model.brand"
-                            name="Merek Mobil"
-                            label="Merek Mobil"
-                            class="col-12 col-md-4"
-                            :options="brandCar"
-                            :rules="{ required: true }"
-                            required
-                            :disabled='!condition.brand'
-                            @change="getTypeCar"
-                        />
-
-                        <BaseSelect
-                            v-model="model.type"
-                            name="Tipe Mobil"
-                            label="Tipe Mobil"
-                            class="col-12 col-md-4"
-                            :options="typeCar"
-                            :rules="{ required: true }"
-                            required
-                            :disabled='!condition.type'
-                            @change="getSeriesCar"
-                        />
-
-                        <BaseSelect
-                            v-model="model.series"
-                            name="Seri Mobil"
-                            label="Seri Mobil"
-                            class="col-12 col-md-4"
-                            :options="seriesCar"
-                            :rules="{ required: true }"
-                            required
-                            :disabled='!condition.series'
-                            @change="getPriceCar"
-                        />
-
-                        <BaseSelect
-                            v-model="model.licensePlate"
-                            name="Plat Nomor"
-                            label="Plat Nomor"
-                            class="col-12 col-md-4"
-                            :options="plateCar"
-                            :rules="{ required: true }"
-                            required
-                        />
-
-                        <BaseSelect
-                            v-model="model.usage"
-                            name="Penggunaan Mobil"
-                            label="Penggunaan Mobil"
-                            class="col-12 col-md-4"
-                            :options="userCar"
-                            :rules="{ required: true }"
-                            required
-                        />
-
-                        <div class="col-12 col-md-6 mb-3">
-
-                            <BaseInputPrice
-                                v-model="model.price"
-                                name="Harga Mobil"
-                                placeholder="Masukkan Harga Mobil"
-                                currency="IDR"
-                                :rules="{ required: true, price_between: [model.minPrice, model.maxPrice] }"
-                                required
-                                @blur="checkMinMaxPrice"
-                            >
-
-                                <template #label>
-
-                                    <div class="row">
-
-                                        <div class="col-4 pr-0">
-
-                                            <label class="form-control-label">Harga Mobil</label>
-
-                                        </div> <!-- col-4 ends -->
-
-                                        <div class="col-8 d-flex justify-content-end align-items-center text-right" style="font-size: 12px; color: #9a9b9c">
-
-                                            {{ model.minPrice }} - {{ model.maxPrice }}
-
-                                        </div> <!-- col-8 ends -->
-
-                                    </div> <!-- row ends -->
-
-                                </template>
-
-                            </BaseInputPrice>
-
-                            <b-input-group>
-
-                                <b-form-checkbox
-                                    v-model="model.addAccessories"
-                                    :disabled="formatNumber(model.price) == 0 || model.price == null"
-                                    @change="onAccessoriesCheckboxChange"
-                                >
-                                    Tambahkan Aksesoris
-                                </b-form-checkbox>
-
-                            </b-input-group>
-
-                        </div>
-
-                        <BaseInput
-                            v-if="model.accessories.length !== 0"
-                            v-model="model.totalAccessoriesPrice"
-                            label="Aksesoris"
-                            class="col-12 col-md-6"
-                            disabled
-                        />
-
-                        <div class="col-12">
-
-                            <label class="form-control-label">Periode Asuransi</label>
-
-                            <b-form-datepicker
-                                v-model="model.startDatePeriod"
-                                v-bind="calendarLabels"
-                                locale="id"
-                                :min="$dayjs().format('YYYY-MM-DD')"
-                                :open-date="$dayjs().format('YYYY-MM-DD')"
-                                class="w-md-50 mb-4"
-                                placeholder="Pilih Tanggal Mulai"
-                                nav-button-variant="primary"
-                                :date-format-options="{ 'day': 'numeric', 'month': 'long', 'year': 'numeric' }"
-                                hide-header
-                                required
-                            >
-
-                                <template #button-content>
-
-                                    <CalendarIcon style="color:#FF7900; width: 1.4rem" />
-
-                                </template>
-
-                            </b-form-datepicker>
-
-                        </div>
-
-                        <b-form-group
-                            v-slot="{ ariaDescribedby }"
-                            label="Pilih Paket Asuransi"
-                            label-class="custom-label"
-                            class="col-12 mb-0"
+                            @blur="checkMinMaxPrice"
                         >
 
-                            <b-form-radio-group
-                                id="insurance-package"
-                                v-model="model.insurancePackage"
-                                :aria-describedby="ariaDescribedby"
-                                class="row"
+                            <template #label>
+
+                                <div class="row">
+
+                                    <div class="col-4 pr-0">
+
+                                        <label class="form-control-label">Harga Mobil</label>
+
+                                    </div> <!-- col-4 ends -->
+
+                                    <div class="col-8 d-flex justify-content-end align-items-center text-right" style="font-size: 12px; color: #9a9b9c">
+
+                                        {{ model.minPrice }} - {{ model.maxPrice }}
+
+                                    </div> <!-- col-8 ends -->
+
+                                </div> <!-- row ends -->
+
+                            </template>
+
+                        </BaseInputPrice>
+
+                        <b-input-group>
+
+                            <b-form-checkbox
+                                v-model="model.addAccessories"
+                                :disabled="formatNumber(model.price) == 0 || model.price == null"
+                                @change="onAccessoriesCheckboxChange"
                             >
+                                Tambahkan Aksesoris
+                            </b-form-checkbox>
 
-                                <div class="col-12 col-md-6 mb-4">
+                        </b-input-group>
 
-                                    <div class="rounded border p-3">
+                    </div>
 
-                                        <b-form-radio
-                                            value="comprehensive"
-                                            :disabled="!condition.comprehensive"
-                                        >
+                    <BaseInput
+                        v-if="model.accessories.length !== 0"
+                        v-model="model.totalAccessoriesPrice"
+                        label="Aksesoris"
+                        class="col-12 col-md-6"
+                        disabled
+                    />
 
-                                            <div class="mb-2">
+                    <div class="col-12">
 
-                                                <span class="fw-bold">Komprehensif</span>
+                        <label class="form-control-label">Periode Asuransi</label>
 
-                                            </div>
+                        <b-form-datepicker
+                            v-model="model.startDatePeriod"
+                            v-bind="calendarLabels"
+                            locale="id"
+                            :min="$dayjs().format('YYYY-MM-DD')"
+                            :open-date="$dayjs().format('YYYY-MM-DD')"
+                            class="w-md-50 mb-4"
+                            placeholder="Pilih Tanggal Mulai"
+                            nav-button-variant="primary"
+                            :date-format-options="{ 'day': 'numeric', 'month': 'long', 'year': 'numeric' }"
+                            hide-header
+                            required
+                        >
 
-                                            <div class="row">
+                            <template #button-content>
 
-                                                <div class="col-12 col-md-4 d-none d-md-block">
+                                <CalendarIcon style="color:#FF7900; width: 1.4rem" />
 
-                                                    <nuxt-img 
-                                                        preset="default"
-                                                        sizes="lg:122px" 
-                                                        src="/svg/car-insurance-comprehensive.svg"
-                                                        alt="Asuransi Komprenhensif"
-                                                        loading="lazy" 
-                                                    />
+                            </template>
 
-                                                </div> <!-- col-12.col-md-8 ends -->
+                        </b-form-datepicker>
 
-                                                <div class="col-12 col-md-8">
+                    </div>
 
-                                                    <span>Menjamin segala jenis kerusakan pada mobil Anda termasuk kerusakan ringan, berat maupun kehilangan total akibat pencurian.</span>
+                    <b-form-group
+                        v-slot="{ ariaDescribedby }"
+                        label="Pilih Paket Asuransi"
+                        label-class="custom-label"
+                        class="col-12 mb-0"
+                    >
 
-                                                </div> <!-- col-12.col-md-4 ends -->
+                        <b-form-radio-group
+                            id="insurance-package"
+                            v-model="model.insurancePackage"
+                            :aria-describedby="ariaDescribedby"
+                            class="row"
+                        >
 
-                                            </div> <!-- row ends -->
+                            <div class="col-12 col-md-6 mb-4">
 
-                                        </b-form-radio>
+                                <div class="rounded border p-3">
 
-                                    </div> <!-- rounded.border ends -->
+                                    <b-form-radio
+                                        value="comprehensive"
+                                        :disabled="!condition.comprehensive"
+                                    >
 
-                                </div> <!-- col-12.col-md-6 ends -->
+                                        <div class="mb-2">
 
-                                <div class="col-12 col-md-6 mb-4">
+                                            <span class="fw-bold">Komprehensif</span>
 
-                                    <div class="rounded border p-3">
+                                        </div>
 
-                                        <b-form-radio
-                                            value="tlo"
-                                            :disabled="!condition.tlo"
-                                        >
+                                        <div class="row">
 
-                                            <div class="mb-2">
+                                            <div class="col-12 col-md-4 d-none d-md-block">
 
-                                                <span class="fw-bold">Kerugian Total / TLO</span>
+                                                <nuxt-img 
+                                                    preset="default"
+                                                    sizes="lg:122px" 
+                                                    src="/svg/car-insurance-comprehensive.svg"
+                                                    alt="Asuransi Komprenhensif"
+                                                    loading="lazy" 
+                                                />
 
-                                            </div>
+                                            </div> <!-- col-12.col-md-8 ends -->
 
-                                            <div class="row">
+                                            <div class="col-12 col-md-8">
 
-                                                <div class="col-12 col-md-4 d-none d-md-block">
+                                                <span>Menjamin segala jenis kerusakan pada mobil Anda termasuk kerusakan ringan, berat maupun kehilangan total akibat pencurian.</span>
 
-                                                    <nuxt-img 
-                                                        preset="default"
-                                                        sizes="lg:122px" 
-                                                        src="/svg/car-insurance-total-loss-only.svg"
-                                                        alt="Asuransi Kerugian Total / TLO (Total Loss Only)"
-                                                        loading="lazy" 
-                                                    />
+                                            </div> <!-- col-12.col-md-4 ends -->
 
-                                                </div> <!-- col-12.col-md-4 ends -->
+                                        </div> <!-- row ends -->
 
-                                                <div class="col-12 col-md-8">
+                                    </b-form-radio>
 
-                                                    <span>Menjamin kerugian/kerusakan di mana biaya perbaikan ≥ 75% dari harga mobil termasuk kehilangan total akibat pencurian.</span>
+                                </div> <!-- rounded.border ends -->
 
-                                                </div> <!-- col-12.col-md-8 ends -->
+                            </div> <!-- col-12.col-md-6 ends -->
 
-                                            </div> <!-- row ends -->
+                            <div class="col-12 col-md-6 mb-4">
 
-                                        </b-form-radio>
+                                <div class="rounded border p-3">
 
-                                    </div> <!-- rounded.border ends -->
+                                    <b-form-radio
+                                        value="tlo"
+                                        :disabled="!condition.tlo"
+                                    >
 
-                                </div> <!-- col-12.col-md-6 ends -->
+                                        <div class="mb-2">
 
-                            </b-form-radio-group>  <!-- row ends -->
+                                            <span class="fw-bold">Kerugian Total / TLO</span>
 
-                        </b-form-group>
+                                        </div>
 
-                        <div class="col-12">
+                                        <div class="row">
 
-                            <BaseButton
-                                native-type="submit"
-                                :disabled="model.insurancePackage === null || model.licensePlate === null || model.usage === null || model.startDatePeriod === null"
-                                block
-                            >
-                                Cari
-                            </BaseButton>
+                                            <div class="col-12 col-md-4 d-none d-md-block">
 
-                        </div>
+                                                <nuxt-img 
+                                                    preset="default"
+                                                    sizes="lg:122px" 
+                                                    src="/svg/car-insurance-total-loss-only.svg"
+                                                    alt="Asuransi Kerugian Total / TLO (Total Loss Only)"
+                                                    loading="lazy" 
+                                                />
 
-                    </b-form> <!-- row ends -->
+                                            </div> <!-- col-12.col-md-4 ends -->
 
-                </div> <!-- card-body ends -->
+                                            <div class="col-12 col-md-8">
+
+                                                <span>Menjamin kerugian/kerusakan di mana biaya perbaikan ≥ 75% dari harga mobil termasuk kehilangan total akibat pencurian.</span>
+
+                                            </div> <!-- col-12.col-md-8 ends -->
+
+                                        </div> <!-- row ends -->
+
+                                    </b-form-radio>
+
+                                </div> <!-- rounded.border ends -->
+
+                            </div> <!-- col-12.col-md-6 ends -->
+
+                        </b-form-radio-group>  <!-- row ends -->
+
+                    </b-form-group>
+
+                    <div class="col-12">
+
+                        <BaseButton
+                            native-type="submit"
+                            :disabled="model.insurancePackage === null || model.licensePlate === null || model.usage === null || model.startDatePeriod === null"
+                            block
+                        >
+                            Cari
+                        </BaseButton>
+
+                    </div>
+
+                </b-form> <!-- row ends -->
 
             </div> <!-- card ends -->
 
@@ -316,7 +330,6 @@
 import BaseInput from '../../../components/Inputs/BaseInput'
 import BaseInputPrice from '../../../components/Inputs/BaseInputPrice'
 import BaseSelect from '../../../components/Inputs/BaseSelect'
-import PromotionCarousel from '../../../components/carousels/PromotionCarousel'
 import AccessoriesModal from '../../../components/AccessoriesModal'
 import CalendarIcon from '../../../assets/svg/calendar.svg'
 
@@ -325,7 +338,6 @@ export default {
         BaseInput,
         BaseInputPrice,
         BaseSelect,
-        PromotionCarousel,
         AccessoriesModal,
         CalendarIcon
     },
@@ -508,7 +520,6 @@ export default {
     },
     mounted(){
         this.getPlates()
-        this.scrollToMain()
         this.getYear()
     },
     methods: {
@@ -686,16 +697,6 @@ export default {
             const max = this.formatNumber(this.model.maxPrice)
 
             this.model.price = this.formatPrice(this.limit(value, min, max), 'id-ID', 'decimal');
-        },
-        scrollToMain() {
-            const mainEl = this.$refs.main;
-
-            if(mainEl) {
-                window.scrollTo({
-                    top: mainEl.getBoundingClientRect().top,
-                    behavior: "smooth"
-                });
-            }
         },
         onAccessoriesCheckboxChange(checked) {
             if(checked) {

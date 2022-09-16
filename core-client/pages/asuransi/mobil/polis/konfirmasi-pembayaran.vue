@@ -29,8 +29,7 @@
                                 <div class="d-block border-bottom">
 
                                     <div class="mb-3">
-                                        <nuxt-img 
-                                            preset="default"
+                                        <b-img 
                                             height="48"
                                             :src="paymentImages[paymentData.name]" 
                                         />

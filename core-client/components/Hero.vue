@@ -1,13 +1,13 @@
 <template>
     
-    <component :is="tag" class="container">
+    <component :is="tag" class="hero-wrapper container">
 
-        <div class="row">
+        <div class="hero-header row">
 
             <div class="col-12 col-md-6 align-self-center">
                 
-                <h2 class="fs-2 fs-md-1 text-center text-md-left mb-5 mb-md-6">
-                    Dapatkan Asuransi Tepat untuk Mobil Anda
+                <h2 class="hero-title fs-2 fs-md-1 text-center text-md-left">
+                    Dapatkan Asuransi Tepat untuk Kebutuhan Anda
                 </h2>
             
             </div>
@@ -15,11 +15,12 @@
             <div class="col-6 d-none d-md-block">
 
                 <nuxt-img 
-                    width="488" 
-                    height="267" 
-                    preset="default" 
-                    src="img/hero-car-transparent.png"
-                    alt="Hero Image - Car"
+                    width="320" 
+                    height="317" 
+                    preset="default"
+                    src="/svg/hero-homepage.svg"
+                    alt="Hero Image - Insurance"
+                    class="ml-auto mr-6"
                     loading="lazy"
                 />
             
@@ -27,7 +28,7 @@
 
         </div>
 
-        <div class="bg-secondary py-5 mt-0 mt-md-n6 rounded-5">
+        <div class="hero-body py-5 rounded-5">
 
             <div class="row justify-content-center mx-n4 mb-4">
             
@@ -48,7 +49,7 @@
                         class="lazy-loading rounded-circle mb-2"
                     />
                     
-                    <div class="text-center" :class="service.disabled ? 'text-muted' : 'text-white'">
+                    <div class="text-dark text-center" :class="{ 'text-muted' : service.disabled }">
                         
                         <span>{{ service.text }}</span>
                     
