@@ -22,6 +22,7 @@ const adminProduct = require('./routes/admin/product.routes')
 const adminVehicle = require('./routes/admin/vehicle.routes')
 const adminRole = require('./routes/admin/role.routes')
 const adminEndpoint = require('./routes/admin/endpoint.routes')
+const adminTransaction = require('./routes/admin/transaction.routes')
 
 // Middleware
 app.use(express.json())
@@ -38,7 +39,7 @@ app.use(response)
 
 app.use(auth, users, address, vehicle, product, transaction)
 app.use(adminAuth, adminAccount, adminProduct, adminVehicle,
-  adminEndpoint, adminRole)
+  adminEndpoint, adminRole, adminTransaction)
 
 module.exports = app
 

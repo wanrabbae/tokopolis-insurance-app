@@ -60,7 +60,7 @@ exports.getAll = async (req, res) => {
 
     pdfService.createInvoice(invoice, 'document.pdf')
 
-    const transaction = await service.getAll(account.id)
+    const transaction = await service.getClientTransactionAll(account.id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
     return res.jsonData(transaction)
@@ -174,7 +174,7 @@ exports.review = async (req, res) => {
     const account = await accountService.getAccountData(req.account._id)
     if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    const transaction = await service.getAgentTransaction(account.id, req.query.transaction_id)
+    const transaction = await service.getAgentTransactionDetail(account.id, req.query.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
     var client = null
@@ -247,7 +247,7 @@ exports.doPayment = async (req, res) => {
     const account = await accountService.getAccountData(req.account._id)
     if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    const transaction = await service.getAgentTransaction(account.id, req.body.transaction_id)
+    const transaction = await service.getAgentTransactionDetail(account.id, req.body.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
     const payload = {

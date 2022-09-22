@@ -105,3 +105,9 @@ exports.destroyExpansion = async (req, res, next) => {
 
     return res.jsonSuccess(req.polyglot.t('success.default'))
 }
+
+exports.productNames = async (req, res) => {
+    const data = await service.productNames()
+
+    return res.jsonData(data)
+}

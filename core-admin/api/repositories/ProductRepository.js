@@ -6,6 +6,12 @@ const { Product, ProductFeature,
 export default class ProductRepository {
     constructor() {}
 
+    async productNames() {
+        return await Product.findAll({
+            attributes: ['name']
+        })
+    }
+
     async getProductAll(limit, offset) {
         return await Product.findAll({
             limit: limit,

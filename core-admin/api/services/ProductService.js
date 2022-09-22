@@ -14,6 +14,10 @@ export default class VehicleService {
         this.repository = new ProductRepository()
     }
 
+    productNames() {
+        return this.repository.productNames()
+    }
+
     async getProductAll(query, limit, offset) {
         if (query == null) {
             return await this.repository.getProductAll(limit, offset)

@@ -8,7 +8,7 @@
                 <img src="~/assets/images/logo-sm.png" alt height="22" />
             </span>
             <span class="logo-lg">
-                <img src="~/static/svg/logo-pico-purple.svg" alt height="40" />
+                <img src="~/static/svg/logo-tokopolis.svg" alt height="30" />
             </span>
         </nuxt-link>
 
@@ -17,7 +17,7 @@
                 <img src="~/assets/images/logo-sm.png" alt height="22" />
             </span>
             <span class="logo-lg">
-                <img src="~/static/svg/logo-pico-white.svg" alt height="40" />
+                <img src="~/static/svg/logo-tokopolis.svg" alt height="30" />
             </span>
         </nuxt-link>
     </div>

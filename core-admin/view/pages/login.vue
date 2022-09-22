@@ -7,15 +7,15 @@
                     <div class="text-center">
                     <router-link to="/" class="mb-5 d-block auth-logo">
                         <img
-                        src="svg/logo-pico-purple.svg"
+                        src="svg/logo-tokopolis.svg"
                         alt=""
-                        height="60"
+                        height="40"
                         class="logo logo-dark"
                         />
                         <img
-                        src="svg/logo-pico-white.svg"
+                        src="svg/logo-tokopolis.svg"
                         alt=""
-                        height="60"
+                        height="40"
                         class="logo logo-light"
                         />
                     </router-link>
@@ -85,7 +85,7 @@
 
                     <div class="mt-5 text-center">
                     <p>
-                        © {{ new Date().getFullYear() }} {{ title }}
+                        © {{ new Date().getFullYear() }} Tokopolis
                     </p>
                     </div>
                 </div>
@@ -103,24 +103,20 @@ import atob from 'atob'
 export default {
     layout: 'auth',
     middleware: 'guest',
-    page: {
-        title: 'Login Admin - Pico Insurtech',
-        meta: [
-            {
-                name: "description",
-                content: "description",
-            },
-        ],
-    },
     mounted() {
 
     },
     data() {
         return {
-            title: 'PIQO',
+            title: 'Login',
             email: '',
             password: '',
         };
+    },
+    head() {
+        return {
+            titleTemplate: `${this.title} | %s`
+        }
     },
     methods: {
         async doLogin(e) {

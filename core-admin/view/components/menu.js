@@ -58,6 +58,12 @@ export const menuItems = [
         label: "menuitems.product.text",
         icon: "uil-box",
         link: "/products"
+    },
+    {
+        id: 8,
+        label: "menuitems.transaction.text",
+        icon: "uil-car",
+        link: "/transaction"
     }
 ];
 

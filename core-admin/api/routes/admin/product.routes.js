@@ -6,7 +6,7 @@ const { list, detail, create, update,
     destroy, createFeature,
     updateFeature, destroyFeature,
     createExpansion, updateExpansion,
-    destroyExpansion } = require('../../controllers/admin/ProductController')
+    destroyExpansion, productNames } = require('../../controllers/admin/ProductController')
 
 const router = Router()
 const admin = verify('admin')
@@ -34,5 +34,7 @@ router.delete('/admin/product/feature/:id', admin, destroyFeature)
 router.post('/admin/product/expansion', admin, createExpansion)
 router.put('/admin/product/expansion/:id', admin, updateExpansion)
 router.delete('/admin/product/expansion/:id', admin, destroyExpansion)
+
+router.get('/admin/product/item/names', admin, productNames)
 
 module.exports = router

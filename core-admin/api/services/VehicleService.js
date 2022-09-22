@@ -24,6 +24,14 @@ export default class VehicleService {
         //     })
     }
 
+    vehicleBrands() {
+        return this.repository.vehicleBrands()
+    }
+
+    vehicleTypes() {
+        return this.repository.vehicleTypes()
+    }
+
     getVehicleBrandList(year) {
         return this.repository.getVehicleBrandList(year)
     }

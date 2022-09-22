@@ -12,6 +12,22 @@ export default class VehicleRepository {
         }
     }
 
+    async vehicleBrands() {
+        return await Vehicle.findAll({
+            attributes: [
+                [sequelize.fn('DISTINCT', sequelize.col('brand')) ,'brand']
+            ]
+        })
+    }
+
+    async vehicleTypes() {
+        return await Vehicle.findAll({
+            attributes: [
+                [sequelize.fn('DISTINCT', sequelize.col('vehicle_type')) ,'vehicle_type']
+            ]
+        })
+    }
+
     async getVehicle(id) {
         return await Vehicle.findByPk(id)
     }

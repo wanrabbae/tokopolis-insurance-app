@@ -80,6 +80,9 @@
       },
       "product": {
         "text": "Daftar Produk"
+      },
+      "transaction": {
+        "text": "Daftar Transaksi"
       }
     }
   }
