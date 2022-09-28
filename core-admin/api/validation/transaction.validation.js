@@ -187,6 +187,9 @@ const fileOld = (req) => {
                 Joi.allow(null)
             )
             .label(req.polyglot.t('field.transaction.client.email')),
+        address_village_id: Joi.string()
+            .label(req.polyglot.t('field.address.village'))
+            .required(),
         address_detail: Joi.string()
             .label(req.polyglot.t('field.address_detail')),
         use_address_to_ship: Joi.boolean()
