@@ -331,7 +331,8 @@ export default {
         },
         confirmPayment(){
             this.$router.push({name: "daftar-polis"})
-        }
+        },
+        
     }
 }
 </script>

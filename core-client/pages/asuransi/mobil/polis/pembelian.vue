@@ -331,7 +331,7 @@ export default {
             },
             vehicleConditionOptions: [
                 { text: 'Baru', value: 'new' },
-                { text: 'Bekas', value: 'used' },
+                { text: 'Bekas', value: 'old' },
             ],
             provinceOptions: [
                 { text: 'Pilih Provinsi', value: null },
@@ -438,7 +438,6 @@ export default {
             if(!e.target.files[0]) return;
             this.url[e.target.id] = URL.createObjectURL(e.target.files[0])
             validate();
-            console.log(e);
         },
         async getDataTransaction() {
             await this.$axios.$get('api/transaction')

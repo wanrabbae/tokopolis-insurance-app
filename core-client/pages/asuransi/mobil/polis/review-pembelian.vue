@@ -438,7 +438,7 @@ export default {
             },
             condition:false,
             transactionId: null,
-            documentFieldsNew: [
+            documentFieldsOld: [
                 {
                     key: "stnk",
                     label: "Foto STNK"
@@ -480,7 +480,7 @@ export default {
                     label: "Foto Tambahan (Opsional)"
                 }
             ],
-            documentFieldsOld: [
+            documentFieldsNew: [
                 {
                     key: "bastk",
                     label: "Foto BASTK"
