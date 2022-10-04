@@ -98,10 +98,22 @@
                     
                     </template>
 
-                    <b-navbar-nav class="justify-content-md-center">
+                    <b-navbar-nav v-if="!loggedIn" class="justify-content-md-center">
                         
-                        <b-nav-item 
-                            v-for="(menu, id) in menus" 
+                        <b-nav-item
+                            v-for="(menu, id) in menusGuest" 
+                            :key="id" 
+                            :href="menu.link" 
+                            class="mx-md-2 mb-1 mb-md-0"
+                        >
+                            {{ menu.text }}
+                        </b-nav-item>
+                    
+                    </b-navbar-nav>
+                    <b-navbar-nav v-if="loggedIn" class="justify-content-md-center">
+                        
+                        <b-nav-item
+                            v-for="(menu, id) in menusLogin" 
                             :key="id" 
                             :href="menu.link" 
                             class="mx-md-2 mb-1 mb-md-0"
@@ -168,7 +180,6 @@
                                     </div>
                                 
                                 </template>
-                                 <b-dropdown-item @click.once="handleClick">Test</b-dropdown-item>
                                 <b-dropdown-item href="/profil">Profil</b-dropdown-item>
 
                                 <b-dropdown-item @click="logout">Keluar</b-dropdown-item>
@@ -216,19 +227,26 @@ export default {
         },
         photo: {
             type: String,
-            default: '/svg/avatar-default.svg'
+            default: 'svg/avatar-default.svg'
         }
     },
     data() {
         return {
             scrollOffset: 70,
             scrolled: false,
-            menus: [
+            menusLogin: [
                 { link: "/", text: "Home" },
                 { link: "/produk", text: "Produk" },
                 { link: "/daftar-polis", text: "Polis" },
                 { link: "/daftar-claim", text: "Claim" },
-            ]
+            ],
+            menusGuest: [
+                { link: "/", text: "Home" },
+                { link: "/tentang", text: "Tentang Kami" },
+                { link: "/layanan", text: "Layanan" },
+                { link: "/faq", text: "FAQ" },
+            ],
+            
         }
     },
     methods: {
