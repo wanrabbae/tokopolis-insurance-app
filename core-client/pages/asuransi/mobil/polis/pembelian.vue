@@ -54,7 +54,7 @@
                                 <validation-provider
                                     v-for="(field, i) in documentFields"
                                     :key="i" v-slot="{ errors, validate }"
-                                    rules="required|image"
+                                    :rules="field.required ? 'required|image|mimes:image/jpeg,image/png' : 'image|mimes:image/jpeg,image/png'"
                                     tag="fieldset"
                                     class="form-group"
                                     :name="field.label"
