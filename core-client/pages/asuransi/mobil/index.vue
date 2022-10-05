@@ -2,7 +2,7 @@
 
     <div class="py-5 py-md-6" style="background-color: #f6f5fc">
 
-        <main class="container mb-5 mb-md-6">
+        <main class="container">
 
             <div class="insurance-search-wrapper bg-white rounded border">
 
@@ -221,7 +221,7 @@
                                                 <nuxt-img 
                                                     preset="default"
                                                     sizes="lg:122px" 
-                                                    src="/svg/car-insurance-comprehensive.svg"
+                                                    src="/img/car-insurance-comprehensive.png"
                                                     alt="Asuransi Komprenhensif"
                                                     loading="lazy" 
                                                 />
@@ -264,7 +264,7 @@
                                                 <nuxt-img 
                                                     preset="default"
                                                     sizes="lg:122px" 
-                                                    src="/svg/car-insurance-total-loss-only.svg"
+                                                    src="/img/car-insurance-tlo.png"
                                                     alt="Asuransi Kerugian Total / TLO (Total Loss Only)"
                                                     loading="lazy" 
                                                 />
@@ -306,12 +306,6 @@
             </div> <!-- card ends -->
 
         </main> <!-- container ends -->
-
-        <div class="container">
-
-            <FAQ :title="faq.title" :contents="faq.contents" />
-
-        </div>
 
         <AccessoriesModal
             id="modal-accessories"

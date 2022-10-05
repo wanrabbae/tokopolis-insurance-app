@@ -43,11 +43,12 @@
 
                     <b-nav-item href="/profil" class="ml-3">
         
-                        <nuxt-img 
+                        <nuxt-img
+                            width="30"
+                            height="30"
                             preset="default"
                             :src="photo"
                             alt="User Avatar"
-                            sizes="30" 
                             class="rounded-circle"
                         />
         
@@ -165,11 +166,12 @@
 
                                 <template #button-content>
                                     
-                                    <nuxt-img 
+                                    <nuxt-img
+                                        width="30"
+                                        height="30"
                                         preset="default"
                                         :src="photo"
                                         alt="User Avatar"
-                                        sizes="30" 
                                         class="rounded-circle"
                                     />
                                     
@@ -180,6 +182,7 @@
                                     </div>
                                 
                                 </template>
+                                
                                 <b-dropdown-item href="/profil">Profil</b-dropdown-item>
 
                                 <b-dropdown-item @click="logout">Keluar</b-dropdown-item>
@@ -257,16 +260,16 @@ export default {
                 this.scrolled = false;
             }
         },
-        async handleClick(){
-            await this.$axios.$get('api/transaction')
-                .then ((response) => {
-                    console.log(response)
-                })
-                .catch (error => {
-                    console.log(error)
-                })
-        }
-        ,
+        // async handleClick(){
+        //     await this.$axios.$get('api/transaction')
+        //         .then ((response) => {
+        //             console.log(response)
+        //         })
+        //         .catch (error => {
+        //             console.log(error)
+        //         })
+        // }
+        // ,
         async logout(){
             await cookie.remove('token')
             await cookie.remove('photo')
