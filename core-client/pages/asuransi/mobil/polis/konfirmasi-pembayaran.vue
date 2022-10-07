@@ -100,7 +100,6 @@
                                             <li>Di menu Utama, pilih <strong>Bayar / Beli</strong>.</li>
                                             <li>Pilih <strong>Lainnya</strong>.</li>
                                             <li>Pilih <strong>Multi Payment</strong>.</li>
-                                            <li>Masukkan <strong>70012</strong> (kode perusahaan Midtrans) dan tekan <strong>Benar</strong>.</li>
                                             <li>Masukkan Nomor Rekening <strong>{{ paymentData.virtual_number }}</strong> dan tekan <strong>Benar</strong>.</li>
                                             <li>Detail pembayaran Anda akan muncul di halaman konfirmasi pembayaran. Jika informasi benar, tekan <strong>Ya</strong>.</li>
                                         </ol>
