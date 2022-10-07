@@ -15,7 +15,7 @@
                <div class="card-body">
 
                    <div class="mb-3">
-                        <span class="fs-4 fs-md-3 fw-bold text-dark">Garda Orto Comprehensive</span>
+                        <span class="fs-4 fs-md-3 fw-bold text-dark">{{ insuranceName }}</span>
                     </div>
 
                    <div class="row">
@@ -61,11 +61,11 @@
                                     </div>
                                     <div v-if="condition == true" class="p-3">
 
-                                        <div v-for="field in documentFieldsOld" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
+                                        <div v-for="field in documentFieldsNew" :key="field.key" class="d-flex align-items-center mb-3 mb-last-0">
 
                                             <div class="mr-3" style="min-width: 32px; max-width: 32px;">
 
-                                                <b-img v-if="documentImagesOld[field.key]" :src="documentImagesOld[field.key]"></b-img>
+                                                <b-img v-if="documentImagesNew[field.key]" :src="documentImagesNew[field.key]"></b-img>
 
                                                 <b-img v-else src="/svg/picture.svg"></b-img>
 
@@ -239,7 +239,7 @@
 
                                            <b-input-group-append>
 
-                                               <BaseButton native-type="submit">Periksa</BaseButton>
+                                               <BaseButton disabled>Periksa</BaseButton>
 
                                            </b-input-group-append>
 
@@ -425,6 +425,7 @@ export default {
             title: 'Review Pembelian',
             loading : true,
             idTransaction : null,
+            insuranceName:null,
             model: {
                 promotionCode: null,
                 paymentMethod: null,
@@ -827,6 +828,8 @@ export default {
             await this.$axios.$get(`api/transaction/review?transaction_id=${this.$route.query.id}`)
                 .then ((response) => {
                     console.log(response)
+                    this.insuranceName = response.data.transaction.product
+
                     this.addressDetails.detail = response.data.client.address.detail
                     this.addressDetails.village = response.data.client.address.village
                     this.addressDetails.district = response.data.client.address.district
@@ -931,8 +934,8 @@ export default {
         },
 
         periodPolis(){
-            this.transcationDate.stringStart = moment().format('LL')
-            this.transcationDate.stringEnd = moment(this.transcationDate.stringStart).add(1,'y').format('LL')  
+            this.transcationDate.stringStart = moment(this.transcationDate.start).format('LL')
+            this.transcationDate.stringEnd = moment(this.transcationDate.start).add(1,'m').format('LL')
         }
     }
 }
