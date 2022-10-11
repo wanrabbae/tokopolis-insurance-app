@@ -103,9 +103,12 @@ const titleCase = (value) => {
         .join(' ')
 }
 
+
+const percentToDecimal = (number) => number / parseFloat(100)
+
 module.exports = {
     getMoment, extensionHelper,
     randomString, randomNumber, uploadHandler,
     phoneFormat, moneyFormat, stringTag,
-    titleCase
+    titleCase, percentToDecimal
 }

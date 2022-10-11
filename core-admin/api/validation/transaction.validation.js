@@ -2,7 +2,28 @@ const Joi = require('joi')
 
 const { joiResponse, joiErrorMessages } = require('../utilities/validation')
 const { extensionHelper } = require('../utilities/functions')
-const { required } = require('joi')
+
+const postTemporary = (req) => {
+    const schema = Joi.object({
+        product_id: Joi.number()
+            .required()
+            .label(req.polyglot.t('field.name')),
+        exp: Joi.array()
+            .label(req.polyglot.t('field.product.expansion')),
+        discount_format: Joi.valid('amount', 'percent')
+            .label(req.polyglot.t('field.product.discount.format')),
+        discount_total: Joi.number()
+            .label(req.polyglot.t('field.product.discount.total')),
+    })
+
+    return joiResponse(schema.validate(req.body, {
+        abortEarly: false,
+        messages: joiErrorMessages(),
+        errors: {
+            language: req.locale.language
+        }
+    }))
+}
 
 const post = (req) => {
     const schema = Joi.object({
@@ -356,6 +377,7 @@ const xendit = (req) => {
 }
 
 module.exports = {
-    post, fileNew, fileOld, review, account, getPaymentFee,
-    getPaymentDetail, createPayment, midtrans, xendit
+    postTemporary, post, fileNew, fileOld, review, account,
+    getPaymentFee, getPaymentDetail, createPayment,
+    midtrans, xendit
 }

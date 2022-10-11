@@ -132,22 +132,6 @@ exports.getProductDetail = async (req, res) => {
     return res.jsonData(product)
 }
 
-exports.postProductData = async (req, res) => {
-    const validate = validation.postData(req)
-    if (validate.error) return res.errorValidation(validate.details)
-
-    const expList = await service.getExpansionList(req.session.vehicle,
-        req.body.product_id)
-    const json = service.getExpansionJson(req.body.exp)
-    const expansions = service.getExpansionWithPrice(expList, json)
-    const expansionPrice = service.getExpansionTotalPrice(expansions)
-
-    req.session.product.expansion = expansions
-    req.session.product.expansion_price = expansionPrice
-
-    return res.jsonSuccess()
-}
-
 exports.compareProduct = async (req, res) => {
     const sess = Object.assign({}, req.session.compare)
 

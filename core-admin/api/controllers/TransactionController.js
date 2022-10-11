@@ -1,16 +1,19 @@
 const moment = require('moment')
 
 import AccountService from '../services/AccountService'
+import ProductService from '../services/ProductService'
 import TransactionService from '../services/TransactionService'
 import PaymentService from '../services/PaymentService'
 import PdfService from '../services/PdfService'
 
 const validation = require('../validation/transaction.validation')
 const { getMoment, moneyFormat,
-    randomString, randomNumber, titleCase } = require('../utilities/functions')
+    randomString, randomNumber, titleCase,
+    percentToDecimal } = require('../utilities/functions')
 
 const service = new TransactionService()
 const accountService = new AccountService()
+const productService = new ProductService()
 const paymentService = new PaymentService()
 const pdfService = new PdfService()
 
@@ -77,6 +80,9 @@ exports.transaction = async (req, res) => {
 }
 
 exports.postOffer = async (req, res) => {
+    const validate = validation.postTemporary(req)
+    if (validate.error) return res.errorValidation(validate.details)
+
     const account = await accountService.getAccount(req.account._id)
 
     const vehicle = {
@@ -89,6 +95,28 @@ exports.postOffer = async (req, res) => {
     const nowHour = getMoment().format('HHmmss')
     const postfix = randomNumber(1111, 9999)
 
+    const discountFormat = req.body.discount_format
+    const discountTotal = req.body.discount_total || 0
+
+    var basePrice = req.session.product.price
+
+    // If agent give discount
+    if (discountTotal != 0 &&
+        (discountFormat == 'amount' && discountTotal > basePrice * percentToDecimal(25)) ||
+        (discountFormat == 'percent' && discountTotal > 25)) {
+        return res.errorBadRequest(req.polyglot.t('error.transaction'))
+    }
+
+    switch (discountFormat) {
+        case 'amount':
+            basePrice -= discountTotal
+            break
+
+        case 'percent':
+            basePrice -= basePrice * percentToDecimal(discountTotal)
+            break
+    }
+
     const transaction = await service.createOffer({
         id: `TRX-${now}-${nowHour}-${postfix}`,
         agent_id: account.id,
@@ -97,18 +125,59 @@ exports.postOffer = async (req, res) => {
         is_new_condition: true,
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,
-        price: req.session.product.price,
-        discount_format: req.body.discount_format,
-        discount_total: req.body.discount_total || null,
+        price: basePrice,
+        discount_format: discountFormat,
+        discount_total: discountTotal,
         loading_rate: req.session.product.loading_rate,
         expansions: req.session.product.expansion,
-        total: req.session.product.price +
-            req.session.product.loading_rate + req.session.product.expansion_price
+        total: basePrice + req.session.product.loading_rate +
+            req.session.product.expansion_price
     })
 
     return res.jsonData({
         transaction_id: transaction.id
     })
+}
+
+exports.postTemporary = async (req, res) => {
+    const validate = validation.postTemporary(req)
+    if (validate.error) return res.errorValidation(validate.details)
+
+    const expList = await productService.getExpansionList(req.session.vehicle,
+        req.body.product_id)
+    const json = productService.getExpansionJson(req.body.exp)
+    const expansions = productService.getExpansionWithPrice(expList, json)
+    const expansionPrice = productService.getExpansionTotalPrice(expansions)
+
+    const discountFormat = req.body.discount_format
+    const discountTotal = req.body.discount_total || 0
+
+    var basePrice = req.session.product.price
+
+    // If agent give discount
+    if (discountTotal != 0 &&
+        (discountFormat == 'amount' && discountTotal > basePrice * percentToDecimal(25)) ||
+        (discountFormat == 'percent' && discountTotal > 25)) {
+        return res.errorBadRequest(req.polyglot.t('error.transaction'))
+    }
+
+    switch (discountFormat) {
+        case 'amount':
+            req.session.product.price -= discountTotal
+            break
+
+        case 'percent':
+            req.session.product.price -= basePrice * percentToDecimal(discountTotal)
+            break
+    }
+
+    req.session.product.expansion = expansions
+    req.session.product.expansion_price = expansionPrice
+
+    req.session.product.discount_format = discountFormat
+    req.session.product.discount_total = discountTotal
+
+    return res.jsonSuccess()
 }
 
 exports.postTransaction = async (req, res) => {
@@ -156,10 +225,12 @@ exports.postTransaction = async (req, res) => {
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,
         price: req.session.product.price,
+        discount_format: req.session.product.discount_format,
+        discount_total: req.session.product.discount_total,
         loading_rate: req.session.product.loading_rate,
         expansions: req.session.product.expansion,
-        total: req.session.product.price +
-            req.session.product.loading_rate + req.session.product.expansion_price
+        total: req.session.product.price + req.session.product.loading_rate +
+            req.session.product.expansion_price
     }, req.files)
 
     return res.jsonData({

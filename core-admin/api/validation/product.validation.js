@@ -47,24 +47,6 @@ const calculate = (req) => {
     }))
 }
 
-const postData = (req) => {
-    const schema = Joi.object({
-        product_id: Joi.number()
-            .required()
-            .label(req.polyglot.t('field.name')),
-        exp: Joi.array()
-            .label(req.polyglot.t('field.product.expansion')),
-    })
-
-    return joiResponse(schema.validate(req.body, {
-        abortEarly: false,
-        messages: joiErrorMessages(),
-        errors: {
-            language: req.locale.language
-        }
-    }))
-}
-
 const create = (req) => {
     const imageExt = extensionHelper(['png', 'jpg', 'jpeg'])
     const pdfExt = extensionHelper(['pdf'])
@@ -303,7 +285,7 @@ const expand = (req) => {
 }
 
 module.exports = {
-    calculate, postData, create, update, createFeature,
+    calculate, create, update, createFeature,
     updateFeature, createExpansion, updateExpansion,
     detail, compare, expand
 }

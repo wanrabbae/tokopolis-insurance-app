@@ -1,4 +1,4 @@
-# FIX/FEAT/ENH/DOC:[DOMAIN] Title
+# FIX/FEAT/ENH/DOC: [DOMAIN] Title
 
 ## Description
 

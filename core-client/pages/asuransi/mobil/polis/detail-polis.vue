@@ -299,7 +299,7 @@ export default {
                 brochure:false
             },
             model:{
-                discountAmount: null,
+                discountAmount: 0,
                 discountPercentage: null,
                 discountType: 'amount',
                 feature_collapse_visible: false,
@@ -467,9 +467,15 @@ export default {
                     this.model.exp.push(code)
                 })
             }
-            this.$axios.$post(`api/product`, {
+
+            const discountType = this.model.discountType
+
+            this.$axios.$post(`api/transaction/temp`, {
                 product_id: this.id,
-                exp: this.model.exp
+                exp: this.model.exp,
+                discount_format: discountType,
+                discount_total: discountType === 'amount' ? this.model.discountAmount :
+                    this.model.discountPercentage
             })
             .then(function(response) {
                 self.$store.commit('setProductId', self.id)
