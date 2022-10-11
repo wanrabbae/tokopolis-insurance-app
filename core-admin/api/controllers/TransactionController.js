@@ -336,7 +336,7 @@ exports.doPayment = async (req, res) => {
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
     const adminFee = getAdminFee()
-    const paymentFee = await getPaymentGatewayFee(req.body.platform, transaction.total)
+    const paymentFee = await getPaymentGatewayFee(req.body.platform, transaction.total + adminFee)
 
     const payload = {
         order_id: transaction.id,
@@ -348,7 +348,9 @@ exports.doPayment = async (req, res) => {
                 transaction.client_data.phone : account.profile?.phone,
         },
         platform: req.body.platform,
-        total: transaction.total + adminFee + paymentFee,
+        // Send total without payment fee
+        // Even so, the return value of the api is the same as the total.payload + paymentFee
+        total: transaction.total + adminFee,
     }
 
     const paymentRequest = await paymentService.createRequest(payload)
