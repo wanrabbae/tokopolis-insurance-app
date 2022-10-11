@@ -85,20 +85,16 @@ export default {
                     alt: "Tugu Insurance"
                 },
                 {
-                    source: "/svg/brands/logo-adira.svg",
-                    alt: "Adira Insurance"
+                    source: "/svg/brands/logo-bintang.svg",
+                    alt: "Asuransi Bintang"
                 },
                 {
-                    source: "/svg/brands/logo-sinarmas.svg",
-                    alt: "Asuransi Sinarmas"
+                    source: "/svg/brands/logo-astra.svg",
+                    alt: "Asuransi Astra"
                 },
                 {
-                    source: "/svg/brands/logo-great-eastern.svg",
-                    alt: "Great Eastern"
-                },
-                {
-                    source: "/img/brands/logo-ciputra-life.png",
-                    alt: "Ciputra Life"
+                    source: "/svg/brands/logo-zurich.svg",
+                    alt: "Zurich"
                 }
             ],
             covererImages: [
