@@ -935,7 +935,7 @@ export default {
 
         periodPolis(){
             this.transcationDate.stringStart = moment(this.transcationDate.start).format('LL')
-            this.transcationDate.stringEnd = moment(this.transcationDate.start).add(1,'m').format('LL')
+            this.transcationDate.stringEnd = moment(this.transcationDate.start).add(1,'y').format('LL')
         }
     }
 }
