@@ -40,7 +40,7 @@
                                             <span v-if="paymentData.name === 'indomaret' || paymentData.name === 'alfamart'">Kode Pembayaran</span>
                                         </div>
 
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div v-if="paymentData.virtual_number != null" class="d-flex justify-content-between align-items-center mb-2">
 
                                             <div class="text-dark fw-bold fs-5">{{ paymentData.virtual_number }}</div>
 
@@ -120,6 +120,7 @@
                                     </ol>
 
                                     <nuxt-img 
+                                        v-if="paymentData.name === 'qris'"
                                         preset="default"
                                         :src="paymentLinks.qrcode ? paymentLinks.qrcode : paymentLinks.deeplink" 
                                         alt="QR Code" 
@@ -152,12 +153,15 @@
 
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
                                     <span>Harga Premi</span>
-                                    <span>{{ formatPrice(paymentData.amount) }}</span>
+                                    <span>{{ formatPrice(paymentPrice.total) }}</span>
                                 </div>
-
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
-                                    <span>Biaya Administrasi</span>
-                                    <span>{{ formatPrice(paymentData.fee) }}</span>
+                                    <span>Biaya Admin</span>
+                                    <span>{{ formatPrice(paymentPrice.fee_admin) }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 mb-last-0">
+                                    <span>Biaya Layanan</span>
+                                    <span>{{ formatPrice(paymentPrice.fee_pg) }}</span>
                                 </div>
 
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
@@ -167,7 +171,7 @@
 
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
                                     <span class="text-dark-blue fw-bold">Total Pembelian</span>
-                                    <span class="text-dark-blue fw-bold">{{ formatPrice(totalPayment) }}</span>
+                                    <span class="text-dark-blue fw-bold">{{ formatPrice(paymentData.amount) }}</span>
                                 </div>
 
                             </div>
@@ -215,6 +219,7 @@ export default {
                 // "amount": "8308660.00",
                 // "status": "pending"
             },
+            paymentPrice:{},
             paymentLinks: {
                 "website": null,
                 "mobile": null,
@@ -231,6 +236,7 @@ export default {
                 permata: "/img/logo-large-permata.png",
                 qris: "/img/logo-large-qris.png",
                 gopay: "/img/logo-large-gopay.png",
+                ovo: "/img/logo-large-ovo.png",
                 shopeepay: "/img/logo-large-shopeepay.png",
                 dana: "/img/logo-large-dana.png",
                 linkaja: "/img/logo-large-linkaja.png",
@@ -265,10 +271,6 @@ export default {
                 seconds = `0${seconds}`;
             }
             return `${hours} : ${minutes} : ${seconds}`;
-        },
-        totalPayment() {
-            // return this.premiumPrice + this.administrationCost + this.discount;
-            return this.paymentData.amount;
         }
     },
     deactivated(){
@@ -311,7 +313,7 @@ export default {
                     }
 
                     this.paymentData = response.data.pg_data
-                    this.paymentData.amount = response.data.total
+                    this.paymentPrice = response.data
 
                     this.timeLeft = new Date(this.paymentData.due).getTime()
                     // this.dueDateTime = new Date(paymentData.due).getTime()

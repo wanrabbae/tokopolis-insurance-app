@@ -392,7 +392,7 @@
 
                            </div>
 
-                           <BaseButton block @click="CreatePayment">Bayar Sekarang</BaseButton>
+                           <BaseButton block :disabled="!model.paymentMethod" @click="CreatePayment">Bayar Sekarang</BaseButton>
 
                        </div> <!-- col-12 col-md-6 ends -->
 
@@ -673,7 +673,7 @@ export default {
                 },
                 {
                     key: "pgPrice",
-                    label: "Biaya Transfer"
+                    label: "Biaya Layanan"
                 },
                 // {
                 //     key: "discount",
@@ -858,6 +858,7 @@ export default {
                     this.condition = response.data.vehicle.condition
 
                     this.purchaseSummaryDatas.premiPrice = response.data.transaction.price
+                    this.purchaseSummaryDatas.administrationCost = response.data.transaction.fee_admin
                     this.transactionId = response.data.transaction.code
                     this.transcationDate.start = response.data.transaction.start_date
 

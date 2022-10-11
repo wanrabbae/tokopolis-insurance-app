@@ -221,11 +221,6 @@
                                 <span class="fw-bold text-primary">{{ formatPrice(-discount) }}</span>
                             </div>
 
-                            <div v-if="administration_cost" class="d-flex justify-content-between">
-                                <span>Biaya Admin</span>
-                                <span class="fw-bold text-primary">{{ formatPrice(administration_cost) }}</span>
-                            </div>
-
                             <div role="separator" class="py-3">
                                 <div class="border-bottom"></div>
                             </div>
