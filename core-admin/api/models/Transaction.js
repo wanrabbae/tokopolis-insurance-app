@@ -54,7 +54,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
         },
         discount_format: {
-            type: Sequelize.ENUM('amount', 'percentage'),
+            type: Sequelize.ENUM('amount', 'percent'),
             defaultValue: 'amount'
         },
         discount_total: {
@@ -72,6 +72,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         pg_data: { // platform, due, date,
             type: Sequelize.JSON,
+        },
+        fee_admin: {
+            type: Sequelize.INTEGER,
+        },
+        fee_pg: {
+            type: Sequelize.INTEGER,
         },
         total: {
             type: Sequelize.INTEGER,

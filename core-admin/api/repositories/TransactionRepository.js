@@ -208,7 +208,8 @@ export default class TransactionRepository {
                 id: transaction_id,
                 agent_id: agent_id
             },
-            attributes: ['id', 'total', 'pg_data', 'status']
+            attributes: ['id', 'fee_admin', 'fee_pg', 'total',
+                'pg_data', 'status']
         })
     }
 

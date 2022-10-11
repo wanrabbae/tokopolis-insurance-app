@@ -127,7 +127,7 @@ exports.getProductDetail = async (req, res) => {
     const product = await service.getProduct(req.query.id)
     if (product == null) return res.errorBadRequest(req.polyglot.t('error.product'))
 
-    product.dataValues.price = res.locals.price
+    product.dataValues.price = req.session.product.price
 
     return res.jsonData(product)
 }

@@ -130,8 +130,7 @@ exports.postOffer = async (req, res) => {
         discount_total: discountTotal,
         loading_rate: req.session.product.loading_rate,
         expansions: req.session.product.expansion,
-        total: basePrice + req.session.product.loading_rate +
-            req.session.product.expansion_price
+        total: basePrice + req.session.product.expansion_price
     })
 
     return res.jsonData({
@@ -220,7 +219,7 @@ exports.postTransaction = async (req, res) => {
         },
         address_village_id: req.body.address_village_id,
         address_detail: req.body.address_detail,
-        is_address_used_to_ship: req.body.use_address_to_ship ? true : false,
+        is_address_used_to_ship: req.body.use_address_to_ship === 'true',
         is_new_condition: condition,
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,
@@ -229,13 +228,27 @@ exports.postTransaction = async (req, res) => {
         discount_total: req.session.product.discount_total,
         loading_rate: req.session.product.loading_rate,
         expansions: req.session.product.expansion,
-        total: req.session.product.price + req.session.product.loading_rate +
-            req.session.product.expansion_price
+        total: req.session.product.price + req.session.product.expansion_price
     }, req.files)
 
     return res.jsonData({
         transaction_id: transaction.id
     })
+}
+
+const getPaymentGatewayFee = async (platform, total) => {
+    const result = await paymentService.getFee({
+        platform: platform,
+        total: total,
+    })
+
+    if (!result) return null
+
+    return result.data
+}
+
+const getAdminFee = () => {
+    return 50000
 }
 
 exports.review = async (req, res) => {
@@ -272,6 +285,8 @@ exports.review = async (req, res) => {
         }
     }
 
+    const adminFee = getAdminFee()
+
     return res.jsonData({
         client: client,
         vehicle: {
@@ -295,6 +310,7 @@ exports.review = async (req, res) => {
             price: transaction.price,
             documents: transaction.documents,
             expansions: transaction.expansions,
+            fee_admin: adminFee,
             total: transaction.total,
         }
     })
@@ -304,12 +320,9 @@ exports.getPaymentFee = async (req, res) => {
     const validate = validation.getPaymentFee(req)
     if (validate.error) return res.errorValidation(validate.details)
 
-    const paymentRequest = await paymentService.getFee({
-        platform: req.query.platform,
-        total: req.query.total,
-    })
+    const paymentRequest = await getPaymentGatewayFee(req.query.platform, req.query.total)
 
-    return res.jsonData(paymentRequest.data)
+    return res.jsonData(paymentRequest)
 }
 
 exports.doPayment = async (req, res) => {
@@ -322,15 +335,20 @@ exports.doPayment = async (req, res) => {
     const transaction = await service.getAgentTransactionDetail(account.id, req.body.transaction_id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
+    const adminFee = getAdminFee()
+    const paymentFee = await getPaymentGatewayFee(req.body.platform, transaction.total)
+
     const payload = {
         order_id: transaction.id,
         customer: {
             fullname: transaction.client_data.fullname,
-            email: transaction.client_data.email || account.email,
-            phone: transaction.client_data.phone || '+6285123456789',
+            email: transaction.client_data.email != 'null' ?
+                transaction.client_data.email : account.email,
+            phone: transaction.client_data.phone != 'null' ?
+                transaction.client_data.phone : account.profile?.phone,
         },
         platform: req.body.platform,
-        total: transaction.total,
+        total: transaction.total + adminFee + paymentFee,
     }
 
     const paymentRequest = await paymentService.createRequest(payload)
@@ -344,6 +362,8 @@ exports.doPayment = async (req, res) => {
         data['due'] = getMoment().add(1, 'd').format('YYYY-MM-DD HH:mm:ss')
 
         await service.setPaymentData(transaction.id, {
+            fee_admin: adminFee,
+            fee_pg: paymentFee,
             pg_transaction_id: paymentRequest.data.transaction_id,
             pg_data: data,
             status: 'waiting'
