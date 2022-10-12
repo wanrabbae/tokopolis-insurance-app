@@ -169,7 +169,7 @@ export default {
 				{ value: 'comprehensive', text: 'Komprehensif' },
 				{ value: 'tlo', text: 'Total Loss Only' },
             ],
-			excludes: ['id', 'features'],
+			excludes: ['id', 'features', 'expansions'],
 			form: {
 				name: null,
 				type: null,
