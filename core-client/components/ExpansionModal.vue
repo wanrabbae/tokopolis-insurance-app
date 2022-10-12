@@ -25,11 +25,12 @@
             :key="id" 
             class="expansion-option d-flex align-items-center border-bottom py-2"
         >
-            
+
             <b-form-checkbox 
                 v-model="field.checked"
                 class="pr-2"
-                :disabled="(field.protectionValues && field.selectedProtectionValues == null) || (field.protectionValues && !field.selectedProtectionValues && field.numOfPeople && !field.selectedNumOfPeople)"
+                :disabled="field.disabled || (field.protectionValues && field.selectedProtectionValues == null) || (field.protectionValues && !field.selectedProtectionValues && field.numOfPeople && !field.selectedNumOfPeople)"
+                @change="(checked) => onExpansionFieldChange(field)"
             />
             
             <div class="flex-grow-1">
@@ -125,13 +126,16 @@ export default {
         }
     },
     methods: {
+        onExpansionFieldChange(field) {
+            this.$emit('change', field);
+        },
         closeHandler() {
             this.$emit('close')
         },
         okHandler() {
             this.expansionData = [];
             this.fields.forEach((field, index) => {
-                if(field.checked) {
+                if(field.checked && !field.disabled) {
 
                     let data = {
                         key: field.key,

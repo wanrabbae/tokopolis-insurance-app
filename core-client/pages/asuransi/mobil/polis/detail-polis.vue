@@ -247,6 +247,7 @@
         <ExpansionModal
             id="expansion-modal"
             :fields="expansionFields"
+            @change="expansionModalFieldChangeHandler"
             @close="expansionModalCloseHandler"
             @submit="expansionModalSubmitHandler"
         />
@@ -347,6 +348,7 @@ export default {
                     const expansionField = {
                         key: element.name,
                         label: element.label,
+                        disabled: element.name === 'terorism',
                         checked : false,
                     }
                     if ( element.premium != null && element.premium !== undefined){
@@ -398,6 +400,17 @@ export default {
             }).catch (function () {
                 self.$router.push({name: "produk-cari-mobil"})
             })
+        },
+        expansionModalFieldChangeHandler(field) {
+            if(field.key === 'srcc')
+            {
+                if(field.checked) 
+                {
+                    this.expansionFields = this.expansionFields.map(el => el.key === 'terorism' ? { ...el,  disabled: false } : el);
+                } else {
+                    this.expansionFields = this.expansionFields.map(el => el.key === 'terorism' ? { ...el,  disabled: true, checked: false } : el);
+                }
+            }
         },
         expansionModalCloseHandler(data) {
         },

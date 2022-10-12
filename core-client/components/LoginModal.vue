@@ -13,7 +13,7 @@
       <div class="text-center">
         <h4 class="mb-3">Login</h4>
       </div>
-      <b-alert :show="showAlert" variant="danger" class="alert mb-3">
+      <b-alert :show="model.showAlert" variant="danger" class="alert mb-3">
             
           <b-list-group class="alert text-white">
                 
