@@ -244,7 +244,7 @@ export default {
                     const product = {
                         id: element.id,
                         name: element.name,
-                        image: element.image,
+                        image: this.$config.serverURL + element.image,
                         price: element.price,
                         period: 'tahun'
                     }

@@ -524,7 +524,7 @@ export default {
                         name: element.name,
                         description : element.description,
                         price: element.price,
-                        image: element.image,
+                        image: this.$config.serverURL + element.image,
                         tnc: element.tnc,
                         period: "Tahun",
                         claim: element.claim,
