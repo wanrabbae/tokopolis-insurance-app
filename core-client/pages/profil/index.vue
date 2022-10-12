@@ -375,7 +375,7 @@ export default {
 
                         if (response.data.profile.birth_date != null) {
                             const birthdate = this.$dayjs(response.data.profile.birth_date)
-                            this.birthday = birthdate.get('day')
+                            this.birthday = birthdate.get('date')
                             this.birthmonth =  birthdate.get('month')
                             this.birthyear =  birthdate.get('year')
                         }
