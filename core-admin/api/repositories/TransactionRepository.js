@@ -157,7 +157,7 @@ export default class TransactionRepository {
                 {
                     attributes: ['fullname'],
                     model: Account,
-                    as: 'account'
+                    as: 'client_transactions'
                 },
                 {
                     attributes: ['name'],

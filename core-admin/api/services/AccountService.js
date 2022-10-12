@@ -49,7 +49,7 @@ export default class AccountService {
 
         payload.password = hashedPassword
 
-        return this.repository.createAccountAdmin(payload)
+        return this.repository.createAccount(payload)
     }
 
     updateAccount(id, payload) {
