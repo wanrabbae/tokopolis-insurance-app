@@ -1,6 +1,6 @@
 <template>
 
-    <div id="identity-details">
+    <div class="card border">
 
         <validation-observer v-slot="observer" tag="div" class="card-body">
 

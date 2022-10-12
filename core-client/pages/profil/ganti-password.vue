@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div class="card border">
 
         <validation-observer v-slot="{ handleSubmit, invalid }" tag="div" class="card-body">
 

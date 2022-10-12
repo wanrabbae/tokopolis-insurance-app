@@ -19,13 +19,13 @@
                                     preset="default"
                                     src="/svg/coins.svg" 
                                 />
-
+                                
                             </span>
                             
-                            Komisi
+                            Poin
                             
                             <small 
-                                v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Komisi di sini'" 
+                                v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Poin di sini'" 
                                 class="ml-1 pr-2 align-top text-primary opacity-75"
                             >
                                 <fa icon="circle-info"/>
@@ -39,24 +39,24 @@
 
                     <div class="d-block">
 
-                        <span class="fs-4 fs-md-2 fw-bold">{{ formatPrice(commission) }}</span>
+                        <span class="fs-4 fs-md-2 fw-bold">{{ points }}</span>
 
                     </div>
             
                 </div>
 
-                <div class="col-6 border-right p-3 p-md-4">
+                <div class="col-12 p-3 p-md-4">
                     
                     <div class="d-flex align-items-center fs-5 fs-md-4 fw-bold mb-2">
                         
                         <span class="mr-2">
-                            
+
                             <nuxt-img 
                                 height="36"
                                 preset="default"
                                 src="/img/shield-checkmark.png" 
                             />
-
+                            
                         </span>
 
                         Polis Terjual
@@ -73,39 +73,6 @@
                     <div class="d-block">
 
                         <span class="fs-4 fs-md-2 fw-bold">{{ productSold }}</span>
-
-                    </div>
-
-                </div>
-
-                <div class="col-6 p-3 p-md-4">
-                    
-                    <div class="d-flex align-items-center fs-5 fs-md-4 fw-bold mb-2">
-                        
-                        <span class="mr-2">
-                            
-                            <nuxt-img 
-                                height="36"
-                                preset="default"
-                                src="/svg/stripes.svg" 
-                            />
-
-                        </span>
-
-                        GWP
-                        
-                        <small 
-                            v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Gross Written Premium (GWP) di sini'" 
-                            class="ml-1 pr-2 align-top text-primary opacity-75"
-                        >
-                            <fa icon="circle-info"/>
-                        </small>                  
-
-                    </div>
-
-                    <div class="d-block">
-
-                        <span class="fs-4 fs-md-2 fw-bold">{{ gwp }}</span>
 
                     </div>
 
@@ -175,7 +142,7 @@
 
                 </b-td>
 
-                <b-td class="col-2 text-center align-middle">{{ formatPrice(historyItem.value) }}</b-td>
+                <b-td class="col-2 text-center align-middle">{{ historyItem.value }} poin</b-td>
 
                 <b-td class="col-2 text-center align-middle"><span :class="'text-' + status[historyItem.status].color">{{ status[historyItem.status].text }}</span></b-td>
 
@@ -192,34 +159,33 @@ export default {
     layout: 'userarea',
     data() {
         return {
-            title: 'Komisi',
-            commission: 0,
+            title: 'Poin',
+            points: 0,
             productSold: 0,
-            gwp: 0,
             history: [
                 {
                     date: '2022-07-31 04:23:56',
                     type: 'withdraw',
                     status: 'pending',
-                    value: 1000000
+                    value: 102
                 },
                 {
                     date: '2022-07-31 04:23:56',
                     type: 'receive',
                     status: 'success',
-                    value: 1000000
+                    value: 104
                 },
             ],
             type: {
                 withdraw: {
                     iconBgColor: '#F56060',
                     icon: '/svg/com-withdraw.svg',
-                    description: "Penarikan Komisi",
+                    description: "Penarikan Poin",
                 },
                 receive: {
                     iconBgColor: '#24ABE8',
                     icon: '/svg/com-receive.svg',
-                    description: "Komisi Diterima",
+                    description: "Poin Diterima",
                 }
             },
             status: {

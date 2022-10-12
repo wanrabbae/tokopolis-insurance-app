@@ -1,8 +1,8 @@
 <template>
 
-    <div>
+    <div class="card border">
 
-        <div id="profile" class="card-body">
+        <div class="card-body">
 
             <h2>Profil</h2>
 

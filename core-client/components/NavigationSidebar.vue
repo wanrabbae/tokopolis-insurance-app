@@ -34,6 +34,20 @@
                 
                 </b-collapse>
 
+                <b-list-group-item v-b-toggle.agent-collapse class="pointer chevron">
+                    
+                    <fa icon="percent" class="mr-3"/><span>Agent</span>
+                
+                </b-list-group-item>
+                
+                <b-collapse id="agent-collapse" :visible="!mobileView" class="list-group">
+                    
+                    <b-list-group-item href="/profil/commission">Komisi</b-list-group-item>
+                    
+                    <b-list-group-item href="/profil/points">Poin</b-list-group-item>
+                
+                </b-collapse>
+
                 <b-list-group-item href="#">
                     
                     <fa icon="award" class="mr-3"/><span>Reward</span>

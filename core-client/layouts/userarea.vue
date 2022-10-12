@@ -18,7 +18,7 @@
                 
                 <div class="col-12 col-md-8">
 
-                    <NuxtChild class="card border" keep-alive />
+                    <NuxtChild keep-alive />
                 
                 </div> <!-- col-12.col-md-8 ends -->
             

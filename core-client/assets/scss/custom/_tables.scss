@@ -14,3 +14,9 @@
 .table:last-child {
     margin-bottom: 0 !important;
 }
+
+.table-history {
+    th, td {
+        white-space: nowrap;
+    }
+}
