@@ -212,10 +212,10 @@ exports.postTransaction = async (req, res) => {
     const validateFile = condition ? validation.fileNew(req) : validation.fileOld(req)
     if (validateFile.error) return res.errorValidation(validateFile.details)
 
-    if (condition && req.body.vehicle_color != null)
-        return res.errorBadRequest(req.polyglot.t('vehicle.plate.new'))
-    else if (!condition && req.body.vehicle_color == null)
-        return res.errorBadRequest(req.polyglot.t('vehicle.plate.old'))
+    if (condition && req.body.plate_detail != null)
+        return res.errorBadRequest(req.polyglot.t('error.vehicle.plate.new'))
+    else if (!condition && req.body.plate_detail == null)
+        return res.errorBadRequest(req.polyglot.t('error.vehicle.plate.old'))
 
     const vehicle = {
         year: req.session.vehicle.year,
