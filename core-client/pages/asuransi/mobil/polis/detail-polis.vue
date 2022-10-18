@@ -232,7 +232,7 @@
 
                         </div>
 
-                        <BaseButton type="white" classes="text-primary border-primary mb-1" block>Buat Penawaran</BaseButton>
+                        <BaseButton type="white" classes="text-primary border-primary mb-1" block @click="openInsuranceDetailModal" >Buat Penawaran</BaseButton>
 
                         <BaseButton block @click="postData">Beli Sekarang</BaseButton>
 
@@ -251,6 +251,14 @@
             @close="expansionModalCloseHandler"
             @submit="expansionModalSubmitHandler"
         />
+        <InsuranceDetailModal
+            id="modal-insurance-details"
+            :product-id = "id"
+            :exp ="model.exp"
+            :discount-type="model.discountType"
+            :discount-amount = "model.discountAmount"
+            :discount-percentage = "model.discountPercentage"
+        />
 
         <Loading :show="loading"/>
 
@@ -261,7 +269,8 @@
 <script>
 import BaseInputPrice from '../../../../components/Inputs/BaseInputPrice'
 import BaseInput from '../../../../components/Inputs/BaseInput'
-import ExpansionModal from '../../../../components/ExpansionModal'
+import ExpansionModal from '../../../../components/modals/ExpansionModal'
+import InsuranceDetailModal from '../../../../components/modals/InsuranceDetailModal'
 import Loading from '../../../../components/Loading'
 import HtmlContent from '../../../../components/HtmlContent'
 
@@ -271,6 +280,7 @@ export default {
         BaseInputPrice,
         BaseInput,
         ExpansionModal,
+        InsuranceDetailModal,
         Loading
     },
     data() {
@@ -300,6 +310,7 @@ export default {
                 discountType: 'amount',
                 feature_collapse_visible: false,
                 expansionData: [],
+                exp:null
             },
             maxPercentageDiscount: .25, // 25%
             discount: null,
@@ -489,6 +500,30 @@ export default {
                 self.$store.commit('setProductId', self.id)
                 self.$router.push({name: "asuransi-mobil-polis-pembelian"})
             })
+        },
+        openInsuranceDetailModal(){
+            this.model.exp = []
+            if(this.model.expansionData.length > 0){
+                this.model.expansionData.forEach((exp) => {
+                    const code = exp.key
+                    const str = exp.selectedValue
+                    const count = exp.numOfPeople
+                    if(str !== undefined){
+                        const limit = str/1000000
+                        if(count !== undefined){
+                            const clc = code + "," + limit + "," + count
+                            return this.model.exp.push(clc)
+                        }else{
+                            const cl = code + "," + limit
+                            return this.model.exp.push(cl)
+                        }
+                    }
+                    this.model.exp.push(code)
+                    
+                })
+                console.log(this.model.exp)
+            }
+            this.$bvModal.show('modal-insurance-details')
         }
     }
 }

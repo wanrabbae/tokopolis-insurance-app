@@ -65,8 +65,8 @@
 <script>
 import cookie from 'js-cookie'
 import { ValidationObserver } from 'vee-validate'
-import BaseInput from './Inputs/BaseInput'
-import BaseButton from './BaseButton'
+import BaseInput from '../Inputs/BaseInput.vue'
+import BaseButton from '../BaseButton'
 
 
 export default {

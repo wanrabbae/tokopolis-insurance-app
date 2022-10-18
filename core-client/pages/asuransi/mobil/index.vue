@@ -324,7 +324,7 @@
 import BaseInput from '../../../components/Inputs/BaseInput'
 import BaseInputPrice from '../../../components/Inputs/BaseInputPrice'
 import BaseSelect from '../../../components/Inputs/BaseSelect'
-import AccessoriesModal from '../../../components/AccessoriesModal'
+import AccessoriesModal from '../../../components/modals/AccessoriesModal'
 import CalendarIcon from '../../../assets/svg/calendar.svg'
 
 export default {

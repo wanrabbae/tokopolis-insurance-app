@@ -102,8 +102,8 @@
 </template>
 
 <script>
-import CloseIcon from '../assets/svg/close.svg'
-import BaseButton from './BaseButton'
+import CloseIcon from '../../assets/svg/close.svg'
+import BaseButton from '../BaseButton'
 
 export default {
     components: { 

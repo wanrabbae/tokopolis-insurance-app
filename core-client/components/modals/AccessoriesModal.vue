@@ -85,10 +85,10 @@
 </template>
 
 <script>
-import BaseInput from '../components/Inputs/BaseInput'
-import BaseInputPrice from '../components/Inputs/BaseInputPrice'
-import CloseIcon from '../assets/svg/close.svg'
-import BaseButton from './BaseButton'
+import BaseInput from '../Inputs/BaseInput.vue'
+import BaseInputPrice from '../Inputs/BaseInputPrice'
+import CloseIcon from '../../assets/svg/close.svg'
+import BaseButton from '../BaseButton.vue'
 
 export default {
     components: {

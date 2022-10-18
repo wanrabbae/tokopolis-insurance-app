@@ -299,7 +299,7 @@
 <script>
 import HtmlContent from '../../../../components/HtmlContent'
 import Loading from '../../../../components/Loading'
-import LoginModal from '../../../../components/LoginModal'
+import LoginModal from '../../../../components/modals/LoginModal'
 import CloseIcon from '../../../../assets/svg/close.svg'
 
 export default {
