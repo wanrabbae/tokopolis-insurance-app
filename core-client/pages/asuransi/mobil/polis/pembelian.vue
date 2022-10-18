@@ -237,6 +237,7 @@
                                 />
 
                                 <BaseInput
+                                    v-if="model.vehicleCondition !== 'new'"
                                     v-model="model.plateDetail"
                                     name="Nomor Plat"
                                     label="Nomor Plat"
@@ -468,6 +469,8 @@ export default {
                 this.formData.append('left_side',this.model.leftSide)
                 this.formData.append('right_side',this.model.rightSide)
                 this.formData.append('dashboard',this.model.dashboard)
+                
+                this.formData.append('plate_detail',this.model.plateDetail)
             }
 
             this.formData.append('fullname', this.model.client.fullname)
@@ -480,7 +483,6 @@ export default {
 
             this.formData.append('condition',this.model.vehicleCondition)
             this.formData.append('vehicle_color',this.model.vehicleColor)
-            this.formData.append('plate_detail',this.model.plateDetail)
             this.formData.append('machine_number',this.model.machineNumber)
             this.formData.append('skeleton_number',this.model.skeletonNumber)
 
