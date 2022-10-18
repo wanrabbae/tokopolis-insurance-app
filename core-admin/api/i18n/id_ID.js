@@ -55,6 +55,8 @@ const id_ID_strings = {
 
             'product.id': 'Id Produk',
             'product.expansion': 'Perluasan Asuransi',
+            'product.discount.format': 'Format Diskon',
+            'product.discount.total': 'Total Diskon',
             'product.tnc': 'Syarat dan Ketentuan',
             'product.claim': 'Klaim',
             'product.brochure': 'Brosur',
@@ -112,6 +114,8 @@ const id_ID_strings = {
             'vehicle.acc': 'Aksesoris Kendaraan tidak valid',
             'vehicle.acc.price': 'Harga Aksesoris Kendaraan tidak valid',
             'vehicle.protection': 'Proteksi Kendaraan tidak valid',
+            'vehicle.plate.new': 'Detail Plat Nomor tidak perlu diisi',
+            'vehicle.plate.old': 'Detail Plat Nomor wajib diisi',
             'product': 'Produk tidak ditemukan',
             'product.data': 'Data Produk tidak tersedia',
             'endpoint': 'Endpoint tidak ditemukan',

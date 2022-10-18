@@ -3,6 +3,47 @@ const Joi = require('joi')
 const { joiResponse, joiErrorMessages } = require('../utilities/validation')
 const { extensionHelper } = require('../utilities/functions')
 
+const postOffer = (req) => {
+    const schema = Joi.object({
+        product_id: Joi.number()
+            .required()
+            .label(req.polyglot.t('field.name')),
+        exp: Joi.array()
+            .label(req.polyglot.t('field.product.expansion')),
+        discount_format: Joi.valid('amount', 'percent')
+            .label(req.polyglot.t('field.product.discount.format')),
+        discount_total: Joi.number()
+            .label(req.polyglot.t('field.product.discount.total')),
+        fullname: Joi.string()
+            .required()
+            .label(req.polyglot.t('field.transaction.client.fullname')),
+        phone: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .min(11)
+                    .max(13)
+                    .pattern(/^[0-9]+$/),
+                Joi.allow(null)
+            )
+            .label(req.polyglot.t('field.transaction.client.phone')),
+        email: Joi.alternatives()
+            .try(
+                Joi.string()
+                    .email(),
+                Joi.allow(null)
+            )
+            .label(req.polyglot.t('field.transaction.client.email')),
+    })
+
+    return joiResponse(schema.validate(req.body, {
+        abortEarly: false,
+        messages: joiErrorMessages(),
+        errors: {
+            language: req.locale.language
+        }
+    }))
+}
+
 const postTemporary = (req) => {
     const schema = Joi.object({
         product_id: Joi.number()
@@ -58,7 +99,6 @@ const post = (req) => {
         use_address_to_ship: Joi.boolean()
             .label(req.polyglot.t('field.address.use_to_ship')),
         plate_detail: Joi.string()
-            .required()
             .label(req.polyglot.t('field.plate_detail')),
         vehicle_color: Joi.string()
             .required()
@@ -124,7 +164,6 @@ const fileNew = (req) => {
         use_address_to_ship: Joi.boolean()
             .label(req.polyglot.t('field.address.use_to_ship')),
         plate_detail: Joi.string()
-            .required()
             .label(req.polyglot.t('field.plate_detail')),
         vehicle_color: Joi.string()
             .required()
@@ -216,7 +255,6 @@ const fileOld = (req) => {
         use_address_to_ship: Joi.boolean()
             .label(req.polyglot.t('field.use_address_to_ship')),
         plate_detail: Joi.string()
-            .required()
             .label(req.polyglot.t('field.plate_detail')),
         vehicle_color: Joi.string()
             .required()
@@ -377,7 +415,7 @@ const xendit = (req) => {
 }
 
 module.exports = {
-    postTemporary, post, fileNew, fileOld, review, account,
-    getPaymentFee, getPaymentDetail, createPayment,
-    midtrans, xendit
+    postOffer, postTemporary, post, fileNew, fileOld,
+    review, account, getPaymentFee, getPaymentDetail,
+    createPayment, midtrans, xendit
 }

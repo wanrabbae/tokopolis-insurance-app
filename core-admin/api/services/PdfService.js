@@ -26,7 +26,7 @@ export default class PdfService {
     }
 
     generateHeader(doc) {
-        doc.image("view/static/img/logo-pico-purple.png", 50, 45, { width: 100 })
+        doc.image("view/static/img/logo-tokopolis.png", 50, 45, { width: 100 })
             .image("view/static/img/mega-insurance.png", doc.page.width/2 - 140/2, 50 + 35, {
                 width: 140
             })
@@ -275,7 +275,7 @@ export default class PdfService {
     }
 
     generateFooter(doc) {
-        let imageWidth = 70
+        let imageWidth = 140
         let startHeight = doc.page.height - 120
 
         doc.page.margins.bottom = 0
@@ -286,7 +286,7 @@ export default class PdfService {
                 startHeight,
                 { align: "center", width: 500 }
             )
-            .image("view/static/img/logo-pico-purple.png",
+            .image("view/static/img/logo-tokopolis.png",
                 doc.page.width/2 - imageWidth/2, startHeight + 20, {
                 width: imageWidth
             })

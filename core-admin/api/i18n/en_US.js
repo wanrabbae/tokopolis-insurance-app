@@ -55,6 +55,8 @@ const en_US_strings = {
 
             'product.id': 'Product Id',
             'product.expansion': 'Product Expansion',
+            'product.discount.format': 'Discount Format',
+            'product.discount.total': 'Discount Total',
             'product.tnc': 'Terms and Condition',
             'product.claim': 'Claim',
             'product.brochure': 'Brochure',
@@ -112,6 +114,8 @@ const en_US_strings = {
             'vehicle.acc': 'Vehicle Accessories not Valid',
             'vehicle.acc.price': 'Vehicle Accessories Price not Valid',
             'vehicle.protection': 'Vehicle Protection not Valid',
+            'vehicle.plate.new': 'Vehicle Plate Detail is no need to fill',
+            'vehicle.plate.old': 'Vehicle Plate Detail is required',
             'product': 'Product not found',
             'product.data': 'Product Data not exists',
             'endpoint': 'Endpoint not found',

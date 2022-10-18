@@ -79,8 +79,20 @@ exports.transaction = async (req, res) => {
     })
 }
 
+const getExpansions = async (product_id, vehicle, expansionInput) => {
+    const expList = await productService.getExpansionList(vehicle, product_id)
+    const json = productService.getExpansionJson(expansionInput)
+    const expansions = productService.getExpansionWithPrice(expList, json)
+    const expansionPrice = productService.getExpansionTotalPrice(expansions)
+
+    return {
+        list: expansions,
+        price: expansionPrice || 0
+    }
+}
+
 exports.postOffer = async (req, res) => {
-    const validate = validation.postTemporary(req)
+    const validate = validation.postOffer(req)
     if (validate.error) return res.errorValidation(validate.details)
 
     const account = await accountService.getAccount(req.account._id)
@@ -91,9 +103,18 @@ exports.postOffer = async (req, res) => {
         price: req.session.vehicle.price,
     }
 
+    const client = {
+        fullname: req.body.fullname,
+        email: req.body.email,
+        phone: req.body.phone,
+    }
+
     const now = getMoment().format('yyyyMMDD')
     const nowHour = getMoment().format('HHmmss')
     const postfix = randomNumber(1111, 9999)
+
+    const expansion = await getExpansions(req.body.product_id, req.session.vehicle,
+        req.body.exp)
 
     const discountFormat = req.body.discount_format
     const discountTotal = req.body.discount_total || 0
@@ -122,6 +143,7 @@ exports.postOffer = async (req, res) => {
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
         product_id: req.body.product_id,
+        client_data: client,
         is_new_condition: true,
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,
@@ -129,8 +151,8 @@ exports.postOffer = async (req, res) => {
         discount_format: discountFormat,
         discount_total: discountTotal,
         loading_rate: req.session.product.loading_rate,
-        expansions: req.session.product.expansion,
-        total: basePrice + req.session.product.expansion_price
+        expansions: expansion.list,
+        total: basePrice + expansion.price
     })
 
     return res.jsonData({
@@ -142,11 +164,8 @@ exports.postTemporary = async (req, res) => {
     const validate = validation.postTemporary(req)
     if (validate.error) return res.errorValidation(validate.details)
 
-    const expList = await productService.getExpansionList(req.session.vehicle,
-        req.body.product_id)
-    const json = productService.getExpansionJson(req.body.exp)
-    const expansions = productService.getExpansionWithPrice(expList, json)
-    const expansionPrice = productService.getExpansionTotalPrice(expansions)
+    const expansion = await getExpansions(req.body.product_id, req.session.vehicle,
+        req.body.exp)
 
     const discountFormat = req.body.discount_format
     const discountTotal = req.body.discount_total || 0
@@ -170,8 +189,8 @@ exports.postTemporary = async (req, res) => {
             break
     }
 
-    req.session.product.expansion = expansions
-    req.session.product.expansion_price = expansionPrice
+    req.session.product.expansion = expansion.list
+    req.session.product.expansion_price = expansion.price
 
     req.session.product.discount_format = discountFormat
     req.session.product.discount_total = discountTotal
@@ -193,6 +212,11 @@ exports.postTransaction = async (req, res) => {
     const validateFile = condition ? validation.fileNew(req) : validation.fileOld(req)
     if (validateFile.error) return res.errorValidation(validateFile.details)
 
+    if (condition && req.body.vehicle_color != null)
+        return res.errorBadRequest(req.polyglot.t('vehicle.plate.new'))
+    else if (!condition && req.body.vehicle_color == null)
+        return res.errorBadRequest(req.polyglot.t('vehicle.plate.old'))
+
     const vehicle = {
         year: req.session.vehicle.year,
         plate: req.session.vehicle.plate,
@@ -201,6 +225,12 @@ exports.postTransaction = async (req, res) => {
         machine_number: req.body.machine_number,
         skeleton_number: req.body.skeleton_number,
         price: req.session.vehicle.price,
+    }
+
+    const client = {
+        fullname: req.body.fullname,
+        email: req.body.email,
+        phone: req.body.phone,
     }
 
     const now = getMoment().format('yyyyMMDD')
@@ -212,11 +242,7 @@ exports.postTransaction = async (req, res) => {
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
         product_id: req.query.product_id,
-        client_data: {
-            fullname: req.body.fullname,
-            email: req.body.email,
-            phone: req.body.phone,
-        },
+        client_data: client,
         address_village_id: req.body.address_village_id,
         address_detail: req.body.address_detail,
         is_address_used_to_ship: req.body.use_address_to_ship === 'true',
