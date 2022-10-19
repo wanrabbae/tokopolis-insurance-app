@@ -387,6 +387,8 @@ exports.review = async (req, res) => {
             product: transaction.product?.name,
             start_date: transaction.start_date,
             price: transaction.price,
+            discount_format: transaction.discount_format,
+            discount_total: transaction.discount_total,
             documents: transaction.documents,
             expansions: transaction.expansions,
             fee_admin: adminFee,
