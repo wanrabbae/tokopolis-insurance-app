@@ -68,6 +68,8 @@ const postTemporary = (req) => {
 
 const post = (req) => {
     const schema = Joi.object({
+        transaction_id: Joi.string()
+            .label(req.polyglot.t('field.transaction.id')),
         condition: Joi.valid('new', 'old')
             .required()
             .label(req.polyglot.t('field.transaction.condition')),
@@ -125,6 +127,8 @@ const fileNew = (req) => {
     const extensions = extensionHelper(['png', 'jpg', 'jpeg'])
 
     const schema = Joi.object({
+        transaction_id: Joi.string()
+            .label(req.polyglot.t('field.transaction.id')),
         condition: Joi.valid('new', 'old')
             .required()
             .label(req.polyglot.t('field.transaction.condition')),
@@ -189,6 +193,8 @@ const fileOld = (req) => {
     const extensions = extensionHelper(['png', 'jpg', 'jpeg'])
 
     const schema = Joi.object({
+        transaction_id: Joi.string()
+            .label(req.polyglot.t('field.transaction.id')),
         condition: Joi.valid('new', 'old')
             .required()
             .label(req.polyglot.t('field.transaction.condition')),

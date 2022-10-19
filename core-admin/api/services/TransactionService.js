@@ -57,6 +57,19 @@ export default class TransactionService {
         return this.repository.createTransaction(payload)
     }
 
+    updateTransaction(id, payload, files) {
+        const documents = {}
+
+        Object.keys(files).forEach(key => {
+            const image = uploadHandler(files[key][0].path, 'transaction')
+            documents[key] = image.clearPath
+        })
+
+        payload.documents = documents
+
+        return this.repository.updateTransaction(id, payload)
+    }
+
     getPaymentData(client_id, transaction_id) {
         return this.repository.getPaymentData(client_id, transaction_id)
     }
@@ -66,7 +79,7 @@ export default class TransactionService {
     }
 
     setPaymentData(id, payload) {
-        return this.repository.setPaymentData(id, payload)
+        return this.repository.updateTransaction(id, payload)
     }
 
     setPaymentStatus(pg_transaction_id, payload) {

@@ -70,13 +70,32 @@ exports.getAll = async (req, res) => {
 }
 
 exports.transaction = async (req, res) => {
-    if (req.session.product?.price == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
-    if (req.account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    const account = await accountService.getAccountData(req.account._id)
+    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
-    return res.jsonData({
-        plate: req.session.vehicle?.plate,
-        price: req.session.product?.price
-    })
+    if (req.query.transaction_id != null) {
+        const transaction = await service.getAgentTransactionDetail(account.id, req.query.transaction_id)
+        if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+
+        return res.jsonData({
+            plate: req.session.vehicle?.plate,
+            price: req.session.product?.price,
+            client: {
+                fullname: transaction.client_data.fullname,
+                email: transaction.client_data.email != "null" ?
+                    transaction.client_data.email : null,
+                phone: transaction.client_data.phone != "null" ?
+                    transaction.client_data.phone : null,
+            }
+        })
+    } else {
+        if (req.session.product?.price == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
+
+        return res.jsonData({
+            plate: req.session.vehicle?.plate,
+            price: req.session.product?.price
+        })
+    }
 }
 
 const getExpansions = async (product_id, vehicle, expansionInput) => {
@@ -217,27 +236,48 @@ exports.postTransaction = async (req, res) => {
     else if (!condition && req.body.plate_detail == null)
         return res.errorBadRequest(req.polyglot.t('error.vehicle.plate.old'))
 
-    const vehicle = {
-        year: req.session.vehicle.year,
-        plate: req.session.vehicle.plate,
-        plate_detail: req.body.plate_detail,
-        color: req.body.vehicle_color,
-        machine_number: req.body.machine_number,
-        skeleton_number: req.body.skeleton_number,
-        price: req.session.vehicle.price,
-    }
-
     const client = {
         fullname: req.body.fullname,
         email: req.body.email,
         phone: req.body.phone,
     }
 
+    if (req.body.transaction_id != null) {
+        const transaction = await service.getAgentTransactionDetail(account.id, req.query.transaction_id)
+        if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+
+        const updatedTransaction = await service.updateTransaction({
+            address_village_id: req.body.address_village_id,
+            address_detail: req.body.address_detail,
+            is_address_used_to_ship: req.body.use_address_to_ship === 'true',
+            is_new_condition: condition,
+            client_data: client, // update
+            vehicle_data: { // update
+                year: transaction.vehicle_data.year,
+                plate: transaction.vehicle_data.plate,
+
+                plate_detail: req.body.plate_detail,
+                color: req.body.vehicle_color,
+                machine_number: req.body.machine_number,
+                skeleton_number: req.body.skeleton_number,
+
+                price: transaction.vehicle_data.price,
+            },
+        }, req.files)
+
+        if (!updatedTransaction)
+            return res.errorBadRequest(req.polyglot.t('error.transaction.create'))
+
+        return res.jsonData({
+            transaction_id: updatedTransaction.id
+        })
+    }
+
     const now = getMoment().format('yyyyMMDD')
     const nowHour = getMoment().format('HHmmss')
     const postfix = randomNumber(1111, 9999)
 
-    const transaction = await service.createTransaction({
+    const newTransaction = await service.createTransaction({
         id: `TRX-${now}-${nowHour}-${postfix}`,
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
@@ -247,7 +287,17 @@ exports.postTransaction = async (req, res) => {
         address_detail: req.body.address_detail,
         is_address_used_to_ship: req.body.use_address_to_ship === 'true',
         is_new_condition: condition,
-        vehicle_data: vehicle,
+        vehicle_data: {
+            year: req.session.vehicle.year,
+            plate: req.session.vehicle.plate,
+
+            plate_detail: req.body.plate_detail,
+            color: req.body.vehicle_color,
+            machine_number: req.body.machine_number,
+            skeleton_number: req.body.skeleton_number,
+
+            price: req.session.vehicle.price,
+        },
         start_date: req.session.product.start_date,
         price: req.session.product.price,
         discount_format: req.session.product.discount_format,
@@ -257,8 +307,11 @@ exports.postTransaction = async (req, res) => {
         total: req.session.product.price + req.session.product.expansion_price
     }, req.files)
 
+    if (!newTransaction)
+        return res.errorBadRequest(req.polyglot.t('error.transaction.create'))
+
     return res.jsonData({
-        transaction_id: transaction.id
+        transaction_id: newTransaction.id
     })
 }
 

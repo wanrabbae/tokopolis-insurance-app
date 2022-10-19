@@ -192,6 +192,12 @@ export default class TransactionRepository {
         return await Transaction.create(payload)
     }
 
+    async updateTransaction(id, payload) {
+        return await Transaction.update(payload, {
+            where: { id: id }
+        })
+    }
+
     async getPaymentData(client_id, transaction_id) {
         return await Transaction.findOne({
             where: {
@@ -210,12 +216,6 @@ export default class TransactionRepository {
             },
             attributes: ['id', 'fee_admin', 'fee_pg', 'total',
                 'pg_data', 'status']
-        })
-    }
-
-    async setPaymentData(id, payload) {
-        return await Transaction.update(payload, {
-            where: { id: id }
         })
     }
 

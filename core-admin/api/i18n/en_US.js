@@ -122,6 +122,7 @@ const en_US_strings = {
             'endpoint.exist': 'Endpoint already exist',
             'compare.product': 'Product Comparation not Valid',
             'transaction': 'Transaction not exists',
+            'transaction.create': 'Transaction Failed',
             'route.exist': 'Route already exists',
             'role.exist': 'Role already exists',
             'endpoint.notfound' : 'Endpoint data not found.',

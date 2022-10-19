@@ -121,6 +121,7 @@ const id_ID_strings = {
             'endpoint': 'Endpoint tidak ditemukan',
             'compare.product': 'Komparasi Produk tidak valid',
             'transaction': 'Transaksi Tidak Tersedia',
+            'transaction.create': 'Transaksi Gagal Dibuat',
             'route.exist': 'Route sudah ada',
             'role.exist': 'Role sudah tersedia',
             'endpoint.notfound' : 'Data endpoint tidak ditemukan.',
