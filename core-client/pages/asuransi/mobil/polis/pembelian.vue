@@ -441,10 +441,15 @@ export default {
             validate();
         },
         async getDataTransaction() {
-            await this.$axios.$get('api/transaction')
+
+            const param = this.$route.query.id == null ? '' : `?transaction_id=${this.$route.query.id}`
+            await this.$axios.$get(`api/transaction` + param)
                 .then ((response) => {
                     this.model.licensePlate = response.data.plate
                     this.model.totalPremium = this.formatPrice(response.data.price)
+                    if(response.data.client !=null){
+                        this.model.client = response.data.client
+                    }
 
                     this.loading = false
                 })

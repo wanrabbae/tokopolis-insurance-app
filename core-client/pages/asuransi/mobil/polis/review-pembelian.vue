@@ -846,7 +846,6 @@ export default {
                     this.vehicleDetail.productionYear = response.data.vehicle.year
                     this.vehicleDetail.price = this.formatPrice(response.data.vehicle.price)
                     this.vehicleDetail.lisencePlateId = response.data.vehicle.plate
-                    this.vehicleDetail.plateNumber = response.data.vehicle.plate + " " + response.data.vehicle.plate_detail
                     if(response.data.vehicle.protection === "comprehensive"){
                         this.vehicleDetail.protection = "Komprehensif"
                     }else{
@@ -882,6 +881,9 @@ export default {
                     if(this.condition === true){
                         this.documentImagesNew.bastk = this.$config.serverURL +file.bastk
                         this.documentImagesNew.identityCard = this.$config.serverURL +file.identity_card
+
+                        this.vehicleDetail.plateNumber = response.data.vehicle.plate 
+                    
                         }else{
                         this.documentImagesOld.stnk = this.$config.serverURL + file.stnk
                         this.documentImagesOld.vehicleFront = this.$config.serverURL +file.front_side
@@ -889,6 +891,8 @@ export default {
                         this.documentImagesOld.vehicleLeft = this.$config.serverURL +file.left_side
                         this.documentImagesOld.vehicleBehind = this.$config.serverURL +file.back_side
                         this.documentImagesOld.vehicleDasboard = this.$config.serverURL +file.dashboard
+
+                        this.vehicleDetail.plateNumber = response.data.vehicle.plate + " " + response.data.vehicle.plate_detail
                     }
                     this.totalPriceWithFee()
                     this.periodPolis()

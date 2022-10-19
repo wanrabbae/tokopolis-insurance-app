@@ -253,11 +253,7 @@
         />
         <InsuranceDetailModal
             id="modal-insurance-details"
-            :product-id = "id"
-            :exp ="model.exp"
-            :discount-type="model.discountType"
-            :discount-amount = "model.discountAmount"
-            :discount-percentage = "model.discountPercentage"
+            @submit="insuranceDetailModalSubmitHandler"
         />
 
         <Loading :show="loading"/>
@@ -312,6 +308,7 @@ export default {
                 expansionData: [],
                 exp:null
             },
+            insuranceDetail:[],
             maxPercentageDiscount: .25, // 25%
             discount: null,
             addDiscount: false,
@@ -428,6 +425,10 @@ export default {
         expansionModalSubmitHandler(data) {
             this.model.expansionData = data
         },
+        insuranceDetailModalSubmitHandler(data){
+            this.insuranceDetail = data
+            this.doOffer()
+        },
         toggleAddDiscount() {
             this.addDiscount = !this.addDiscount;
 
@@ -467,25 +468,7 @@ export default {
         },
         postData() {
             const self = this
-            this.model.exp = []
-            if(this.model.expansionData.length > 0){
-                this.model.expansionData.forEach((exp) => {
-                    const code = exp.key
-                    const str = exp.selectedValue
-                    const count = exp.numOfPeople
-                    if(str !== undefined){
-                        const limit = str/1000000
-                        if(count !== undefined){
-                            const clc = code + "," + limit + "," + count
-                            return this.model.exp.push(clc)
-                        }else{
-                            const cl = code + "," + limit
-                            return this.model.exp.push(cl)
-                        }
-                    }
-                    this.model.exp.push(code)
-                })
-            }
+            this.getExpansionData()
 
             const discountType = this.model.discountType
 
@@ -502,7 +485,29 @@ export default {
             })
         },
         openInsuranceDetailModal(){
-            this.model.exp = []
+            this.$bvModal.show('modal-insurance-details')
+        },
+        doOffer() {
+            const self = this
+            this.getExpansionData()
+            const discountType = this.model.discountType
+            this.$axios.$post(`api/transaction/offer`, {
+                    fullname:this.insuranceDetail.name,
+                    phone:this.insuranceDetail.phone,
+                    email:this.insuranceDetail.email,
+                    product_id: this.id,
+                    exp: this.model.exp,
+                    discount_format: discountType,
+                    discount_total: discountType === 'amount' ? this.model.discountAmount :
+                        this.model.discountPercentage
+                })
+                .then(function(response) {
+                    self.$router.push({name: "asuransi-mobil-polis-pembelian", query:{id:response.data.transaction_id}})
+                })
+      
+    },
+    getExpansionData(){
+        this.model.exp = []
             if(this.model.expansionData.length > 0){
                 this.model.expansionData.forEach((exp) => {
                     const code = exp.key
@@ -519,12 +524,9 @@ export default {
                         }
                     }
                     this.model.exp.push(code)
-                    
                 })
-                console.log(this.model.exp)
             }
-            this.$bvModal.show('modal-insurance-details')
-        }
+    }
     }
 }
 </script>

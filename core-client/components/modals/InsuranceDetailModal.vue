@@ -5,18 +5,16 @@
     <b-modal 
       v-bind="$attrs"
       hide-header
-      hide-footer
       centered
       body-class="p-4"
+      @ok="okHandler"
     >
-
+    
       <div class="text-center">
         <h4 class="mb-3">Detail Pemegang Polis</h4>
       </div>
-
-      <ValidationObserver v-slot="{ invalid }">
-        
-        <b-form role="form" method="post" @submit.prevent="doOffer">
+      
+        <b-form >
             
             <BaseInput
               v-model="model.name"
@@ -33,22 +31,21 @@
               v-model="model.email"
               name="Email"
               placeholder="user@gmail.com"
+              rules="email"
             />
 
-            <BaseButton native-type="submit" class="mb-3" :disabled="invalid" block>
-                Buat Penawaran
-            </BaseButton>
-
         </b-form>
+        <template #modal-footer="{ ok }">
 
-      </ValidationObserver>
+          <BaseButton :disabled="model.name ==''" block @click="ok()">Buat Penawaran</BaseButton>
+        
+        </template>
 
     </b-modal>
 
 </template>
 
 <script>
-import { ValidationObserver } from 'vee-validate'
 import BaseInput from '../Inputs/BaseInput.vue'
 import BaseButton from '../BaseButton'
 
@@ -56,30 +53,7 @@ import BaseButton from '../BaseButton'
 export default {
   components: { 
     BaseInput, 
-    BaseButton, 
-    ValidationObserver
-  },
-  props:{
-    exp:{
-      type: Array,
-      default:null
-    },
-    productId:{
-      type: Number,
-      default:null
-    },
-    discountType:{
-      type: String,
-      default:null
-    },
-    discountAmount:{
-      type:Number,
-      default:null
-    },
-    discountPercentage:{
-      type:Number,
-      default:null
-    }
+    BaseButton
   },
   data () {
     return {
@@ -91,23 +65,9 @@ export default {
     }
   },
   methods: {
-      doOffer() {
-        const discountType = this.discountType
-        this.$axios.$post(`api/transaction/offer`, {
-                fullname:this.model.name,
-                phone:this.model.phone,
-                email:this.model.email,
-                product_id: this.productId,
-                exp: this.exp,
-                discount_format: discountType,
-                discount_total: discountType === 'amount' ? this.discountAmount :
-                    this.discountPercentage
-            })
-            .then(function(response) {
-              console.log(response)
-            })
-      // masukkan fungsi login di sini
-      
+    okHandler(bvModalEvt){
+      bvModalEvt.preventDefault()
+      this.$emit('submit',this.model)
     }
   }
 }
