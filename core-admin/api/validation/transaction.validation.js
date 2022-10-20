@@ -12,7 +12,7 @@ const postOffer = (req) => {
             .label(req.polyglot.t('field.product.expansion')),
         discount_format: Joi.valid('amount', 'percent')
             .label(req.polyglot.t('field.product.discount.format')),
-        discount_total: Joi.number()
+        discount_value: Joi.number()
             .label(req.polyglot.t('field.product.discount.total')),
         fullname: Joi.string()
             .required()
@@ -53,7 +53,7 @@ const postTemporary = (req) => {
             .label(req.polyglot.t('field.product.expansion')),
         discount_format: Joi.valid('amount', 'percent')
             .label(req.polyglot.t('field.product.discount.format')),
-        discount_total: Joi.number()
+        discount_value: Joi.number()
             .label(req.polyglot.t('field.product.discount.total')),
     })
 

@@ -77,9 +77,16 @@ exports.transaction = async (req, res) => {
         const transaction = await service.getAgentTransactionDetail(account.id, req.query.transaction_id)
         if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
+        const expansionPrice = productService.getExpansionTotalPrice(transaction.expansions)
+
         return res.jsonData({
-            plate: req.session.vehicle?.plate,
-            price: req.session.product?.price,
+            plate: transaction.vehicle_data.plate,
+            price: {
+                product: transaction.price,
+                expansion: expansionPrice,
+                discount: getDiscountValue(transaction.price, expansionPrice,
+                    transaction.discount_format, transaction.discount_value)
+            },
             client: {
                 fullname: transaction.client_data.fullname,
                 email: transaction.client_data.email != "null" ?
@@ -93,7 +100,14 @@ exports.transaction = async (req, res) => {
 
         return res.jsonData({
             plate: req.session.vehicle?.plate,
-            price: req.session.product?.price
+            price: {
+                product: req.session.product?.price,
+                expansion: req.session.product.expansion_price,
+                discount: getDiscountValue(req.session.product?.price,
+                    req.session.product.expansion_price,
+                    req.session.product.discount_format,
+                    req.session.product.discount_value)
+            },
         })
     }
 }
@@ -110,6 +124,25 @@ const getExpansions = async (product_id, vehicle, expansionInput) => {
     }
 }
 
+const getTransactionID = () => {
+    const now = getMoment().format('yyyyMMDD')
+    const nowHour = getMoment().format('HHmmss')
+    const postfix = randomNumber(1111, 9999)
+
+    return `TRX-${now}-${nowHour}-${postfix}`
+}
+
+const getDiscountValue = (productPrice, expansionPrice, format, value) => {
+    switch (format) {
+        case 'amount':
+            return value
+        case 'percent':
+            return percentToDecimal(value) * (productPrice + expansionPrice)
+        default:
+            return 0
+    }
+}
+
 exports.postOffer = async (req, res) => {
     const validate = validation.postOffer(req)
     if (validate.error) return res.errorValidation(validate.details)
@@ -118,7 +151,10 @@ exports.postOffer = async (req, res) => {
 
     const vehicle = {
         year: req.session.vehicle.year,
+        capacity: req.session.vehicle.capacity,
+        zone: req.session.vehicle.zone,
         plate: req.session.vehicle.plate,
+        accessories: req.session.vehicle.accessories,
         price: req.session.vehicle.price,
     }
 
@@ -128,37 +164,28 @@ exports.postOffer = async (req, res) => {
         phone: req.body.phone,
     }
 
-    const now = getMoment().format('yyyyMMDD')
-    const nowHour = getMoment().format('HHmmss')
-    const postfix = randomNumber(1111, 9999)
-
     const expansion = await getExpansions(req.body.product_id, req.session.vehicle,
         req.body.exp)
 
     const discountFormat = req.body.discount_format
-    const discountTotal = req.body.discount_total || 0
+    const discountValue = req.body.discount_value || 0
 
-    var basePrice = req.session.product.price
+    const discountMaxPercent = 25
+    const discountMaxAmount = getDiscountValue(req.session.product.price,
+            expansion.price, discountFormat, discountMaxPercent)
 
     // If agent give discount
-    if (discountTotal != 0 &&
-        (discountFormat == 'amount' && discountTotal > basePrice * percentToDecimal(25)) ||
-        (discountFormat == 'percent' && discountTotal > 25)) {
+    if (discountValue != 0 &&
+        (discountFormat == 'amount' && discountValue > discountMaxAmount) ||
+        (discountFormat == 'percent' && discountValue > discountMaxPercent)) {
         return res.errorBadRequest(req.polyglot.t('error.transaction'))
     }
 
-    switch (discountFormat) {
-        case 'amount':
-            basePrice -= discountTotal
-            break
-
-        case 'percent':
-            basePrice -= basePrice * percentToDecimal(discountTotal)
-            break
-    }
+    const discountTotal = getDiscountValue(req.session.product.price,
+        expansion.price, discountFormat, discountValue)
 
     const transaction = await service.createOffer({
-        id: `TRX-${now}-${nowHour}-${postfix}`,
+        id: getTransactionID(),
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
         product_id: req.body.product_id,
@@ -166,12 +193,13 @@ exports.postOffer = async (req, res) => {
         is_new_condition: true,
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,
-        price: basePrice,
+        price: req.session.product.price,
         discount_format: discountFormat,
+        discount_value: discountValue,
         discount_total: discountTotal,
         loading_rate: req.session.product.loading_rate,
         expansions: expansion.list,
-        total: basePrice + expansion.price
+        total: req.session.product.price + expansion.price - discountTotal
     })
 
     return res.jsonData({
@@ -187,31 +215,27 @@ exports.postTemporary = async (req, res) => {
         req.body.exp)
 
     const discountFormat = req.body.discount_format
-    const discountTotal = req.body.discount_total || 0
+    const discountValue = req.body.discount_value || 0
 
-    var basePrice = req.session.product.price
+    const discountMaxPercent = 25
+    const discountMaxAmount = getDiscountValue(req.session.product.price,
+        expansion.price, discountFormat, discountMaxPercent)
 
     // If agent give discount
-    if (discountTotal != 0 &&
-        (discountFormat == 'amount' && discountTotal > basePrice * percentToDecimal(25)) ||
-        (discountFormat == 'percent' && discountTotal > 25)) {
+    if (discountValue != 0 &&
+        (discountFormat == 'amount' && discountValue > discountMaxAmount) ||
+        (discountFormat == 'percent' && discountValue > discountMaxPercent)) {
         return res.errorBadRequest(req.polyglot.t('error.transaction'))
     }
 
-    switch (discountFormat) {
-        case 'amount':
-            req.session.product.price -= discountTotal
-            break
-
-        case 'percent':
-            req.session.product.price -= basePrice * percentToDecimal(discountTotal)
-            break
-    }
+    const discountTotal = getDiscountValue(req.session.product.price,
+        expansion.price, discountFormat, discountValue)
 
     req.session.product.expansion = expansion.list
     req.session.product.expansion_price = expansion.price
 
     req.session.product.discount_format = discountFormat
+    req.session.product.discount_value = discountValue
     req.session.product.discount_total = discountTotal
 
     return res.jsonSuccess()
@@ -221,9 +245,13 @@ exports.postTransaction = async (req, res) => {
     const validate = validation.post(req)
     if (validate.error) return res.errorValidation(validate.details)
 
-    if (req.session.vehicle == null) return res.errorBadRequest(req.polyglot.t('error.vehicle.data'))
-    if (req.query.product_id == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
     if (req.account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    if (req.query.product_id == null) return res.errorBadRequest(req.polyglot.t('error.product.data'))
+
+    const usingTransactionID = req.body.transaction_id != null
+
+    if (!usingTransactionID && req.session.vehicle == null)
+        return res.errorBadRequest(req.polyglot.t('error.vehicle.data'))
 
     const account = await accountService.getAccount(req.account._id)
     const condition = req.body.condition == "new" ? true : false
@@ -242,11 +270,11 @@ exports.postTransaction = async (req, res) => {
         phone: req.body.phone,
     }
 
-    if (req.body.transaction_id != null) {
-        const transaction = await service.getAgentTransactionDetail(account.id, req.query.transaction_id)
+    if (usingTransactionID) {
+        const transaction = await service.getAgentTransactionDetail(account.id, req.body.transaction_id)
         if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
-        const updatedTransaction = await service.updateTransaction({
+        const updatedTransaction = await service.updateTransaction(transaction.id, {
             address_village_id: req.body.address_village_id,
             address_detail: req.body.address_detail,
             is_address_used_to_ship: req.body.use_address_to_ship === 'true',
@@ -254,7 +282,10 @@ exports.postTransaction = async (req, res) => {
             client_data: client, // update
             vehicle_data: { // update
                 year: transaction.vehicle_data.year,
+                capacity: transaction.vehicle_data.capacity,
+                zone: transaction.vehicle_data.zone,
                 plate: transaction.vehicle_data.plate,
+                accessories: transaction.vehicle_data.accessories,
 
                 plate_detail: req.body.plate_detail,
                 color: req.body.vehicle_color,
@@ -269,16 +300,12 @@ exports.postTransaction = async (req, res) => {
             return res.errorBadRequest(req.polyglot.t('error.transaction.create'))
 
         return res.jsonData({
-            transaction_id: updatedTransaction.id
+            transaction_id: transaction.id
         })
     }
 
-    const now = getMoment().format('yyyyMMDD')
-    const nowHour = getMoment().format('HHmmss')
-    const postfix = randomNumber(1111, 9999)
-
     const newTransaction = await service.createTransaction({
-        id: `TRX-${now}-${nowHour}-${postfix}`,
+        id: getTransactionID(),
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
         product_id: req.query.product_id,
@@ -289,7 +316,10 @@ exports.postTransaction = async (req, res) => {
         is_new_condition: condition,
         vehicle_data: {
             year: req.session.vehicle.year,
+            capacity: req.session.vehicle.capacity,
+            zone: req.session.vehicle.zone,
             plate: req.session.vehicle.plate,
+            accessories: req.session.vehicle.accessories,
 
             plate_detail: req.body.plate_detail,
             color: req.body.vehicle_color,
@@ -301,10 +331,12 @@ exports.postTransaction = async (req, res) => {
         start_date: req.session.product.start_date,
         price: req.session.product.price,
         discount_format: req.session.product.discount_format,
+        discount_value: req.session.product.discount_value,
         discount_total: req.session.product.discount_total,
         loading_rate: req.session.product.loading_rate,
         expansions: req.session.product.expansion,
-        total: req.session.product.price + req.session.product.expansion_price
+        total: req.session.product.price + req.session.product.expansion_price -
+            req.session.product.discount_total
     }, req.files)
 
     if (!newTransaction)
@@ -388,11 +420,11 @@ exports.review = async (req, res) => {
             start_date: transaction.start_date,
             price: transaction.price,
             discount_format: transaction.discount_format,
+            discount_value: transaction.discount_value,
             discount_total: transaction.discount_total,
             documents: transaction.documents,
             expansions: transaction.expansions,
             fee_admin: adminFee,
-            total: transaction.total,
         }
     })
 }

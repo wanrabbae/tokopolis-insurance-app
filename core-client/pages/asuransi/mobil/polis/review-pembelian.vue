@@ -668,6 +668,10 @@ export default {
                     label: "Total Perluasan"
                 },
                 {
+                    key: "discount",
+                    label: "Diskon"
+                },
+                {
                     key: "administrationCost",
                     label: "Biaya Admin"
                 },
@@ -689,7 +693,7 @@ export default {
                 expTotal: 0,
                 administrationCost: 0,
                 pgPrice: 0,
-                // discount: 0,
+                discount: 0,
                 // promo: 0
             },
             emoneyOptions: [
@@ -858,6 +862,8 @@ export default {
 
                     this.purchaseSummaryDatas.premiPrice = response.data.transaction.price
                     this.purchaseSummaryDatas.administrationCost = response.data.transaction.fee_admin
+                    this.purchaseSummaryDatas.discount = -response.data.transaction.discount_total
+
                     this.transactionId = response.data.transaction.code
                     this.transcationDate.start = response.data.transaction.start_date
 

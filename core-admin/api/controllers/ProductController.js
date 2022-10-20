@@ -71,7 +71,7 @@ exports.productCalculation = async (req, res, next) => {
     req.session.vehicle.capacity = vehicle.capacity
     req.session.vehicle.zone = plate.zone
     req.session.vehicle.price = Number(body.price) // Convert price to number
-    req.session.vehicle.accessories = JSON.stringify(accessories) // Convert to json string
+    req.session.vehicle.accessories = accessories
 
     req.session.product.start_date = startDate()
     req.session.product.loading_rate = loadingRateValue

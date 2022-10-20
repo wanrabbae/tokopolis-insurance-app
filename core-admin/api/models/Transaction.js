@@ -57,6 +57,9 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.ENUM('amount', 'percent'),
             defaultValue: 'amount'
         },
+        discount_value: {
+            type: Sequelize.INTEGER,
+        },
         discount_total: {
             type: Sequelize.INTEGER,
         },

@@ -27,7 +27,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <span class="fs-2 fw-bold">{{ model.totalPremium }}</span>
+                                <span class="fs-2 fw-bold">{{ model.totalPrice }}</span>
                             </div>
 
                             <div class="mb-md-2 mb-3">
@@ -306,7 +306,7 @@ export default {
             url: [],
             loading : true,
             model: {
-                totalPremium: this.formatPrice(0),
+                totalPrice: this.formatPrice(0),
                 vehicleCondition: 'new',
                 client: {
                     fullname: null,
@@ -342,12 +342,9 @@ export default {
             ],
             districtOptions: [
                 { text: 'Pilih Kecamatan', value: null },
-                { text: 'Wonokromo', value: 'wonokromo' },
-                { text: 'Waru', value: 'waru' }
             ],
             urbanOptions: [
                 { text: 'Pilih Kelurahan', value: null },
-                { text: 'Sidokepung', value: 'sidokepung' }
             ],
             newVehicleDocumentFields: [
                 {
@@ -441,13 +438,16 @@ export default {
             validate();
         },
         async getDataTransaction() {
-
             const param = this.$route.query.id == null ? '' : `?transaction_id=${this.$route.query.id}`
+
             await this.$axios.$get(`api/transaction` + param)
                 .then ((response) => {
                     this.model.licensePlate = response.data.plate
-                    this.model.totalPremium = this.formatPrice(response.data.price)
-                    if(response.data.client !=null){
+                    this.model.totalPrice = this.formatPrice(response.data.price.product +
+                        response.data.price.expansion -
+                        response.data.price.discount)
+
+                    if(response.data.client != null){
                         this.model.client = response.data.client
                     }
 
@@ -461,7 +461,12 @@ export default {
         },
         postTranscation() {
             const self = this
+
             this.formData = new FormData()
+
+            if (this.$route.query.id != null) {
+                this.formData.append('transaction_id', this.$route.query.id)
+            }
 
             // silahkan diperbaiki kalau ada yang salah
             if(this.model.vehicleCondition === 'new') {
@@ -474,16 +479,16 @@ export default {
                 this.formData.append('left_side',this.model.leftSide)
                 this.formData.append('right_side',this.model.rightSide)
                 this.formData.append('dashboard',this.model.dashboard)
-                
+
                 this.formData.append('plate_detail',this.model.plateDetail)
             }
 
             this.formData.append('fullname', this.model.client.fullname)
             this.formData.append('email', this.model.client.email)
             this.formData.append('phone', this.model.client.phone)
-            
+
             this.formData.append('address_village_id',this.model.urban)
-            this.formData.append('address_detail',this.model.fullAddress + " " + this.model.postalCode)  
+            this.formData.append('address_detail',this.model.fullAddress + " " + this.model.postalCode)
             this.formData.append('use_address_to_ship',this.model.useAdressToShip)
 
             this.formData.append('condition',this.model.vehicleCondition)
@@ -495,9 +500,11 @@ export default {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
             .then(function(response) {
-
-                self.$router.push({name: "asuransi-mobil-polis-review-pembelian" , query:{id:response.data.transaction_id}})
-
+                self.$router.push({name: "asuransi-mobil-polis-review-pembelian",
+                    query: {
+                        id: response.data.transaction_id
+                    }
+                })
             })
         },
         isNull(data) {
@@ -517,17 +524,14 @@ export default {
             this.model.urban = null
 
             await this.$axios.$get('api/address/provinces')
-            .then ((response) => {
-                
-                response.data.forEach(element => {
-                    this.provinceOptions.push({
-                        text: element.name,
-                        value: element.id
+                .then ((response) => {
+                    response.data.forEach(element => {
+                        this.provinceOptions.push({
+                            text: element.name,
+                            value: element.id
+                        })
                     })
-                });
-
-
-            })
+                })
         },
         async getCity(){
             this.resetField()
@@ -541,18 +545,17 @@ export default {
             }
 
             await this.$axios.$get(`api/address/regencies?province_id=${this.model.province}`)
-            .then ((response) => {
-                this.model.city = null
-                this.condition.city = true
+                .then ((response) => {
+                    this.model.city = null
+                    this.condition.city = true
 
-                response.data.forEach(element => {
-                    this.cityOptions.push({
-                        text: element.name,
-                        value: element.id
+                    response.data.forEach(element => {
+                        this.cityOptions.push({
+                            text: element.name,
+                            value: element.id
+                        })
                     })
-                });
-
-            })
+                })
         },
         async getDistrict(){
             this.resetField()
@@ -567,18 +570,17 @@ export default {
             }
 
             await this.$axios.$get(`api/address/districts?regency_id=${this.model.city}`)
-            .then ((response) => {
-                this.model.district = null
-                this.condition.district = true
+                .then ((response) => {
+                    this.model.district = null
+                    this.condition.district = true
 
-                response.data.forEach(element => {
-                    this.districtOptions.push({
-                        text: element.name,
-                        value: element.id
+                    response.data.forEach(element => {
+                        this.districtOptions.push({
+                            text: element.name,
+                            value: element.id
+                        })
                     })
-                });
-
-            })
+                })
         },
         async getUrban(){
             this.resetField()
@@ -593,20 +595,19 @@ export default {
             }
 
             await this.$axios.$get(`api/address/villages?district_id=${this.model.district}`)
-            .then ((response) => {
-                this.model.urban = null
-                this.condition.urban = true
+                .then ((response) => {
+                    this.model.urban = null
+                    this.condition.urban = true
 
-                response.data.forEach(element => {
-                    this.urbanOptions.push({
-                        text: element.name,
-                        value: element.id
+                    response.data.forEach(element => {
+                        this.urbanOptions.push({
+                            text: element.name,
+                            value: element.id
+                        })
                     })
-                });
-
-            })
+                })
         }
-        
+
     }
 }
 </script>

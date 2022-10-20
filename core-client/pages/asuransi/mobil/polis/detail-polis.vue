@@ -312,7 +312,6 @@ export default {
             maxPercentageDiscount: .25, // 25%
             discount: null,
             addDiscount: false,
-            administration_cost: 10000,
             expansionFields: [],
         }
     },
@@ -324,16 +323,18 @@ export default {
     computed: {
         totalExpansionPrice() {
             let totalExpPrice = 0;
+
             this.model.expansionData.forEach((exp) => {
                 totalExpPrice += exp.price;
             });
+
             return totalExpPrice;
         },
         totalPrice() {
-            return this.product.price + this.totalExpansionPrice - this.discount + this.administration_cost;
+            return this.product.price + this.totalExpansionPrice - this.discount;
         },
         maxDiscount() {
-            return this.product.price * this.maxPercentageDiscount;
+            return (this.product.price + this.totalExpansionPrice) * this.maxPercentageDiscount;
         }
     },
      deactivated(){
@@ -412,7 +413,7 @@ export default {
         expansionModalFieldChangeHandler(field) {
             if(field.key === 'srcc')
             {
-                if(field.checked) 
+                if(field.checked)
                 {
                     this.expansionFields = this.expansionFields.map(el => el.key === 'terorism' ? { ...el,  disabled: false } : el);
                 } else {
@@ -446,7 +447,7 @@ export default {
             this.discount = null
         },
         onBlurDiscount() {
-            if(!this.model.discountAmount || !this.model.discountPercentage) 
+            if(!this.model.discountAmount || !this.model.discountPercentage)
                 this.discount = null
 
             if(this.model.discountType === 'amount') {
@@ -457,13 +458,14 @@ export default {
             }
         },
         submitDiscount() {
-            if(!this.model.discountAmount || !this.model.discountPercentage) 
+            if(!this.model.discountAmount || !this.model.discountPercentage)
                 this.discount = null
 
-            if(this.model.discountType === 'amount') {
+            if (this.model.discountType === 'amount') {
                 this.discount = this.formatNumber(this.model.discountAmount)
             } else if(this.model.discountType === 'percent') {
-                this.discount = this.product.price * (this.model.discountPercentage / 100)
+                this.discount = (this.product.price + this.totalExpansionPrice) *
+                    (this.model.discountPercentage / 100)
             }
         },
         postData() {
@@ -476,7 +478,7 @@ export default {
                 product_id: this.id,
                 exp: this.model.exp,
                 discount_format: discountType,
-                discount_total: discountType === 'amount' ? this.model.discountAmount :
+                discount_value: discountType === 'amount' ? this.model.discountAmount :
                     this.model.discountPercentage
             })
             .then(function(response) {
@@ -498,13 +500,13 @@ export default {
                     product_id: this.id,
                     exp: this.model.exp,
                     discount_format: discountType,
-                    discount_total: discountType === 'amount' ? this.model.discountAmount :
+                    discount_value: discountType === 'amount' ? this.model.discountAmount :
                         this.model.discountPercentage
                 })
                 .then(function(response) {
                     self.$router.push({name: "asuransi-mobil-polis-pembelian", query:{id:response.data.transaction_id}})
                 })
-      
+
     },
     getExpansionData(){
         this.model.exp = []

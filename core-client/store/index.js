@@ -5,7 +5,7 @@ export const state = () => ({
 	token: null,
 	photo: null,
 	product_id: null,
-	transaction_Id : null,
+	transaction_id : null,
 	selected_id: []
 })
 

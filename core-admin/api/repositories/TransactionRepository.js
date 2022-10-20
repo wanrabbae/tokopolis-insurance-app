@@ -32,7 +32,7 @@ export default class TransactionRepository {
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
             `vehicle.brand, vehicle.sub_model, product.name as product_name, trans.documents, trans.price, ` +
-            `trans.discount_format, trans.discount_total, trans.loading_rate, trans.expansions, trans.total, ` +
+            `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, trans.total, ` +
             `trans.status, trans.pg_data, trans.created_at ` +
             `FROM transactions as trans ` +
             `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +

@@ -11,14 +11,14 @@ const mixin ={
                 maximumFractionDigits: 0
             });
 
-            if(value === null) {
+            if(value === null || value === undefined) {
                 return formatter.format(0);
             }
 
             return formatter.format(Number(value));
         },
         formatNumber(value) {
-            if (value === null) {
+            if (value === null || value === undefined) {
                 return 0
             }
 

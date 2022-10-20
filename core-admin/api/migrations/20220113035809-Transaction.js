@@ -63,6 +63,10 @@ module.exports = {
                 defaultValue: 'amount',
                 comment: "Required if agent using discount",
             },
+            discount_value: {
+                type: Sequelize.INTEGER,
+                comment: "Required if agent using discount",
+            },
             discount_total: {
                 type: Sequelize.INTEGER,
                 comment: "Required if agent using discount",
