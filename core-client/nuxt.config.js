@@ -166,6 +166,7 @@ export default {
   },
 
   publicRuntimeConfig: {
+    apiURL: process.env.API_SERVER_URL,
     serverURL: process.env.BASE_SERVER_URL
   },
 

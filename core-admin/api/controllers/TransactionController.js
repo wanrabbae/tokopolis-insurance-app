@@ -1,4 +1,5 @@
 const moment = require('moment')
+const axios = require('axios')
 
 import AccountService from '../services/AccountService'
 import ProductService from '../services/ProductService'
@@ -7,7 +8,7 @@ import PaymentService from '../services/PaymentService'
 import PdfService from '../services/PdfService'
 
 const validation = require('../validation/transaction.validation')
-const { getMoment, moneyFormat,
+const { getMoment, moneyFormat, moneyFormatNonSymbol,
     randomString, randomNumber, titleCase,
     percentToDecimal } = require('../utilities/functions')
 
@@ -20,48 +21,6 @@ const pdfService = new PdfService()
 exports.getAll = async (req, res) => {
     const account = await accountService.getAccountData(req.account._id)
     if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
-
-    const invoice = {
-        shipping: {
-            name: "Rahmat Ansori",
-            address: "Perumdam BA 23",
-            city: "Singosari",
-            state: "Malang",
-            country: "ID",
-            postal_code: 94111
-        },
-        items: [
-            {
-                item: "Comprehensive",
-                calculation: "IDR 226.200.000 x 3.18%",
-                currency: "IDR",
-                amount: 5474040
-            },
-            {
-                item: "Earthquake",
-                calculation: "IDR 226.200.000 x 0.12%",
-                currency: "IDR",
-                amount: 271440
-            },
-            {
-                item: "Flood",
-                calculation: "IDR 226.200.000 x 0.075%",
-                currency: "IDR",
-                amount: 169650
-            },
-            {
-                item: "Personal Accident Passenger",
-                calculation: "IDR 226.200.000 x 0.1% x [SEAT]",
-                currency: "IDR",
-                amount: 30000
-            },
-        ],
-        subtotal: 5474040,
-        paid: 0,
-        invoice_nr: 1234
-    };
-
-    pdfService.createInvoice(invoice, 'document.pdf')
 
     const transaction = await service.getClientTransactionAll(account.id)
     if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
@@ -143,6 +102,111 @@ const getDiscountValue = (productPrice, expansionPrice, format, value) => {
     }
 }
 
+const fetchImage = async (src) => {
+    const image = await axios.get(src, {
+        responseType: 'arraybuffer'
+    }).catch()
+
+    if (!image) return null
+
+    return image.data
+}
+
+const generateQuotation = async (payload) => {
+    const productLogo = await fetchImage(`${process.env.HOST_ADMIN}${payload.product.image}`)
+    const calculation = [
+        {
+            label: titleCase(payload.product.type),
+            price: moneyFormatNonSymbol(payload.vehicle_data.price),
+            percentage: '3.18%',
+            total: moneyFormatNonSymbol(payload.price)
+        },
+    ]
+
+    payload.expansions.forEach(expansion => {
+        calculation.push({
+            label: expansion.label,
+            price: moneyFormatNonSymbol(expansion.price),
+            percentage: '100%',
+            total: moneyFormatNonSymbol(expansion.price),
+        })
+    })
+
+    const data = {
+        logo: {
+            product: productLogo
+        },
+        header: [
+            {
+                label: 'Nomor',
+                text: payload.id
+            },
+            {
+                label: 'Jenis Asuransi',
+                text: 'Asuransi Kendaraan Bermotor (PSAKBI)'
+            },
+            {
+                label: 'Tanggal Terbit',
+                text: moment(payload.created_at).format('LLL')
+            },
+        ],
+        detail: [
+            {
+                label: 'Nama Tertanggung',
+                text: payload.client_data.fullname,
+            },
+            {
+                label: 'Nama Produk',
+                text: payload.product.name,
+            },
+            {
+                label: 'Tipe Perlindungan',
+                text: titleCase(payload.product.type),
+            },
+            {
+                label: 'Periode Asuransi',
+                text: `${moment(payload.start_date).format('LL')} - ${moment(payload.start_date).add(1,'y').format('LL')}`,
+            },
+        ],
+        vehicle: [
+            {
+                label: 'Merk',
+                text: payload.vehicle.brand
+            },
+            {
+                label: 'Model',
+                text: payload.vehicle.sub_model
+            },
+            {
+                label: 'Tipe',
+                text: payload.vehicle.vehicle_type
+            },
+            {
+                label: 'Kategori',
+                text: payload.vehicle.category
+            },
+            {
+                label: 'Tahun Produksi',
+                text: payload.vehicle_data.year
+            },
+            // {
+            //     label: 'Kategori Lokasi',
+            //     text: ''
+            // },
+            // {
+            //     label: 'Fungsi Kendaraan',
+            //     text: ''
+            // },
+        ],
+        calculation: calculation,
+        currency: 'IDR',
+        total: moneyFormatNonSymbol(payload.total),
+        link: `${process.env.HOST_CLIENT}/asuransi/mobil/polis/pembelian?id=${payload.id}`
+    }
+
+    return await pdfService.createInvoice(data, `view/static/quotation/${payload.id}.pdf`)
+}
+
 exports.postOffer = async (req, res) => {
     const validate = validation.postOffer(req)
     if (validate.error) return res.errorValidation(validate.details)
@@ -184,7 +248,7 @@ exports.postOffer = async (req, res) => {
     const discountTotal = getDiscountValue(req.session.product.price,
         expansion.price, discountFormat, discountValue)
 
-    const transaction = await service.createOffer({
+    const newOffer = await service.createOffer({
         id: getTransactionID(),
         agent_id: account.id,
         vehicle_id: req.session.vehicle.id,
@@ -202,8 +266,15 @@ exports.postOffer = async (req, res) => {
         total: req.session.product.price + expansion.price - discountTotal
     })
 
+    if (!newOffer)
+        return res.errorBadRequest(req.polyglot.t('error.transaction.create'))
+
+    const transaction = await service.getAgentTransactionDetail(account.id, newOffer.id)
+
+    await generateQuotation(transaction)
+
     return res.jsonData({
-        transaction_id: transaction.id
+        transaction_id: newOffer.id
     })
 }
 

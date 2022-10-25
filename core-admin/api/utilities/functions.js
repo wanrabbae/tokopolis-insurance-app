@@ -88,6 +88,10 @@ const moneyFormat = (price) => {
     return formatter.format(price)
 }
 
+const moneyFormatNonSymbol = (price) => {
+    return price.toLocaleString('id-ID')
+}
+
 const stringTag = (value) => {
     const lower = value.toLowerCase()
 
@@ -109,6 +113,6 @@ const percentToDecimal = (number) => number / parseFloat(100)
 module.exports = {
     getMoment, extensionHelper,
     randomString, randomNumber, uploadHandler,
-    phoneFormat, moneyFormat, stringTag,
-    titleCase, percentToDecimal
+    phoneFormat, moneyFormat, moneyFormatNonSymbol,
+    stringTag, titleCase, percentToDecimal
 }

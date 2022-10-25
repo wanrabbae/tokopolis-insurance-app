@@ -92,3 +92,4 @@ sw.*
 view/static/uploads/
 view/static/temp/
 view/static/undefined/
+view/static/quotation/*
