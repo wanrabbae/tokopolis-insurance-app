@@ -5,11 +5,11 @@ module.exports = (sequelize, Sequelize) => {
 			primaryKey: true
 		},
 		year: {
-			type: Sequelize.DATEONLY,
+			type: Sequelize.INTEGER,
 			allowNull: false,
 		},
 		price: {
-			type: Sequelize.INTEGER,
+			type: Sequelize.DOUBLE,
 			allowNull: false,
 		},
 	}, {

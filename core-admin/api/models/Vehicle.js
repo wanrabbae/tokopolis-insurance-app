@@ -57,14 +57,18 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.BOOLEAN,
 			allowNull: false,
 		},
+        created_at: Sequelize.DATE,
+        updated_at: Sequelize.DATE,
 	}, {
 		freezeTableName: true,
-		timestamps: false,
+		createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        deletedAt: false,
 	})
 
 	Vehicle.associate = function(models) {
-		Vehicle.hasOne(models.VehiclePrice, {
-			as: 'price',
+		Vehicle.hasMany(models.VehiclePrice, {
+			as: 'prices',
 			sourceKey: 'id',
 			foreignKey: 'vehicle_id',
 			onDelete: 'CASCADE'

@@ -2,17 +2,19 @@ const { Router } = require('express')
 const verify = require('../../middlewares/verifyToken')
 const { uploadFile } = require('../../middlewares/uploadFile')
 
-const { vehicleCSV, vehicleBrands,
-    vehicleTypes } = require('../../controllers/admin/VehicleController')
+const { list, importVehicle, getPriceList, vehicleBrands,
+    vehicleTypes, vehicleCategories } = require('../../controllers/admin/VehicleController')
 
 const router = Router()
 const admin = verify('admin')
 
-router.post('/admin/vehicle/csv', admin,
-    uploadFile({ fileSize: 50 }).fields([
-        { name: 'csv_file' }
-    ]), vehicleCSV)
+router.get('/admin/vehicle/list', admin, list)
+router.post('/admin/vehicle/import', admin,
+    uploadFile({ allowExt: ['.xlsx', '.xls'], fileSize: 5 }).single('vehicle_file'),
+    importVehicle)
+router.get('/admin/vehicle/prices', admin, getPriceList)
 router.get('/admin/vehicle/item/brands', admin, vehicleBrands)
 router.get('/admin/vehicle/item/types', admin, vehicleTypes)
+router.get('/admin/vehicle/item/categories', admin, vehicleCategories)
 
 module.exports = router

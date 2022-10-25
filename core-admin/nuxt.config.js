@@ -43,6 +43,7 @@ export default {
   */
   plugins: [
     '~/plugins/i18n.js',
+    '~/plugins/mixins-global-function.js',
     '~/plugins/global-function.js',
     '~/plugins/axios',
     { mode: 'client', src: '~/plugins/ckeditor.js' },

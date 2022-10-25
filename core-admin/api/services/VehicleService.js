@@ -32,6 +32,18 @@ export default class VehicleService {
         return this.repository.vehicleTypes()
     }
 
+    vehicleCategories() {
+        return this.repository.vehicleCategories()
+    }
+
+    getVehicleAll(filter, limit, offset) {
+        return this.repository.getVehicleAll(filter, limit, offset)
+    }
+
+    getVehicleByCode(code) {
+        return this.repository.getVehicleByCode(code)
+    }
+
     getVehicleBrandList(year) {
         return this.repository.getVehicleBrandList(year)
     }
@@ -59,8 +71,24 @@ export default class VehicleService {
         return returnValue
     }
 
+    getVehiclePriceList(id) {
+        return this.repository.getVehiclePriceList(id)
+    }
+
     getAccountVehicle(id) {
         return this.repository.getAccountVehicle(id)
+    }
+
+    getCountByQuery(filter) {
+        return this.repository.getCountByQuery(filter)
+    }
+
+    createVehicle(payload) {
+        return this.repository.createVehicle(payload)
+    }
+
+    createVehiclePrices(payload) {
+        return this.repository.createVehiclePrices(payload)
     }
 
     async saveAccountVehicle(account_id, vehicle_id, payload) {
@@ -73,6 +101,10 @@ export default class VehicleService {
             vehicle_id, payload)
 
         return newData[0]
+    }
+
+    removeVehiclePrices(vehicle_id) {
+        return this.repository.removeVehiclePrices(vehicle_id)
     }
 
     getAccessoriesJson(payloads) {

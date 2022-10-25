@@ -1,4 +1,4 @@
-const { QueryTypes } = require('sequelize')
+const { Op, QueryTypes } = require('sequelize')
 
 const { sequelize, Vehicle,
     VehiclePrice, AccountVehicle,
@@ -28,8 +28,36 @@ export default class VehicleRepository {
         })
     }
 
+    async vehicleCategories() {
+        return await Vehicle.findAll({
+            attributes: [
+                [sequelize.fn('DISTINCT', sequelize.col('category')) ,'category']
+            ]
+        })
+    }
+
+    async getVehicleAll(filter, limit, offset) {
+        return await Vehicle.findAll({
+            where: {
+                brand: { [Op.like]: `%${filter.brand}%` },
+                vehicle_type: { [Op.like]: `%${filter.vehicle_type}%` },
+                category: { [Op.like]: `%${filter.category}%` },
+            },
+            limit: limit,
+            offset: offset,
+        })
+    }
+
     async getVehicle(id) {
         return await Vehicle.findByPk(id)
+    }
+
+    async getVehicleByCode(code) {
+        return await Vehicle.findOne({
+            where: {
+                code: code
+            }
+        })
     }
 
     async getVehicleBrandList(year) {
@@ -58,6 +86,14 @@ export default class VehicleRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getVehiclePriceList(id) {
+        return await VehiclePrice.findAll({
+            where: {
+                vehicle_id: id
+            }
+        })
+    }
+
     async getAccountVehicle(id) {
         return await sequelize.query("SELECT vehicle.id, vehicle.brand, vehicle.model, " +
             "vehicle.sub_model, data.year, data.plate, data.plate_detail, data.vehicle_color, " +
@@ -75,6 +111,24 @@ export default class VehicleRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getCountByQuery(filter) {
+        return await Vehicle.count({
+            where: {
+                brand: { [Op.like]: `%${filter.brand}%` },
+                vehicle_type: { [Op.like]: `%${filter.vehicle_type}%` },
+                category: { [Op.like]: `%${filter.category}%` },
+            },
+        })
+    }
+
+    async createVehicle(payload) {
+        return await Vehicle.create(payload)
+    }
+
+    async createVehiclePrices(payload) {
+        return await VehiclePrice.bulkCreate(payload)
+    }
+
     async saveAccountVehicle(account_id, vehicle_id, payload) {
         return await sequelize.query(`INSERT INTO account_vehicles (account_id, vehicle_id, year, ` +
             `plate, plate_detail, vehicle_color, machine_number, skeleton_number, price, accessories) ` +
@@ -83,6 +137,14 @@ export default class VehicleRepository {
             `${payload.price},'${payload.accessories}')`,
             { type: QueryTypes.INSERT })
             // .catch((err) => { console.log(">> Error: ", err) })
+    }
+
+    async removeVehiclePrices(vehicle_id) {
+        return await VehiclePrice.destroy({
+            where: {
+                vehicle_id: vehicle_id
+            }
+        })
     }
 
     async getPlateList() {
