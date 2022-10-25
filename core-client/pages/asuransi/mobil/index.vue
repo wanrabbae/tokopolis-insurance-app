@@ -187,7 +187,7 @@
 
                     <b-form-group
                         v-slot="{ ariaDescribedby }"
-                        label="Pilih Paket Asuransi"
+                        label="Pilih Perlindungan Asuransi"
                         label-class="custom-label"
                         class="col-12 mb-0"
                     >

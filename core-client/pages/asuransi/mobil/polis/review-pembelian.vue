@@ -567,7 +567,7 @@ export default {
                 },
                 {
                     key: "series",
-                    label: "Email"
+                    label: "Seri Mobil"
                 },
                 {
                     key: "productionYear",
@@ -583,7 +583,7 @@ export default {
                 },
                 {
                     key: "protection",
-                    label: "Paket"
+                    label: "Perlindungan"
                 },
                 {
                     key: "color",
