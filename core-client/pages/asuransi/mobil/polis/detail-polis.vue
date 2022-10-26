@@ -505,8 +505,10 @@ export default {
                     this.model.discountPercentage
             })
             .then(function(response) {
-                window.open(`${self.$config.apiURL}/quotation/${response.data.transaction_id}.pdf`, '_blank')
+                const redirectURL = self.$config.nodeEnv === 'development' ? self.$config.apiURL :
+                    self.$config.serverURL
 
+                window.open(`${redirectURL}/quotation/${response.data.transaction_id}.pdf`, '_blank')
                 self.$router.push({
                     name: "asuransi-mobil-polis-pembelian",
                     query: { id: response.data.transaction_id }

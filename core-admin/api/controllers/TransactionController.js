@@ -113,7 +113,7 @@ const fetchImage = async (src) => {
 }
 
 const generateQuotation = async (payload) => {
-    const productLogo = await fetchImage(`${process.env.HOST_ADMIN}${payload.product.image}`)
+    const productLogo = await fetchImage(`${process.env.REDIRECT_ADMIN}${payload.product.image}`)
     const calculation = [
         {
             label: titleCase(payload.product.type),
@@ -201,7 +201,7 @@ const generateQuotation = async (payload) => {
         calculation: calculation,
         currency: 'IDR',
         total: moneyFormatNonSymbol(payload.total),
-        link: `${process.env.HOST_CLIENT}/asuransi/mobil/polis/pembelian?id=${payload.id}`
+        link: `${process.env.REDIRECT_CLIENT}/asuransi/mobil/polis/pembelian?id=${payload.id}`
     }
 
     return await pdfService.createInvoice(data, `view/static/quotation/${payload.id}.pdf`)
