@@ -77,7 +77,7 @@
                                     required="required"
                                     @change="(e) => onFileChange(e)"
                                 />
-                                <i class="uil uil-upload me-1"></i> Upload CSV
+                                <i class="uil uil-upload me-1"></i> Upload Excel File
                             </b-button>
                         </div>
 

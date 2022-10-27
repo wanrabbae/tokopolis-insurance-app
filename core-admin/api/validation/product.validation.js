@@ -27,7 +27,7 @@ const calculate = (req) => {
         protection: Joi.valid('comprehensive', 'tlo')
             .required()
             .label(req.polyglot.t('field.protection')),
-        use: Joi.valid('private', 'agency')
+        use: Joi.valid('private', 'commercial')
             .required()
             .label(req.polyglot.t('field.use')),
         acc: Joi.array()

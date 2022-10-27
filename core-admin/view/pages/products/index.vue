@@ -45,6 +45,15 @@
                                     <img :src="data.value" :alt="data.item.name" width="120" />
                                 </template>
 
+                                <template #cell(type)="data">
+                                    <h5>
+                                        <b-badge v-if="data.item.is_comprehensive"
+                                            class="badge bg-success">Komprehensif</b-badge>
+                                        <b-badge v-else
+                                            class="badge bg-success">Total Loss</b-badge>
+                                    </h5>
+                                </template>
+
                                 <template #cell(action)="data">
                                     <b-button :id="'act-detail-'+data.item.id" type="button" variant="primary"
                                         v-on:click="showDetail(data.item.id)"><i class="uil uil-eye"/></b-button>

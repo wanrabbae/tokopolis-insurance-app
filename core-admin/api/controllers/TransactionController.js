@@ -9,7 +9,7 @@ import PdfService from '../services/PdfService'
 
 const validation = require('../validation/transaction.validation')
 const { getMoment, moneyFormat, moneyFormatNonSymbol,
-    randomString, randomNumber, titleCase,
+    phoneFormat, randomNumber, titleCase,
     percentToDecimal } = require('../utilities/functions')
 
 const service = new TransactionService()
@@ -529,7 +529,8 @@ exports.doPayment = async (req, res) => {
             email: transaction.client_data.email != 'null' ?
                 transaction.client_data.email : account.email,
             phone: transaction.client_data.phone != 'null' ?
-                transaction.client_data.phone : account.profile?.phone,
+                phoneFormat(transaction.client_data.phone) :
+                phoneFormat(account.profile?.phone),
         },
         platform: req.body.platform,
         // Send total without payment fee

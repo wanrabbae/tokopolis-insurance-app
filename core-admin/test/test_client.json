@@ -133,7 +133,7 @@
                                 {
                                     "key": "use",
                                     "value": "private",
-                                    "description": "private, agency"
+                                    "description": "private, commercial"
                                 },
                                 {
                                     "key": "acc[]",
@@ -202,7 +202,7 @@
                                         {
                                             "key": "use",
                                             "value": "private",
-                                            "description": "private, agency"
+                                            "description": "private, commercial"
                                         },
                                         {
                                             "key": "acc[]",

@@ -31,7 +31,6 @@ module.exports = (sequelize, Sequelize) => {
 		},
 		vehicle_type_code: {
 			type: Sequelize.STRING,
-			allowNull: false,
 		},
 		category: {
 			type: Sequelize.STRING,

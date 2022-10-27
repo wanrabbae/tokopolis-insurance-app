@@ -376,7 +376,7 @@ export default {
             userCar: [
                     { text: 'Pilih', value: null },
                     { text: 'PRIBADI', value: "private" },
-                    { text: 'KOMERSIL', value: "agency" }
+                    { text: 'KOMERSIL', value: "commercial" }
                     ],
             plateCar:[],
             accessoriesFields: [

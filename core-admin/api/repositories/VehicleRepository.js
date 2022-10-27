@@ -79,7 +79,8 @@ export default class VehicleRepository {
     async getVehiclePrice(year, brand, model, sub_model) {
         return await sequelize.query("SELECT vehicle.id, vehicle.brand, vehicle.code, vehicle.capacity, " +
             "vehicle.model, vehicle.sub_model, vehicle.category_code, price.year, price.price, " +
-            "vehicle.is_comprehensive, vehicle.is_tlo FROM vehicle_prices AS price " +
+            "vehicle.is_private, vehicle.is_commercial, vehicle.is_comprehensive, vehicle.is_tlo " +
+            "FROM vehicle_prices AS price " +
             `JOIN vehicles AS vehicle ON price.vehicle_id = vehicle.id WHERE price.year = '${year}' ` +
             `AND vehicle.brand = '${brand}' AND vehicle.model = '${model}' ` +
             `AND vehicle.sub_model = '${sub_model}'`,

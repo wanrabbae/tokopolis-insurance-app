@@ -113,6 +113,7 @@ const id_ID_strings = {
             'vehicle.price': 'Harga Kendaraan tidak valid',
             'vehicle.acc': 'Aksesoris Kendaraan tidak valid',
             'vehicle.acc.price': 'Harga Aksesoris Kendaraan tidak valid',
+            'vehicle.function': 'Fungsi Kendaraan tidak valid',
             'vehicle.protection': 'Proteksi Kendaraan tidak valid',
             'vehicle.plate.new': 'Detail Plat Nomor tidak perlu diisi',
             'vehicle.plate.old': 'Detail Plat Nomor wajib diisi',

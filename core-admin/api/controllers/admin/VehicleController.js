@@ -32,6 +32,15 @@ exports.list = async (req, res, next) => {
     })
 }
 
+const excelEmpty = (text) => {
+    if (text == '-' || text == 'N/A' ||
+        text == '#N/A' || text == undefined) {
+        return ''
+    }
+
+    return text
+}
+
 exports.importVehicle = async (req, res) => {
     const excel = uploadHandler(req.file.path, 'vehicle')
     if (!excel) return res.errorBadRequest()
@@ -44,21 +53,24 @@ exports.importVehicle = async (req, res) => {
     var vehicleList = []
 
     for (let rowIndex = 2; rowIndex < item.length; rowIndex++) {
+        const code = item[rowIndex][1]
+        if (code == undefined) continue
+
         // index 0 - 12 save data to attribute
         var data = {
-            brand: item[rowIndex][0],
-            code: item[rowIndex][1],
-            capacity: item[rowIndex][2],
-            model: item[rowIndex][3],
-            sub_model: item[rowIndex][4],
-            vehicle_type: item[rowIndex][5],
-            vehicle_type_code: item[rowIndex][6],
-            category: item[rowIndex][7],
-            category_code: item[rowIndex][8],
-            is_private: item[rowIndex][9],
-            is_commercial: item[rowIndex][10],
-            is_comprehensive: item[rowIndex][11],
-            is_tlo: item[rowIndex][12],
+            brand: excelEmpty(item[rowIndex][0]),
+            code: excelEmpty(code),
+            capacity: excelEmpty(item[rowIndex][2]),
+            model: excelEmpty(item[rowIndex][3]),
+            sub_model: excelEmpty(item[rowIndex][4]),
+            vehicle_type: excelEmpty(item[rowIndex][5]),
+            vehicle_type_code: excelEmpty(item[rowIndex][6]),
+            category: excelEmpty(item[rowIndex][7]),
+            category_code: excelEmpty(item[rowIndex][8]),
+            is_private: excelEmpty(item[rowIndex][9]),
+            is_commercial: excelEmpty(item[rowIndex][10]),
+            is_comprehensive: excelEmpty(item[rowIndex][11]),
+            is_tlo: excelEmpty(item[rowIndex][12]),
             prices: []
         }
 
@@ -66,7 +78,7 @@ exports.importVehicle = async (req, res) => {
         for (let yearIndex = 13; yearIndex < item[rowIndex].length; yearIndex++) {
             const value = item[rowIndex][yearIndex]
 
-            if (typeof value == 'number') {
+            if (typeof value == 'number' && value !== 0) {
                 data.prices.push({
                     year: item[0][yearIndex],
                     value: value,

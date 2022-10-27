@@ -49,6 +49,7 @@
  * Dashboard component
  */
 export default {
+    layout: 'admin',
     data() {
         return {
             title: "Dashboard",

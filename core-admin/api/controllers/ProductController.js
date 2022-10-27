@@ -35,8 +35,14 @@ exports.productCalculation = async (req, res, next) => {
         return res.errorBadRequest(req.polyglot.t('error.vehicle.price'))
     }
 
+    if ((body.use == 'private' && !vehicle.is_private) ||
+        (body.use == 'commercial' && !vehicle.is_commercial)) {
+        req.session.vehicle = null
+        return res.errorBadRequest(req.polyglot.t('error.vehicle.function'))
+    }
+
     if ((body.protection == "comprehensive" && !vehicle.is_comprehensive) ||
-        body.protection == "tlo" && !vehicle.is_tlo) {
+        (body.protection == "tlo" && !vehicle.is_tlo)) {
         req.session.vehicle = null
         return res.errorBadRequest(req.polyglot.t('error.vehicle.protection'))
     }

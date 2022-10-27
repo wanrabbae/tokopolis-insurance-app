@@ -1,27 +1,8 @@
-const csv = require('csv-parser')
-const fs = require('fs')
-
 import VehicleRepository from '../repositories/VehicleRepository'
 
 export default class VehicleService {
     constructor() {
         this.repository = new VehicleRepository()
-    }
-
-    importData(file) {
-        Object.keys(file).forEach(key => {
-            const csv = uploadHandler(file[key][0].path, 'vehicle')
-            documents[key] = csv.clearPath
-        })
-
-        // fs.createReadStream('data.csv')
-        //     .pipe(csv())
-        //     .on('data', (row) => {
-        //         console.log(row);
-        //     })
-        //     .on('end', () => {
-        //         console.log('CSV file successfully processed');
-        //     })
     }
 
     vehicleBrands() {

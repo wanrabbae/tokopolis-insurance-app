@@ -113,6 +113,7 @@ const en_US_strings = {
             'vehicle.price': 'Vehicle Price not Valid',
             'vehicle.acc': 'Vehicle Accessories not Valid',
             'vehicle.acc.price': 'Vehicle Accessories Price not Valid',
+            'vehicle.function': 'Vehicle Function not Valid',
             'vehicle.protection': 'Vehicle Protection not Valid',
             'vehicle.plate.new': 'Vehicle Plate Detail is no need to fill',
             'vehicle.plate.old': 'Vehicle Plate Detail is required',

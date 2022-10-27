@@ -5,8 +5,7 @@ function getMoment() {
     return moment().locale('id').tz('Asia/Jakarta')
 }
 
-function extensionHelper(values)
-{
+function extensionHelper(values) {
     const regexFirst = '.('
     const regexEnd = ')$'
 
@@ -26,8 +25,7 @@ function extensionHelper(values)
     }
 }
 
-function randomString(length = 16)
-{
+function randomString(length = 16) {
     var result = ''
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     var charactersLength = characters.length
@@ -40,9 +38,10 @@ function randomString(length = 16)
 }
 
 function randomNumber(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    min = Math.ceil(min)
+    max = Math.floor(max)
+
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function uploadHandler(filePath, newPath)
@@ -74,6 +73,9 @@ function uploadHandler(filePath, newPath)
 function phoneFormat(value, code = '+62') {
     if (value == null)
         return null
+
+    if (value[0] == '+' || value[0] == '6')
+        return value
 
     return code + value.substr(1, value.length)
 }
