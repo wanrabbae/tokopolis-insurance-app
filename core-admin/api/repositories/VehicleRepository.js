@@ -61,18 +61,19 @@ export default class VehicleRepository {
     }
 
     async getVehicleBrandList(year) {
-        return await sequelize.query(this.vehicleQuery('vehicle.brand', `WHERE price.year = '${year}'`),
+        return await sequelize.query(this.vehicleQuery('vehicle.brand', `WHERE price.year = '${year}' ` +
+            `ORDER BY vehicle.brand ASC`),
             { type: QueryTypes.SELECT })
     }
 
     async getVehicleModelList(year, brand) {
         return await sequelize.query(this.vehicleQuery('vehicle.model', `WHERE price.year = '${year}' ` +
-            `AND vehicle.brand = '${brand}'`), { type: QueryTypes.SELECT })
+            `AND vehicle.brand = '${brand}' ORDER BY vehicle.model ASC`), { type: QueryTypes.SELECT })
     }
 
     async getVehicleSubList(year, brand, model) {
         return await sequelize.query(this.vehicleQuery('vehicle.sub_model', `WHERE price.year = '${year}' ` +
-            `AND vehicle.brand = '${brand}' AND vehicle.model = '${model}'`),
+            `AND vehicle.brand = '${brand}' AND vehicle.model = '${model}' ORDER BY vehicle.sub_model ASC`),
             { type: QueryTypes.SELECT })
     }
 
