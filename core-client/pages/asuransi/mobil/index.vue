@@ -96,6 +96,7 @@
                         name="Penggunaan Mobil"
                         label="Penggunaan Mobil"
                         class="col-12 col-md-4"
+                        :disabled="!condition.usage"
                         :options="userCar"
                         :rules="{ required: true }"
                         required
@@ -364,6 +365,7 @@ export default {
                 brand: false,
                 type: false,
                 series: false,
+                usage: false,
                 comprehensive : false,
                 tlo : false
             },
@@ -373,11 +375,7 @@ export default {
             brandCar: [{ text: 'Pilih', value: null }, ],
             typeCar: [{ text: 'Pilih', value: null }, ],
             seriesCar: [{ text: 'Pilih', value: null }, ],
-            userCar: [
-                    { text: 'Pilih', value: null },
-                    { text: 'PRIBADI', value: "private" },
-                    { text: 'KOMERSIL', value: "commercial" }
-                    ],
+            userCar: [{ text: 'Pilih', value: null }],
             plateCar:[],
             accessoriesFields: [
                 {
@@ -535,7 +533,10 @@ export default {
             this.condition.series = false
             this.condition.comprehensive = false
             this.condition.tlo = false
+            this.condition.usage = false
+            this.model.usage = null
             this.model.insurancePackage = null
+            this.userCar = [{ text: 'Pilih', value: null }]
             this.model.price = this.formatPrice(0, 'id-ID', 'decimal')
             this.model.minPrice = this.formatPrice(0)
             this.model.maxPrice = this.formatPrice(0)
@@ -625,9 +626,12 @@ export default {
             })
         },
         async getPriceCar() {
+            this.condition.usage = false
             this.condition.comprehensive = false
             this.condition.tlo = false
+            this.model.usage = null
             this.model.insurancePackage = null
+            this.userCar = [{ text: 'Pilih', value: null }]
             this.model.price = this.formatPrice(0, 'id-ID', 'decimal')
             this.model.minPrice = this.formatPrice(0)
             this.model.maxPrice = this.formatPrice(0)
@@ -647,13 +651,28 @@ export default {
                 this.model.price = this.formatPrice(response.data.price, 'id-ID', 'decimal')
                 this.model.minPrice = this.formatPrice(response.data.lowest_price)
                 this.model.maxPrice = this.formatPrice(response.data.highest_price)
-
                 /* eslint-disable eqeqeq */
                 if (response.data.is_comprehensive == '1'){
                     this.condition.comprehensive = true
                 }
                 if (response.data.is_tlo == '1'){
                     this.condition.tlo = true
+                }
+
+                if(response.data.is_private == '1'){
+                    this.condition.usage = true
+                    this.userCar.push({
+                        text: 'Pribadi',
+                        value: 'private'
+                    })
+                }
+
+                if(response.data.is_commercial == '1'){
+                    this.condition.usage = true
+                    this.userCar.push({
+                        text: 'Komersil',
+                        value: 'commercial'
+                    })
                 }
 
             })

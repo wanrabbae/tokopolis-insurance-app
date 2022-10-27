@@ -255,7 +255,6 @@ export default {
                         product[key] = value
                     });
                     this.products.push(product)
-                    console.log(product)
                 });
                 this.loading = false
 
