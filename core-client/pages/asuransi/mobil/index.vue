@@ -517,7 +517,7 @@ export default {
     methods: {
         getYear(){
             const year = this.$dayjs().get('year')
-            for( let i = year ; i > 2005 ; i--){
+            for( let i = year ; i > 2006 ; i--){
                 this.years.push({
                     text: i,
                     value: i

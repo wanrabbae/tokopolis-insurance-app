@@ -297,8 +297,10 @@
                                            </div>
 
                                        </b-collapse>
-                                       <div v-b-toggle.emoney-accordion role="tab" class="position-relative d-flex flex-column justify-content-center pointer chevron" style="min-height: 52px">
-                                           E-Money
+                                       <div v-b-toggle.emoney-accordion :disabled="model.totalPriceWithFee >10000000" role="tab" 
+                                            class="position-relative d-flex flex-column justify-content-center pointer chevron" 
+                                            style="min-height: 52px">
+                                        <span>E-Money <b-badge v-if="model.totalPriceWithFee >=10000000">Untuk Transaksi &le; 10 Juta</b-badge></span>
                                        </div>
 
                                        <b-collapse id="emoney-accordion" accordion="payment-method-accordion" role="tabpanel" >
