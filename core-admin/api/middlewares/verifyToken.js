@@ -21,6 +21,8 @@ function verify(roles = []) {
             try {
                 const verified = jwt.verify(token[1], process.env.TOKEN_SECRET)
                 req.account = verified
+                console.log('TESTING : ', req.account);
+
 
                 if (roles.length && !roles.includes(req.account.role)) {
                     return res.errorUnauthorized(req.polyglot.t('error.token.role'))

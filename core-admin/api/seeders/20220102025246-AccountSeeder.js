@@ -10,6 +10,7 @@ module.exports = {
             email: 'admin@piqo.com',
             password: hashedPassword,
             role: 'admin',
+            role_id: 1,
         }], {})
     },
 
