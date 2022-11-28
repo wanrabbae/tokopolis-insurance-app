@@ -6,7 +6,7 @@ const { list, importVehicle, getPriceList, vehicleBrands,
     vehicleTypes, vehicleCategories } = require('../../controllers/admin/VehicleController')
 
 const router = Router()
-const admin = verify('admin')
+const admin = verify(1)
 
 router.get('/admin/vehicle/list', admin, list)
 router.post('/admin/vehicle/import', admin,

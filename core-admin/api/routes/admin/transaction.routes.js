@@ -4,7 +4,7 @@ const verify = require("../../middlewares/verifyToken");
 const { list, detail } = require('../../controllers/admin/TransactionController')
 
 const router = Router()
-const admin = verify('admin')
+const admin = verify(1)
 
 // router.post('/admin/role', admin,create)
 router.get('/admin/transaction/list', admin, list)

@@ -9,7 +9,7 @@ const { list, detail, create, update,
     destroyExpansion, productNames } = require('../../controllers/admin/ProductController')
 
 const router = Router()
-const admin = verify('admin')
+const admin = verify(1)
 
 router.get('/admin/product', admin, list)
 router.get('/admin/product/:id', admin, detail)

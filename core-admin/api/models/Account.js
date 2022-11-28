@@ -45,6 +45,14 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.ENUM('client', 'agent', 'admin'),
 			defaultValue: 'client'
 		},
+		role_id: {
+			type: Sequelize.INTEGER,
+			allowNull: false,
+		},
+		parent_id: {
+			type: Sequelize.INTEGER,
+			allowNull: true,
+		},
 		email_verified_at: Sequelize.DATE,
 		created_at: Sequelize.DATE,
 		updated_at: Sequelize.DATE,

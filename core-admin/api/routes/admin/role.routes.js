@@ -4,7 +4,7 @@ const verify = require("../../middlewares/verifyToken");
 const { create, list, update, destroy, addEndpoint, removeEndpoint } = require('../../controllers/admin/RoleController')
 
 const router = Router()
-const admin = verify('admin')
+const admin = verify(1)
 
 router.post('/admin/role', admin,create)
 router.get('/admin/role/list',admin,list)

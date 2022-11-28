@@ -100,6 +100,7 @@ export default class AccountService {
     }
 
     getAuthToken(id, email, role, photo=null) {
+        console.log(role);
         return jwt.sign({
             _id: id,
             email: email,

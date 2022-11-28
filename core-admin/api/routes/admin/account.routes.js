@@ -6,7 +6,7 @@ const { list ,create ,account, updateData,
 const {uploadFile} = require("../../middlewares/uploadFile");
 
 const router = Router()
-const admin = verify('admin')
+const admin = verify(1)
 const staff = verify(['admin','agent','insurance']);
 
 // Administrator
