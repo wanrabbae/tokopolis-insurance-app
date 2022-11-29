@@ -18,8 +18,6 @@ exports.login = async (req, res) => {
     const validPass = await bcrypt.compare(req.body.password, account.password)
     if(!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
 
-    console.log(account);
-    console.log(account.role_id);
     const token = service.getAuthToken(account.id, account.email, account.role_id)
 
     return res.header('Authorization', `Bearer ${token}`).jsonData({

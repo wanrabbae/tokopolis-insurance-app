@@ -55,10 +55,6 @@ export default class EndpointService {
   }
 
   async getAllEndpointExist(role_id, endpoint, method) {
-    console.log(role_id);
-    console.log(endpoint);
-    console.log(method);
-
     return await this.repository.getAllEndpointExist(role_id, endpoint, method)
   }
 
