@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const verify = require('../middlewares/verifyToken')
+const verifyToken = require('../middlewares/verifyRole')
 const { uploadFile } = require('../middlewares/uploadFile')
 
 const { getAccountData, updateAccountData,
@@ -8,17 +9,17 @@ const { getAccountData, updateAccountData,
 
 const router = Router()
 const auth = verify()
-const nonAdmin = verify(['client', 'agent'])
+const AuthRoleMiddleware = verifyToken('auth:role')
 
 router.get('/user', auth, getAccountData)
 router.post('/user', auth,
     uploadFile().single('photo'), updateAccountData)
 
 router.post('/user/change-password', auth, updatePassword)
-router.get('/user/identity', nonAdmin, getIdentity)
-router.post('/user/identity', nonAdmin,
+router.get('/user/identity', AuthRoleMiddleware, getIdentity)
+router.post('/user/identity', AuthRoleMiddleware,
     uploadFile().single('image'), updateIdentity)
 
-router.get('/user/transactions', nonAdmin, getTransactions)
+router.get('/user/transactions', AuthRoleMiddleware, getTransactions)
 
 module.exports = router

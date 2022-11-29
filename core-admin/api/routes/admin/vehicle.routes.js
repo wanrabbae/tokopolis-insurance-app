@@ -1,20 +1,20 @@
 const { Router } = require('express')
-const verify = require('../../middlewares/verifyToken')
+const verifyToken = require('../../middlewares/verifyRole')
 const { uploadFile } = require('../../middlewares/uploadFile')
 
 const { list, importVehicle, getPriceList, vehicleBrands,
     vehicleTypes, vehicleCategories } = require('../../controllers/admin/VehicleController')
 
 const router = Router()
-const admin = verify(1)
+const AuthRoleMiddleware = verifyToken('auth:role')
 
-router.get('/admin/vehicle/list', admin, list)
-router.post('/admin/vehicle/import', admin,
+router.get('/admin/vehicle/list',AuthRoleMiddleware, list)
+router.post('/admin/vehicle/import',AuthRoleMiddleware,
     uploadFile({ allowExt: ['.xlsx', '.xls'], fileSize: 5 }).single('vehicle_file'),
     importVehicle)
-router.get('/admin/vehicle/prices', admin, getPriceList)
-router.get('/admin/vehicle/item/brands', admin, vehicleBrands)
-router.get('/admin/vehicle/item/types', admin, vehicleTypes)
-router.get('/admin/vehicle/item/categories', admin, vehicleCategories)
+router.get('/admin/vehicle/prices',AuthRoleMiddleware, getPriceList)
+router.get('/admin/vehicle/item/brands',AuthRoleMiddleware, vehicleBrands)
+router.get('/admin/vehicle/item/types',AuthRoleMiddleware, vehicleTypes)
+router.get('/admin/vehicle/item/categories',AuthRoleMiddleware, vehicleCategories)
 
 module.exports = router
