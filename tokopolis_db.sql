@@ -33,6 +33,8 @@ CREATE TABLE `accounts` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('client','agent','admin') NOT NULL DEFAULT 'client',
+  `role_id` int(11) NOT NULL,
+  `parent_id` int(11) NULL,
   `email_verified_at` datetime DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -354,6 +356,17 @@ CREATE TABLE `roles` (
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product_features`
+--
+
+INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Superadmin', '2022-11-29 11:40:00', '2022-11-29 11:40:00', NULL),
+(2, 'Operator Manager', '2022-11-29 11:40:00', '2022-11-29 11:40:00', NULL),
+(3, 'Branch Head', '2022-11-29 11:40:00', '2022-11-29 11:40:00', NULL),
+(4, 'Supervisor', '2022-11-29 11:40:00', '2022-11-29 11:40:00', NULL),
+(5, 'Sales', '2022-11-29 11:40:00', '2022-11-29 11:40:00', NULL);
 
 -- --------------------------------------------------------
 
