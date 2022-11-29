@@ -45,15 +45,14 @@ CREATE TABLE `accounts` (
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`id`, `fullname`, `email`, `password`, `role`, `email_verified_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'Administrator', 'admin@piqo.com', '$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e', 'admin', NULL, '2022-06-01 01:11:05', '2022-06-01 01:11:05', NULL),
-(2, 'Rahmat Ansori', 'ansori34@gmail.com', '$2b$10$vL0jM.r.4TZXKVs0lXrgeelsk.Bas0BvoNuMCdNYMM/LFkpRwFMNy', 'client', NULL, '2022-06-01 01:11:05', '2022-06-01 01:11:05', NULL),
-(3, 'Rizki Andrianto', 'rizukikkano@gmail.com', '$2b$10$Wo5U36LA7VbHVYjoHLE1ReIldH0evo./QEKAJPRYCk/KaOU8na/z.', 'client', NULL, '2022-06-06 14:54:13', '2022-06-06 14:54:13', NULL),
-(4, 'Faiz', 'decrypt21@gmail.com', '$2b$10$2IzzCUVHl7wv6jQIeWuLH.bF8j8YOKZ4ezCy.v3Ki9VBP3X6ejGva', 'client', NULL, '2022-06-16 14:41:48', '2022-06-16 14:41:48', NULL),
-(5, 'Faiz', 'kurnianadiem@gmail.com', '$2b$10$5gQJtW7TICMi3MnFM/XaQ.3EOWSe7G2IBBorb//.DdZJI0FAD3wU.', 'client', NULL, '2022-06-16 15:09:08', '2022-06-16 15:09:08', NULL);
+INSERT INTO `accounts` (`id`, `fullname`, `email`, `password`, `role`, `role_id`, `email_verified_at`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'Administrator', 'admin@piqo.com', '$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e', 'admin', '1', NULL, '2022-06-01 01:11:05', '2022-06-01 01:11:05', NULL),
+(2, 'Rahmat Ansori', 'ansori34@gmail.com', '$2b$10$vL0jM.r.4TZXKVs0lXrgeelsk.Bas0BvoNuMCdNYMM/LFkpRwFMNy', 'client', '1', NULL, '2022-06-01 01:11:05', '2022-06-01 01:11:05', NULL),
+(3, 'Rizki Andrianto', 'rizukikkano@gmail.com', '$2b$10$Wo5U36LA7VbHVYjoHLE1ReIldH0evo./QEKAJPRYCk/KaOU8na/z.', 'client', '1', NULL, '2022-06-06 14:54:13', '2022-06-06 14:54:13', NULL),
+(4, 'Faiz', 'decrypt21@gmail.com', '$2b$10$2IzzCUVHl7wv6jQIeWuLH.bF8j8YOKZ4ezCy.v3Ki9VBP3X6ejGva', 'client', '1', NULL, '2022-06-16 14:41:48', '2022-06-16 14:41:48', NULL),
+(5, 'Faiz', 'kurnianadiem@gmail.com', '$2b$10$5gQJtW7TICMi3MnFM/XaQ.3EOWSe7G2IBBorb//.DdZJI0FAD3wU.', 'client', '1', NULL, '2022-06-16 15:09:08', '2022-06-16 15:09:08', NULL);
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `account_tokens`
 --
@@ -137,7 +136,12 @@ INSERT INTO `endpoints` (`id`, `name`, `route`, `method`, `created_at`, `updated
 (18, 'Role Update', '/admin/role/?', 'PUT', '2022-06-12 05:52:30', '2022-06-12 05:52:30', NULL),
 (19, 'Role Delete', '/admin/role/?', 'DELETE', '2022-06-12 05:52:48', '2022-06-12 05:52:48', NULL),
 (20, 'Role Add Endpoint', '/admin/role/endpoint', 'POST', '2022-06-12 07:06:35', '2022-06-12 07:06:35', NULL),
-(21, 'Role Delete Endpoint', '/admin/role/endpoint/?', 'DELETE', '2022-06-12 07:06:35', '2022-06-12 07:06:35', NULL);
+(21, 'Role Delete Endpoint', '/admin/role/endpoint/?', 'DELETE', '2022-06-12 07:06:35', '2022-06-12 07:06:35', NULL),
+(22, 'Account List', '/admin/account/list', 'GET', '2022-11-29 07:06:35', '2022-11-29 07:06:35', NULL),
+(23, 'Account Create', '/admin/account', 'POST', '2022-11-29 07:06:35', '2022-11-29 07:06:35', NULL),
+(24, 'Account Update', '/admin/account/?', 'PUT', '2022-11-29 07:06:35', '2022-11-29 07:06:35', NULL),
+(25, 'Transaksi List', '/admin/transaction/list', 'GET', '2022-11-29 07:06:35', '2022-11-29 07:06:35', NULL),
+(26, 'Transaksi Detail', '/admin/transaction/?/detail', 'GET', '2022-11-29 07:06:35', '2022-11-29 07:06:35', NULL);
 
 -- --------------------------------------------------------
 
@@ -384,28 +388,32 @@ CREATE TABLE `role_endpoints` (
 -- Dumping data for table `product_features`
 --
 
-INSERT INTO `role_endpoints` (`role_id`, `endpoint_id`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(1, 5),
-(1, 6),
-(1, 7),
-(1, 8),
-(1, 9),
-(1, 10),
-(1, 11),
-(1, 12),
-(1, 13),
-(1, 14),
-(1, 15),
-(1, 16),
-(1, 17),
-(1, 18),
-(1, 19),
-(1, 20),
-(1, 21);
+INSERT INTO `role_endpoints` (`id`, `role_id`, `endpoint_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12),
+(13, 1, 13),
+(14, 1, 14),
+(15, 1, 15),
+(16, 1, 16),
+(17, 1, 17),
+(18, 1, 18),
+(19, 1, 19),
+(20, 1, 20),
+(21, 1, 21),
+(22, 1, 22),
+(23, 1, 23),
+(24, 1, 24),
+(25, 1, 25);
 
 -- --------------------------------------------------------
 
