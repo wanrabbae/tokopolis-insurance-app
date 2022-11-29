@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = verify
 
-function verify(roles = '') {
+function verify(role = '') {
     return [
         async (req, res, next) => {
             const header = req.header('Authorization')
@@ -24,7 +24,7 @@ function verify(roles = '') {
                 const verified = jwt.verify(token[1], process.env.TOKEN_SECRET)
                 req.account = verified
 
-                if (typeof roles === 'string' && roles == 'auth:role') {
+                if (typeof role === 'string' && role == 'auth:role') {
                     const endpoints = await roleService.getAllEndpointExist(req.account.role, endpoint, method)
                     if (endpoints.length == 0) {
                         return res.errorUnauthorized(req.polyglot.t('error.token.role'))

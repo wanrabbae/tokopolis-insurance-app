@@ -17,9 +17,6 @@ const create = (req) => {
       .min(6)
       .required()
       .label(req.polyglot.t('field.password')),
-    role: Joi.valid('admin', 'client', 'insurance','agent')
-      .required()
-      .label(req.polyglot.t('field.role')),
   })
 
   return joiResponse(schema.validate(req.body, {
