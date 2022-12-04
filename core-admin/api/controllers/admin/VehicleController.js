@@ -10,6 +10,7 @@ const service = new VehicleService()
 exports.list = async (req, res, next) => {
     const filter = {
         brand: req.query.brand || '',
+        sub_model: req.query.sub_model || '',
         vehicle_type: req.query.vehicle_type || '',
         category: req.query.category || '',
     }

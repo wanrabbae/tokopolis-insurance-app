@@ -4,10 +4,14 @@ const service = new TransactionService()
 
 exports.list = async (req, res, next) => {
     const filter = {
+        id: req.query.id || '',
         name: req.query.name || '',
         vehicle_brand: req.query.vehicle_brand || '',
+        vehicle_sub_model: req.query.vehicle_sub_model || '',
         vehicle_type: req.query.vehicle_type || '',
         product_name: req.query.product_name || '',
+        start_period: req.query.start_period || null,
+        end_period: req.query.end_period || null,
     }
 
     const current = Number(req.query.current) || 1

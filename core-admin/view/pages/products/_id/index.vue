@@ -293,6 +293,7 @@ import { required } from "vuelidate/lib/validators"
  * Profile component
  */
 export default {
+    layout: 'admin',
     head() {
         return {
             title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`,

@@ -79,6 +79,19 @@
                         <div class="row">
                             <div class="col-md-3 mt-2">
                                 <div role="group" class="form-group">
+                                    <label class="col-form-label">No Quotation</label>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            v-model="filterForm.id"
+                                            class="form-control"
+                                            placeholder="Masukkan Nomor Quotation"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
                                     <label class="col-form-label">Nama User</label>
                                     <div>
                                         <input
@@ -105,6 +118,19 @@
                             </div>
                             <div class="col-md-3 mt-2">
                                 <div role="group" class="form-group">
+                                    <label class="col-form-label">Nama Kendaraan</label>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            v-model="filterForm.sub_model"
+                                            class="form-control"
+                                            placeholder="Masukkan Nama Kendaraan"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
                                     <label class="col-form-label">Tipe</label>
                                     <div>
                                         <select
@@ -126,6 +152,23 @@
                                             <option v-for="option in filterList.products" v-bind:value="option.value"
                                                 v-bind:key="option.text">{{ option.text }}</option>
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Range Tanggal</label>
+                                    <div>
+                                        <date-picker
+                                            placeholder="Filter Tanggal"
+                                            v-model="filterForm.daterange"
+                                            valueType="YYYY-MM-DD"
+                                            titleFormat="DD MMMM"
+                                            range
+                                            append-to-body
+                                            lang="en"
+                                            confirm
+                                        ></date-picker>
                                     </div>
                                 </div>
                             </div>
@@ -240,10 +283,16 @@
 <script>
 import moment from 'moment'
 import Swal from "sweetalert2"
+import DatePicker from "vue2-datepicker"
+
+import "vue2-datepicker/index.css"
 import { required } from "vuelidate/lib/validators"
 
 export default {
     layout: 'admin',
+    components: {
+		DatePicker
+    },
     data() {
         return {
             tableData: [],
@@ -258,14 +307,18 @@ export default {
                 products: []
             },
             filterForm: {
+                id: null,
                 name: null,
                 brand: null,
+                sub_model: null,
                 type: null,
-                product: null
+                product: null,
+                daterange: "",
             },
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
+                { key: "id", label: 'No Quotation', tdClass: 'align-middle' },
                 { key: "user", label: 'User', tdClass: 'align-middle' },
                 { key: "vehicle", label: 'Kendaraan', tdClass: 'align-middle' },
                 { key: "product", label: 'Produk', tdClass: 'align-middle' },
@@ -366,10 +419,13 @@ export default {
         },
         doResetFilter() {
             this.filterForm = {
+                id: null,
                 name: null,
                 brand: null,
+                sub_model: null,
                 type: null,
-                product: null
+                product: null,
+                daterange: "",
             }
 
             this.getData()
@@ -378,10 +434,14 @@ export default {
         async getData() {
             this.tableData = await this.$axios.$get('api/admin/transaction/list', {
                     params: {
+                        id: this.filterForm.id,
                         name: this.filterForm.name,
                         vehicle_brand: this.filterForm.brand,
+                        vehicle_sub_model: this.filterForm.sub_model,
                         vehicle_type: this.filterForm.type,
                         product_name: this.filterForm.product,
+                        start_period: this.filterForm.daterange[0],
+                        end_period: this.filterForm.daterange[1],
                         // limit
                         current: this.currentPage,
                         limit: this.perPage,

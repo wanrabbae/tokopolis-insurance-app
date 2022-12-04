@@ -97,6 +97,19 @@
                             </div>
                             <div class="col-md-3 mt-2">
                                 <div role="group" class="form-group">
+                                    <label class="col-form-label">Sub Model</label>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            v-model="filterForm.sub_model"
+                                            class="form-control"
+                                            placeholder="Masukkan Sub Model"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
                                     <label class="col-form-label">Tipe</label>
                                     <div>
                                         <select
@@ -226,6 +239,7 @@ export default {
             },
             filterForm: {
                 brand: null,
+                sub_model: null,
                 type: null,
                 category: null
             },
@@ -338,6 +352,7 @@ export default {
         doResetFilter() {
             this.filterForm = {
                 brand: null,
+                sub_model: null,
                 type: null,
                 category: null
             }
@@ -349,6 +364,7 @@ export default {
             this.tableData = await this.$axios.$get('api/admin/vehicle/list', {
                     params: {
                         brand: this.filterForm.brand,
+                        sub_model: this.filterForm.sub_model,
                         vehicle_type: this.filterForm.type,
                         category: this.filterForm.category,
                         // limit
