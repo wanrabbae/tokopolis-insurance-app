@@ -21,6 +21,8 @@ exports.list = async (req, res, next) => {
     const count = await service.getTransactionCount(filter)
     const list = await service.getTransactionAll(filter, limit, offset)
 
+    if (count.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+
     return res.jsonData({
         pagination: {
             total: count[0].total,
@@ -34,6 +36,7 @@ exports.list = async (req, res, next) => {
 
 exports.detail = async (req, res, next) => {
     const data = await service.getTransactionDetail(req.params.id)
+    if (data.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
-    return res.jsonData(data)
+    return res.jsonData(data[0])
 }

@@ -18,9 +18,11 @@ function verify(role = '') {
 
             try {
                 const originEndpoint = String(req.baseUrl + req.path)
-                const endpoint = originEndpoint.replace(/[0-9]/g, "?")
+                const endpoint = originEndpoint
+                    .replace(/([A-Z][A-Z][A-Z]-\d+-+\d+-\d)\w+/g, "?")
+                    .replace(/[0-9]/g, "?")
                 const method = req.method
-                
+
                 const verified = jwt.verify(token[1], process.env.TOKEN_SECRET)
                 req.account = verified
 

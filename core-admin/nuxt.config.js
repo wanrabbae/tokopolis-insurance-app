@@ -46,6 +46,7 @@ export default {
     '~/plugins/mixins-global-function.js',
     '~/plugins/global-function.js',
     '~/plugins/axios',
+    "~/plugins/vue-lightbox.js",
     { mode: 'client', src: '~/plugins/ckeditor.js' },
     { mode: 'client', src: '~/plugins/simplebar.js' },
     { mode: 'client', src: '~/plugins/vuelidate.js' },

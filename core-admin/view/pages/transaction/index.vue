@@ -251,7 +251,7 @@
 
                                 <template #cell(action)="data">
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
-                                        title="Lihat Detail" v-on:click="showDetail(data.item)">
+                                        title="Lihat Detail" :href="'transaction/' + data.item.id">
                                         <i class="uil uil-eye"/>
                                     </b-button>
 
@@ -455,16 +455,6 @@ export default {
                 .catch ([])
 
             return this.tableData
-        },
-        async showDetail(item) {
-            // this.isCreate = false
-            // this.form = Object.assign({}, item)
-            const result = await this.getDetail(item.id)
-
-            if (result.length <= 0) return
-
-            this.transaction = result[0]
-            this.$refs['detail-modal'].show()
         },
         async getDetail(id) {
             return await this.$axios.$get(`api/admin/transaction/${id}/detail`)
