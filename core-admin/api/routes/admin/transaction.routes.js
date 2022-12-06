@@ -1,15 +1,15 @@
 const { Router } = require('express')
-const verify = require("../../middlewares/verifyToken");
+const verifyToken = require('../../middlewares/verifyRole')
 
 const { list, detail } = require('../../controllers/admin/TransactionController')
 
 const router = Router()
-const admin = verify('admin')
+const AuthRoleMiddleware = verifyToken('auth:role')
 
-// router.post('/admin/role', admin,create)
-router.get('/admin/transaction/list', admin, list)
-router.get('/admin/transaction/:id/detail', admin, detail)
-// router.put('/admin/role/:id', admin, update)
-// router.delete('/admin/role/:id', admin, destroy)
+// router.post('/admin/role', AuthRoleMiddleware,create)
+router.get('/admin/transaction/list', AuthRoleMiddleware, list)
+router.get('/admin/transaction/:id/detail', AuthRoleMiddleware, detail)
+// router.put('/admin/role/:id', AuthRoleMiddleware, update)
+// router.delete('/admin/role/:id', AuthRoleMiddleware, destroy)
 
 module.exports = router

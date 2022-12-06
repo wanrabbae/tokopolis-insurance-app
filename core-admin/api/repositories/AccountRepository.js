@@ -65,7 +65,14 @@ export default class AccountRepository {
     }
 
   async createAccountAdmin(payload) {
-    return await Account.create(payload)
+    return await Account.create({
+        fullname: payload.fullname,
+        email: payload.email,
+        password: payload.password,
+        role: 'admin',
+        role_id: payload.role_id,
+        parent_id: payload.parent_id
+    })
   }
 
     async createAccount(payload) {
