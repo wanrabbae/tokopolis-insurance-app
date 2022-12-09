@@ -80,6 +80,7 @@ exports.productCalculation = async (req, res, next) => {
     req.session.vehicle.accessories = accessories
 
     req.session.product.start_date = startDate()
+    req.session.product.rate = premiumRate
     req.session.product.loading_rate = loadingRateValue
     req.session.product.price = res.locals.price + loadingRateValue
 

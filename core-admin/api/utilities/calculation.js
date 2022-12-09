@@ -2,6 +2,7 @@ const moment = require('moment')
 
 const toMillion = (price) => price * 1000000
 const toDecimal = (valueInPercent) => valueInPercent / 100
+const toPercent = (valueInDecimal) => valueInDecimal * 100
 
 const comprehensive = (price, category, zone) => {
     const type1 = [ [3.82, 3.26, 2.53], [2.67, 2.47, 2.69], [2.18, 2.08, 1.79],
@@ -152,7 +153,7 @@ const paPassenger = (price, count = 1) => {
 }
 
 module.exports = {
-    toMillion, toDecimal,
+    toMillion, toDecimal, toPercent,
     comprehensive, tlo, loadingRate,
     flood, earthQuake, srccTerorism,
     tplRate, paDriver, paPassenger

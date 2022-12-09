@@ -212,9 +212,10 @@ export default class PdfService {
         doc.fillColor("#444444")
 
         doc.moveDown().text("DISCLAIMER / PENYANGKALAN", { align: "center", width: 500 })
-        doc.moveDown().text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
-        doc.moveDown().text("Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.")
-        doc.moveDown().text("Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+        doc.moveDown().text("Calon Tertanggung wajib membaca Quotation Slip ini secara keseluruhan dan wajib memberikan persetujuan secara tertulis untuk memproses penerbitan polis. " +
+            "Apabila kami menerima instruksi untuk memproses penerbitan polis asuransi, maka calon Tertanggung dianggap telah memahami dan menyetujui penawaran yang tercantum dalam Quotation Slip ini.", { align: "justify"})
+        doc.moveDown().text("Quotation ini tunduk kepada polis asuransi yang akan diterbitkan oleh Perusahaan Asuransi. " + "Apabila terdapat perbedaan ketentuan dalam polis asuransi dan ketentuan dalam Quotation Slip ini, maka ketentuan dalam Polis Asuransi yang akan berlaku.", { align: "justify"})
+        doc.moveDown().text("Apabila calon Tertanggung memiliki pertanyaan atas Quotation slip ini, mohon tidak ragu menghubungi kami melalui email support@istpro.com atau telepon (021) 79187909.", { align: "justify"})
 
         doc.moveDown()
 
@@ -225,31 +226,31 @@ export default class PdfService {
     }
 
     generateFooter(doc) {
-        let imageWidth = 140
-        let startHeight = doc.page.height - 120
+        let imageWidth = 100
+        let startHeight = doc.page.height - 130
 
         doc.page.margins.bottom = 0
 
         doc.fontSize(10)
-            .text("Proposal & Penawaran Asuransi Didukung Oleh",
+            .text("Quotation Powered by",
                 50,
                 startHeight,
                 { align: "center", width: 500 }
             )
-            .image("view/static/img/logo-tokopolis.png",
-                doc.page.width/2 - imageWidth/2, startHeight + 20, {
+            .image("view/static/img/istpro.png",
+                doc.page.width/2 - imageWidth/2, startHeight + 15, {
                 width: imageWidth
             })
-            .text("Bekerja sama dengan Pialang Asuransi [NAMA PT]",
-                50, startHeight + 58,
+            .text("PT ISTPRO INTI NUSA",
+                50, startHeight + 65,
                 { align: "center", width: 500 }
             )
-            .text("JL. TB Simatupang Banjarsari 1 No. 8C",
-                50, startHeight + 72,
+            .text("Izin No. KEP-157/KM.10/2007",
+                50, startHeight + 79,
                 { align: "center", width: 500 }
             )
-            .text("Cilandak Barat, Kecamatan Cilandak, Kota Jakarta Selatan, DKI Jakarta, 12430",
-                50, startHeight + 85,
+            .text("Nomor Keanggotaan APARI : 148-2007/APPARINDO/2020",
+                50, startHeight + 93,
                 { align: "center", width: 500, lineBreak: false, }
             )
     }

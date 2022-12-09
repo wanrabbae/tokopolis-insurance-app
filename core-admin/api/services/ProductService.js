@@ -83,75 +83,127 @@ export default class VehicleService {
     async getExpansionList(vehicle, product_id) {
         const productExpansions = await this.repository.getExpansionList(product_id)
         const defaultExpansions = [
-            { name: "flood", label: "Angin Topan, Banjir, Badai, Angin Ribut, dan Tanah Longsor",
-                premium: { price: vehicle.price * flood(vehicle.protection, vehicle.zone) } },
-            { name: "earthquake", label: "Gempa Bumi, Tsunami, dan Letusan Gunung Berapi",
-                premium: { price: vehicle.price * earthQuake(vehicle.protection, vehicle.zone) } },
-            { name: "srcc", label: "Huru-hara dan Kerusuhan",
-                premium: { price: vehicle.price * srccTerorism(vehicle.protection) } },
-            { name: "terorism", label: "Terorisme dan Sabotase",
-                premium: { price: vehicle.price * srccTerorism(vehicle.protection) } },
-            { name: "tpl", label: "Tanggung Jawab Hukum terhadap Pihak Ketiga", premiums: [
-                {
-                    value: toMillion(5),
-                    price: toMillion(5) * tplRate(toMillion(5), vehicle.use),
-                },
-                {
-                    value: toMillion(10),
-                    price: toMillion(10) * tplRate(toMillion(10), vehicle.use),
-                },
-                {
-                    value: toMillion(15),
-                    price: toMillion(15) * tplRate(toMillion(15), vehicle.use),
-                },
-                {
-                    value: toMillion(20),
-                    price: toMillion(20) * tplRate(toMillion(20), vehicle.use),
-                },
-            ] },
-            { name: "pad", label: "Kecelakaan Diri untuk Pengemudi", premiums: [
-                {
-                    value: toMillion(5),
-                    price: toMillion(5) * paDriver(toMillion(5)),
-                },
-                {
-                    value: toMillion(10),
-                    price: toMillion(10) * paDriver(toMillion(10)),
-                },
-                {
-                    value: toMillion(15),
-                    price: toMillion(15) * paDriver(toMillion(15)),
-                },
-                {
-                    value: toMillion(20),
-                    price: toMillion(20) * paDriver(toMillion(20)),
-                },
-            ] },
-            { name: "pap", label: "Kecelakaan Diri untuk Penumpang", premiums: [
-                {
-                    value: toMillion(5),
-                    price: toMillion(5) * paPassenger(toMillion(5)),
-                },
-                {
-                    value: toMillion(10),
-                    price: toMillion(10) * paPassenger(toMillion(10)),
-                },
-                {
-                    value: toMillion(15),
-                    price: toMillion(15) * paPassenger(toMillion(15)),
-                },
-                {
-                    value: toMillion(20),
-                    price: toMillion(20) * paPassenger(toMillion(20)),
-                },
-            ], max_passenger: vehicle.capacity - 1 },
+            {
+                name: "flood",
+                label: "Angin Topan, Banjir, Badai, Angin Ribut, dan Tanah Longsor",
+                premium: {
+                    rate: flood(vehicle.protection, vehicle.zone),
+                    price: vehicle.price * flood(vehicle.protection, vehicle.zone)
+                }
+            },
+            {
+                name: "earthquake",
+                label: "Gempa Bumi, Tsunami, dan Letusan Gunung Berapi",
+                premium: {
+                    rate: earthQuake(vehicle.protection, vehicle.zone),
+                    price: vehicle.price * earthQuake(vehicle.protection, vehicle.zone)
+                }
+            },
+            {
+                name: "srcc",
+                label: "Huru-hara dan Kerusuhan",
+                premium: {
+                    rate: srccTerorism(vehicle.protection),
+                    price: vehicle.price * srccTerorism(vehicle.protection)
+                }
+            },
+            {
+                name: "terorism",
+                label: "Terorisme dan Sabotase",
+                premium: {
+                    rate: srccTerorism(vehicle.protection),
+                    price: vehicle.price * srccTerorism(vehicle.protection)
+                }
+            },
+            {
+                name: "tpl",
+                label: "Tanggung Jawab Hukum terhadap Pihak Ketiga",
+                premiums: [
+                    {
+                        value: toMillion(5),
+                        rate: tplRate(toMillion(5), vehicle.use),
+                        price: toMillion(5) * tplRate(toMillion(5), vehicle.use),
+                    },
+                    {
+                        value: toMillion(10),
+                        rate: tplRate(toMillion(10), vehicle.use),
+                        price: toMillion(10) * tplRate(toMillion(10), vehicle.use),
+                    },
+                    {
+                        value: toMillion(15),
+                        rate: tplRate(toMillion(15), vehicle.use),
+                        price: toMillion(15) * tplRate(toMillion(15), vehicle.use),
+                    },
+                    {
+                        value: toMillion(20),
+                        rate: tplRate(toMillion(20), vehicle.use),
+                        price: toMillion(20) * tplRate(toMillion(20), vehicle.use),
+                    },
+                ]
+            },
+            {
+                name: "pad",
+                label: "Kecelakaan Diri untuk Pengemudi",
+                premiums: [
+                    {
+                        value: toMillion(5),
+                        rate: paDriver(toMillion(5)),
+                        price: toMillion(5) * paDriver(toMillion(5)),
+                    },
+                    {
+                        value: toMillion(10),
+                        rate: paDriver(toMillion(10)),
+                        price: toMillion(10) * paDriver(toMillion(10)),
+                    },
+                    {
+                        value: toMillion(15),
+                        rate: paDriver(toMillion(15)),
+                        price: toMillion(15) * paDriver(toMillion(15)),
+                    },
+                    {
+                        value: toMillion(20),
+                        rate: paDriver(toMillion(20)),
+                        price: toMillion(20) * paDriver(toMillion(20)),
+                    },
+                ]
+            },
+            {
+                name: "pap",
+                label: "Kecelakaan Diri untuk Penumpang",
+                premiums: [
+                    {
+                        value: toMillion(5),
+                        rate: paPassenger(toMillion(5)),
+                        price: toMillion(5) * paPassenger(toMillion(5)),
+                    },
+                    {
+                        value: toMillion(10),
+                        rate: paPassenger(toMillion(10)),
+                        price: toMillion(10) * paPassenger(toMillion(10)),
+                    },
+                    {
+                        value: toMillion(15),
+                        rate: paPassenger(toMillion(15)),
+                        price: toMillion(15) * paPassenger(toMillion(15)),
+                    },
+                    {
+                        value: toMillion(20),
+                        rate: paPassenger(toMillion(20)),
+                        price: toMillion(20) * paPassenger(toMillion(20)),
+                    },
+                ],
+                max_passenger: vehicle.capacity - 1
+            },
         ]
 
         for (const item of productExpansions) {
             defaultExpansions.push({
                 name: item.name,
                 label: item.label,
-                premium: { price: vehicle.price * toDecimal(item.rate) },
+                premium: {
+                    rate: toDecimal(item.rate),
+                    price: vehicle.price * toDecimal(item.rate)
+                },
             })
         }
 
@@ -187,15 +239,19 @@ export default class VehicleService {
                 json[i]['label'] = data.label
 
                 if ('premium' in data) {
+                    json[i]['rate'] = data.premium.rate
                     json[i]['price'] = data.premium.price
                 }
 
                 if ('premiums' in data) {
                     const index = (item.limit / 5) - 1
 
+                    json[i]['value'] = data.premiums[index].value
+                    json[i]['rate'] = data.premiums[index].rate
                     json[i]['price'] = data.premiums[index].price
 
                     if ('count' in item) {
+                        json[i]['count'] = item.count
                         json[i]['price'] *= item.count
                     }
                 }
