@@ -48,6 +48,11 @@ const en_US_strings = {
             use: "Use",
             accessories: "Vehicle Accessories",
             start_date: "Start Date",
+            leader_id: "Leader ID",
+            region_id: "Region ID",
+            province_id: "Province ID",
+            city_id: "City ID",
+            role_id: "Role ID",
 
             "address.village": "Village Address",
             "address.detail": "Address Detail",

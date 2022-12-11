@@ -116,17 +116,10 @@ exports.getTransactions = async (req, res) => {
     return res.jsonData(transactions);
 };
 
-exports.verifySupervisor = async (req, res, next) => {
-    const spvAccount = await service.getAccount(req.body.id_supervisor);
-    service.sendEmailVerifySuperVisor({
-        host: req.fullhost,
-        target: spvAccount.email,
-        title: req.polyglot.t("mail.verify_spv"),
-        data: {
-            name: req.body.name,
-            token: confirmToken.token,
-        },
-    });
+exports.verifySupervisor = async (req, res) => {
+    const spvAccount = await service.getAccountWithUniqueId(req.body.leader_id);
+
+    // send notif to spv
 
     return res.jsonSuccess(req.polyglot.t("success.default"));
 };

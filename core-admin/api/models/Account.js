@@ -52,6 +52,7 @@ module.exports = (sequelize, Sequelize) => {
             },
             role_id: {
                 type: Sequelize.INTEGER,
+                defaultValue: 0,
                 allowNull: false,
             },
             parent_id: {

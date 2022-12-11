@@ -1,87 +1,10 @@
 import AccountService from "../../services/AccountService";
-import RoleService from "../../services/RoleService";
+import { generateIdRoleManagement } from "../../utilities/generateId.js";
 
 const validation = require("../../validation/user.validation");
 const { randomString } = require("../../utilities/functions");
 
 const service = new AccountService();
-const roleService = new RoleService();
-
-const generateIdRoleManagement = async (payload) => {
-    const role_id = payload.role_id;
-    let unique_id =
-        payload.region_id.toString() +
-        payload.province_id.toString() +
-        payload.city_id.toString();
-    let other_id;
-
-    const findRole = await roleService.getRoleById(role_id);
-    const accounts = await service.getAllAccountWithRoleId(findRole.id);
-
-    if (findRole.name == "Operator Manager") {
-        // PULUHAN
-        unique_id += "-01-01";
-        other_id = "01";
-
-        if (accounts.length > 0) {
-            const arrayOfOtherId = [];
-            accounts.map((account) => arrayOfOtherId.push(account.other_id));
-
-            const arrayOfNumbers = arrayOfOtherId.map(Number);
-            const largest = Math.max.apply(0, arrayOfNumbers);
-            other_id = (largest + 1).toString().padStart(2, "0");
-        }
-
-        unique_id += `-${other_id}`;
-    } else if (findRole.name == "Branch Head") {
-        // RATUSAN
-        unique_id += "-01-01-01";
-        other_id = "001";
-
-        if (accounts.length > 0) {
-            const arrayOfOtherId = [];
-            accounts.map((account) => arrayOfOtherId.push(account.other_id));
-
-            const arrayOfNumbers = arrayOfOtherId.map(Number);
-            const largest = Math.max.apply(0, arrayOfNumbers);
-            other_id = (largest + 1).toString().padStart(3, "0");
-        }
-
-        unique_id += `-${other_id}`;
-    } else if (findRole.name == "Supervisor") {
-        // RATUSAN
-        unique_id += "-01-01-01-001";
-        other_id = "001";
-
-        if (accounts.length > 0) {
-            const arrayOfOtherId = [];
-            accounts.map((account) => arrayOfOtherId.push(account.other_id));
-
-            const arrayOfNumbers = arrayOfOtherId.map(Number);
-            const largest = Math.max.apply(0, arrayOfNumbers);
-            other_id = (largest + 1).toString().padStart(3, "0");
-        }
-
-        unique_id += `-${other_id}`;
-    } else {
-        // RIBUAN
-        unique_id += "-01-01-01-001-001";
-        other_id = "0001";
-
-        if (accounts.length > 0) {
-            const arrayOfOtherId = [];
-            accounts.map((account) => arrayOfOtherId.push(account.other_id));
-
-            const arrayOfNumbers = arrayOfOtherId.map(Number);
-            const largest = Math.max.apply(0, arrayOfNumbers);
-            other_id = (largest + 1).toString().padStart(4, "0");
-        }
-
-        unique_id += `-${other_id}`;
-    }
-
-    return { unique_id, other_id };
-};
 
 exports.create = async (req, res) => {
     const validate = validation.create(req);
@@ -97,8 +20,8 @@ exports.create = async (req, res) => {
 };
 
 exports.createDealerAccount = async (req, res) => {
-    // const validate = validation.create(req);
-    // if (validate.error) return res.errorValidation(validate.details);
+    const validate = validation.create(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
     const emailExist = await service.getAccountFromEmail(req.body.email);
     if (emailExist != null)

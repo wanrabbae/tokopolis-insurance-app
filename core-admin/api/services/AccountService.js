@@ -38,6 +38,10 @@ export default class AccountService {
         return this.repository.getAccountDataWithRoleId(role_id);
     }
 
+    getAccountWithUniqueId(id) {
+        return this.repository.getAccountUniqueId(id);
+    }
+
     async createAccountAdmin(data) {
         const payload = data.body;
 
@@ -112,7 +116,15 @@ export default class AccountService {
 
         // for role upgrade
         if (payload.leader_id) {
-            // ....
+            const spv = await this.repository.getAccountUniqueId(
+                payload.leader_id
+            );
+
+            if (spv) {
+                payload.role = "agent";
+                payload.role_id = 5;
+                payload.parent_id = spv.id;
+            }
         }
 
         await this.repository.updateAccount(account.id, payload);

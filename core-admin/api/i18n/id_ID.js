@@ -48,6 +48,11 @@ const id_ID_strings = {
             use: "Penggunaan",
             accessories: "Aksesoris Kendaraan",
             start_date: "Tanggal Mulai",
+            leader_id: "Leader ID",
+            region_id: "Region ID",
+            province_id: "Province ID",
+            city_id: "City ID",
+            role_id: "Role ID",
 
             "address.village": "Alamat Desa/Kelurahan",
             "address.detail": "Alamat Lengkap",
