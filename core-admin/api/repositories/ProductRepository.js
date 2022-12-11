@@ -12,29 +12,28 @@ export default class ProductRepository {
         })
     }
 
-    async getProductAll(limit, offset) {
-        return await Product.findAll({
-            limit: limit,
-            offset: offset,
-        })
-    }
-
-    async getProductAllWithFilter(query, limit, offset) {
+    async getProductAll(filter, limit, offset) {
         return await Product.findAll({
             where: {
-                [Op.or]: [
-                    { name: { [Op.like]: `%${query}%` } },
-                    { type: { [Op.like]: `%${query}%` } },
-                ]
+                name: { [Op.like]: `%${filter.name}%` },
+                type: { [Op.like]: `%${filter.type}%` },
             },
             limit: limit,
             offset: offset,
         })
     }
 
-    async getProductList(protection, limit, offset) {
+    async getProductList(vehicle, limit, offset) {
         return await Product.findAll({
-            where: { type: protection },
+            where: {
+                type: vehicle.protection,
+                supported_brands: {
+                    [Op.or]: {
+                        [Op.like]: `%${vehicle.brand}%`,
+                        [Op.is]: null
+                    }
+                },
+            },
             limit: limit,
             offset: offset,
             include: {
@@ -57,23 +56,25 @@ export default class ProductRepository {
         })
     }
 
-    async getCountAll() {
-        return await Product.count()
-    }
-
-    async getCountByProtection(protection) {
+    async getCountByVehicle(vehicle) {
         return await Product.count({
-            where: { type: protection }
+            where: {
+                type: vehicle.protection,
+                supported_brands: {
+                    [Op.or]: {
+                        [Op.like]: `%${vehicle.brand}%`,
+                        [Op.is]: null
+                    }
+                },
+            }
         })
     }
 
-    async getCountByQuery(query) {
+    async getCountByQuery(filter) {
         return await Product.count({
             where: {
-                [Op.or]: [
-                    { name: { [Op.like]: `%${query}%` } },
-                    { type: { [Op.like]: `%${query}%` } },
-                ]
+                name: { [Op.like]: `%${filter.name}%` },
+                type: { [Op.like]: `%${filter.type}%` },
             },
         })
     }

@@ -65,6 +65,8 @@ const create = (req) => {
             .required()
             .regex(RegExp(imageExt.regex))
             .label(req.polyglot.t('field.image')),
+        supported_brands: Joi.string()
+            .label(req.polyglot.t('field.image')),
         tnc: Joi.string()
             .required()
             .label(req.polyglot.t('field.product.tnc')),
@@ -106,6 +108,8 @@ const update = (req) => {
             .label(req.polyglot.t('field.description')),
         image: Joi.string()
             .regex(RegExp(imageExt.regex))
+            .label(req.polyglot.t('field.image')),
+        supported_brands: Joi.string()
             .label(req.polyglot.t('field.image')),
         tnc: Joi.string()
             .required()

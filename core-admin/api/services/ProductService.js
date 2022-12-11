@@ -18,16 +18,12 @@ export default class VehicleService {
         return this.repository.productNames()
     }
 
-    async getProductAll(query, limit, offset) {
-        if (query == null) {
-            return await this.repository.getProductAll(limit, offset)
-        }
-
-        return await this.repository.getProductAllWithFilter(query, limit, offset)
+    async getProductAll(filter, limit, offset) {
+        return await this.repository.getProductAll(filter, limit, offset)
     }
 
-    async getProductList(protection, limit, offset, product_price) {
-        const data = await this.repository.getProductList(protection, limit, offset)
+    async getProductList(vehicle, limit, offset, product_price) {
+        const data = await this.repository.getProductList(vehicle, limit, offset)
         data.map(data => data.dataValues.price = product_price)
 
         return data
@@ -64,16 +60,12 @@ export default class VehicleService {
         return products
     }
 
-    getCountByProtection(protection) {
-        return this.repository.getCountByProtection(protection)
+    getCountByVehicle(vehicle) {
+        return this.repository.getCountByVehicle(vehicle)
     }
 
-    async getCountByQuery(query) {
-        if (query == null) {
-            return await this.repository.getCountAll()
-        }
-
-        return this.repository.getCountByQuery(query)
+    async getCountByQuery(filter) {
+        return this.repository.getCountByQuery(filter)
     }
 
     getProduct(id) {

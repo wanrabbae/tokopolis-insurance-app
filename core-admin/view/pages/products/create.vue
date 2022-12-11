@@ -70,6 +70,23 @@
 									</div>
 
 									<div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Brand yang Didukung
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<multiselect
+                                            v-model="form.supported_brands"
+                                            :options="brandList"
+                                            track-by="value"
+                                            label="text"
+                                            placeholder="Pilih Brand yang Didukung"
+                                            :multiple="true">
+                                                <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.text }}</strong> is written in<strong>  {{ option.value }}</strong></template>
+                                            </multiselect>
+										</div>
+									</div>
+
+									<div role="group" class="row form-group mb-3">
 										<label class="col-sm-2 col-lg-2 col-form-label">Syarat dan Ketentuan
 											<label class="text-danger">*</label>
 										</label>
@@ -157,11 +174,15 @@ import {
     maxValue,
     numeric,
 } from "vuelidate/lib/validators"
+import Multiselect from "vue-multiselect"
+
+import "vue-multiselect/dist/vue-multiselect.min.css"
 
 /**
  * Elements component
  */
 export default {
+    layout: 'admin',
     data() {
         return {
             title: "Tambah Produk",
@@ -171,11 +192,13 @@ export default {
 				{ value: 'comprehensive', text: 'Komprehensif' },
 				{ value: 'tlo', text: 'Total Loss Only' },
             ],
+            brandList: [],
 			form: {
 				name: null,
 				type: null,
 				description: null,
 				image: null,
+                supported_brands: null,
 				tnc: null,
 				claim: null,
 				workshop_count: null,
@@ -187,6 +210,12 @@ export default {
         return {
             title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`
         };
+    },
+    components: {
+        Multiselect
+    },
+    async mounted() {
+        this.brandList = await this.vehicleBrands()
     },
 	validations: {
         form: {
@@ -212,12 +241,27 @@ export default {
 
 			this.form[e.target.name] = files[0]
 		},
+        async vehicleBrands() {
+            return await this.$axios.$get('api/admin/vehicle/item/brands')
+                .then ((response) => {
+                    const list = response.data.map(item =>
+                        item = { value: item.brand, text: item.brand })
+
+                    return [
+                        { value: null, text: 'Pilih Brand' },
+                        ...list
+                    ]
+                })
+                .catch ([])
+        },
 		async submitData(e) {
 			e.preventDefault()
 
 			if (this.$v.$touch() || this.$v.form.$anyError) return
 
 			let formData = new FormData()
+
+            this.form.supported_brands = this.form.supported_brands.map(item => item = item.value)
 
 			for (var key of Object.keys(this.form)) {
 				if (this.form[key] != null)
