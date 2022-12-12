@@ -1,57 +1,68 @@
-import RoleRepository from '../repositories/RoleRepository'
+import RoleRepository from "../repositories/RoleRepository";
 
 export default class EndpointService {
-  constructor() {
-    this.repository = new RoleRepository()
-  }
-
-  async getRoleName(name) {
-    return await this.repository.getRoleName(name)
-  }
-
-  async createRole(payload) {
-    const data = await this.repository.createRole(payload)
-
-    for (const endpoint of payload.endpoints) {
-      await this.repository.addEndpoint({
-        role_id: data.id,
-        endpoint_id: endpoint
-      })
+    constructor() {
+        this.repository = new RoleRepository();
     }
 
-    return true
-  }
+    async getRoleName(name) {
+        return await this.repository.getRoleName(name);
+    }
 
-  getRoleAll(query, limit, offset) {
-    return this.repository.getRoleAllWithFilter(query, limit, offset)
-  }
+    async createRole(payload) {
+        const data = await this.repository.createRole(payload);
 
-  getCountByQuery(query) {
-    return this.repository.getCountByQuery(query)
-  }
+        for (const endpoint of payload.endpoints) {
+            await this.repository.addEndpoint({
+                role_id: data.id,
+                endpoint_id: endpoint,
+            });
+        }
 
-  async getRoleById(id) {
-    return await this.repository.getRoleById(id)
-  }
+        return true;
+    }
 
-  async update(id, payload) {
-    return await this.repository.update(id,payload)
-  }
+    getRoleAll(query, limit, offset) {
+        return this.repository.getRoleAllWithFilter(query, limit, offset);
+    }
 
-  async destroy(id) {
-    return await this.repository.destroy(id)
-  }
+    getRoleTree(role) {
+        return this.repository.getRoleTree(role);
+    }
 
-  async endpointExist(payload) {
-    return await this.repository.endpointExist(payload)
-  }
+    getCountByQuery(query) {
+        return this.repository.getCountByQuery(query);
+    }
 
-  async addEndpoint(payload) {
-    return await this.repository.addEndpoint(payload)
-  }
+    async getRoleById(id) {
+        return await this.repository.getRoleById(id);
+    }
 
-  async removeEndpoint(id) {
-    return await this.repository.removeEndpoint(id)
-  }
+    async update(id, payload) {
+        return await this.repository.update(id, payload);
+    }
 
+    async destroy(id) {
+        return await this.repository.destroy(id);
+    }
+
+    async endpointExist(payload) {
+        return await this.repository.endpointExist(payload);
+    }
+
+    async addEndpoint(payload) {
+        return await this.repository.addEndpoint(payload);
+    }
+
+    async removeEndpoint(id) {
+        return await this.repository.removeEndpoint(id);
+    }
+
+    async getAllEndpointExist(role_id, endpoint, method) {
+        return await this.repository.getAllEndpointExist(
+            role_id,
+            endpoint,
+            method
+        );
+    }
 }

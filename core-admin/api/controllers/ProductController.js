@@ -80,6 +80,7 @@ exports.productCalculation = async (req, res, next) => {
     req.session.vehicle.accessories = accessories
 
     req.session.product.start_date = startDate()
+    req.session.product.rate = premiumRate
     req.session.product.loading_rate = loadingRateValue
     req.session.product.price = res.locals.price + loadingRateValue
 
@@ -90,7 +91,11 @@ exports.getProductData = async (req, res) => {
     const page = Number(req.query.page) || 1
 
     const product_price = req.session.product.price
-    const protection = req.session.vehicle.protection
+
+    const vehicle_data = {
+        brand: req.session.vehicle.brand,
+        protection: req.session.vehicle.protection
+    }
 
     var returnData = {}
 
@@ -99,8 +104,8 @@ exports.getProductData = async (req, res) => {
         const limit = 5
         const offset = (page - 1) * limit
 
-        const count = await service.getCountByProtection(protection)
-        const data = await service.getProductList(protection,
+        const count = await service.getCountByVehicle(vehicle_data)
+        const data = await service.getProductList(vehicle_data,
             limit, offset, product_price)
 
         returnData = {
@@ -114,7 +119,7 @@ exports.getProductData = async (req, res) => {
         }
     }
     else {
-        const data = await service.getProductList(protection,
+        const data = await service.getProductList(vehicle_data,
             3, 0, product_price)
 
         returnData = { data: data }

@@ -21,6 +21,9 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.STRING,
 			allowNull: false,
 		},
+		supported_brands: {
+			type: Sequelize.STRING,
+		},
 		tnc: {
 			type: Sequelize.TEXT,
 			allowNull: false,

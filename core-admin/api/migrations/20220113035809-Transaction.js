@@ -53,6 +53,11 @@ module.exports = {
 				type: Sequelize.JSON,
                 comment: "If the car condition is new, use BASTK, ID Card. If not, use STNK, Front Side, Back Side, Left Side, Right Side, Dashboard instead",
 			},
+			rate: {
+				type: Sequelize.FLOAT,
+				allowNull: false,
+                comment: "Product Premium Rate",
+			},
 			price: {
 				type: Sequelize.INTEGER,
 				allowNull: false,

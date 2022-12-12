@@ -5,14 +5,17 @@ const validation = require('../../validation/product.validation')
 const service = new ProductService()
 
 exports.list = async (req, res, next) => {
-    const query = req.query.query || null
+    const filter = {
+        name: req.query.name || '',
+        type: req.query.type || '',
+    }
 
     const current = Number(req.query.current) || 1
     const limit = Number(req.query.limit) || 10
     const offset = (current - 1) * limit
 
-    const count = await service.getCountByQuery(query)
-    const list = await service.getProductAll(query, limit, offset)
+    const count = await service.getCountByQuery(filter)
+    const list = await service.getProductAll(filter, limit, offset)
 
     return res.jsonData({
         pagination: {

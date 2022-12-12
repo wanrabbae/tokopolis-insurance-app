@@ -76,6 +76,7 @@
     "swiper": "^6.8.4",
     "v-click-outside": "^3.0.1",
     "v-mask": "^2.2.3",
+    "vue-easy-lightbox": "^0.14.0",
     "vue-form-wizard": "^0.8.4",
     "vue-i18n": "^8.21.0",
     "vue-multiselect": "^2.1.6",
