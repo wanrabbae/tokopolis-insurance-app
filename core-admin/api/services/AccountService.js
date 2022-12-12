@@ -115,15 +115,17 @@ export default class AccountService {
         }
 
         // for role upgrade
-        if (payload.leader_id) {
+        if (payload.unique_id) {
             const spv = await this.repository.getAccountUniqueId(
-                payload.leader_id
+                payload.unique_id
             );
 
             if (spv) {
                 payload.role = "agent";
                 payload.role_id = 5;
                 payload.parent_id = spv.id;
+                payload.unique_id = unique_id;
+                payload.other_id = unique_id.split("-").slice(-1).pop();
             }
         }
 
@@ -306,12 +308,11 @@ export default class AccountService {
 
     sendEmailVerifySuperVisor(payload) {
         let mailer = new Mailer(payload.host);
-        mailer.setUrl("/confirm-email");
-        mailer.setType("confirm-email");
+        mailer.setUrl("/confirm-spv");
+        mailer.setType("confirm-spv");
         mailer.setTarget(payload.target);
         mailer.setMail(payload.title, {
             name: `${payload.data.name} want to confirm that you is him supervisor`,
-            token: payload.data.token,
         });
         mailer.send();
     }

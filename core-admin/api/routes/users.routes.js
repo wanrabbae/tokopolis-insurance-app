@@ -31,6 +31,6 @@ router.post(
 
 router.get("/user/transactions", AuthRoleMiddleware, getTransactions);
 
-router.post("/user/role-upgrade", auth, verifySupervisor);
+router.post("/user/verify-upgrade", auth, verifySupervisor);
 
 module.exports = router;

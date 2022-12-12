@@ -2,11 +2,13 @@ const bcrypt = require("bcrypt");
 
 import AccountService from "../services/AccountService";
 import TransactionService from "../services/TransactionService";
+import NotificationService from "../services/NotificationService";
 
 const validation = require("../validation/user.validation");
 
 const service = new AccountService();
 const transactionService = new TransactionService();
+const notificationService = new NotificationService();
 
 exports.getAccountData = async (req, res) => {
     const account = await service.getAccountDataNoPass(req.account._id);
@@ -119,7 +121,30 @@ exports.getTransactions = async (req, res) => {
 exports.verifySupervisor = async (req, res) => {
     const spvAccount = await service.getAccountWithUniqueId(req.body.leader_id);
 
-    // send notif to spv
-
-    return res.jsonSuccess(req.polyglot.t("success.default"));
+    if (spvAccount) {
+        let data = {
+            host: req.fullhost,
+            target: "alwanrabbae@gmail.com",
+            title: "User role upgrade",
+            data: {
+                name: req.account.email,
+            },
+        };
+        console.log(data);
+        const sendEmail = service.sendEmailVerifySuperVisor(data);
+        // const sendNotif = notificationService.sendNotification({
+        //     title: "User role upgrade confirmation",
+        //     message: "There's user want to upgrade his role",
+        //     link: "/confirm-spv",
+        //     user_id: spvAccount.id,
+        //     sender_user_id: req.account._id,
+        // });
+        // console.log("SEND NOTIF", sendNotif);
+        console.log("SEND EMAIL", sendEmail);
+        return res.jsonSuccess(
+            "Verification success, please wait until supervisor accepted"
+        );
+    } else {
+        res.errorNotFound("Code not valid!");
+    }
 };
