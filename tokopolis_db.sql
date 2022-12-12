@@ -38,7 +38,7 @@ CREATE TABLE `account_tokens` (
 
 LOCK TABLES `account_tokens` WRITE;
 /*!40000 ALTER TABLE `account_tokens` DISABLE KEYS */;
-INSERT INTO `account_tokens` VALUES (2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(3,'IkRpDehPUVNo0zBtBH3mm2cjAiEwtz4makQJ9fP0','email','2022-06-06 14:54:13');
+INSERT INTO `account_tokens` VALUES (2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(3,'IkRpDehPUVNo0zBtBH3mm2cjAiEwtz4makQJ9fP0','email','2022-06-06 14:54:13'),(18,'tYlsaAxrtZ23TCWL3i1lqtdfBijH62Q0zH73toXj','email','2022-12-11 04:16:08');
 /*!40000 ALTER TABLE `account_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `accounts` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -111,7 +111,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (1,'Administrator','admin@piqo.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(2,'Rahmat Ansori','ansori34@gmail.com','$2b$10$vL0jM.r.4TZXKVs0lXrgeelsk.Bas0BvoNuMCdNYMM/LFkpRwFMNy','client',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(3,'Rizki Andrianto','rizukikkano@gmail.com','$2b$10$Wo5U36LA7VbHVYjoHLE1ReIldH0evo./QEKAJPRYCk/KaOU8na/z.','client',1,NULL,NULL,NULL,NULL,'2022-06-06 14:54:13','2022-06-06 14:54:13',NULL),(4,'Faiz','decrypt21@gmail.com','$2b$10$2IzzCUVHl7wv6jQIeWuLH.bF8j8YOKZ4ezCy.v3Ki9VBP3X6ejGva','client',1,NULL,NULL,NULL,NULL,'2022-06-16 14:41:48','2022-06-16 14:41:48',NULL),(5,'Faiz','kurnianadiem@gmail.com','$2b$10$5gQJtW7TICMi3MnFM/XaQ.3EOWSe7G2IBBorb//.DdZJI0FAD3wU.','client',1,NULL,NULL,NULL,NULL,'2022-06-16 15:09:08','2022-06-16 15:09:08',NULL),(6,'Alwan','alwan@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',2,NULL,'020101-01-01-01','01',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(8,'Jane DOe','janedoe@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',4,NULL,'020101-01-01-01-001-001','001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(9,'Jane John','janejohn@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(16,'YusufPras2','YusufPras12@gmail.com','$2b$10$XaZxllGEIkRvdAB/w8TXNu.7bw3GMD0UfPNkLwMXU.Qi/KAQ7xM/S','admin',3,NULL,'020101-01-01-01-001','001',NULL,'2022-12-11 03:33:10','2022-12-11 03:33:10',NULL),(17,'YusufPras3','YusufPras13@gmail.com','$2b$10$WrRIASXWHKdpUeA2H1EkIuxEAydDackA4L3lyQUeQAzVEvbboiTIa','admin',3,NULL,'020101-01-01-01-002','002',NULL,'2022-12-11 03:41:20','2022-12-11 03:41:20',NULL);
+INSERT INTO `accounts` VALUES (1,'Administrator','admin@piqo.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(2,'Rahmat Ansori','ansori34@gmail.com','$2b$10$vL0jM.r.4TZXKVs0lXrgeelsk.Bas0BvoNuMCdNYMM/LFkpRwFMNy','client',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(3,'Rizki Andrianto','rizukikkano@gmail.com','$2b$10$Wo5U36LA7VbHVYjoHLE1ReIldH0evo./QEKAJPRYCk/KaOU8na/z.','client',1,NULL,NULL,NULL,NULL,'2022-06-06 14:54:13','2022-06-06 14:54:13',NULL),(4,'Faiz','decrypt21@gmail.com','$2b$10$2IzzCUVHl7wv6jQIeWuLH.bF8j8YOKZ4ezCy.v3Ki9VBP3X6ejGva','client',1,NULL,NULL,NULL,NULL,'2022-06-16 14:41:48','2022-06-16 14:41:48',NULL),(5,'Faiz','kurnianadiem@gmail.com','$2b$10$5gQJtW7TICMi3MnFM/XaQ.3EOWSe7G2IBBorb//.DdZJI0FAD3wU.','client',1,NULL,NULL,NULL,NULL,'2022-06-16 15:09:08','2022-06-16 15:09:08',NULL),(6,'Alwan','wancode.msg@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',2,NULL,'020101-01-01-01','01',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(8,'Jane DOe','janedoe@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',4,NULL,'020101-01-01-01-001-001','001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(9,'Jane John','janejohn@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(16,'YusufPras2','YusufPras12@gmail.com','$2b$10$XaZxllGEIkRvdAB/w8TXNu.7bw3GMD0UfPNkLwMXU.Qi/KAQ7xM/S','admin',3,NULL,'020101-01-01-01-001','001',NULL,'2022-12-11 03:33:10','2022-12-11 03:33:10',NULL),(17,'YusufPras3','YusufPras13@gmail.com','$2b$10$WrRIASXWHKdpUeA2H1EkIuxEAydDackA4L3lyQUeQAzVEvbboiTIa','admin',3,NULL,'020101-01-01-01-002','002',NULL,'2022-12-11 03:41:20','2022-12-11 03:41:20',NULL),(18,'Alwan Rabbaees','alwan2@gmail.com','$2b$10$7RQl11bmT2c.iTZ2Ira8NuPtQJLTn/mtGsiaJFtsEwuy3jItrPyKS','agent',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-12-11 04:16:08','2022-12-12 07:04:44',NULL),(19,'YusufPras4','YusufPras14@gmail.com','$2b$10$Gtq1W/aEQOMuh.qzoBafQu0yuUK8E.I678RdT5x8MDMTXQdmR4vaG','admin',2,NULL,'020101-01-01-02','02',NULL,'2022-12-11 07:17:29','2022-12-11 07:17:29',NULL),(20,'YusufPras5','YusufPras15@gmail.com','$2b$10$TE5RFErzGctIGTK4f0azwuQIjfKMcOcDEYayaobtNT1HhImIlUF/K','admin',2,NULL,'020101-01-01-03','03',NULL,'2022-12-11 07:19:04','2022-12-11 07:19:04',NULL);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -196,6 +196,37 @@ LOCK TABLES `license_plates` WRITE;
 /*!40000 ALTER TABLE `license_plates` DISABLE KEYS */;
 INSERT INTO `license_plates` VALUES (1,'A','2','BANTEN'),(2,'AA','3','JAWA TENGAH'),(3,'AB','3','D.I. YOGYAKARTA'),(4,'AD','3','JAWA TENGAH'),(5,'AE','3','JAWA TIMUR'),(6,'AG','3','JAWA TIMUR'),(7,'B','2','DKI JAKARTA'),(8,'BA','1','SUMATERA BARAT'),(9,'BB','1','SUMATERA BARAT'),(10,'BD','1','BENGKULU'),(11,'BE','1','LAMPUNG'),(12,'BG','1','SUMATERA SELATAN'),(13,'BH','1','JAMBI'),(14,'BK','1','SUMATERA UTARA'),(15,'BL','1','NANGGROE ACEH DARUSSALAM'),(16,'BM','1','RIAU'),(17,'BN','1','BANGKA BELITUNG'),(18,'BP','1','KEPULAUAN RIAU'),(19,'D','2','JAWA BARAT'),(20,'DA','3','KALIMANTAN SELATAN'),(21,'DB','3','SULAWESI UTARA'),(22,'DC','3','SULAWESI BARAT'),(23,'DD','3','SULAWESI SELATAN'),(24,'DE','3','MALUKU'),(25,'DG','3','MALUKU UTARA'),(26,'DH','3','NUSA TENGGARA TIMUR'),(27,'DI','3','SULAWESI UTARA'),(28,'DK','3','BALI'),(29,'DL','3','SULAWESI UTARA'),(30,'DM','3','GORONTALO'),(31,'DN','3','SULAWESI TENGAH'),(32,'DP','3','SULAWESI SELATAN'),(33,'DR','3','NUSA TENGGARA BARAT'),(34,'DS','3','PAPUA'),(35,'DT','3','SULAWESI TENGGARA'),(36,'DW','3','SULAWESI SELATAN'),(37,'E','2','JAWA BARAT'),(38,'EA','3','NUSA TENGGARA BARAT'),(39,'EB','3','NUSA TENGGARA TIMUR'),(40,'ED','3','NUSA TENGGARA TIMUR'),(41,'F','2','JAWA BARAT'),(42,'G','3','JAWA TENGAH'),(43,'H','3','JAWA TENGAH'),(44,'K','3','JAWA TENGAH'),(45,'KB','3','KALIMANTAN BARAT'),(46,'KH','3','KALIMANTAN TENGAH'),(47,'KT','3','KALIMANTAN TIMUR'),(48,'KU','3','KALIMANTAN UTARA'),(49,'L','3','JAWA TIMUR'),(50,'M','3','JAWA TIMUR'),(51,'N','3','JAWA TIMUR'),(52,'P','3','JAWA TIMUR'),(53,'PA','3','PAPUA'),(54,'PB','3','PAPUA BARAT'),(55,'R','3','JAWA TENGAH'),(56,'S','3','JAWA TIMUR'),(57,'T','2','JAWA BARAT'),(58,'W','3','JAWA TIMUR'),(59,'Z','2','JAWA BARAT');
 /*!40000 ALTER TABLE `license_plates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notifications`
+--
+
+DROP TABLE IF EXISTS `notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `link` varchar(255) DEFAULT NULL,
+  `is_seen` int(2) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `sender_user_id` int(11) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notifications`
+--
+
+LOCK TABLES `notifications` WRITE;
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+INSERT INTO `notifications` VALUES (1,'test notif','test notif','/user/accept-role-upgrade',1,1,6,NULL,'2022-12-12 02:21:42'),(2,'test kirim notif','Test kirim notif','/confirm-email',0,6,1,NULL,'2022-12-12 02:21:42'),(4,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:06:55'),(5,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,19,18,NULL,'2022-12-12 07:07:06'),(6,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:07:11'),(7,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:08:06'),(8,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:08:56'),(9,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:09:27'),(10,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:09:49');
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -317,7 +348,7 @@ CREATE TABLE `profiles` (
 
 LOCK TABLES `profiles` WRITE;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` VALUES (2,NULL,'2000-09-20',NULL,'Morokrembangan 4/15','085258754309',NULL,NULL);
+INSERT INTO `profiles` VALUES (2,NULL,'2000-09-20',NULL,'Morokrembangan 4/15','085258754309',NULL,NULL),(6,'male','2000-09-20','/uploads/photos/4fr6dhrP4GlfTMHwHjoH6HFMdOxhFpyg.jpeg','Morokrembangan 4/15','085258754300',NULL,NULL),(18,NULL,'2000-09-20','/uploads/photos/KYOTJuzpQ7uDP0m7l1BtuPXpLSxmmG3P.jpeg','Morokrembangan 4/15','085258754300',NULL,NULL);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -495,4 +526,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-11 10:50:14
+-- Dump completed on 2022-12-12 14:11:46
