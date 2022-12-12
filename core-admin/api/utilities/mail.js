@@ -37,8 +37,6 @@ class Mailer {
             "heartbeat=60"
         );
         var channel = await conn.createChannel();
-        console.log(conn);
-        // console.log(channel);
         var queue = "hello";
         var exchange = "exchange";
         var route = "route";

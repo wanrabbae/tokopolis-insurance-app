@@ -113,20 +113,12 @@ export default class AccountService {
         if (profile.photo != null) {
             oldPhoto = `${nuxtFolder}/${profile.photo}`;
         }
-
+        console.log(payload);
         // for role upgrade
         if (payload.unique_id) {
-            const spv = await this.repository.getAccountUniqueId(
-                payload.unique_id
-            );
-
-            if (spv) {
-                payload.role = "agent";
-                payload.role_id = 5;
-                payload.parent_id = spv.id;
-                payload.unique_id = unique_id;
-                payload.other_id = unique_id.split("-").slice(-1).pop();
-            }
+            payload.role = "agent";
+            payload.role_id = 5;
+            payload.other_id = payload.unique_id.split("-").slice(-1).pop();
         }
 
         await this.repository.updateAccount(account.id, payload);

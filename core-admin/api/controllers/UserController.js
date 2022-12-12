@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 import AccountService from "../services/AccountService";
 import TransactionService from "../services/TransactionService";
 import NotificationService from "../services/NotificationService";
+import { generateIdRoleManagementWithUniqueId } from "../utilities/generateId.js";
 
 const validation = require("../validation/user.validation");
 
@@ -120,30 +121,37 @@ exports.getTransactions = async (req, res) => {
 
 exports.verifySupervisor = async (req, res) => {
     const spvAccount = await service.getAccountWithUniqueId(req.body.leader_id);
-
+    console.log(req.account);
     if (spvAccount) {
         let data = {
             host: req.fullhost,
-            target: "alwanrabbae@gmail.com",
+            target: spvAccount.email,
             title: "User role upgrade",
             data: {
                 name: req.account.email,
             },
         };
-        console.log(data);
+
         const sendEmail = service.sendEmailVerifySuperVisor(data);
-        // const sendNotif = notificationService.sendNotification({
-        //     title: "User role upgrade confirmation",
-        //     message: "There's user want to upgrade his role",
-        //     link: "/confirm-spv",
-        //     user_id: spvAccount.id,
-        //     sender_user_id: req.account._id,
-        // });
-        // console.log("SEND NOTIF", sendNotif);
-        console.log("SEND EMAIL", sendEmail);
-        return res.jsonSuccess(
-            "Verification success, please wait until supervisor accepted"
-        );
+
+        const sendNotif = notificationService.sendNotification({
+            title: "User role upgrade confirmation",
+            message: "There's user want to upgrade his role",
+            link: "/confirm-spv",
+            user_id: spvAccount.id,
+            sender_user_id: req.account._id,
+        });
+
+        const uniqueId = await generateIdRoleManagementWithUniqueId({
+            role_id: 5,
+            unique_id: spvAccount.unique_id.split("-")[0],
+        });
+
+        return res.jsonData({
+            message:
+                "Verification success, please wait until supervisor accepted",
+            unique_id: uniqueId.unique_id,
+        });
     } else {
         res.errorNotFound("Code not valid!");
     }

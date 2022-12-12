@@ -57,7 +57,7 @@ const update = (req) => {
         phone: Joi.number().label(req.polyglot.t("field.phone")),
         city: Joi.string().label(req.polyglot.t("field.city")),
         province: Joi.string().label(req.polyglot.t("field.province")),
-        leader_id: Joi.string().label(req.polyglot.t("field.leader_id")),
+        unique_id: Joi.string().label(req.polyglot.t("field.unique_id")),
     });
 
     return joiResponse(
