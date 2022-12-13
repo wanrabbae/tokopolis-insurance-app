@@ -40,6 +40,7 @@ export default class VehicleRepository {
         return await Vehicle.findAll({
             where: {
                 brand: { [Op.like]: `%${filter.brand}%` },
+                sub_model: { [Op.like]: `%${filter.sub_model}%` },
                 vehicle_type: { [Op.like]: `%${filter.vehicle_type}%` },
                 category: { [Op.like]: `%${filter.category}%` },
             },
@@ -117,6 +118,7 @@ export default class VehicleRepository {
         return await Vehicle.count({
             where: {
                 brand: { [Op.like]: `%${filter.brand}%` },
+                sub_model: { [Op.like]: `%${filter.sub_model}%` },
                 vehicle_type: { [Op.like]: `%${filter.vehicle_type}%` },
                 category: { [Op.like]: `%${filter.category}%` },
             },

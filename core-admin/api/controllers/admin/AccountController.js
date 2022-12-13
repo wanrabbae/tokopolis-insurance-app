@@ -14,7 +14,8 @@ exports.create = async (req, res) => {
     if (emailExist != null)
         return res.errorBadRequest(req.polyglot.t("error.email.exist"));
 
-    const account = await service.createAccountAdmin(req);
+
+  const account = await service.createAccountAdmin(req)
 
     return res.jsonData(account);
 };

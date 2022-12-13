@@ -6,7 +6,52 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
-                        <b-button class="mt-1" href="products/create" variant="primary">
+
+                        <div class="row">
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Nama Produk</label>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            v-model="filterForm.name"
+                                            class="form-control"
+                                            placeholder="Masukkan Nama Produk"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Tipe</label>
+                                    <div>
+                                        <select
+                                            class="form-select"
+                                            v-model="filterForm.type">
+                                            <option v-for="option in filterList.types" v-bind:value="option.value"
+                                                v-bind:key="option.text">{{ option.text }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Aksi</label>
+                                    <div>
+                                        <b-button type="button" variant="primary" @click="doFilter()">
+                                            <i class="uil uil-filter me-1"></i> Filter
+                                        </b-button>
+                                        <b-button type="button" variant="danger" @click="doResetFilter()"
+                                            v-b-tooltip.hover
+                                            title="Hapus Filter">
+                                            <i class="uil uil-multiply"></i>
+                                        </b-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <b-button class="mt-3" href="products/create" variant="primary">
                             <i class="uil uil-plus"/> Tambah
                         </b-button>
 
@@ -19,16 +64,6 @@
                                     </label>
                                 </div>
                             </div>
-                            <!-- Search -->
-                            <div class="col-sm-12 col-md-6">
-                                <div id="tickets-table_filter" class="dataTables_filter text-md-end">
-                                    <label class="d-inline-flex align-items-center">
-                                        Search:&nbsp;
-                                        <b-form-input v-model="filter" type="search" class="form-control form-control-sm ml-2"></b-form-input>
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- End search -->
                         </div>
                         <!-- Table -->
                         <div class="table-responsive mb-0">
@@ -47,10 +82,21 @@
 
                                 <template #cell(type)="data">
                                     <h5>
-                                        <b-badge v-if="data.item.is_comprehensive"
-                                            class="badge bg-success">Komprehensif</b-badge>
+                                        <b-badge v-if="data.item.type == 'comprehensive'"
+                                            class="badge bg-primary">Komprehensif</b-badge>
                                         <b-badge v-else
-                                            class="badge bg-success">Total Loss</b-badge>
+                                            class="badge bg-primary">Total Loss</b-badge>
+                                    </h5>
+                                </template>
+
+                                <template #cell(supported_brands)="data">
+                                    <h5 v-if="data.item.supported_brands != null">
+                                        <b-badge v-for="brand in data.item.supported_brands.split(',')"
+                                            v-bind:key="brand"
+                                            class="badge bg-secondary me-1">{{ brand }}</b-badge>
+                                    </h5>
+                                    <h5 v-else>
+                                        <b-badge class="badge bg-success">Semua Brand</b-badge>
                                     </h5>
                                 </template>
 
@@ -81,6 +127,7 @@
 
 <script>
 export default {
+    layout: 'admin',
     data() {
         return {
             tableData: [],
@@ -89,6 +136,17 @@ export default {
             currentPage: 1,
             perPage: 5,
             pageOptions: [5, 10, 25, 50],
+            filterList: {
+                types: [
+                    { value: null, text: 'Pilih Tipe Kendaraan' },
+                    { value: 'comprehensive', text: 'Komprehensif' },
+                    { value: 'tlo', text: 'Total Loss' },
+                ]
+            },
+            filterForm: {
+                name: null,
+                type: null,
+            },
             filter: null,
             filterOn: [],
             sortDesc: false,
@@ -97,6 +155,7 @@ export default {
                 { key: "image", label: 'Gambar', tdClass: 'align-middle' },
                 { key: "name", label: 'Nama Produk', tdClass: 'align-middle', sortable: true },
                 { key: "type", label: 'Tipe Perlindungan', tdClass: 'align-middle', sortable: true },
+                { key: "supported_brands", label: 'Dukungan Brand', tdClass: 'align-middle', sortable: true, thStyle: { width: "25%" }, },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ]
         }
@@ -114,7 +173,7 @@ export default {
             return this.totalRows
         }
     },
-    mounted() {
+    async mounted() {
         // Set the initial number of items
         this.totalRows = this.tableData.length
     },
@@ -127,12 +186,26 @@ export default {
             this.totalRows = filteredItems.length
             this.currentPage = 1
         },
+        doFilter() {
+            this.getData()
+            this.$refs.table.refresh()
+        },
+        doResetFilter() {
+            this.filterForm = {
+                name: null,
+                type: null,
+            }
+
+            this.getData()
+            this.$refs.table.refresh()
+        },
         async getData() {
             this.tableData = await this.$axios.$get('api/admin/product', {
                     params: {
                         current: this.currentPage,
                         limit: this.perPage,
-                        query: this.filter
+                        name: this.filterForm.name,
+                        type: this.filterForm.type,
                     }
                 })
                 .then (response => {

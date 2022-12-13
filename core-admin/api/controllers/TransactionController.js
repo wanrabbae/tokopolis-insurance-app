@@ -11,6 +11,7 @@ const validation = require('../validation/transaction.validation')
 const { getMoment, moneyFormat, moneyFormatNonSymbol,
     phoneFormat, randomNumber, titleCase,
     percentToDecimal } = require('../utilities/functions')
+const { toPercent } = require('../utilities/calculation')
 
 const service = new TransactionService()
 const accountService = new AccountService()
@@ -88,7 +89,7 @@ const getTransactionID = () => {
     const nowHour = getMoment().format('HHmmss')
     const postfix = randomNumber(1111, 9999)
 
-    return `TRX-${now}-${nowHour}-${postfix}`
+    return `TKP-${now}-${nowHour}-${postfix}`
 }
 
 const getDiscountValue = (productPrice, expansionPrice, format, value) => {
@@ -118,18 +119,40 @@ const generateQuotation = async (payload) => {
         {
             label: titleCase(payload.product.type),
             price: moneyFormatNonSymbol(payload.vehicle_data.price),
-            percentage: '3.18%',
+            percentage: `${toPercent(payload.rate)}%`,
             total: moneyFormatNonSymbol(payload.price)
         },
     ]
 
+    const simpleMillionFormat = (value) => {
+        return `Rp. ${(value / 1000000)} Juta`
+    }
+
     payload.expansions.forEach(expansion => {
-        calculation.push({
-            label: expansion.label,
-            price: moneyFormatNonSymbol(expansion.price),
-            percentage: '100%',
-            total: moneyFormatNonSymbol(expansion.price),
-        })
+        if ('value' in expansion) {
+            if ('count' in expansion) {
+                calculation.push({
+                    label: `${expansion.label} senilai ${simpleMillionFormat(expansion.value)} (${expansion.count} orang)`,
+                    price: moneyFormatNonSymbol(expansion.value),
+                    percentage: `${toPercent(expansion.rate)}% x ${expansion.count}`,
+                    total: moneyFormatNonSymbol(expansion.price),
+                })
+            } else {
+                calculation.push({
+                    label: `${expansion.label} senilai ${simpleMillionFormat(expansion.value)}`,
+                    price: moneyFormatNonSymbol(expansion.value),
+                    percentage: `${toPercent(expansion.rate)}%`,
+                    total: moneyFormatNonSymbol(expansion.price),
+                })
+            }
+        } else {
+            calculation.push({
+                label: expansion.label,
+                price: moneyFormatNonSymbol(payload.vehicle_data.price),
+                percentage: `${toPercent(expansion.rate)}%`,
+                total: moneyFormatNonSymbol(expansion.price),
+            })
+        }
     })
 
     const data = {
@@ -186,7 +209,7 @@ const generateQuotation = async (payload) => {
                 text: payload.vehicle.category
             },
             {
-                label: 'Tahun Produksi',
+                label: 'Tahun Pembuatan',
                 text: payload.vehicle_data.year
             },
             // {
@@ -257,6 +280,7 @@ exports.postOffer = async (req, res) => {
         is_new_condition: true,
         vehicle_data: vehicle,
         start_date: req.session.product.start_date,
+        rate: req.session.product.rate,
         price: req.session.product.price,
         discount_format: discountFormat,
         discount_value: discountValue,
@@ -265,6 +289,8 @@ exports.postOffer = async (req, res) => {
         expansions: expansion.list,
         total: req.session.product.price + expansion.price - discountTotal
     })
+
+    console.log(expansion.list)
 
     if (!newOffer)
         return res.errorBadRequest(req.polyglot.t('error.transaction.create'))
@@ -400,6 +426,7 @@ exports.postTransaction = async (req, res) => {
             price: req.session.vehicle.price,
         },
         start_date: req.session.product.start_date,
+        rate: req.session.product.rate,
         price: req.session.product.price,
         discount_format: req.session.product.discount_format,
         discount_value: req.session.product.discount_value,

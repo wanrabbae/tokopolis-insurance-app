@@ -34,7 +34,6 @@ module.exports = (sequelize, Sequelize) => {
                     ) {
                         return this.fullname.split(" ")[1];
                     }
-
                     return null;
                 },
             },

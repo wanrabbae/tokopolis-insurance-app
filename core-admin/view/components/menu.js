@@ -10,18 +10,18 @@ export const menuItems = [
         icon: "uil-home-alt",
         link: "/"
     },
-    // {
-    //     id: 3,
-    //     label: "menuitems.endpoint.text",
-    //     icon: "uil-link",
-    //     link: "/endpoint"
-    // },
-    // {
-    //     id: 4,
-    //     label: "menuitems.role.text",
-    //     icon: "uil-graph-bar",
-    //     link: "/role"
-    // },
+    {
+        id: 3,
+        label: "menuitems.endpoint.text",
+        icon: "uil-link",
+        link: "/endpoint"
+    },
+    {
+        id: 4,
+        label: "menuitems.role.text",
+        icon: "uil-graph-bar",
+        link: "/role"
+    },
     // {
     //     id: 5,
     //     label: "menuitems.account.text",

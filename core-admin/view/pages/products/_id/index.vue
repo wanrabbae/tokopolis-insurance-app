@@ -46,6 +46,18 @@
                         <h5 class="font-size-16">Deskripsi</h5>
                         <p v-html="data.description"></p>
                     </div>
+
+                    <div class="text-muted mt-2">
+                        <h5 class="font-size-16">Dukungan Brand</h5>
+                        <h5 v-if="data.supported_brands != null">
+                            <b-badge v-for="brand in data.supported_brands.split(',')"
+                                v-bind:key="brand"
+                                class="badge bg-primary me-1">{{ brand }}</b-badge>
+                        </h5>
+                        <h5 v-else>
+                            <b-badge class="badge bg-success">Semua Brand</b-badge>
+                        </h5>
+                    </div>
                 </div>
             </div>
         </div>
@@ -293,6 +305,7 @@ import { required } from "vuelidate/lib/validators"
  * Profile component
  */
 export default {
+    layout: 'admin',
     head() {
         return {
             title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`,

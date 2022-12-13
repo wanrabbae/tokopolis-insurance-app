@@ -49,6 +49,10 @@ module.exports = (sequelize, Sequelize) => {
         documents: {
             type: Sequelize.JSON,
         },
+        rate: {
+            type: Sequelize.FLOAT,
+            allowNull: false,
+        },
         price: {
             type: Sequelize.INTEGER,
             allowNull: false,
