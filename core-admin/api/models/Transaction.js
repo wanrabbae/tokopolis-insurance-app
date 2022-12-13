@@ -49,6 +49,9 @@ module.exports = (sequelize, Sequelize) => {
         documents: {
             type: Sequelize.JSON,
         },
+        assessment: {
+            type: Sequelize.JSON,
+        },
         rate: {
             type: Sequelize.FLOAT,
             allowNull: false,

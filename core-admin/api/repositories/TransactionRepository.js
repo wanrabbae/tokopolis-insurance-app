@@ -37,7 +37,8 @@ export default class TransactionRepository {
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
-            `vehicle.brand, vehicle.sub_model, product.name as product_name, product.image as product_image, trans.vehicle_data, trans.documents, trans.price, ` +
+            `vehicle.brand, vehicle.sub_model, product.name as product_name, product.image as product_image, trans.vehicle_data, ` +
+            `trans.documents, trans.assessment, trans.price, ` +
             `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, trans.total, ` +
             `trans.status, trans.pg_data, trans.created_at ` +
             `FROM transactions as trans ` +

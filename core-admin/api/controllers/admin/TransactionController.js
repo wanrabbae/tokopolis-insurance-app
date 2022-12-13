@@ -40,3 +40,10 @@ exports.detail = async (req, res, next) => {
 
     return res.jsonData(data[0])
 }
+
+exports.addReview = async (req, res, next) => {
+    const data = await service.addReview(req.params.id, req.body)
+    if (!data) res.errorBadRequest()
+
+    return res.jsonData(data)
+}
