@@ -20,6 +20,12 @@ $color-error: #f46a6a;
     font-size: 0.9rem;
 }
 
+.rounded-status {
+    font-size: 12px;
+    padding: 3px;
+    border-radius: 50%;
+}
+
 .is-invalid {
     .ck.ck-editor__main > .ck-editor__editable:not(.ck-focused) {
         border-color: $color-error !important;

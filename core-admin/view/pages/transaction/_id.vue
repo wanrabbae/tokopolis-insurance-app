@@ -60,11 +60,13 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <b-button v-if="data.assessment == null" class="float-end" variant="success"
-                                :disabled="data.documents == null"
-                                @click="showReview()">
-                                <i class="uil uil-file-check me-1"></i> Review Berkas
-                            </b-button>
+                            <div>
+                                <b-button v-if="data.assessment == null" class="float-end" variant="success"
+                                    :disabled="data.documents == null"
+                                    @click="showReview()">
+                                    <i class="uil uil-file-check me-1"></i> Review Berkas
+                                </b-button>
+                            </div>
                             <div style="display: table">
                                 <img :src="data.product_image" alt="data.name" width="120" />
                                 <div style="display: table-cell; vertical-align: middle;">
@@ -84,7 +86,19 @@
                             style="object-fit: cover; height: 120px; cursor: pointer;" />
                         <vue-easy-lightbox :visible="getLightBoxStatus(key)" :imgs="item"
                             @hide="setLightBoxStatus(key, false)"></vue-easy-lightbox>
-                        <div class="text-center mt-3">{{ documentsText[key] }}</div>
+                        <div class="text-center mt-3">
+                            {{ documentsText[key] }}
+                            <span v-if="data.assessment != null">
+                                <span v-if="data.assessment.item[key].status"
+                                    class="badge bg-success rounded-status" v-b-tooltip.hover
+                                    title="Kondisi Baik"><i class="uil uil-check"></i></span>
+                                <span v-else
+                                    class="badge bg-danger rounded-status" v-b-tooltip.hover
+                                    title="Kondisi Rusak"><i class="uil uil-multiply"></i></span>
+                            </span>
+                        </div>
+                        <div v-if="data.assessment != null && !data.assessment.item[key].status"
+                            class="text-center text-danger mt-2">{{ data.assessment.item[key].note }}</div>
                     </div>
                 </div>
             </div>
@@ -93,10 +107,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body row">
-                        <div class="col-6">
+                        <div class="col-lg-6 col-12">
                             <h4 class="card-title">Data Pemegang Polis</h4>
 
-                            <table class="table table-nowrap mt-4 mb-4">
+                            <table class="table mt-4 mb-4">
                                 <tbody>
                                     <tr v-for="(item, key) of fields.client" v-bind:key="key">
                                         <td scope="row">{{ item }}</td>
@@ -107,7 +121,7 @@
 
                             <h4 class="card-title">Data Alamat</h4>
 
-                            <table class="table table-nowrap mt-4 mb-4">
+                            <table class="table mt-4 mb-4">
                                 <tbody>
                                     <tr v-for="(item, key) of fields.address" v-bind:key="key">
                                         <td scope="row">{{ item }}</td>
@@ -117,10 +131,10 @@
                             </table>
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-lg-6 col-12">
                             <h4 class="card-title">Informasi Kendaraan</h4>
 
-                            <table class="table table-nowrap mt-4 mb-4">
+                            <table class="table mt-4 mb-4">
                                 <tbody>
                                     <tr v-for="(item, key) of fields.vehicle_base" v-bind:key="key">
                                         <td scope="row">{{ item }}</td>
@@ -140,10 +154,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body row">
-                        <div class="col-6">
+                        <div :class="(hasExpansions ? 'col-lg-6 ' : 'col-lg-12 ') + 'col-12'">
                             <h4 class="card-title">Data Transaksi</h4>
 
-                            <table class="table table-nowrap mt-4 mb-4">
+                            <table class="table mt-4 mb-4">
                                 <tbody>
                                     <tr v-for="(item, key) of fields.transaction" v-bind:key="key">
                                         <td scope="row">{{ item }}</td>
@@ -154,7 +168,7 @@
 
                             <h4 class="card-title">Data Pembayaran</h4>
 
-                            <table class="table table-nowrap mt-4 mb-4">
+                            <table class="table mt-4 mb-4">
                                 <tbody>
                                     <tr v-for="(item, key) of fields.payment" v-bind:key="key">
                                         <td scope="row">{{ item }}</td>
@@ -164,10 +178,10 @@
                             </table>
                         </div>
 
-                        <div class="col-6">
+                        <div v-if="hasExpansions" class="col-lg-6 col-12">
                             <h4 class="card-title">Data Perluasan</h4>
 
-                            <table class="table table-nowrap mt-4 mb-4">
+                            <table class="table mt-4 mb-4">
                                 <tbody>
                                     <tr v-for="(item, key) of data.expansions" v-bind:key="key">
                                         <td scope="row">{{ item.label }}</td>
@@ -277,6 +291,11 @@
                 assessment: {},
                 assessment_note: null,
             };
+        },
+        computed: {
+            hasExpansions() {
+                return this.data.expansions != null && this.data.expansions.length > 0
+            }
         },
         created() {
             this.data = this.getData()
