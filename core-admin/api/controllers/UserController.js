@@ -1,107 +1,158 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt");
 
-import AccountService from '../services/AccountService'
-import TransactionService from '../services/TransactionService'
+import AccountService from "../services/AccountService";
+import TransactionService from "../services/TransactionService";
+import NotificationService from "../services/NotificationService";
+import { generateIdRoleManagementWithUniqueId } from "../utilities/generateId.js";
 
-const validation = require('../validation/user.validation')
+const validation = require("../validation/user.validation");
 
-const service = new AccountService()
-const transactionService = new TransactionService()
+const service = new AccountService();
+const transactionService = new TransactionService();
+const notificationService = new NotificationService();
 
 exports.getAccountData = async (req, res) => {
-    const account = await service.getAccountDataNoPass(req.account._id)
+    const account = await service.getAccountDataNoPass(req.account._id);
 
-    return res.jsonData(account)
-}
+    return res.jsonData(account);
+};
 
 exports.updateAccountData = async (req, res) => {
-    const validate = validation.update(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.update(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-    const account = await service.getAccount(req.account._id)
-    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    const account = await service.getAccount(req.account._id);
+    if (account == null)
+        return res.errorBadRequest(req.polyglot.t("error.auth"));
 
-    const update = await service.updateAccountData(account, req.body, req.file)
+    const update = await service.updateAccountData(account, req.body, req.file);
 
     if (account.email != req.body.email) {
-        const confirmToken = await service.createEmailToken(account.id,
-            randomString(40))
+        const confirmToken = await service.createEmailToken(
+            account.id,
+            randomString(40)
+        );
 
         service.sendEmailProfile({
             host: req.fullhost,
             target: account.email,
-            title: req.polyglot.t('mail.email'),
+            title: req.polyglot.t("mail.email"),
             data: {
                 name: account.firstname,
-                token: confirmToken.token
-            }
-        })
+                token: confirmToken.token,
+            },
+        });
     }
 
     if (req.file) {
-        return res.jsonData({ photo: update.photo })
+        return res.jsonData({ photo: update.photo });
     }
 
-    return res.jsonSuccess(req.polyglot.t('success.default'))
-}
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
 
 exports.updatePassword = async (req, res) => {
-    const validate = validation.updatePassword(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.updatePassword(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-    const account = await service.getAccount(req.account._id)
+    const account = await service.getAccount(req.account._id);
 
-    const validPass = await bcrypt.compare(req.body.password, account.password)
-    if(!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
+    const validPass = await bcrypt.compare(req.body.password, account.password);
+    if (!validPass)
+        return res.errorBadRequest(req.polyglot.t("error.password"));
 
-    await service.resetPassword(account.id, req.body.password_new)
+    await service.resetPassword(account.id, req.body.password_new);
 
-    return res.jsonSuccess(req.polyglot.t('success.default'))
-}
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
 
 exports.getIdentity = async (req, res) => {
-    const identity = await service.getIdentity(req.account._id)
+    const identity = await service.getIdentity(req.account._id);
 
-    return res.jsonData(identity)
-}
+    return res.jsonData(identity);
+};
 
 exports.updateIdentity = async (req, res) => {
-    const validate = validation.identity(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.identity(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-    const account = await service.getAccount(req.account._id)
-    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    const account = await service.getAccount(req.account._id);
+    if (account == null)
+        return res.errorBadRequest(req.polyglot.t("error.auth"));
 
-    let ktpRegex = /^((1[1-9])|(21)|([37][1-6])|(5[1-4])|(6[1-5])|([8-9][1-2]))[0-9]{2}[0-9]{2}(([0-6][0-9])|(7[0-1]))((0[1-9])|(1[0-2]))([0-9]{2})[0-9]{4}$/
-    let npwpRegex = /^[0][1-9][.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$/g
+    let ktpRegex =
+        /^((1[1-9])|(21)|([37][1-6])|(5[1-4])|(6[1-5])|([8-9][1-2]))[0-9]{2}[0-9]{2}(([0-6][0-9])|(7[0-1]))((0[1-9])|(1[0-2]))([0-9]{2})[0-9]{4}$/;
+    let npwpRegex =
+        /^[0][1-9][.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$/g;
 
-    if (account.role == 'client' && !ktpRegex.test(req.body.identity_number) ||
-        account.role == 'agent' && !npwpRegex.test(req.body.identity_number)) {
-            return res.errorBadRequest(req.polyglot.t('error.identity'))
+    if (
+        (account.role == "client" &&
+            !ktpRegex.test(req.body.identity_number)) ||
+        (account.role == "agent" && !npwpRegex.test(req.body.identity_number))
+    ) {
+        return res.errorBadRequest(req.polyglot.t("error.identity"));
     }
 
     const fields = {
         account_id: account.id,
         identity_number: req.body.identity_number,
-        type: account.role == 'client' ? 'ktp' : 'npwp',
-        verified_at: null
-    }
+        type: account.role == "client" ? "ktp" : "npwp",
+        verified_at: null,
+    };
 
-    const identity = await service.getIdentity(account.id)
+    const identity = await service.getIdentity(account.id);
 
     if (identity != null) {
-        await service.updateIdentity(account.id, fields, req.file)
-    }
-    else {
-        await service.createIdentity(fields, req.file)
+        await service.updateIdentity(account.id, fields, req.file);
+    } else {
+        await service.createIdentity(fields, req.file);
     }
 
-    return res.jsonSuccess(req.polyglot.t('success.default'))
-}
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
 
 exports.getTransactions = async (req, res) => {
-    const transactions = await transactionService
-        .getTransactionByAccountId(req.account._id)
+    const transactions = await transactionService.getTransactionByAccountId(
+        req.account._id
+    );
 
-    return res.jsonData(transactions)
-}
+    return res.jsonData(transactions);
+};
+
+exports.verifySupervisor = async (req, res) => {
+    const spvAccount = await service.getAccountWithUniqueId(req.body.leader_id);
+    console.log(req.account);
+    if (spvAccount) {
+        let data = {
+            host: req.fullhost,
+            target: spvAccount.email,
+            title: "User role upgrade",
+            data: {
+                name: req.account.email,
+            },
+        };
+
+        const sendEmail = service.sendEmailVerifySuperVisor(data);
+
+        const sendNotif = notificationService.sendNotification({
+            title: "User role upgrade confirmation",
+            message: "There's user want to upgrade his role",
+            link: "/confirm-spv",
+            user_id: spvAccount.id,
+            sender_user_id: req.account._id,
+        });
+
+        const uniqueId = await generateIdRoleManagementWithUniqueId({
+            role_id: 5,
+            unique_id: spvAccount.unique_id.split("-")[0],
+        });
+
+        return res.jsonData({
+            message:
+                "Verification success, please wait until supervisor accepted",
+            unique_id: uniqueId.unique_id,
+        });
+    } else {
+        res.errorNotFound("Code not valid!");
+    }
+};
