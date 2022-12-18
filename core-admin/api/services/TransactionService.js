@@ -106,6 +106,10 @@ export default class TransactionService {
         return this.repository.getPointHistory(req);
     }
 
+    createPoint(payload) {
+        return this.repository.createPoint(payload);
+    }
+
     sendEmailPayment(payload) {
         let mailer = new Mailer(payload.host);
         // mailer.setUrl('/path')

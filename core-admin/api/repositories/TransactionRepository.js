@@ -337,4 +337,8 @@ export default class TransactionRepository {
         const total = pointIn[0].value - pointOut[0].value;
         return { account_id: payload.account._id, total: Math.abs(total) };
     }
+
+    async createPoint(payload) {
+        return await Point.create(payload);
+    }
 }

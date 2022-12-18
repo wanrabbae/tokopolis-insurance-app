@@ -536,11 +536,28 @@ exports.postTransaction = async (req, res) => {
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
 
     if (req.account.role == 5) {
-        // add comission here
-        const comission = await service.createComission({
-            account_id: req.account._id,
-            value: totalPrice * (25 / 100), // SEMENTARA DIKALI DISKON 25%
-        });
+        if (req.session.product.discount_format == "percent") {
+            const totalPriceForComission =
+                req.session.product.price + req.session.product.expansion_price;
+
+            // add comission here
+            const comission = await service.createComission({
+                account_id: req.account._id,
+                value:
+                    totalPriceForComission *
+                    (req.session.product.discount_value / 100),
+            });
+
+            // add points here
+            if (req.session.product.extra_point) {
+                const point = await service.createPoint({
+                    account_id: req.account._id,
+                    value:
+                        totalPriceForComission *
+                        (req.session.product.extra_point / 100),
+                });
+            }
+        }
     }
 
     return res.jsonData({
