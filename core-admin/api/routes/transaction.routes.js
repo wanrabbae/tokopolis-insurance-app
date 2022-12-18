@@ -15,6 +15,9 @@ const {
     webhookMidtrans,
     webhookXendit,
     getComission,
+    getComissionHistory,
+    getPoint,
+    getPointHistory,
 } = require("../controllers/TransactionController");
 
 const router = Router();
@@ -53,5 +56,9 @@ router.post("/transaction/midtrans", webhookMidtrans);
 router.post("/transaction/xendit", webhookXendit);
 
 router.get("/comissions", auth, getComission);
+router.get("/comissions/history", auth, getComissionHistory);
+
+router.get("/points", auth, getPoint);
+router.get("/points/history", auth, getPointHistory);
 
 module.exports = router;

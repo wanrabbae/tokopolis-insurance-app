@@ -67,6 +67,7 @@ const id_ID_strings = {
             "product.brochure": "Brosur",
             "product.workshop": "Bengkel",
             "product.workshop_count": "Jumlah Bengkel",
+            "product.extra_point": "Ekstra Poin",
 
             "transaction.id": "ID Transaksi",
             "transaction.status": "Status Transaksi",

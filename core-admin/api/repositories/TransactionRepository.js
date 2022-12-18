@@ -11,6 +11,7 @@ const {
     Vehicle,
     Transaction,
     Comission,
+    Point,
 } = require("../models");
 
 export default class TransactionRepository {
@@ -272,11 +273,28 @@ export default class TransactionRepository {
     }
 
     async getComission(payload) {
-        return await Comission.findAll({
+        const comissionIn = await Comission.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
             where: {
                 account_id: payload.account._id,
+                type: "in",
             },
         });
+        const comissionOut = await Comission.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+                account_id: payload.account._id,
+                type: "out",
+            },
+        });
+        const total = comissionIn[0].value - comissionOut[0].value;
+        return { account_id: payload.account._id, total: Math.abs(total) };
     }
 
     async getComissionHistory(payload) {
@@ -285,5 +303,38 @@ export default class TransactionRepository {
                 account_id: payload.account._id,
             },
         });
+    }
+
+    async getPointHistory(payload) {
+        return await Point.findAll({
+            where: {
+                account_id: payload.account._id,
+            },
+        });
+    }
+
+    async getPoint(payload) {
+        const pointIn = await Point.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+                account_id: payload.account._id,
+                type: "in",
+            },
+        });
+        const pointOut = await Point.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+                account_id: payload.account._id,
+                type: "out",
+            },
+        });
+        const total = pointIn[0].value - pointOut[0].value;
+        return { account_id: payload.account._id, total: Math.abs(total) };
     }
 }

@@ -16,6 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `SequelizeMeta`
+--
+
+DROP TABLE IF EXISTS `SequelizeMeta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SequelizeMeta` (
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SequelizeMeta`
+--
+
+LOCK TABLES `SequelizeMeta` WRITE;
+/*!40000 ALTER TABLE `SequelizeMeta` DISABLE KEYS */;
+INSERT INTO `SequelizeMeta` VALUES ('20220113035800-Account.js'),('20220113035801-AccountToken.js'),('20220113035802-AccountVehicle.js'),('20220113035803-Identity.js'),('20220113035804-LicensePlate.js'),('20220113035805-Product.js'),('20220113035806-ProductExpansion.js'),('20220113035807-ProductFeature.js'),('20220113035808-Profile.js'),('20220113035809-Transaction.js');
+/*!40000 ALTER TABLE `SequelizeMeta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `account_tokens`
 --
 
@@ -38,8 +62,7 @@ CREATE TABLE `account_tokens` (
 
 LOCK TABLES `account_tokens` WRITE;
 /*!40000 ALTER TABLE `account_tokens` DISABLE KEYS */;
-INSERT INTO `account_tokens` VALUES (2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(3,'IkRpDehPUVNo0zBtBH3mm2cjAiEwtz4makQJ9fP0','email','2022-06-06 14:54:13');
-
+INSERT INTO `account_tokens` VALUES (2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(2,'1tnubhI2eGDXd3TpkPk1R7o9RWUqRyTGxlkDB5V0','email','2022-01-02 18:26:30'),(2,'DuMgoDvCLIby5NSmakWFIliiIa2sc6Jrr1V71Uxo','password','2022-01-05 21:10:41'),(3,'IkRpDehPUVNo0zBtBH3mm2cjAiEwtz4makQJ9fP0','email','2022-06-06 14:54:13'),(18,'tYlsaAxrtZ23TCWL3i1lqtdfBijH62Q0zH73toXj','email','2022-12-11 04:16:08'),(21,'5GEVHSJJjgl1Ny0JAqs1WdDuG37yy3yURdzYkp1d','email','2022-12-16 02:27:53');
 /*!40000 ALTER TABLE `account_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +92,7 @@ CREATE TABLE `account_vehicles` (
   KEY `vehicle_id` (`vehicle_id`),
   CONSTRAINT `account_vehicles_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `account_vehicles_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,6 +101,7 @@ CREATE TABLE `account_vehicles` (
 
 LOCK TABLES `account_vehicles` WRITE;
 /*!40000 ALTER TABLE `account_vehicles` DISABLE KEYS */;
+INSERT INTO `account_vehicles` VALUES (1,21,1,2022,'E',' 7777 K','Black','F430ID271263','MH8FD125X472',100000000,'{\"test\": \"test\"}');
 /*!40000 ALTER TABLE `account_vehicles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,8 +127,7 @@ CREATE TABLE `accounts` (
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,10 +136,38 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-
-INSERT INTO `accounts` VALUES (1,'Administrator','admin@piqo.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(2,'Rahmat Ansori','ansori34@gmail.com','$2b$10$vL0jM.r.4TZXKVs0lXrgeelsk.Bas0BvoNuMCdNYMM/LFkpRwFMNy','client',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(3,'Rizki Andrianto','rizukikkano@gmail.com','$2b$10$Wo5U36LA7VbHVYjoHLE1ReIldH0evo./QEKAJPRYCk/KaOU8na/z.','client',1,NULL,NULL,NULL,NULL,'2022-06-06 14:54:13','2022-06-06 14:54:13',NULL),(4,'Faiz','decrypt21@gmail.com','$2b$10$2IzzCUVHl7wv6jQIeWuLH.bF8j8YOKZ4ezCy.v3Ki9VBP3X6ejGva','client',1,NULL,NULL,NULL,NULL,'2022-06-16 14:41:48','2022-06-16 14:41:48',NULL),(5,'Faiz','kurnianadiem@gmail.com','$2b$10$5gQJtW7TICMi3MnFM/XaQ.3EOWSe7G2IBBorb//.DdZJI0FAD3wU.','client',1,NULL,NULL,NULL,NULL,'2022-06-16 15:09:08','2022-06-16 15:09:08',NULL),(6,'Alwan','wancode.msg@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',2,NULL,'020101-01-01-01','01',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(8,'Jane DOe','janedoe@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',4,NULL,'020101-01-01-01-001-001','001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(9,'Jane John','janejohn@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(16,'YusufPras2','YusufPras12@gmail.com','$2b$10$XaZxllGEIkRvdAB/w8TXNu.7bw3GMD0UfPNkLwMXU.Qi/KAQ7xM/S','admin',3,NULL,'020101-01-01-01-001','001',NULL,'2022-12-11 03:33:10','2022-12-11 03:33:10',NULL),(17,'YusufPras3','YusufPras13@gmail.com','$2b$10$WrRIASXWHKdpUeA2H1EkIuxEAydDackA4L3lyQUeQAzVEvbboiTIa','admin',3,NULL,'020101-01-01-01-002','002',NULL,'2022-12-11 03:41:20','2022-12-11 03:41:20',NULL),(18,'Alwan Rabbaees','alwan2@gmail.com','$2b$10$7RQl11bmT2c.iTZ2Ira8NuPtQJLTn/mtGsiaJFtsEwuy3jItrPyKS','agent',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-12-11 04:16:08','2022-12-12 07:04:44',NULL),(19,'YusufPras4','YusufPras14@gmail.com','$2b$10$Gtq1W/aEQOMuh.qzoBafQu0yuUK8E.I678RdT5x8MDMTXQdmR4vaG','admin',2,NULL,'020101-01-01-02','02',NULL,'2022-12-11 07:17:29','2022-12-11 07:17:29',NULL),(20,'YusufPras5','YusufPras15@gmail.com','$2b$10$TE5RFErzGctIGTK4f0azwuQIjfKMcOcDEYayaobtNT1HhImIlUF/K','admin',2,NULL,'020101-01-01-03','03',NULL,'2022-12-11 07:19:04','2022-12-11 07:19:04',NULL);
-
+INSERT INTO `accounts` VALUES (1,'Administrator','admin@piqo.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(2,'Rahmat Ansori','ansori34@gmail.com','$2b$10$vL0jM.r.4TZXKVs0lXrgeelsk.Bas0BvoNuMCdNYMM/LFkpRwFMNy','client',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(3,'Rizki Andrianto','rizukikkano@gmail.com','$2b$10$Wo5U36LA7VbHVYjoHLE1ReIldH0evo./QEKAJPRYCk/KaOU8na/z.','client',1,NULL,NULL,NULL,NULL,'2022-06-06 14:54:13','2022-06-06 14:54:13',NULL),(4,'Faiz','decrypt21@gmail.com','$2b$10$2IzzCUVHl7wv6jQIeWuLH.bF8j8YOKZ4ezCy.v3Ki9VBP3X6ejGva','client',1,NULL,NULL,NULL,NULL,'2022-06-16 14:41:48','2022-06-16 14:41:48',NULL),(5,'Faiz','kurnianadiem@gmail.com','$2b$10$5gQJtW7TICMi3MnFM/XaQ.3EOWSe7G2IBBorb//.DdZJI0FAD3wU.','client',1,NULL,NULL,NULL,NULL,'2022-06-16 15:09:08','2022-06-16 15:09:08',NULL),(6,'Alwan','wancode.msg@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',2,NULL,'020101-01-01-01','01',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(8,'Jane DOe','janedoe@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',4,NULL,'020101-01-01-01-001-001','001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(9,'Jane John','janejohn@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(16,'YusufPras2','YusufPras12@gmail.com','$2b$10$XaZxllGEIkRvdAB/w8TXNu.7bw3GMD0UfPNkLwMXU.Qi/KAQ7xM/S','admin',3,NULL,'020101-01-01-01-001','001',NULL,'2022-12-11 03:33:10','2022-12-11 03:33:10',NULL),(17,'YusufPras3','YusufPras13@gmail.com','$2b$10$WrRIASXWHKdpUeA2H1EkIuxEAydDackA4L3lyQUeQAzVEvbboiTIa','admin',3,NULL,'020101-01-01-01-002','002',NULL,'2022-12-11 03:41:20','2022-12-11 03:41:20',NULL),(18,'Alwan Rabbaees','alwan2@gmail.com','$2b$10$7RQl11bmT2c.iTZ2Ira8NuPtQJLTn/mtGsiaJFtsEwuy3jItrPyKS','agent',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-12-11 04:16:08','2022-12-12 07:04:44',NULL),(19,'YusufPras4','YusufPras14@gmail.com','$2b$10$Gtq1W/aEQOMuh.qzoBafQu0yuUK8E.I678RdT5x8MDMTXQdmR4vaG','admin',2,NULL,'020101-01-01-02','02',NULL,'2022-12-11 07:17:29','2022-12-11 07:17:29',NULL),(20,'YusufPras5','YusufPras15@gmail.com','$2b$10$TE5RFErzGctIGTK4f0azwuQIjfKMcOcDEYayaobtNT1HhImIlUF/K','admin',2,NULL,'020101-01-01-03','03',NULL,'2022-12-11 07:19:04','2022-12-11 07:19:04',NULL),(21,'Lutfy Test','lutfytest@gmail.com','$2b$10$2S7I2Ah6HWEEEeYk7bq3..EK6s.oQDkDDABwIEp6zd5E1yGHTr6eO','client',0,NULL,NULL,NULL,NULL,'2022-12-16 02:27:53','2022-12-16 02:27:53',NULL),(22,'Jane DOe 222','janedoe2@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',4,NULL,'020101-01-01-01-002-001','001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comissions`
+--
+
+DROP TABLE IF EXISTS `comissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `comissions_FK` (`account_id`),
+  CONSTRAINT `comissions_FK` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comissions`
+--
+
+LOCK TABLES `comissions` WRITE;
+/*!40000 ALTER TABLE `comissions` DISABLE KEYS */;
+INSERT INTO `comissions` VALUES (1,18,750000,'Komisi Masuk','in',NULL),(2,18,10000,'Komisi Keluar','out','2022-12-16 20:49:00');
+/*!40000 ALTER TABLE `comissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -136,8 +187,7 @@ CREATE TABLE `endpoints` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,9 +196,7 @@ CREATE TABLE `endpoints` (
 
 LOCK TABLES `endpoints` WRITE;
 /*!40000 ALTER TABLE `endpoints` DISABLE KEYS */;
-
 INSERT INTO `endpoints` VALUES (1,'Endpoint List','/admin/endpoint/list','GET','2022-06-12 04:30:37','2022-06-12 06:43:27',NULL),(2,'Endpoint Create','/admin/endpoint','POST','2022-06-12 05:05:37','2022-06-12 05:05:37',NULL),(3,'Endpoint Update','/admin/endpoint/?','PUT','2022-06-12 05:34:23','2022-06-12 05:34:23',NULL),(4,'Endpoint Delete','/admin/endpoint/?','DELETE','2022-06-12 05:35:09','2022-06-12 05:35:09',NULL),(5,'Product List','/admin/product','GET','2022-06-12 05:44:50','2022-06-12 05:44:50',NULL),(6,'Product Detail','/admin/product/?','GET','2022-06-12 05:45:12','2022-06-12 05:45:12',NULL),(7,'Product Create','/admin/product','POST','2022-06-12 05:45:30','2022-06-12 05:45:30',NULL),(8,'Product Update','/admin/product/?','PUT','2022-06-12 05:47:20','2022-06-12 05:47:20',NULL),(9,'Product Delete','/admin/product/?','DELETE','2022-06-12 05:47:43','2022-06-12 05:47:43',NULL),(10,'Product Feature Create','/admin/product/feature','POST','2022-06-12 05:48:14','2022-06-12 05:48:14',NULL),(11,'Product Feature Update','/admin/product/feature/?','PUT','2022-06-12 05:48:33','2022-06-12 05:48:33',NULL),(12,'Product Feature Delete','/admin/product/feature/?','DELETE','2022-06-12 05:49:07','2022-06-12 05:49:07',NULL),(13,'Product Expansion Create','/admin/product/expansion','GET','2022-06-12 05:49:34','2022-06-12 05:49:34',NULL),(14,'Product Expansion Update','/admin/product/expansion/?','PUT','2022-06-12 05:49:58','2022-06-12 05:49:58',NULL),(15,'Product Expansion Delete','/admin/product/expansion/?','DELETE','2022-06-12 05:50:17','2022-06-12 05:50:17',NULL),(16,'Role List','/admin/role/list','GET','2022-06-12 05:51:33','2022-06-12 05:51:33',NULL),(17,'Role Create','/admin/role','POST','2022-06-12 05:52:16','2022-06-12 05:52:16',NULL),(18,'Role Update','/admin/role/?','PUT','2022-06-12 05:52:30','2022-06-12 05:52:30',NULL),(19,'Role Delete','/admin/role/?','DELETE','2022-06-12 05:52:48','2022-06-12 05:52:48',NULL),(20,'Role Add Endpoint','/admin/role/endpoint','POST','2022-06-12 07:06:35','2022-06-12 07:06:35',NULL),(21,'Role Delete Endpoint','/admin/role/endpoint/?','DELETE','2022-06-12 07:06:35','2022-06-12 07:06:35',NULL),(22,'Account List','/admin/account/list','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(23,'Account Create','/admin/account','POST','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(24,'Account Update','/admin/account/?','PUT','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(25,'Transaksi List','/admin/transaction/list','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(26,'Transaksi Detail','/admin/transaction/?/detail','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(27,'Role Tree','/admin/role/tree','GET','2022-06-12 05:51:33','2022-06-12 05:51:33',NULL),(28,'Account Delete','/admin/account/?','DELETE','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(29,'Account Self','/admin/account','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(30,'Account Self Update','/admin/account','PUT','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(31,'Account Self Update Password','/admin/account/password','PUT','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(32,'User Identity','/user/identity','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(33,'User Identity Update','/user/identity','POST','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(34,'User Transactions','/user/transactions','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(35,'Vehicle List','/admin/vehicle/list','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(36,'Vehicle Import','/admin/vehicle/import','POST','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(37,'Vehicle Prices','/admin/vehicle/prices','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(38,'Vehicle Item Brands','/admin/vehicle/item/brands','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(39,'Vehicle Item Types','/admin/vehicle/item/types','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(40,'Vehicle Item Categories','/admin/vehicle/item/categories','GET','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL),(41,'Account Create Dealer','/admin/account/dealer','POST','2022-11-29 07:06:35','2022-11-29 07:06:35',NULL);
-
 /*!40000 ALTER TABLE `endpoints` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +217,6 @@ CREATE TABLE `identities` (
   CONSTRAINT `identities_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Dumping data for table `identities`
@@ -206,7 +253,6 @@ INSERT INTO `license_plates` VALUES (1,'A','2','BANTEN'),(2,'AA','3','JAWA TENGA
 /*!40000 ALTER TABLE `license_plates` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
 --
 -- Table structure for table `notifications`
 --
@@ -236,6 +282,36 @@ LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
 INSERT INTO `notifications` VALUES (1,'test notif','test notif','/user/accept-role-upgrade',1,1,6,NULL,'2022-12-12 02:21:42'),(2,'test kirim notif','Test kirim notif','/confirm-email',0,6,1,NULL,'2022-12-12 02:21:42'),(4,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:06:55'),(5,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,19,18,NULL,'2022-12-12 07:07:06'),(6,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:07:11'),(7,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:08:06'),(8,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:08:56'),(9,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:09:27'),(10,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:09:49');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `points`
+--
+
+DROP TABLE IF EXISTS `points`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `points` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `comissions_FK` (`account_id`) USING BTREE,
+  CONSTRAINT `comissions_FK_copy` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `points`
+--
+
+LOCK TABLES `points` WRITE;
+/*!40000 ALTER TABLE `points` DISABLE KEYS */;
+INSERT INTO `points` VALUES (1,8,250,'point in','in','2022-12-16 20:22:39'),(2,8,100,'point in','out','2022-12-16 20:22:39');
+/*!40000 ALTER TABLE `points` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -310,11 +386,13 @@ CREATE TABLE `products` (
   `type` enum('comprehensive','tlo') NOT NULL,
   `description` text NOT NULL,
   `image` varchar(255) NOT NULL,
+  `supported_brands` varchar(255) DEFAULT NULL,
   `tnc` text NOT NULL COMMENT 'Terms and Condition',
   `claim` text NOT NULL,
   `brochure_file` varchar(255) DEFAULT NULL,
   `workshop_file` varchar(255) DEFAULT NULL,
   `workshop_count` int(4) DEFAULT NULL,
+  `extra_point` int(11) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
@@ -326,7 +404,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Garda Oto Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/garda-oto.png','<ul><li>E-polis akan dikirim oleh Qoala setelah proses validasi selesai dilakukan dalam waktu maksimal 3 hari kerja</li><li>Usia maksimum untuk Jaminan Total Loss Only (TLO) adalah 15 tahun</li><li>Mobil Anda dinilai sesuai dengan kebijakan Asuransi Adira dan dibandingkan dengan harga pasar mobil saat ini</li><li>Asuransi tidak berlaku untuk mobil yang digunakan untuk keperluan transportasi online</li><li>Asuransi tidak berlaku untuk kendaraan yang digunakan di kawasan industri (pertambangan, perkebunan, dll)</li><li>Syarat dan ketentuan pertanggungan lengkap dapat ditemukan dalam <a href=\"https://assets.qoala.app/mv/documents/Polis-Standar-Asuransi-Kendaraan-Bermotor-Indonesia.pdf\">PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia)</a></li></ul>','<ul><li>Laporan klaim harus Anda laporkan dalam tempo 5 (lima) hari kalender sejak terjadinya kerugian</li><li>Laporan klaim dapat diajukan ke Asuransi Adira melalui telpon, e-mail atau aplikasi Autocillin Mobile Claim (lihat detail kontak di bawah)</li><li>Dokumen yang diperlukan antara lain KTP Pemegang Polis, STNK Kendaraan, SIM Pengemudi, nomor polis Asuransi Adira dan dokumen pendukung lainnya (jika diperlukan)</li><li>Untuk setiap klaim, terdapat biaya atas risiko sendiri yang harus ditanggung oleh pemegang polis. <a href=\"https://assets.qoala.app/mv/documents/ADIRA-OR-Klaim.pdf\">Klik disini untuk rinciannya</a></li></ul><p><strong>Layanan Klaim</strong></p><p>Hotline 24 Jam 1500 456<br>adiracare@asuransiadira.co.id<br>Autocillin Mobile Claim (Tersedia di Google Play Store dan iOs App Store)</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',100,NULL),(2,'BCA Insurance Digital Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/bca-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL),(3,'Mega Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/mega-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',67,NULL),(4,'BCA Insurance Digital Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/bca-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL),(5,'Sompo Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/sompo-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',51,NULL),(6,'Produk Baru','comprehensive','<p>Deskripsi</p>','/uploads/product/afxJmvY1V8c3itKR44swf6sz1vgzE3eq.jpg','<p>Syarat dan ketentuan</p>','<p>Proses Klaim</p>',NULL,NULL,11,'2022-02-11 08:46:55');
+INSERT INTO `products` VALUES (1,'Garda Oto Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/garda-oto.png',NULL,'<ul><li>E-polis akan dikirim oleh Qoala setelah proses validasi selesai dilakukan dalam waktu maksimal 3 hari kerja</li><li>Usia maksimum untuk Jaminan Total Loss Only (TLO) adalah 15 tahun</li><li>Mobil Anda dinilai sesuai dengan kebijakan Asuransi Adira dan dibandingkan dengan harga pasar mobil saat ini</li><li>Asuransi tidak berlaku untuk mobil yang digunakan untuk keperluan transportasi online</li><li>Asuransi tidak berlaku untuk kendaraan yang digunakan di kawasan industri (pertambangan, perkebunan, dll)</li><li>Syarat dan ketentuan pertanggungan lengkap dapat ditemukan dalam <a href=\"https://assets.qoala.app/mv/documents/Polis-Standar-Asuransi-Kendaraan-Bermotor-Indonesia.pdf\">PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia)</a></li></ul>','<ul><li>Laporan klaim harus Anda laporkan dalam tempo 5 (lima) hari kalender sejak terjadinya kerugian</li><li>Laporan klaim dapat diajukan ke Asuransi Adira melalui telpon, e-mail atau aplikasi Autocillin Mobile Claim (lihat detail kontak di bawah)</li><li>Dokumen yang diperlukan antara lain KTP Pemegang Polis, STNK Kendaraan, SIM Pengemudi, nomor polis Asuransi Adira dan dokumen pendukung lainnya (jika diperlukan)</li><li>Untuk setiap klaim, terdapat biaya atas risiko sendiri yang harus ditanggung oleh pemegang polis. <a href=\"https://assets.qoala.app/mv/documents/ADIRA-OR-Klaim.pdf\">Klik disini untuk rinciannya</a></li></ul><p><strong>Layanan Klaim</strong></p><p>Hotline 24 Jam 1500 456<br>adiracare@asuransiadira.co.id<br>Autocillin Mobile Claim (Tersedia di Google Play Store dan iOs App Store)</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',100,NULL,NULL),(2,'BCA Insurance Digital Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/bca-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL,NULL),(3,'Mega Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/mega-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',67,NULL,NULL),(4,'BCA Insurance Digital Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/bca-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL,NULL),(5,'Sompo Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/sompo-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',51,NULL,NULL),(6,'Produk Baru','comprehensive','<p>Deskripsi</p>','/uploads/product/afxJmvY1V8c3itKR44swf6sz1vgzE3eq.jpg',NULL,'<p>Syarat dan ketentuan</p>','<p>Proses Klaim</p>',NULL,NULL,11,NULL,'2022-02-11 08:46:55');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,9 +435,7 @@ CREATE TABLE `profiles` (
 
 LOCK TABLES `profiles` WRITE;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-
-INSERT INTO `profiles` VALUES (2,NULL,'2000-09-20',NULL,'Morokrembangan 4/15','085258754309',NULL,NULL),(6,'male','2000-09-20','/uploads/photos/4fr6dhrP4GlfTMHwHjoH6HFMdOxhFpyg.jpeg','Morokrembangan 4/15','085258754300',NULL,NULL),(18,NULL,'2000-09-20','/uploads/photos/KYOTJuzpQ7uDP0m7l1BtuPXpLSxmmG3P.jpeg','Morokrembangan 4/15','085258754300',NULL,NULL);
-
+INSERT INTO `profiles` VALUES (2,NULL,'2000-09-20',NULL,'Morokrembangan 4/15','085258754309',NULL,NULL),(6,'male','2000-09-20','/uploads/photos/4fr6dhrP4GlfTMHwHjoH6HFMdOxhFpyg.jpeg','Morokrembangan 4/15','085258754300',NULL,NULL),(18,NULL,'2000-09-20','/uploads/photos/KYOTJuzpQ7uDP0m7l1BtuPXpLSxmmG3P.jpeg','Morokrembangan 4/15','085258754300',NULL,NULL),(21,NULL,NULL,NULL,NULL,'08995247132',NULL,NULL);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -379,9 +455,7 @@ CREATE TABLE `role_endpoints` (
   KEY `endpoint_id` (`endpoint_id`),
   CONSTRAINT `role_endpoints_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `role_endpoints_ibfk_2` FOREIGN KEY (`endpoint_id`) REFERENCES `endpoints` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -390,9 +464,7 @@ CREATE TABLE `role_endpoints` (
 
 LOCK TABLES `role_endpoints` WRITE;
 /*!40000 ALTER TABLE `role_endpoints` DISABLE KEYS */;
-
 INSERT INTO `role_endpoints` VALUES (1,1,1),(2,1,2),(3,1,3),(4,1,4),(5,1,5),(6,1,6),(7,1,7),(8,1,8),(9,1,9),(10,1,10),(11,1,11),(12,1,12),(13,1,13),(14,1,14),(15,1,15),(16,1,16),(17,1,17),(18,1,18),(19,1,19),(20,1,20),(21,1,21),(22,1,22),(23,1,23),(24,1,24),(25,1,25),(26,1,27),(27,2,27),(28,3,27),(29,4,27),(30,5,27),(31,1,26),(32,2,1),(33,2,2),(34,2,3),(35,2,4),(36,2,5),(37,2,6),(38,2,7),(39,2,8),(40,2,9),(41,2,10),(42,2,11),(43,2,12),(44,2,13),(45,2,14),(46,2,16),(47,2,17),(48,2,18),(49,2,19),(50,2,20),(51,2,21),(52,2,22),(53,2,23),(54,2,24),(55,2,25),(56,2,26),(57,2,27),(58,3,1),(59,3,2),(60,3,3),(61,3,4),(62,3,5),(63,3,6),(64,3,7),(65,3,8),(66,3,9),(67,3,10),(68,3,11),(69,3,12),(70,3,13),(71,3,14),(72,3,15),(73,3,16),(74,3,17),(75,3,18),(76,3,19),(77,3,20),(78,3,21),(79,3,22),(80,3,23),(81,3,24),(82,3,25),(83,3,26),(84,3,27),(85,4,1),(86,4,2),(87,4,3),(88,4,4),(89,4,5),(90,4,6),(91,4,7),(92,4,8),(93,4,9),(94,4,10),(95,4,11),(96,4,12),(97,4,13),(98,4,14),(99,4,15),(100,4,16),(101,4,17),(102,4,18),(103,4,19),(104,4,20),(105,4,21),(106,4,22),(107,4,23),(108,4,24),(109,4,25),(110,4,26),(111,4,27),(112,5,5),(113,5,6),(114,5,24),(115,5,34),(117,5,27),(139,1,28),(140,1,29),(141,1,30),(142,1,31),(143,1,28),(144,1,33),(145,1,34),(146,1,35),(147,1,36),(148,1,37),(149,1,38),(150,1,39),(151,1,40),(152,5,28),(153,5,32),(154,5,33),(155,2,28),(156,2,29),(157,2,30),(158,2,31),(159,2,32),(160,2,33),(161,2,34),(162,3,28),(163,3,29),(164,3,30),(165,3,31),(166,3,32),(167,3,33),(168,3,34),(169,4,28),(170,4,29),(171,4,30),(172,4,31),(173,4,32),(174,4,33),(175,4,34),(176,1,41);
-
 /*!40000 ALTER TABLE `role_endpoints` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,9 +505,10 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `transactions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
+  `client_id` int(11) DEFAULT NULL,
+  `agent_id` int(11) DEFAULT NULL,
   `product_id` int(11) NOT NULL,
-  `account_vehicle_id` int(11) NOT NULL,
+  `vehicle_id` int(11) DEFAULT NULL,
   `start_date` date NOT NULL,
   `documents` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'STNK, Front Side, Back Side, Left Side, Right Side, Dashboard' CHECK (json_valid(`documents`)),
   `price` int(11) NOT NULL COMMENT 'Product Base Price',
@@ -445,12 +518,12 @@ CREATE TABLE `transactions` (
   `payment_id` varchar(50) DEFAULT NULL COMMENT 'Transaction ID from Midtrans / Xendit',
   `payment_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`payment_data`)),
   `status` enum('open','waiting','paid','denied','canceled','failed') NOT NULL DEFAULT 'open',
+  `client_data` longtext DEFAULT NULL,
+  `vehicle_data` longtext DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`account_id`),
   KEY `product_id` (`product_id`),
-  KEY `account_vehicle_id` (`account_vehicle_id`),
-  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`account_vehicle_id`) REFERENCES `account_vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `account_vehicle_id` (`vehicle_id`),
+  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `account_vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `transactions_ibfk_3` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -541,5 +614,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-
--- Dump completed on 2022-12-06  9:50:01
+-- Dump completed on 2022-12-18 14:22:45

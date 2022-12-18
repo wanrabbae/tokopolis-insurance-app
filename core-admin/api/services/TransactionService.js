@@ -94,6 +94,18 @@ export default class TransactionService {
         return this.repository.getComission(req);
     }
 
+    getComissionHistory(req) {
+        return this.repository.getComissionHistory(req);
+    }
+
+    getPoint(req) {
+        return this.repository.getPoint(req);
+    }
+
+    getPointHistory(req) {
+        return this.repository.getPointHistory(req);
+    }
+
     sendEmailPayment(payload) {
         let mailer = new Mailer(payload.host);
         // mailer.setUrl('/path')

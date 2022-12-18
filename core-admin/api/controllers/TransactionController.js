@@ -847,3 +847,21 @@ exports.getComission = async (req, res) => {
 
     res.jsonData(comission);
 };
+
+exports.getComissionHistory = async (req, res) => {
+    const comission = await service.getComissionHistory(req);
+
+    res.jsonData(comission);
+};
+
+exports.getPoint = async (req, res) => {
+    const point = await service.getPoint(req);
+
+    res.jsonData(point);
+};
+
+exports.getPointHistory = async (req, res) => {
+    const point = await service.getPointHistory(req);
+
+    res.jsonData(point);
+};
