@@ -552,11 +552,12 @@ exports.postTransaction = async (req, res) => {
 
             // add points here (NOTE: Point masih ribuan)*
             if (req.session.product.extra_point) {
+                const pointValue =
+                    totalPriceForComission *
+                    (req.session.product.extra_point / 100);
                 const point = await service.createPoint({
                     account_id: req.account._id,
-                    value:
-                        totalPriceForComission *
-                        (req.session.product.extra_point / 100),
+                    value: parseInt(pointValue.toString().slice(0, -3)),
                 });
 
                 const findUniqueId = await accountService.getAccountData(
@@ -571,9 +572,10 @@ exports.postTransaction = async (req, res) => {
 
                 if (findAccountSpv) {
                     // add point to his supervisor
+                    const pointValueSpv = totalPriceForComission * (5 / 100);
                     await service.createPoint({
                         account_id: findAccountSpv.id,
-                        value: totalPriceForComission * (5 / 100),
+                        value: parseInt(pointValueSpv.toString().slice(0, -3)),
                     });
 
                     const bhCodeArray = findAccountSpv.unique_id.split("-");
@@ -584,9 +586,12 @@ exports.postTransaction = async (req, res) => {
 
                     if (findAccountBH) {
                         // add point to his branch head
+                        const pointValueBH = totalPriceForComission * (5 / 100);
                         await service.createPoint({
                             account_id: findAccountBH.id,
-                            value: totalPriceForComission * (5 / 100),
+                            value: parseInt(
+                                pointValueBH.toString().slice(0, -3)
+                            ),
                         });
                     }
                 }
