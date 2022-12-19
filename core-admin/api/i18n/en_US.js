@@ -124,6 +124,7 @@ const en_US_strings = {
             'compare.product': 'Product Comparation not Valid',
             'transaction': 'Transaction not exists',
             'transaction.create': 'Transaction Failed',
+            'transaction.discount': 'Transaction Discount is not Valid',
             'route.exist': 'Route already exists',
             'role.exist': 'Role already exists',
             'endpoint.notfound' : 'Endpoint data not found.',

@@ -142,9 +142,15 @@ export default class PdfService {
 
     createTableCalculate(doc, data) {
         const list = data.calculation.map(result => {
+            var calculation =  `${data.currency} ${result.price}`
+
+            if (result.percentage != null) {
+                calculation = `${data.currency} ${result.price} x ${result.percentage}`
+            }
+
             return {
                 name: result.label,
-                calculation: `${data.currency} ${result.price} x ${result.percentage}`,
+                calculation: calculation,
                 currency: data.currency,
                 price: result.total
             }
