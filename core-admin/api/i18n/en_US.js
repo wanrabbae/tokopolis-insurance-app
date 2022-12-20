@@ -67,6 +67,7 @@ const en_US_strings = {
             "product.brochure": "Brochure",
             "product.workshop": "Workshop",
             "product.workshop_count": "Workshop Count",
+            "product.extra_point": "Extra Poin",
 
             "transaction.id": "Transaction ID",
             "transaction.status": "Transaction Status",
