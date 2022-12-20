@@ -141,6 +141,39 @@ INSERT INTO `accounts` VALUES (1,'Administrator','admin@piqo.com','$2b$10$6Ddnl4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `claim_products`
+--
+
+DROP TABLE IF EXISTS `claim_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `claim_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `transaction_id` varchar(255) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `no_polis` varchar(255) DEFAULT NULL,
+  `incident_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `location` varchar(255) DEFAULT NULL,
+  `chronology` text DEFAULT NULL,
+  `documents` longtext NOT NULL,
+  `status` enum('pending','surveyed','accepted','declined','fixed','ready','done') NOT NULL DEFAULT 'pending',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `claim_products`
+--
+
+LOCK TABLES `claim_products` WRITE;
+/*!40000 ALTER TABLE `claim_products` DISABLE KEYS */;
+INSERT INTO `claim_products` VALUES (1,18,'TKP-1232-4232',1,'123546789','2022-12-20 07:47:39','Perumnas','lorem ipsum dolor sit','{\"driver_license\": \"/uploads/transaction/MdfHG9OAcaMYnEbceB0LlunQU7dwXb87.png\",\n                \"identity_card\": \"/uploads/transaction/HH8DMblTnNdnefpCX6Dc6L7W2K3hEqyS.png\"}','accepted','2022-12-20 07:47:39');
+/*!40000 ALTER TABLE `claim_products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `comissions`
 --
 
@@ -614,4 +647,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-18 14:22:45
+-- Dump completed on 2022-12-20 15:10:43
