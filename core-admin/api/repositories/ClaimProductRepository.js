@@ -41,11 +41,18 @@ export default class ClaimProductRepository {
             where: {
                 id: id,
             },
-            include: {
-                model: Account,
-                as: "account",
-                attributes: ["id", "fullname", "email"],
-            },
+            include: [
+                {
+                    model: Account,
+                    as: "account",
+                    attributes: ["id", "fullname", "email"],
+                },
+                {
+                    model: Product,
+                    as: "product",
+                    attributes: ["id", "name", "type", "image"],
+                },
+            ],
         });
     }
 
@@ -55,8 +62,8 @@ export default class ClaimProductRepository {
 
     async updateStatus(payload) {
         return await ClaimProduct.update(
-            { status: payload.status },
-            { where: { id: payload.id } }
+            { status: payload.body.status },
+            { where: { id: payload.params.id } }
         );
     }
 }

@@ -1,6 +1,6 @@
 import ClaimProductService from "../../services/ClaimProductService.js";
 
-const validation = require("../../validation/user.validation");
+const validation = require("../../validation/claim.validation");
 const { randomString } = require("../../utilities/functions");
 
 const service = new ClaimProductService();
@@ -31,7 +31,9 @@ exports.getDetailClaimProduct = async (req, res) => {
 
 exports.updateStatusClaim = async (req, res) => {
     try {
-        await service.updateStatusData(req.body);
+        const validate = validation.updateStaging(req);
+        if (validate.error) return res.errorValidation(validate.details);
+        await service.updateStatusData(req);
         return res.jsonSuccess("Success update staging");
     } catch (error) {
         return res.jsonData({

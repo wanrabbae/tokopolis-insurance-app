@@ -106,6 +106,7 @@ const id_ID_strings = {
             "claim.damage2": "Foto Kerusakan 2",
             "claim.damage3": "Foto Kerusakan 3",
             "claim.damage4": "Foto Kerusakan 4",
+            "claim.status": "Status Staging",
         },
         mail: {
             register: "Notifikasi Registrasi",
@@ -115,7 +116,7 @@ const id_ID_strings = {
             "payment.created": "Notifikasi Pembayaran",
             "payment.success": "Pembayaran Berhasil",
             verify_spv: "Notifikasi Konfirmasi Supervisor",
-            request_claim: "Notifikasi Request Claim Asuransi Pada Tokopolis",
+            request_claim: "Request Claim Asuransi Telah Diterima",
         },
         success: {
             default: "Aksi Berhasil",
@@ -155,6 +156,9 @@ const id_ID_strings = {
             "address.regency": "Data Kabupaten/Kota tidak ditemukan",
             "address.district": "Data Kecamatan tidak ditemukan",
             "address.village": "Data Desa/Kelurahan tidak ditemukan",
+            "claim.transaction.check": "ID Transaksi tidak valid!",
+            "claim.incident_time":
+                "Request Claim Maksimal 30 hari kalender dari tanggal sekarang/register",
         },
     },
 };

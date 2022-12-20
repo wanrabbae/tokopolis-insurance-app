@@ -37,7 +37,6 @@ const claimProduct = (req) => {
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t("field.claim.sim")),
         document_optional: Joi.string()
-            .required()
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t("field.claim.document_optional")),
         damage1: Joi.string()
@@ -69,6 +68,30 @@ const claimProduct = (req) => {
     );
 };
 
+const updateStaging = (req) => {
+    const schema = Joi.object({
+        status: Joi.valid(
+            "surveyed",
+            "accepted",
+            "declined",
+            "fixed",
+            "ready",
+            "done"
+        ).label(req.polyglot.t("field.claim.status")),
+    });
+
+    return joiResponse(
+        schema.validate(req.body, {
+            abortEarly: false,
+            messages: joiErrorMessages(),
+            errors: {
+                language: req.locale.language,
+            },
+        })
+    );
+};
+
 module.exports = {
     claimProduct,
+    updateStaging,
 };

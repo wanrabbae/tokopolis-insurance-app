@@ -37,6 +37,7 @@ module.exports = (sequelize, Sequelize) => {
             },
             status: {
                 type: Sequelize.ENUM(
+                    "pending",
                     "surveyed",
                     "accepted",
                     "declined",
@@ -44,6 +45,7 @@ module.exports = (sequelize, Sequelize) => {
                     "ready",
                     "done"
                 ),
+                defaultValue: "pending",
             },
             created_at: Sequelize.DATE,
         },

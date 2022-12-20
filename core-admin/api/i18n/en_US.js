@@ -106,6 +106,7 @@ const en_US_strings = {
             "claim.damage2": "Foto Kerusakan 2",
             "claim.damage3": "Foto Kerusakan 3",
             "claim.damage4": "Foto Kerusakan 4",
+            "claim.status": "Status Staging",
         },
         mail: {
             register: "Register Notification",
@@ -115,7 +116,7 @@ const en_US_strings = {
             "payment.created": "Payment Notification",
             "payment.success": "Payment Success",
             verify_spv: "Supervisor Confirmation Notification",
-            request_claim: "Notifikasi Request Claim Asuransi Pada Tokopolis",
+            request_claim: "Insurance Claim Request Has Been Received",
         },
         success: {
             default: "Action Success",
@@ -155,6 +156,9 @@ const en_US_strings = {
             "address.regency": "Regency data not found",
             "address.district": "District data not found",
             "address.village": "Village data not found",
+            "claim.transaction.check": "Transaction ID not valid!",
+            "claim.incident_time":
+                "Request Claim Maximum 30 calendar days from the current/register date",
         },
     },
 };

@@ -16,7 +16,9 @@ router.get("/claim/:id", auth, getDetailClaimProduct);
 router.post(
     "/claim",
     auth,
-    uploadFile({ fileSize: 5 }).fields([
+    uploadFile({
+        fileSize: 5,
+    }).fields([
         { name: "identity_card" },
         { name: "driver_license" },
         { name: "stnk" },
