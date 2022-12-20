@@ -1,6 +1,6 @@
 import ClaimProductService from "../services/ClaimProductService.js";
 
-const validation = require("../validation/user.validation");
+const validation = require("../validation/claim.validation");
 const { randomString } = require("../utilities/functions");
 
 const service = new ClaimProductService();
@@ -31,7 +31,23 @@ exports.getDetailClaimProduct = async (req, res) => {
 
 exports.claimProduct = async (req, res) => {
     try {
-        await service.createClaimProduct(req.body);
+        const validate = validation.claimProduct(req);
+        if (validate.error) return res.errorValidation(validate.details);
+        // await service.createClaimProduct(req.body);
+        console.log(req.body);
+        console.log(req.files);
+        service.sendEmailRequestClaimSuccess({
+            host: req.fullhost,
+            target: account.email,
+            title: req.polyglot.t("mail.request_claim"),
+            data: {
+                name: transaction.client_data.fullname,
+                platform: data.name,
+                virtual_number: data.virtual_number,
+                total: moneyFormat(data.amount),
+                date: data.due,
+            },
+        });
         return res.jsonSuccess("Success request claim product");
     } catch (error) {
         return res.jsonData({

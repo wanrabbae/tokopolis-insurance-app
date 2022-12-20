@@ -23,6 +23,10 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
+            product_id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
             no_polis: {
                 type: Sequelize.STRING,
                 allowNull: true,

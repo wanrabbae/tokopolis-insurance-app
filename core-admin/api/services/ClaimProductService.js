@@ -1,6 +1,7 @@
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 
+import Mailer from "../utilities/mail";
 import ClaimProductRepository from "../repositories/ClaimProductRepository.js";
 
 const { getMoment, uploadHandler } = require("../utilities/functions");
@@ -30,5 +31,16 @@ export default class ClaimProductService {
 
     updateStatusData(payload) {
         return this.repository.updateStatus(payload);
+    }
+
+    sendEmailRequestClaimSuccess(payload) {
+        let mailer = new Mailer(payload.host);
+        // mailer.setUrl('/path')
+        mailer.setType("request-claim-success");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+        });
+        mailer.send();
     }
 }

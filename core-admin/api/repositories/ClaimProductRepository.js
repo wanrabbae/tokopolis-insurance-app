@@ -1,7 +1,7 @@
 const moment = require("moment");
 const { Op } = require("sequelize");
 
-const { Account, ClaimProduct } = require("../models");
+const { Account, ClaimProduct, Product } = require("../models");
 
 export default class ClaimProductRepository {
     constructor() {}
@@ -19,13 +19,20 @@ export default class ClaimProductRepository {
     async getClaimProductsData(req) {
         return await ClaimProduct.findAll({
             where: {
-                user_id: req.account._id,
+                account_id: req.account._id,
             },
-            include: {
-                model: Account,
-                as: "account",
-                attributes: ["id", "fullname", "email"],
-            },
+            include: [
+                {
+                    model: Account,
+                    as: "account",
+                    attributes: ["id", "fullname", "email"],
+                },
+                {
+                    model: Product,
+                    as: "product",
+                    attributes: ["id", "name", "type", "image"],
+                },
+            ],
         });
     }
 

@@ -15,6 +15,10 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
+            product_id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+            },
             no_polis: {
                 type: Sequelize.STRING,
                 allowNull: true,
@@ -55,7 +59,13 @@ module.exports = (sequelize, Sequelize) => {
         ClaimProduct.belongsTo(models.Account, {
             as: "account",
             sourceKey: "id",
-            foreignKey: "sender_user_id",
+            foreignKey: "account_id",
+            timestamps: false,
+        });
+        ClaimProduct.belongsTo(models.Product, {
+            as: "product",
+            sourceKey: "id",
+            foreignKey: "product_id",
             timestamps: false,
         });
     };
