@@ -217,8 +217,13 @@
                             </div>
 
                             <div v-if="discount" class="d-flex justify-content-between mb-2">
-                                <span>Diskon</span>
+                                <span class="fw-bold">Diskon</span>
                                 <span class="fw-bold text-primary">{{ formatPrice(-discount) }}</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Biaya Admin</span>
+                                <span class="fw-bold text-primary">{{ formatPrice(model.adminFee) }}</span>
                             </div>
 
                             <div role="separator" class="py-3">
@@ -226,7 +231,7 @@
                             </div>
 
                             <div class="d-flex justify-content-between">
-                                <span class="fw-bold">Total</span>
+                                <span class="fw-bold">Total Premi yang Dibayar</span>
                                 <span class="fw-bold text-primary">{{ formatPrice(totalPrice) }}</span>
                             </div>
 
@@ -301,6 +306,7 @@ export default {
                 brochure:false
             },
             model:{
+                adminFee: 0,
                 discountAmount: 0,
                 discountPercentage: null,
                 discountType: 'amount',
@@ -331,7 +337,7 @@ export default {
             return totalExpPrice;
         },
         totalPrice() {
-            return this.product.price + this.totalExpansionPrice - this.discount;
+            return this.product.price + this.totalExpansionPrice + this.model.adminFee - this.discount;
         },
         maxDiscount() {
             return (this.product.price + this.totalExpansionPrice) * this.maxPercentageDiscount;
@@ -345,6 +351,7 @@ export default {
     },
     mounted(){
         this.getProduct()
+        this.getAdminFee()
         this.getExpansionDetail()
     },
     methods: {
@@ -409,6 +416,12 @@ export default {
             }).catch (function () {
                 self.$router.push({name: "produk-cari-mobil"})
             })
+        },
+        async getAdminFee() {
+            await this.$axios.$get(`api/transaction/fee/admin`)
+                .then ((response) => {
+                    this.model.adminFee = response.data.fee
+                })
         },
         expansionModalFieldChangeHandler(field) {
             if(field.key === 'srcc')
@@ -478,7 +491,7 @@ export default {
                 product_id: this.id,
                 exp: this.model.exp,
                 discount_format: discountType,
-                discount_value: discountType === 'amount' ? this.model.discountAmount :
+                discount_value: discountType === 'amount' ? this.discount :
                     this.model.discountPercentage
             })
             .then(function(response) {
@@ -501,7 +514,7 @@ export default {
                 product_id: this.id,
                 exp: this.model.exp,
                 discount_format: discountType,
-                discount_value: discountType === 'amount' ? this.model.discountAmount :
+                discount_value: discountType === 'amount' ? this.discount :
                     this.model.discountPercentage
             })
             .then(function(response) {

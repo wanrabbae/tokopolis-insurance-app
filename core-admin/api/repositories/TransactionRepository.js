@@ -18,56 +18,51 @@ export default class TransactionRepository {
     constructor() {}
 
     async getTransactionAll(filter, limit, offset) {
-        const dateFilter =
-            `AND trans.start_date >= '${filter.start_period}' ` +
-            `AND trans.start_date <= '${filter.end_period}' `;
+        const dateFilter = `AND trans.start_date >= '${filter.start_period}' ` +
+            `AND trans.start_date <= '${filter.end_period}' `
 
-        return await sequelize.query(
-            `SELECT trans.id, trans.start_date, trans.status, ` +
-                `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
-                `vehicle.brand, vehicle.sub_model, product.name as product_name ` +
-                `FROM transactions as trans ` +
-                `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
-                `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
-                `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
-                `JOIN products as product ON trans.product_id = product.id ` +
-                `WHERE trans.id LIKE '%${filter.id}%' ` +
-                `AND (client_transactions.fullname LIKE '%${filter.name}%' ` +
-                `OR agent_transactions.fullname LIKE '%${filter.name}%') ` +
-                `AND vehicle.brand LIKE '%${filter.vehicle_brand}%' ` +
-                `AND vehicle.sub_model LIKE '%${filter.vehicle_sub_model}%' ` +
-                `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
-                `AND product.name LIKE '%${filter.product_name}%' ` +
-                (filter.start_period != null && filter.end_period != null
-                    ? dateFilter
-                    : "") +
-                `ORDER BY trans.created_at ASC ` +
-                `LIMIT ${limit} OFFSET ${offset}`,
-            { type: QueryTypes.SELECT }
-        );
+        return await sequelize.query(`SELECT trans.id, trans.start_date, trans.status, ` +
+            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+            `vehicle.brand, vehicle.sub_model, product.name as product_name ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
+            `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
+            `JOIN products as product ON trans.product_id = product.id ` +
+            `WHERE trans.id LIKE '%${filter.id}%' ` +
+            `AND (client_transactions.fullname LIKE '%${filter.name}%' ` +
+            `OR agent_transactions.fullname LIKE '%${filter.name}%') ` +
+            `AND vehicle.brand LIKE '%${filter.vehicle_brand}%' ` +
+            `AND vehicle.sub_model LIKE '%${filter.vehicle_sub_model}%' ` +
+            `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
+            `AND product.name LIKE '%${filter.product_name}%' ` +
+            (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
+            `AND trans.status IN ('waiting', 'paid') ` +
+            `ORDER BY trans.created_at ASC ` +
+            `LIMIT ${limit} OFFSET ${offset}`,
+            { type: QueryTypes.SELECT })
     }
 
     async getTransactionDetail(id) {
-        return await sequelize.query(
-            `SELECT trans.id, trans.client_data, trans.address_detail, ` +
-                `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
-                `province.name as province_name, trans.start_date, trans.status, ` +
-                `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
-                `vehicle.brand, vehicle.sub_model, product.name as product_name, product.image as product_image, trans.vehicle_data, trans.documents, trans.price, ` +
-                `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, trans.total, ` +
-                `trans.status, trans.pg_data, trans.created_at ` +
-                `FROM transactions as trans ` +
-                `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
-                `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
-                `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
-                `JOIN products as product ON trans.product_id = product.id ` +
-                `JOIN address_villages as village ON trans.address_village_id = village.id ` +
-                `JOIN address_districts as district ON village.district_id = district.id ` +
-                `JOIN address_regencies as regency ON district.regency_id = regency.id ` +
-                `JOIN address_provinces as province ON regency.province_id = province.id ` +
-                `WHERE trans.id = '${id}' `,
-            { type: QueryTypes.SELECT }
-        );
+        return await sequelize.query(`SELECT trans.id, trans.client_data, trans.address_detail, ` +
+            `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
+            `province.name as province_name, trans.start_date, trans.status, ` +
+            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+            `vehicle.brand, vehicle.sub_model, product.name as product_name, product.image as product_image, trans.vehicle_data, ` +
+            `trans.documents, trans.assessment, trans.price, ` +
+            `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, trans.total, ` +
+            `trans.status, trans.pg_data, trans.created_at ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
+            `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
+            `JOIN products as product ON trans.product_id = product.id ` +
+            `JOIN address_villages as village ON trans.address_village_id = village.id ` +
+            `JOIN address_districts as district ON village.district_id = district.id ` +
+            `JOIN address_regencies as regency ON district.regency_id = regency.id ` +
+            `JOIN address_provinces as province ON regency.province_id = province.id ` +
+            `WHERE trans.id = '${id}' `,
+            { type: QueryTypes.SELECT })
     }
 
     // async getTransactionAll(limit, offset) {
@@ -195,30 +190,26 @@ export default class TransactionRepository {
     }
 
     async getTransactionCount(filter) {
-        const dateFilter =
-            `AND trans.start_date >= '${filter.start_period}' ` +
-            `AND trans.start_date <= '${filter.end_period}' `;
+        const dateFilter = `AND trans.start_date >= '${filter.start_period}' ` +
+            `AND trans.start_date <= '${filter.end_period}' `
 
-        return await sequelize.query(
-            `SELECT COUNT(*) as total ` +
-                `FROM transactions as trans ` +
-                `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
-                `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
-                `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
-                `JOIN products as product ON trans.product_id = product.id ` +
-                `WHERE trans.id LIKE '%${filter.id}%' ` +
-                `AND (client_transactions.fullname LIKE '%${filter.name}%' ` +
-                `OR agent_transactions.fullname LIKE '%${filter.name}%') ` +
-                `AND vehicle.brand LIKE '%${filter.vehicle_brand}%' ` +
-                `AND vehicle.sub_model LIKE '%${filter.vehicle_sub_model}%' ` +
-                `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
-                `AND product.name LIKE '%${filter.product_name}%' ` +
-                (filter.start_period != null && filter.end_period != null
-                    ? dateFilter
-                    : "") +
-                `ORDER BY trans.created_at ASC `,
-            { type: QueryTypes.SELECT }
-        );
+        return await sequelize.query(`SELECT COUNT(*) as total ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
+            `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
+            `JOIN products as product ON trans.product_id = product.id ` +
+            `WHERE trans.id LIKE '%${filter.id}%' ` +
+            `AND (client_transactions.fullname LIKE '%${filter.name}%' ` +
+            `OR agent_transactions.fullname LIKE '%${filter.name}%') ` +
+            `AND vehicle.brand LIKE '%${filter.vehicle_brand}%' ` +
+            `AND vehicle.sub_model LIKE '%${filter.vehicle_sub_model}%' ` +
+            `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
+            `AND product.name LIKE '%${filter.product_name}%' ` +
+            (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
+            `AND trans.status IN ('waiting', 'paid') ` +
+            `ORDER BY trans.created_at ASC `,
+            { type: QueryTypes.SELECT })
     }
 
     // async getTransactionCount() {

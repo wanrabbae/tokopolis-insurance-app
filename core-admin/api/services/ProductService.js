@@ -110,80 +110,53 @@ export default class VehicleService {
             {
                 name: "tpl",
                 label: "Tanggung Jawab Hukum terhadap Pihak Ketiga",
-                premiums: [
-                    {
-                        value: toMillion(5),
-                        rate: tplRate(toMillion(5), vehicle.use),
-                        price: toMillion(5) * tplRate(toMillion(5), vehicle.use),
-                    },
-                    {
-                        value: toMillion(10),
-                        rate: tplRate(toMillion(10), vehicle.use),
-                        price: toMillion(10) * tplRate(toMillion(10), vehicle.use),
-                    },
-                    {
-                        value: toMillion(15),
-                        rate: tplRate(toMillion(15), vehicle.use),
-                        price: toMillion(15) * tplRate(toMillion(15), vehicle.use),
-                    },
-                    {
-                        value: toMillion(20),
-                        rate: tplRate(toMillion(20), vehicle.use),
-                        price: toMillion(20) * tplRate(toMillion(20), vehicle.use),
-                    },
-                ]
+                premiums: (() => {
+                    const premiums = []
+
+                    for (let value = 5; value <= 100; value+=5) {
+                        premiums.push({
+                            value: toMillion(value),
+                            rate: tplRate(toMillion(value), vehicle.use),
+                            price: toMillion(value) * tplRate(toMillion(value), vehicle.use),
+                        })
+                    }
+
+                    return premiums
+                })()
             },
             {
                 name: "pad",
                 label: "Kecelakaan Diri untuk Pengemudi",
-                premiums: [
-                    {
-                        value: toMillion(5),
-                        rate: paDriver(toMillion(5)),
-                        price: toMillion(5) * paDriver(toMillion(5)),
-                    },
-                    {
-                        value: toMillion(10),
-                        rate: paDriver(toMillion(10)),
-                        price: toMillion(10) * paDriver(toMillion(10)),
-                    },
-                    {
-                        value: toMillion(15),
-                        rate: paDriver(toMillion(15)),
-                        price: toMillion(15) * paDriver(toMillion(15)),
-                    },
-                    {
-                        value: toMillion(20),
-                        rate: paDriver(toMillion(20)),
-                        price: toMillion(20) * paDriver(toMillion(20)),
-                    },
-                ]
+                premiums: (() => {
+                    const premiums = []
+
+                    for (let value = 5; value <= 50; value+=5) {
+                        premiums.push({
+                            value: toMillion(value),
+                            rate: paDriver(toMillion(value)),
+                            price: toMillion(value) * paDriver(toMillion(value)),
+                        })
+                    }
+
+                    return premiums
+                })()
             },
             {
                 name: "pap",
                 label: "Kecelakaan Diri untuk Penumpang",
-                premiums: [
-                    {
-                        value: toMillion(5),
-                        rate: paPassenger(toMillion(5)),
-                        price: toMillion(5) * paPassenger(toMillion(5)),
-                    },
-                    {
-                        value: toMillion(10),
-                        rate: paPassenger(toMillion(10)),
-                        price: toMillion(10) * paPassenger(toMillion(10)),
-                    },
-                    {
-                        value: toMillion(15),
-                        rate: paPassenger(toMillion(15)),
-                        price: toMillion(15) * paPassenger(toMillion(15)),
-                    },
-                    {
-                        value: toMillion(20),
-                        rate: paPassenger(toMillion(20)),
-                        price: toMillion(20) * paPassenger(toMillion(20)),
-                    },
-                ],
+                premiums: (() => {
+                    const premiums = []
+
+                    for (let value = 5; value <= 50; value+=5) {
+                        premiums.push({
+                            value: toMillion(value),
+                            rate: paPassenger(toMillion(value)),
+                            price: toMillion(value) * paPassenger(toMillion(value)),
+                        })
+                    }
+
+                    return premiums
+                })(),
                 max_passenger: vehicle.capacity - 1
             },
         ]

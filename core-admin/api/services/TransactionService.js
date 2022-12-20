@@ -138,4 +138,10 @@ export default class TransactionService {
         });
         mailer.send();
     }
+
+    addReview(id, payload) {
+        return this.repository.updateTransaction(id, {
+            assessment: payload
+        })
+    }
 }
