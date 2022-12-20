@@ -24,6 +24,20 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
+			email: {
+				type: Sequelize.STRING,
+				allowNull: false,
+			},
+			commission: {
+				type: Sequelize.INTEGER,
+                defaultValue: 0,
+                comment: "In percent units",
+			},
+			extra_point: {
+				type: Sequelize.INTEGER,
+                defaultValue: 0,
+                comment: "In percent units",
+			},
             supported_brands: {
                 type: Sequelize.STRING,
             },

@@ -57,6 +57,8 @@ const id_ID_strings = {
             'product.expansion': 'Perluasan Asuransi',
             'product.discount.format': 'Format Diskon',
             'product.discount.total': 'Total Diskon',
+            'product.commission': 'Komisi',
+            'product.extra_point': 'Ekstra Poin',
             'product.tnc': 'Syarat dan Ketentuan',
             'product.claim': 'Klaim',
             'product.brochure': 'Brosur',

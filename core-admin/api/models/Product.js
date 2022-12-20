@@ -21,6 +21,18 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.STRING,
 			allowNull: false,
 		},
+		email: {
+			type: Sequelize.STRING,
+			allowNull: false,
+		},
+		commission: {
+			type: Sequelize.INTEGER,
+            defaultValue: 0,
+		},
+		extra_point: {
+			type: Sequelize.INTEGER,
+            defaultValue: 0,
+		},
 		supported_brands: {
 			type: Sequelize.STRING,
 		},

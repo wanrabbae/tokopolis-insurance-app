@@ -57,6 +57,8 @@ const en_US_strings = {
             'product.expansion': 'Product Expansion',
             'product.discount.format': 'Discount Format',
             'product.discount.total': 'Discount Total',
+            'product.commission': 'Commission',
+            'product.extra_point': 'Extra Point',
             'product.tnc': 'Terms and Condition',
             'product.claim': 'Claim',
             'product.brochure': 'Brochure',

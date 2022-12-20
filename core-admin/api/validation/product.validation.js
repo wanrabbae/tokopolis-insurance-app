@@ -65,6 +65,15 @@ const create = (req) => {
             .required()
             .regex(RegExp(imageExt.regex))
             .label(req.polyglot.t('field.image')),
+        email: Joi.string()
+            .min(6)
+            .required()
+            .email()
+            .label(req.polyglot.t('field.email')),
+        commission: Joi.number()
+            .label(req.polyglot.t('field.product.commission')),
+        extra_point: Joi.number()
+            .label(req.polyglot.t('field.product.extra_point')),
         supported_brands: Joi.string()
             .label(req.polyglot.t('field.image')),
         tnc: Joi.string()
@@ -109,6 +118,15 @@ const update = (req) => {
         image: Joi.string()
             .regex(RegExp(imageExt.regex))
             .label(req.polyglot.t('field.image')),
+        email: Joi.string()
+            .min(6)
+            .required()
+            .email()
+            .label(req.polyglot.t('field.email')),
+        commission: Joi.number()
+            .label(req.polyglot.t('field.product.commission')),
+        extra_point: Joi.number()
+            .label(req.polyglot.t('field.product.extra_point')),
         supported_brands: Joi.string()
             .label(req.polyglot.t('field.image')),
         tnc: Joi.string()
