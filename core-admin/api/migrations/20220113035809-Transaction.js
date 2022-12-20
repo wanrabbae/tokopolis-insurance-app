@@ -53,6 +53,10 @@ module.exports = {
 				type: Sequelize.JSON,
                 comment: "If the car condition is new, use BASTK, ID Card. If not, use STNK, Front Side, Back Side, Left Side, Right Side, Dashboard instead",
 			},
+			assessment: {
+				type: Sequelize.JSON,
+                comment: "Required if document assessment is done",
+			},
 			rate: {
 				type: Sequelize.FLOAT,
 				allowNull: false,

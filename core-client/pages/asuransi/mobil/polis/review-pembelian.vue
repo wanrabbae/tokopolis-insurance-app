@@ -914,7 +914,7 @@ export default {
         },
         async getPaymentFee(){
             this.loading = true
-            await this.$axios.$get(`api/transaction/fee?platform=${this.model.paymentMethod}&total=${this.model.totalPriceWithoutFee}`)
+            await this.$axios.$get(`api/transaction/fee/payment?platform=${this.model.paymentMethod}&total=${this.model.totalPriceWithoutFee}`)
                 .then ((response) => {
                     this.purchaseSummaryDatas.pgPrice = response.data
                     this.totalPriceWithFee()

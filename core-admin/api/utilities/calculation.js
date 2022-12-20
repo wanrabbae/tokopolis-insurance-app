@@ -107,9 +107,9 @@ const srccTerorism = (type) => {
 }
 
 const tplRate = (price, vehicle_function) => {
-    const privateVehicle = [1, 0.5, 0.25]
-    const commercialVehicle = [1.5, 0.75, 0.375]
-    const jumpValues = [25, 25, 50] // Based on max value - min value condition
+    const privateVehicle = [1, 0.5, 0.25, 0]
+    const commercialVehicle = [1.5, 0.75, 0.375, 0]
+    const jumpValues = [25, 25, 50, 0] // Based on max value - min value condition
 
     const rate = (index) => {
         if (vehicle_function == 'private') {
@@ -132,13 +132,13 @@ const tplRate = (price, vehicle_function) => {
     }
 
     while (price > 0) {
-        const maxPrice = calculatePrice(price, jumpValues[rateIndex])
+        const maxPrice = calculatePrice(price, jumpValues[rateIndex])// 0.0625
         const currentRate = rate(rateIndex)
 
-        rateTotal += (maxPrice / priceTotal) * toDecimal(currentRate)
+        rateTotal += (maxPrice / priceTotal) * toDecimal(currentRate) // (x / 80000000) * (0.125/100) = 12500
         price -= toMillion(25)
 
-        rateIndex++
+        if (rateIndex < 3) rateIndex++
     }
 
     return rateTotal
