@@ -158,19 +158,21 @@ const generateQuotation = async (payload) => {
     })
 
     // Add Discount
-    if (payload.discount_format == 'percent') {
-        calculation.push({
-            label: 'Diskon',
-            price: moneyFormatNonSymbol(payload.price),
-            percentage: `${payload.discount_value}%`,
-            total: moneyFormatNonSymbol(-payload.discount_total),
-        })
-    } else {
-        calculation.push({
-            label: 'Diskon',
-            price: moneyFormatNonSymbol(payload.discount_total),
-            total: moneyFormatNonSymbol(-payload.discount_total),
-        })
+    if (payload.discount_total > 0) {
+        if (payload.discount_format == 'percent') {
+            calculation.push({
+                label: 'Diskon',
+                price: moneyFormatNonSymbol(payload.price),
+                percentage: `${payload.discount_value}%`,
+                total: moneyFormatNonSymbol(-payload.discount_total),
+            })
+        } else {
+            calculation.push({
+                label: 'Diskon',
+                price: moneyFormatNonSymbol(payload.discount_total),
+                total: moneyFormatNonSymbol(-payload.discount_total),
+            })
+        }
     }
 
     calculation.push({
