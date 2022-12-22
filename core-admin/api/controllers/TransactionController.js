@@ -527,19 +527,19 @@ exports.postTransaction = async (req, res) => {
             loading_rate: req.session.product.loading_rate,
             expansions: req.session.product.expansion,
             total: totalPrice,
-        },
-        start_date: req.session.product.start_date,
-        rate: req.session.product.rate,
-        price: req.session.product.price,
-        discount_format: req.session.product.discount_format,
-        discount_value: req.session.product.discount_value,
-        discount_total: req.session.product.discount_total,
-        loading_rate: req.session.product.loading_rate,
-        expansions: req.session.product.expansion,
-        fee_admin: getAdminFee(),
-        total: req.session.product.price + req.session.product.expansion_price +
-            getAdminFee() - req.session.product.discount_total
-    }, req.files)
+            start_date: req.session.product.start_date,
+            rate: req.session.product.rate,
+            price: req.session.product.price,
+            discount_format: req.session.product.discount_format,
+            discount_value: req.session.product.discount_value,
+            discount_total: req.session.product.discount_total,
+            loading_rate: req.session.product.loading_rate,
+            expansions: req.session.product.expansion,
+            fee_admin: getAdminFee(),
+            total: req.session.product.price + req.session.product.expansion_price +
+                getAdminFee() - req.session.product.discount_total
+        }, req.files
+    )
 
     if (!newTransaction)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
