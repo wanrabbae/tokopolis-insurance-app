@@ -90,20 +90,24 @@
 
                                 <div class="bg-white rounded border" :class="{ 'blur-active' : blurActive(i) }">
 
-                                    <div class="d-flex justify-content-between p-3">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="d-flex justify-content-between p-3">
 
-                                        <BaseButton
-                                            type="link"
-                                            classes="text-left p-0"
-                                            @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
-                                        >
-                                            <span class="fs-md-4 fw-bold text-dark">{{ product.name }}</span>
-                                        </BaseButton>
-
-                                        <span class="text-dark fw-bold">
-                                            {{ formatPrice(product.price) }} / {{ product.period }}
-                                        </span>
-
+                                                <BaseButton
+                                                    type="link"
+                                                    classes="text-left p-0"
+                                                    @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
+                                                >
+                                                    <span class="fs-md-4 fw-bold text-dark">{{ product.name }}</span>
+                                                </BaseButton>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="pt-3 text-right">
+                                                <RekomendasiFlag></RekomendasiFlag>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row px-3">
@@ -132,38 +136,61 @@
 
                                             </ul>
 
-                                            <!-- <BaseButton
+                                            <BaseButton
                                                 type="link"
                                                 classes="text-primary fw-bold p-0"
                                                 @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
                                             >
                                                 Selengkapnya
-                                            </BaseButton> -->
+                                            </BaseButton>
 
                                         </div>  <!-- col-8 ends -->
 
                                     </div> <!-- card-body ends -->
 
-                                    <div class="p-3 text-right">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <div class="p-3">
+                                                <div>Premi Dasar</div>
+                                                <div>
+                                                    <span class="text-dark fw-bold" style="font-size: 11pt">
+                                                        {{ formatPrice(product.price) }} / {{ product.period }}
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    Komisi {{ product.commission }}% <span class="text-dark fw-bold">{{ formatPrice((product.price * product.commission) / 100) }}</span> <br />
+                                                </div>
+                                                <div class="mt-1">
+                                                    <span style="background-color: #E6F0FF; font-size: 8pt; color:#435A8C" class="p-1 mt-5 rounded">Extra Poin {{ product.extra_point }}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-5">
+                                            <div class="p-3 text-right align-bottom">
 
-                                        <b-form-checkbox
-                                            :value="product.id"
-                                            :disabled="disableProduct(product.id)"
-                                            @change="() => {
-                                                if(!isLoggedIn) {
-                                                    productToCompare = [];
-                                                    openLoginModal(product.id);
-                                                }
-                                            }"
-                                        >
-                                            Bandingkan
-                                        </b-form-checkbox>
+                                                <!-- <b-form-checkbox
+                                                    :value="product.id"
+                                                    :disabled="disableProduct(product.id)"
+                                                    @change="() => {
+                                                        if(!isLoggedIn) {
+                                                            productToCompare = [];
+                                                            openLoginModal(product.id);
+                                                        }
+                                                    }"
+                                                >
+                                                    Bandingkan
+                                                </b-form-checkbox> -->
 
-                                        <BaseButton  @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
-                                            Pilih Produk
-                                        </BaseButton>
+                                                <BaseButton  @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
+                                                    Pilih Produk
+                                                </BaseButton>
 
-                                    </div> <!-- card-footer ends -->
+                                                </div> <!-- card-footer ends -->
+                                        </div>
+                                    </div>
+
+
+                                    
 
                                 </div>
 
@@ -301,13 +328,15 @@ import HtmlContent from '../../../../components/HtmlContent'
 import Loading from '../../../../components/Loading'
 import LoginModal from '../../../../components/modals/LoginModal'
 import CloseIcon from '../../../../assets/svg/close.svg'
+import RekomendasiFlag from '../../../../components/RekomendasiFlag'
 
 export default {
     components: {
         Loading,
         HtmlContent,
         LoginModal,
-        CloseIcon
+        CloseIcon,
+        RekomendasiFlag
     },
     props: {
         mobileView: {
@@ -524,6 +553,8 @@ export default {
                         name: element.name,
                         description : element.description,
                         price: element.price,
+                        commission: element.commission,
+                        extra_point: element.extra_point,
                         image: this.$config.serverURL + element.image,
                         tnc: element.tnc,
                         period: "Tahun",

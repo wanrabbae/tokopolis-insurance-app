@@ -1,0 +1,128 @@
+// This is the overall color of the tag
+$tag-color: #FDB400;
+
+// The tag container
+.tag-container {
+//   position: relative;
+//   margin: 20px;
+}
+
+// Tag positions
+.tag-container,
+.tag-container.tag-left {
+  text-align: left;
+}
+.tag-container.tag-center {
+  text-align: center;
+}
+.tag-container.tag-right {
+  text-align: right;
+}
+
+// The tag itself
+.tag {
+  min-width: 100px;
+  height: 20px;
+  background-color: $tag-color;
+  position: relative;
+  padding: 0 15px;
+  display: inline-block;
+}
+
+// The title of the tag
+.tag-title {
+  color: #f0f0f0;
+}
+
+// The tails of the tag
+.tag-tail,
+.tag-left .tag-tail {
+  position: absolute;
+  top: 0;
+  right: -10px;
+}
+.tag-center .tag-tail-left {
+  position: absolute;
+  top: 0;
+  left: -10px;
+}
+.tag-center .tag-tail-right {
+  position: absolute;
+  top: 0;
+  right: -10px;
+}
+.tag-right .tag-tail {
+  position: absolute;
+  top: 0;
+  left: -10px;
+}
+
+[class^="tag-tail"]:after,
+[class^="tag-tail"].tag-tail:before {
+  content: "";
+  width: 0;
+  height: 0;
+  display: block;
+}
+
+.tag-tail:after,
+.tag-left .tag-tail:after {
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid $tag-color;
+}
+.tag-center .tag-tail-right:after {
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid $tag-color;
+}
+.tag-center .tag-tail-left:after {
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid $tag-color;
+}
+.tag-right .tag-tail:after {
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid $tag-color;
+}
+
+.tag-tail:before,
+.tag-left .tag-tail:before {
+  border-right: 10px solid transparent;
+  border-top: 10px solid $tag-color;
+}
+.tag-center .tag-tail-right:after {
+  border-right: 10px solid transparent;
+  border-top: 10px solid $tag-color;
+}
+.tag-center .tag-tail-left:after {
+  border-left: 10px solid transparent;
+  border-top: 10px solid $tag-color;
+}
+.tag-right .tag-tail:before {
+  border-left: 10px solid transparent;
+  border-top: 10px solid $tag-color;
+}
+
+.tag.tag-drop:before,
+.tag-left .tag.tag-drop:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-right: 12px solid transparent;
+  border-top: 16px solid $tag-color;
+  display: block;
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+}
+.tag-right .tag.tag-drop:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: none;
+  border-top: 16px solid $tag-color;
+  display: block;
+  position: absolute;
+  bottom: -16px;
+  right: 0;
+  left: initial;
+}
