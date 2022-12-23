@@ -1,105 +1,129 @@
-import AccountService from '../../services/AccountService'
+import AccountService from "../../services/AccountService";
+import { generateIdRoleManagement } from "../../utilities/generateId.js";
 
-const validation = require('../../validation/user.validation')
-const { randomString } = require('../../utilities/functions')
+const validation = require("../../validation/user.validation");
+const { randomString } = require("../../utilities/functions");
 
-const service = new AccountService()
+const service = new AccountService();
 
 exports.create = async (req, res) => {
-  const validate = validation.create(req)
-  if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.create(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-  const emailExist = await service.getAccountFromEmail(req.body.email)
-  if (emailExist != null) return res.errorBadRequest(req.polyglot.t('error.email.exist'))
+    const emailExist = await service.getAccountFromEmail(req.body.email);
+    if (emailExist != null)
+        return res.errorBadRequest(req.polyglot.t("error.email.exist"));
+
 
   const account = await service.createAccountAdmin(req)
 
-  return res.jsonData(account)
-}
+    return res.jsonData(account);
+};
+
+exports.createDealerAccount = async (req, res) => {
+    const validate = validation.create(req);
+    if (validate.error) return res.errorValidation(validate.details);
+
+    const emailExist = await service.getAccountFromEmail(req.body.email);
+    if (emailExist != null)
+        return res.errorBadRequest(req.polyglot.t("error.email.exist"));
+
+    const { unique_id, other_id } = await generateIdRoleManagement(req.body);
+    req.body.unique_id = unique_id;
+    req.body.other_id = other_id;
+
+    const account = await service.createAccountDealer(req);
+
+    return res.jsonData(account);
+};
 
 exports.list = async (req, res, next) => {
-  const query = req.query.query || null
+    const query = req.query.query || null;
 
-  const current = Number(req.query.current) || 1
-  const limit = Number(req.query.limit) || 10
-  const offset = (current - 1) * limit
+    const current = Number(req.query.current) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const offset = (current - 1) * limit;
 
-  const count = await service.getCountByQuery(query)
-  const list = await service.getAccountAll(query, limit, offset)
+    const count = await service.getCountByQuery(query);
+    const list = await service.getAccountAll(query, limit, offset);
 
-  return res.jsonData({
-    pagination: {
-      total: count,
-      per_page: limit,
-      current_page: current,
-      last_page: Math.ceil(count / limit),
-    },
-    list: list
-  })
-}
+    return res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: list,
+    });
+};
 
 exports.account = async (req, res) => {
-    const account = await service.getAccount(req.account._id)
+    const account = await service.getAccount(req.account._id);
 
-    return res.jsonData(account)
-}
+    return res.jsonData(account);
+};
 
 exports.updateData = async (req, res) => {
-    const validate = validation.update(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.update(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-    const endpoint = await service.getAccount(req.account._id)
-    if (endpoint == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    const endpoint = await service.getAccount(req.account._id);
+    if (endpoint == null)
+        return res.errorBadRequest(req.polyglot.t("error.auth"));
 
-    await service.updateAccount(account.id, req.body)
+    await service.updateAccount(account.id, req.body);
 
     if (account.email != req.body.email) {
-        const confirmToken = await service.createEmailToken(account.id,
-            randomString(40))
+        const confirmToken = await service.createEmailToken(
+            account.id,
+            randomString(40)
+        );
 
         service.sendEmailProfile({
             host: req.fullhost,
             target: account.email,
-            title: req.polyglot.t('mail.email'),
+            title: req.polyglot.t("mail.email"),
             data: {
                 name: account.firstname,
-                token: confirmToken.token
-            }
-        })
+                token: confirmToken.token,
+            },
+        });
     }
 
-    return res.jsonSuccess(req.polyglot.t('success.default'))
-}
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
 
 exports.adminUpdate = async (req, res) => {
-  const validate = validation.adminUpdate(req)
-  if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.adminUpdate(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-  const account = await service.getAccount(req.params.id)
-  if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    const account = await service.getAccount(req.params.id);
+    if (account == null)
+        return res.errorBadRequest(req.polyglot.t("error.auth"));
 
-  await service.adminUpdate(account.id, req.body)
+    await service.adminUpdate(account.id, req.body);
 
-  return res.jsonSuccess(req.polyglot.t('success.default'))
-}
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
 
 exports.updatePassword = async (req, res) => {
-    const validate = validation.updatePassword(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.updatePassword(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-    const account = await service.getAccount(req.account._id)
+    const account = await service.getAccount(req.account._id);
 
-    const validPass = await bcrypt.compare(req.body.password, account.password)
-    if(!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
+    const validPass = await bcrypt.compare(req.body.password, account.password);
+    if (!validPass)
+        return res.errorBadRequest(req.polyglot.t("error.password"));
 
-    await service.resetPassword(account.id, req.body.password_new)
+    await service.resetPassword(account.id, req.body.password_new);
 
-    return res.jsonSuccess(req.polyglot.t('success.default'))
-}
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
 
 exports.destroy = async (req, res, next) => {
-  await service.deleteAccount(req.params.id)
+    await service.deleteAccount(req.params.id);
 
-  return res.jsonSuccess(req.polyglot.t('success.default'))
-}
-
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
