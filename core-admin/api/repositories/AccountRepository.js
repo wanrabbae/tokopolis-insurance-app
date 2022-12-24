@@ -52,7 +52,7 @@ export default class AccountRepository {
         return await Account.findByPk(id, {
             include: [
                 { model: Profile, as: "profile" },
-                { model: Role, as: "role" },
+                { model: Role, as: "roles" },
             ],
         });
     }
