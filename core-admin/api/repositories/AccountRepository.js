@@ -25,7 +25,6 @@ export default class AccountRepository {
                 [Op.or]: [
                     { fullname: { [Op.like]: `%${query}%` } },
                     { email: { [Op.like]: `%${query}%` } },
-                    { role: { [Op.like]: `%${query}%` } },
                 ],
             },
             include: {
@@ -88,15 +87,25 @@ export default class AccountRepository {
     }
 
     async createAccountAdmin(payload) {
-    return await Account.create({
-        fullname: payload.fullname,
-        email: payload.email,
-        password: payload.password,
-        role: 'admin',
-        role_id: payload.role_id,
-        parent_id: payload.parent_id
-    })
-  }
+        return await Account.create({
+            fullname: payload.fullname,
+            email: payload.email,
+            password: payload.password,
+            role_id: payload.role_id,
+            parent_id: payload.parent_id
+        })
+    }
+
+    async createAccountDealer(payload) {
+        return await Account.create({
+            fullname: payload.fullname,
+            email: payload.email,
+            password: payload.password,
+            role_id: payload.role_id,
+            unique_id: payload.unique_id,
+            other_id: payload.other_id,
+        });
+    }
 
     async createAccountDealer(payload) {
         return await Account.create({
@@ -141,7 +150,6 @@ export default class AccountRepository {
                 [Op.or]: [
                     { fullname: { [Op.like]: `%${query}%` } },
                     { email: { [Op.like]: `%${query}%` } },
-                    { role: { [Op.like]: `%${query}%` } },
                 ],
             },
         });

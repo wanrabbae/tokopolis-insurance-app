@@ -150,18 +150,12 @@
 
         </b-table-simple>
 
-        <PenarikanPoinModal id="modal-penarikan-poin"/>
-
     </div>
 
 </template>
 
 <script>
-import PenarikanPoinModal from '../../components/modals/PenarikanPoinModal.vue';
 export default {
-    components: {
-        PenarikanPoinModal
-    },
     layout: 'userarea',
     data() {
         return {
@@ -223,7 +217,6 @@ export default {
     methods: {
         onWithdraw() {
             // put code here
-            this.$bvModal.show("modal-penarikan-poin")
         }
     }
 }

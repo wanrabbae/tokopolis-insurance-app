@@ -50,27 +50,70 @@
 
                                     <div class="row">
 
-                                        <div class="col-7">
+                                        <div class="col-8">
 
-                                            <b-form-datepicker
-                                                v-model="model.date"
-                                                v-bind="calendarLabels"
-                                                locale="id"
-                                                :min="model.min"
-                                                :max="$dayjs().format('YYYY-MM-DD')"
-                                                :open-date="$dayjs().format('YYYY-MM-DD')"
-                                                nav-button-variant="primary"
-                                                :date-format-options="{ 'day': 'numeric', 'month': 'long', 'year': 'numeric' }"
-                                                hide-header
-                                                required
-                                                right
-                                            ></b-form-datepicker>
+                                            <b-input-group class="addon-combined">
+
+                                                <input
+                                                    v-model="model.date"
+                                                    placeholder="DD/MM/YYYY"
+                                                    class="form-control"
+                                                    required
+                                                >
+
+                                                <b-input-group-append>
+
+                                                    <b-form-datepicker
+                                                        locale="id"
+                                                        v-bind="calendarLabels"
+                                                        nav-button-variant="primary"
+                                                        hide-header
+                                                        button-only
+                                                        right
+                                                        @context="datepickerContextHandler"
+                                                    >
+                                                        <template #button-content>
+                                                            <CalendarIcon style="color:#5144c7; width: 1.2rem" />
+                                                        </template>
+                                                    </b-form-datepicker>
+
+                                                </b-input-group-append>
+
+                                            </b-input-group>
 
                                         </div> <!-- col ends -->
 
-                                        <div class="col-5">
-                                            <b-form-timepicker id="timepicker-placeholder" placeholder="Choose a time" locale="id"></b-form-timepicker>
-                                        </div>                                         
+                                        <div class="col-4">
+
+                                            <b-input-group class="addon-combined">
+
+                                                <input
+                                                    v-model="model.time"
+                                                    placeholder="00:00"
+                                                    class="form-control"
+                                                    required
+                                                >
+
+                                                <b-input-group-append>
+
+                                                    <b-form-timepicker
+                                                        class="custom-timepicker"
+                                                        locale="ID"
+                                                        hide-header
+                                                        no-close-button
+                                                        button-only
+                                                        @context="timepickerContextHandler"
+                                                    >
+                                                        <template #button-content>
+                                                            <fa icon="clock" style="color:#5144c7;"/>
+                                                        </template>
+                                                    </b-form-timepicker>
+
+                                                </b-input-group-append>
+
+                                            </b-input-group>
+
+                                        </div> <!-- col ends -->
 
                                     </div> <!-- row ends -->
 
@@ -137,7 +180,7 @@
 
                             </div>
 
-                            <b-form-checkbox required style="color: red" class="fw-bold">
+                            <b-form-checkbox required>
                                 Demikian informasi yang dapat saya berikan dengan sebenar-benarnya dan akan saya pertanggung jawabkan secara hukum
                             </b-form-checkbox>
 
@@ -161,20 +204,15 @@
 <script>
 import BaseInput from '../components/Inputs/BaseInput'
 import BaseTextarea from '../components/Inputs/BaseTextarea'
+import CalendarIcon from '../assets/svg/calendar.svg'
 
 export default {
     components: {
         BaseInput,
-        BaseTextarea
+        BaseTextarea,
+        CalendarIcon
     },
     data() {
-
-        const now = new Date()
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        // 15th two months prior
-        const minDate = new Date(today)
-        minDate.setMonth(minDate.getMonth() - 1)
-
         return {
             title: 'Form Laporan Klaim',
             model: {
@@ -184,8 +222,7 @@ export default {
                 date: null,
                 time: null,
                 place: null,
-                chronology: null,
-                min: minDate
+                chronology: null
             },
             documentImages: [],
             documentFields: [
@@ -206,7 +243,7 @@ export default {
                 },
                 {
                     key: "other-document",
-                    label: "Dokumen Lain (Opsional)"
+                    label: "Dokumen Lain"
                 },
                 {
                     key: "vehicle-damage-photo-1",

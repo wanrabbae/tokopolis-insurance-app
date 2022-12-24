@@ -89,11 +89,28 @@
                                     </h5>
                                 </template>
 
+                                <template #cell(plus)="data">
+                                    <h5>
+                                        <b-badge v-if="data.item.commission != 0"
+                                            class="badge bg-info">Komisi: {{ data.item.commission }}%</b-badge>
+
+                                        <b-badge v-if="data.item.extra_point != 0"
+                                            class="badge bg-info">Extra Poin: {{ data.item.extra_point }}%</b-badge>
+
+                                        <b-badge v-if="data.item.commission == 0 && data.item.extra_point == 0"
+                                            class="badge bg-danger">Tidak Tersedia</b-badge>
+                                    </h5>
+                                </template>
+
                                 <template #cell(supported_brands)="data">
                                     <h5 v-if="data.item.supported_brands != null">
-                                        <b-badge v-for="brand in data.item.supported_brands.split(',')"
-                                            v-bind:key="brand"
-                                            class="badge bg-secondary me-1">{{ brand }}</b-badge>
+                                        <span v-for="(brand, index) in data.item.supported_brands.split(',')"
+                                            v-bind:key="brand">
+                                            <b-badge v-if="index < 3" class="badge bg-secondary me-1">{{ titleCase(brand) }}</b-badge>
+                                        </span>
+                                        <b-badge v-if="data.item.supported_brands.split(',').length - 3 > 0" class="badge bg-secondary me-1">
+                                            dan {{ (data.item.supported_brands.split(',').length - 3) }} lainnya
+                                        </b-badge>
                                     </h5>
                                     <h5 v-else>
                                         <b-badge class="badge bg-success">Semua Brand</b-badge>
@@ -155,6 +172,8 @@ export default {
                 { key: "image", label: 'Gambar', tdClass: 'align-middle' },
                 { key: "name", label: 'Nama Produk', tdClass: 'align-middle', sortable: true },
                 { key: "type", label: 'Tipe Perlindungan', tdClass: 'align-middle', sortable: true },
+                { key: "email", label: 'Email', tdClass: 'align-middle', sortable: true },
+                { key: "plus", label: 'Fitur Plus', tdClass: 'align-middle', sortable: true },
                 { key: "supported_brands", label: 'Dukungan Brand', tdClass: 'align-middle', sortable: true, thStyle: { width: "25%" }, },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ]

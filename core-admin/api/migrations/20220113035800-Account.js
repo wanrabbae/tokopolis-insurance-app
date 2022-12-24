@@ -20,13 +20,9 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            role: {
-                type: Sequelize.ENUM("client", "agent", "admin"),
-                defaultValue: "client",
-            },
             role_id: {
                 type: Sequelize.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             parent_id: {
                 type: Sequelize.INTEGER,

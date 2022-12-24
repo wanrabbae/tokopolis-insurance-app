@@ -67,6 +67,48 @@
 									</div>
 
                                     <div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Email
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<input
+												type="text"
+												class="form-control"
+												v-model="form.email"
+												placeholder="Masukkan Email"
+												required>
+										</div>
+									</div>
+
+                                    <div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Komisi (dalam satuan persen)
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<input
+												type="number"
+												class="form-control"
+												v-model="form.commission"
+												placeholder="Masukkan Komisi"
+												required>
+										</div>
+									</div>
+
+                                    <div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Ekstra Poin (dalam satuan persen)
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<input
+												type="number"
+												class="form-control"
+												v-model="form.extra_point"
+												placeholder="Masukkan Ekstra Poin"
+												required>
+										</div>
+									</div>
+
+                                    <div role="group" class="row form-group mb-3">
 										<label class="col-sm-2 col-lg-2 col-form-label">Brand yang Didukung</label>
 										<div class="col-sm-10 col-lg-10">
 											<multiselect
@@ -195,6 +237,9 @@ export default {
 				type: null,
 				description: null,
 				image: null,
+                email: null,
+				commission: 0,
+				extra_point: 0,
                 supported_brands: null,
 				tnc: null,
 				claim: null,
@@ -221,6 +266,7 @@ export default {
             name: { required },
             type: { required },
             description: { required },
+            email: { required },
             tnc: { required },
             claim: { required },
             workshop_count: { numeric },
@@ -281,7 +327,7 @@ export default {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
             .then(function() {
-				ctx.$router.push({ name: 'products' })
+				ctx.$router.push({ path: `/products/${ctx.id}` })
             })
 		}
 	}

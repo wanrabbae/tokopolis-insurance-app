@@ -1,20 +1,18 @@
-const { Router } = require("express");
-const verify = require("../middlewares/verifyToken");
-const { uploadFile } = require("../middlewares/uploadFile");
+const { Router } = require('express')
+const verify = require('../middlewares/verifyToken')
+const { uploadFile } = require('../middlewares/uploadFile')
 
 const { getAll, transaction, postTransaction, postOffer,
     postTemporary, review, doPayment, getAdminFee, getPaymentFee,
     getPaymentDetail, webhookMidtrans, webhookXendit
 } = require('../controllers/TransactionController')
 
-const router = Router();
-const auth = verify();
+const router = Router()
+const auth = verify()
 
-router.get("/transaction/all", auth, getAll);
-router.get("/transaction", auth, transaction);
-router.post(
-    "/transaction",
-    auth,
+router.get('/transaction/all', auth, getAll)
+router.get('/transaction', auth, transaction)
+router.post('/transaction', auth,
     uploadFile({ fileSize: 5 }).fields([
         { name: 'bastk' }, { name: 'identity_card' },
 

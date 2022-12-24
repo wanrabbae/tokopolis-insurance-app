@@ -25,16 +25,6 @@ exports.updateAccountData = async (req, res) => {
     if (account == null)
         return res.errorBadRequest(req.polyglot.t("error.auth"));
 
-    if (req.body.unique_id) {
-        const checkUniqueId = await service.getAccountWithUniqueId(
-            req.body.unique_id
-        );
-        if (checkUniqueId)
-            return res.errorBadRequest(
-                "Code unique id already used, please verify again for upgrade"
-            );
-    }
-
     const update = await service.updateAccountData(account, req.body, req.file);
 
     if (account.email != req.body.email) {
@@ -130,36 +120,36 @@ exports.getTransactions = async (req, res) => {
 };
 
 exports.verifySupervisor = async (req, res) => {
-    const spvAccount = await service.getAccountWithUniqueId(req.body.leader_id);
-    if (spvAccount && spvAccount.role_id == 4) {
-        let data = {
-            host: req.fullhost,
-            target: spvAccount.email,
-            title: "User role upgrade",
-            data: {
-                name: req.account.email,
-            },
-        };
+    const leadAccount = await service.getAccountWithUniqueId(req.body.leader_id);
+    if (!leadAccount || (leadAccount && leadAccount.unique_id == 5)) return res.errorNotFound("Code not valid!")
 
-        const sendEmail = service.sendEmailVerifySuperVisor(data);
+    let data = {
+        host: req.fullhost,
+        target: leadAccount.email,
+        title: "User role upgrade",
+        data: {
+            name: req.account.email,
+        },
+    };
 
-        const sendNotif = notificationService.sendNotification({
-            title: "User role upgrade confirmation",
-            message: "There's user want to upgrade his role",
-            link: "/confirm-spv",
-            user_id: spvAccount.id,
-            sender_user_id: req.account._id,
-        });
+    const sendEmail = service.sendEmailVerifySuperVisor(data);
 
-        const uniqueId = await generateIdRoleManagementWithUniqueId({
-            role_id: 5,
-            unique_id: spvAccount.unique_id,
-        });
+    const sendNotif = notificationService.sendNotification({
+        title: "User role upgrade confirmation",
+        message: "There's user want to upgrade his role",
+        link: "/confirm-spv",
+        user_id: leadAccount.id,
+        sender_user_id: req.account._id,
+    });
 
-        return res.jsonData({
-            unique_id: uniqueId.unique_id,
-        });
-    } else {
-        res.errorNotFound("Code not valid!");
-    }
+    const uniqueId = await generateIdRoleManagementWithUniqueId({
+        role_id: leadAccount.role_id + 1,
+        unique_id: leadAccount.unique_id.split("-")[0],
+    });
+
+    return res.jsonData({
+        message:
+            "Verification success, please wait until supervisor accepted",
+        unique_id: uniqueId.unique_id,
+    });
 };

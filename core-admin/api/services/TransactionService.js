@@ -1,142 +1,118 @@
-import Mailer from "../utilities/mail";
-import TransactionRepository from "../repositories/TransactionRepository";
+import Mailer from '../utilities/mail'
+import TransactionRepository from '../repositories/TransactionRepository'
 
-const { uploadHandler } = require("../utilities/functions");
+const { uploadHandler } = require('../utilities/functions')
 
 export default class TransactionService {
     constructor() {
-        this.repository = new TransactionRepository();
+        this.repository = new TransactionRepository()
     }
 
     getTransactionAll(filter, limit, offset) {
-        return this.repository.getTransactionAll(filter, limit, offset);
+        return this.repository.getTransactionAll(filter, limit, offset)
     }
 
     getTransactionDetail(id) {
-        return this.repository.getTransactionDetail(id);
+        return this.repository.getTransactionDetail(id)
     }
 
     getClientTransactionAll(client_id) {
-        return this.repository.getClientTransactionAll(client_id);
+        return this.repository.getClientTransactionAll(client_id)
     }
 
     getClientTransactionDetail(client_id, id) {
-        return this.repository.getClientTransactionDetail(client_id, id);
+        return this.repository.getClientTransactionDetail(client_id, id)
     }
 
     getAgentTransactionDetail(agent_id, id) {
-        return this.repository.getAgentTransactionDetail(agent_id, id);
+        return this.repository.getAgentTransactionDetail(agent_id, id)
     }
 
     getTransactionByPaymentId(pg_transaction_id) {
-        return this.repository.getTransactionByPaymentId(pg_transaction_id);
+        return this.repository.getTransactionByPaymentId(pg_transaction_id)
     }
 
     getTransactionByAccountId(client_id) {
-        return this.repository.getTransactionByAccountId(client_id);
+        return this.repository.getTransactionByAccountId(client_id)
     }
 
     getTransactionCount(filter) {
-        return this.repository.getTransactionCount(filter);
+        return this.repository.getTransactionCount(filter)
     }
 
     createOffer(payload) {
-        return this.repository.createTransaction(payload);
+        return this.repository.createTransaction(payload)
     }
 
     createTransaction(payload, files) {
-        const documents = {};
+        const documents = {}
 
-        Object.keys(files).forEach((key) => {
-            const image = uploadHandler(files[key][0].path, "transaction");
-            documents[key] = image.clearPath;
-        });
+        Object.keys(files).forEach(key => {
+            const image = uploadHandler(files[key][0].path, 'transaction')
+            documents[key] = image.clearPath
+        })
 
-        payload.documents = documents;
+        payload.documents = documents
 
-        return this.repository.createTransaction(payload);
+        return this.repository.createTransaction(payload)
     }
 
     updateTransaction(id, payload, files) {
-        const documents = {};
+        const documents = {}
 
-        Object.keys(files).forEach((key) => {
-            const image = uploadHandler(files[key][0].path, "transaction");
-            documents[key] = image.clearPath;
-        });
+        Object.keys(files).forEach(key => {
+            const image = uploadHandler(files[key][0].path, 'transaction')
+            documents[key] = image.clearPath
+        })
 
-        payload.documents = documents;
+        payload.documents = documents
 
-        return this.repository.updateTransaction(id, payload);
+        return this.repository.updateTransaction(id, payload)
     }
 
     getPaymentData(client_id, transaction_id) {
-        return this.repository.getPaymentData(client_id, transaction_id);
+        return this.repository.getPaymentData(client_id, transaction_id)
     }
 
     getAgentPaymentData(agent_id, transaction_id) {
-        return this.repository.getAgentPaymentData(agent_id, transaction_id);
+        return this.repository.getAgentPaymentData(agent_id, transaction_id)
     }
 
     setPaymentData(id, payload) {
-        return this.repository.updateTransaction(id, payload);
+        return this.repository.updateTransaction(id, payload)
     }
 
     setPaymentStatus(pg_transaction_id, payload) {
-        return this.repository.setPaymentStatus(pg_transaction_id, payload);
-    }
-
-    createComission(payload) {
-        return this.repository.createComission(payload);
-    }
-
-    getComission(req) {
-        return this.repository.getComission(req);
-    }
-
-    getComissionHistory(req) {
-        return this.repository.getComissionHistory(req);
-    }
-
-    getPoint(req) {
-        return this.repository.getPoint(req);
-    }
-
-    getPointHistory(req) {
-        return this.repository.getPointHistory(req);
-    }
-
-    createPoint(payload) {
-        return this.repository.createPoint(payload);
+        return this.repository.setPaymentStatus(pg_transaction_id, payload)
     }
 
     sendEmailPayment(payload) {
-        let mailer = new Mailer(payload.host);
+        let mailer = new Mailer(payload.host)
         // mailer.setUrl('/path')
-        mailer.setType("payment-created");
-        mailer.setTarget(payload.target);
+        mailer.setType('payment-created')
+        mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,
             total: payload.data.total,
             platform: payload.data.platform,
             virtual_number: payload.data.virtual_number,
             date: payload.data.date,
-        });
-        mailer.send();
+        })
+        mailer.send()
     }
 
     sendEmailPaymentSuccess(payload) {
-        let mailer = new Mailer(payload.host);
+        let mailer = new Mailer(payload.host)
         // mailer.setUrl('/path')
-        mailer.setType("payment-success");
-        mailer.setTarget(payload.target);
+        mailer.setType('payment-success')
+        mailer.setTarget(payload.target)
         mailer.setMail(payload.title, {
             name: payload.data.name,
             total: payload.data.total,
             platform: payload.data.platform,
             date: payload.data.date,
-        });
-        mailer.send();
+        })
+        mailer.send()
     }
 
     addReview(id, payload) {

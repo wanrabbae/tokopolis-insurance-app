@@ -15,7 +15,6 @@ const address = require("./routes/address.routes");
 const vehicle = require("./routes/vehicle.routes");
 const notification = require("./routes/notification.routes");
 const product = require("./routes/product.routes");
-const claim = require("./routes/claim.routes");
 const transaction = require("./routes/transaction.routes");
 
 const adminAuth = require("./routes/admin/auth.routes");
@@ -23,7 +22,6 @@ const adminAccount = require("./routes/admin/account.routes");
 const adminProduct = require("./routes/admin/product.routes");
 const adminVehicle = require("./routes/admin/vehicle.routes");
 const adminRole = require("./routes/admin/role.routes");
-const adminClaim = require("./routes/admin/claim.routes");
 const adminEndpoint = require("./routes/admin/endpoint.routes");
 const adminTransaction = require("./routes/admin/transaction.routes");
 
@@ -42,16 +40,7 @@ app.use(
 app.use(polyglot);
 app.use(response);
 
-app.use(
-    auth,
-    users,
-    address,
-    vehicle,
-    product,
-    transaction,
-    notification,
-    claim
-);
+app.use(auth, users, address, vehicle, product, transaction, notification);
 app.use(
     adminAuth,
     adminAccount,
@@ -59,8 +48,7 @@ app.use(
     adminVehicle,
     adminEndpoint,
     adminRole,
-    adminTransaction,
-    adminClaim
+    adminTransaction
 );
 
 module.exports = app;
