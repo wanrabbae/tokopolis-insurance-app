@@ -16,6 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `SequelizeMeta`
+--
+
+DROP TABLE IF EXISTS `SequelizeMeta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `SequelizeMeta` (
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`name`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SequelizeMeta`
+--
+
+LOCK TABLES `SequelizeMeta` WRITE;
+/*!40000 ALTER TABLE `SequelizeMeta` DISABLE KEYS */;
+INSERT INTO `SequelizeMeta` VALUES ('20220113035800-Account.js'),('20220113035801-AccountToken.js'),('20220113035802-AccountVehicle.js'),('20220113035803-Identity.js'),('20220113035804-LicensePlate.js'),('20220113035805-Product.js'),('20220113035806-ProductExpansion.js'),('20220113035807-ProductFeature.js'),('20220113035808-Profile.js'),('20220113035809-Transaction.js');
+/*!40000 ALTER TABLE `SequelizeMeta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `account_tokens`
 --
 
@@ -69,7 +93,7 @@ CREATE TABLE `account_vehicles` (
   KEY `vehicle_id` (`vehicle_id`),
   CONSTRAINT `account_vehicles_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `account_vehicles_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,6 +102,7 @@ CREATE TABLE `account_vehicles` (
 
 LOCK TABLES `account_vehicles` WRITE;
 /*!40000 ALTER TABLE `account_vehicles` DISABLE KEYS */;
+INSERT INTO `account_vehicles` VALUES (1,21,1,2022,'E',' 7777 K','Black','F430ID271263','MH8FD125X472',100000000,'{\"test\": \"test\"}');
 /*!40000 ALTER TABLE `account_vehicles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,6 +142,69 @@ LOCK TABLES `accounts` WRITE;
 INSERT INTO `accounts` VALUES (1,'Administrator','admin@piqo.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(2,'Rahmat Ansori','ansori34@gmail.com','$2b$10$vL0jM.r.4TZXKVs0lXrgeelsk.Bas0BvoNuMCdNYMM/LFkpRwFMNy','client',1,NULL,NULL,NULL,NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(3,'Rizki Andrianto','rizukikkano@gmail.com','$2b$10$Wo5U36LA7VbHVYjoHLE1ReIldH0evo./QEKAJPRYCk/KaOU8na/z.','client',1,NULL,NULL,NULL,NULL,'2022-06-06 14:54:13','2022-06-06 14:54:13',NULL),(4,'Faiz','decrypt21@gmail.com','$2b$10$2IzzCUVHl7wv6jQIeWuLH.bF8j8YOKZ4ezCy.v3Ki9VBP3X6ejGva','client',1,NULL,NULL,NULL,NULL,'2022-06-16 14:41:48','2022-06-16 14:41:48',NULL),(5,'Faiz','kurnianadiem@gmail.com','$2b$10$5gQJtW7TICMi3MnFM/XaQ.3EOWSe7G2IBBorb//.DdZJI0FAD3wU.','client',1,NULL,NULL,NULL,NULL,'2022-06-16 15:09:08','2022-06-16 15:09:08',NULL),(6,'Alwan','wancode.msg@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',2,NULL,'020101-01-01-01','01',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(8,'Jane DOe','janedoe@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',4,NULL,'020101-01-01-01-001-001','001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(9,'Jane John','janejohn@gmail.com','$2b$10$6Ddnl4BK3ne1v7TJdZrS.OsoYdfXMPv8ptAYU30fTGkBiVyiIfW8e','admin',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-06-01 01:11:05','2022-06-01 01:11:05',NULL),(16,'YusufPras2','YusufPras12@gmail.com','$2b$10$XaZxllGEIkRvdAB/w8TXNu.7bw3GMD0UfPNkLwMXU.Qi/KAQ7xM/S','admin',3,NULL,'020101-01-01-01-001','001',NULL,'2022-12-11 03:33:10','2022-12-11 03:33:10',NULL),(17,'YusufPras3','YusufPras13@gmail.com','$2b$10$WrRIASXWHKdpUeA2H1EkIuxEAydDackA4L3lyQUeQAzVEvbboiTIa','admin',3,NULL,'020101-01-01-01-002','002',NULL,'2022-12-11 03:41:20','2022-12-11 03:41:20',NULL),(18,'Alwan Rabbaees','alwan2@gmail.com','$2b$10$7RQl11bmT2c.iTZ2Ira8NuPtQJLTn/mtGsiaJFtsEwuy3jItrPyKS','agent',5,NULL,'020101-01-01-01-001-001-0001','0001',NULL,'2022-12-11 04:16:08','2022-12-12 07:04:44',NULL),(19,'YusufPras4','YusufPras14@gmail.com','$2b$10$Gtq1W/aEQOMuh.qzoBafQu0yuUK8E.I678RdT5x8MDMTXQdmR4vaG','admin',2,NULL,'020101-01-01-02','02',NULL,'2022-12-11 07:17:29','2022-12-11 07:17:29',NULL),(20,'YusufPras5','YusufPras15@gmail.com','$2b$10$TE5RFErzGctIGTK4f0azwuQIjfKMcOcDEYayaobtNT1HhImIlUF/K','admin',2,NULL,'020101-01-01-03','03',NULL,'2022-12-11 07:19:04','2022-12-11 07:19:04',NULL);
 
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `claim_products`
+--
+
+DROP TABLE IF EXISTS `claim_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `claim_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `transaction_id` varchar(255) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `no_polis` varchar(255) DEFAULT NULL,
+  `incident_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `location` varchar(255) DEFAULT NULL,
+  `chronology` text DEFAULT NULL,
+  `documents` longtext NOT NULL,
+  `status` enum('pending','surveyed','accepted','declined','fixed','ready','done') NOT NULL DEFAULT 'pending',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `claim_products`
+--
+
+LOCK TABLES `claim_products` WRITE;
+/*!40000 ALTER TABLE `claim_products` DISABLE KEYS */;
+INSERT INTO `claim_products` VALUES (1,18,'TKP-1232-4232',1,'123546789','2022-12-20 07:47:39','Perumnas','lorem ipsum dolor sit','{\"driver_license\": \"/uploads/transaction/MdfHG9OAcaMYnEbceB0LlunQU7dwXb87.png\",\n                \"identity_card\": \"/uploads/transaction/HH8DMblTnNdnefpCX6Dc6L7W2K3hEqyS.png\"}','accepted','2022-12-20 07:47:39');
+/*!40000 ALTER TABLE `claim_products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `comissions`
+--
+
+DROP TABLE IF EXISTS `comissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comissions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `comissions_FK` (`account_id`),
+  CONSTRAINT `comissions_FK` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `comissions`
+--
+
+LOCK TABLES `comissions` WRITE;
+/*!40000 ALTER TABLE `comissions` DISABLE KEYS */;
+INSERT INTO `comissions` VALUES (1,18,750000,'Komisi Masuk','in',NULL),(2,18,10000,'Komisi Keluar','out','2022-12-16 20:49:00');
+/*!40000 ALTER TABLE `comissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -239,6 +327,67 @@ INSERT INTO `notifications` VALUES (1,'test notif','test notif','/user/accept-ro
 UNLOCK TABLES;
 
 --
+-- Table structure for table `notifications`
+--
+
+DROP TABLE IF EXISTS `notifications`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) DEFAULT NULL,
+  `message` varchar(255) DEFAULT NULL,
+  `link` varchar(255) DEFAULT NULL,
+  `is_seen` int(2) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `sender_user_id` int(11) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notifications`
+--
+
+LOCK TABLES `notifications` WRITE;
+/*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+INSERT INTO `notifications` VALUES (1,'test notif','test notif','/user/accept-role-upgrade',1,1,6,NULL,'2022-12-12 02:21:42'),(2,'test kirim notif','Test kirim notif','/confirm-email',0,6,1,NULL,'2022-12-12 02:21:42'),(4,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:06:55'),(5,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,19,18,NULL,'2022-12-12 07:07:06'),(6,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:07:11'),(7,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:08:06'),(8,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:08:56'),(9,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:09:27'),(10,'User role upgrade confirmation','There\'s user want to upgrade his role','/confirm-spv',0,6,18,NULL,'2022-12-12 07:09:49');
+/*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `points`
+--
+
+DROP TABLE IF EXISTS `points`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `points` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `comissions_FK` (`account_id`) USING BTREE,
+  CONSTRAINT `comissions_FK_copy` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `points`
+--
+
+LOCK TABLES `points` WRITE;
+/*!40000 ALTER TABLE `points` DISABLE KEYS */;
+INSERT INTO `points` VALUES (1,8,250,'point in','in','2022-12-16 20:22:39'),(2,8,100,'point in','out','2022-12-16 20:22:39');
+/*!40000 ALTER TABLE `points` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product_expansions`
 --
 
@@ -310,11 +459,13 @@ CREATE TABLE `products` (
   `type` enum('comprehensive','tlo') NOT NULL,
   `description` text NOT NULL,
   `image` varchar(255) NOT NULL,
+  `supported_brands` varchar(255) DEFAULT NULL,
   `tnc` text NOT NULL COMMENT 'Terms and Condition',
   `claim` text NOT NULL,
   `brochure_file` varchar(255) DEFAULT NULL,
   `workshop_file` varchar(255) DEFAULT NULL,
   `workshop_count` int(4) DEFAULT NULL,
+  `extra_point` int(11) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
@@ -326,7 +477,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'Garda Oto Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/garda-oto.png','<ul><li>E-polis akan dikirim oleh Qoala setelah proses validasi selesai dilakukan dalam waktu maksimal 3 hari kerja</li><li>Usia maksimum untuk Jaminan Total Loss Only (TLO) adalah 15 tahun</li><li>Mobil Anda dinilai sesuai dengan kebijakan Asuransi Adira dan dibandingkan dengan harga pasar mobil saat ini</li><li>Asuransi tidak berlaku untuk mobil yang digunakan untuk keperluan transportasi online</li><li>Asuransi tidak berlaku untuk kendaraan yang digunakan di kawasan industri (pertambangan, perkebunan, dll)</li><li>Syarat dan ketentuan pertanggungan lengkap dapat ditemukan dalam <a href=\"https://assets.qoala.app/mv/documents/Polis-Standar-Asuransi-Kendaraan-Bermotor-Indonesia.pdf\">PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia)</a></li></ul>','<ul><li>Laporan klaim harus Anda laporkan dalam tempo 5 (lima) hari kalender sejak terjadinya kerugian</li><li>Laporan klaim dapat diajukan ke Asuransi Adira melalui telpon, e-mail atau aplikasi Autocillin Mobile Claim (lihat detail kontak di bawah)</li><li>Dokumen yang diperlukan antara lain KTP Pemegang Polis, STNK Kendaraan, SIM Pengemudi, nomor polis Asuransi Adira dan dokumen pendukung lainnya (jika diperlukan)</li><li>Untuk setiap klaim, terdapat biaya atas risiko sendiri yang harus ditanggung oleh pemegang polis. <a href=\"https://assets.qoala.app/mv/documents/ADIRA-OR-Klaim.pdf\">Klik disini untuk rinciannya</a></li></ul><p><strong>Layanan Klaim</strong></p><p>Hotline 24 Jam 1500 456<br>adiracare@asuransiadira.co.id<br>Autocillin Mobile Claim (Tersedia di Google Play Store dan iOs App Store)</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',100,NULL),(2,'BCA Insurance Digital Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/bca-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL),(3,'Mega Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/mega-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',67,NULL),(4,'BCA Insurance Digital Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/bca-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL),(5,'Sompo Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/sompo-insurance.png','<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',51,NULL),(6,'Produk Baru','comprehensive','<p>Deskripsi</p>','/uploads/product/afxJmvY1V8c3itKR44swf6sz1vgzE3eq.jpg','<p>Syarat dan ketentuan</p>','<p>Proses Klaim</p>',NULL,NULL,11,'2022-02-11 08:46:55');
+INSERT INTO `products` VALUES (1,'Garda Oto Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/garda-oto.png',NULL,'<ul><li>E-polis akan dikirim oleh Qoala setelah proses validasi selesai dilakukan dalam waktu maksimal 3 hari kerja</li><li>Usia maksimum untuk Jaminan Total Loss Only (TLO) adalah 15 tahun</li><li>Mobil Anda dinilai sesuai dengan kebijakan Asuransi Adira dan dibandingkan dengan harga pasar mobil saat ini</li><li>Asuransi tidak berlaku untuk mobil yang digunakan untuk keperluan transportasi online</li><li>Asuransi tidak berlaku untuk kendaraan yang digunakan di kawasan industri (pertambangan, perkebunan, dll)</li><li>Syarat dan ketentuan pertanggungan lengkap dapat ditemukan dalam <a href=\"https://assets.qoala.app/mv/documents/Polis-Standar-Asuransi-Kendaraan-Bermotor-Indonesia.pdf\">PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia)</a></li></ul>','<ul><li>Laporan klaim harus Anda laporkan dalam tempo 5 (lima) hari kalender sejak terjadinya kerugian</li><li>Laporan klaim dapat diajukan ke Asuransi Adira melalui telpon, e-mail atau aplikasi Autocillin Mobile Claim (lihat detail kontak di bawah)</li><li>Dokumen yang diperlukan antara lain KTP Pemegang Polis, STNK Kendaraan, SIM Pengemudi, nomor polis Asuransi Adira dan dokumen pendukung lainnya (jika diperlukan)</li><li>Untuk setiap klaim, terdapat biaya atas risiko sendiri yang harus ditanggung oleh pemegang polis. <a href=\"https://assets.qoala.app/mv/documents/ADIRA-OR-Klaim.pdf\">Klik disini untuk rinciannya</a></li></ul><p><strong>Layanan Klaim</strong></p><p>Hotline 24 Jam 1500 456<br>adiracare@asuransiadira.co.id<br>Autocillin Mobile Claim (Tersedia di Google Play Store dan iOs App Store)</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',100,NULL,NULL),(2,'BCA Insurance Digital Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/bca-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL,NULL),(3,'Mega Comprehensive','comprehensive','<p>Jaminan ganti rugi atau biaya perbaikan atas kehilangan/kerusakan sebagian maupun keseluruhan pada kendaraan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, perampokan, kebakaran atau kecelakaan lalu lintas lainnya. (Mengacu pada Polis Standar Asuransi Kendaraan Bermotor Indonesia/ PSAKBI)</p>','/img/mega-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',67,NULL,NULL),(4,'BCA Insurance Digital Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/bca-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',58,NULL,NULL),(5,'Sompo Total Loss','tlo','<p>Jaminan ganti rugi atas kehilangan/ kerusakan total pada kendaraan yang nilai perbaikannya mencapai minimal 75% dari harga pertanggungan yang secara langsung disebabkan oleh tabrakan, benturan, terbalik, tergelincir, terperosok, perbuatan jahat, pencurian, kebakaran, atau kecelakaan lalu lintas lainnya.</p>','/img/sompo-insurance.png',NULL,'<p>Terms and Condition</p>','<p>Claim Description</p>','/doc/ADIRA-Motor-Vehicle-Brochure.pdf','/doc/ADIRA-List-Bengkel.pdf',51,NULL,NULL),(6,'Produk Baru','comprehensive','<p>Deskripsi</p>','/uploads/product/afxJmvY1V8c3itKR44swf6sz1vgzE3eq.jpg',NULL,'<p>Syarat dan ketentuan</p>','<p>Proses Klaim</p>',NULL,NULL,11,NULL,'2022-02-11 08:46:55');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,9 +584,10 @@ DROP TABLE IF EXISTS `transactions`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `transactions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
+  `client_id` int(11) DEFAULT NULL,
+  `agent_id` int(11) DEFAULT NULL,
   `product_id` int(11) NOT NULL,
-  `account_vehicle_id` int(11) NOT NULL,
+  `vehicle_id` int(11) DEFAULT NULL,
   `start_date` date NOT NULL,
   `documents` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'STNK, Front Side, Back Side, Left Side, Right Side, Dashboard' CHECK (json_valid(`documents`)),
   `price` int(11) NOT NULL COMMENT 'Product Base Price',
@@ -445,12 +597,12 @@ CREATE TABLE `transactions` (
   `payment_id` varchar(50) DEFAULT NULL COMMENT 'Transaction ID from Midtrans / Xendit',
   `payment_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`payment_data`)),
   `status` enum('open','waiting','paid','denied','canceled','failed') NOT NULL DEFAULT 'open',
+  `client_data` longtext DEFAULT NULL,
+  `vehicle_data` longtext DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`account_id`),
   KEY `product_id` (`product_id`),
-  KEY `account_vehicle_id` (`account_vehicle_id`),
-  CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`account_vehicle_id`) REFERENCES `account_vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  KEY `account_vehicle_id` (`vehicle_id`),
+  CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `account_vehicles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `transactions_ibfk_3` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

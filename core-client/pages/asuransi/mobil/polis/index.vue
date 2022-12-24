@@ -104,6 +104,20 @@
                                             {{ formatPrice(product.price) }} / {{ product.period }}
                                         </span> -->
 
+                                                <BaseButton
+                                                    type="link"
+                                                    classes="text-left p-0"
+                                                    @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
+                                                >
+                                                    <span class="fs-md-4 fw-bold text-dark">{{ product.name }}</span>
+                                                </BaseButton>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="pt-3 text-right">
+                                                <RekomendasiFlag></RekomendasiFlag>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row px-3">
@@ -132,13 +146,13 @@
 
                                             </ul>
 
-                                            <!-- <BaseButton
+                                            <BaseButton
                                                 type="link"
                                                 classes="text-primary fw-bold p-0"
                                                 @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
                                             >
                                                 Selengkapnya
-                                            </BaseButton> -->
+                                            </BaseButton>
 
                                         </div>  <!-- col-8 ends -->
 
@@ -178,7 +192,12 @@
                                         </div>
 
 
-                                    </div> <!-- card-footer ends -->
+                                                </div> <!-- card-footer ends -->
+                                        </div>
+                                    </div>
+
+
+                                    
 
                                 </div>
 
@@ -316,13 +335,15 @@ import HtmlContent from '../../../../components/HtmlContent'
 import Loading from '../../../../components/Loading'
 import LoginModal from '../../../../components/modals/LoginModal'
 import CloseIcon from '../../../../assets/svg/close.svg'
+import RekomendasiFlag from '../../../../components/RekomendasiFlag'
 
 export default {
     components: {
         Loading,
         HtmlContent,
         LoginModal,
-        CloseIcon
+        CloseIcon,
+        RekomendasiFlag
     },
     props: {
         mobileView: {
@@ -539,6 +560,8 @@ export default {
                         name: element.name,
                         description : element.description,
                         price: element.price,
+                        commission: element.commission,
+                        extra_point: element.extra_point,
                         image: this.$config.serverURL + element.image,
                         commission: element.commission,
                         extra_point: element.extra_point,

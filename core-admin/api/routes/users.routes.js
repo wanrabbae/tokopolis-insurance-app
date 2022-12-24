@@ -21,11 +21,11 @@ router.get("/user", auth, getAccountData);
 router.post("/user", auth, uploadFile().single("photo"), updateAccountData);
 
 router.post('/user/change-password', auth, updatePassword)
-router.get('/user/identity', AuthRoleMiddleware, getIdentity)
-router.post('/user/identity', AuthRoleMiddleware,
+router.get('/user/identity', auth, getIdentity)
+router.post('/user/identity', auth,
     uploadFile().single('image'), updateIdentity)
 
-router.get('/user/transactions', AuthRoleMiddleware, getTransactions)
+router.get('/user/transactions', auth, getTransactions)
 
 router.post("/user/verify-upgrade", auth, verifySupervisor);
 

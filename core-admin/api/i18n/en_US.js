@@ -58,6 +58,18 @@ const en_US_strings = {
             "address.detail": "Address Detail",
             "address.use_to_ship": "Use of Address for Delivery",
 
+<<<<<<< HEAD
+            "product.id": "Product Id",
+            "product.expansion": "Product Expansion",
+            "product.discount.format": "Discount Format",
+            "product.discount.total": "Discount Total",
+            "product.tnc": "Terms and Condition",
+            "product.claim": "Claim",
+            "product.brochure": "Brochure",
+            "product.workshop": "Workshop",
+            "product.workshop_count": "Workshop Count",
+            "product.extra_point": "Extra Poin",
+=======
             'product.id': 'Product Id',
             'product.expansion': 'Product Expansion',
             'product.discount.format': 'Discount Format',
@@ -69,6 +81,7 @@ const en_US_strings = {
             'product.brochure': 'Brochure',
             'product.workshop': 'Workshop',
             'product.workshop_count': 'Workshop Count',
+>>>>>>> master
 
             "transaction.id": "Transaction ID",
             "transaction.status": "Transaction Status",
@@ -92,6 +105,25 @@ const en_US_strings = {
             "endpoint.name": "Endpoint Name",
             "endpoint.route": "Route URL",
             "endpoint.method": "Method",
+<<<<<<< HEAD
+
+            "claim.fullname": "Nama Pemegang Polis",
+            "claim.transaction.id": "ID Transaksi",
+            "claim.no_polis": "Nomor Polis Asuransi",
+            "claim.incident_time": "Waktu Kejadian",
+            "claim.location": "Lokasi Lengkap Kejadian",
+            "claim.chronology": "Kronologis Kejadian",
+            "claim.identity": "Foto Identitas",
+            "claim.stnk": "Foto STNK",
+            "claim.sim": "Foto SIM Pengemudi",
+            "claim.document_optional": "Foto Document Opsional",
+            "claim.damage1": "Foto Kerusakan 1",
+            "claim.damage2": "Foto Kerusakan 2",
+            "claim.damage3": "Foto Kerusakan 3",
+            "claim.damage4": "Foto Kerusakan 4",
+            "claim.status": "Status Staging",
+=======
+>>>>>>> master
         },
         mail: {
             register: "Register Notification",
@@ -101,12 +133,54 @@ const en_US_strings = {
             "payment.created": "Payment Notification",
             "payment.success": "Payment Success",
             verify_spv: "Supervisor Confirmation Notification",
+<<<<<<< HEAD
+            request_claim: "Insurance Claim Request Has Been Received",
+=======
+>>>>>>> master
         },
         success: {
             default: "Action Success",
             "webhook.midtrans": "Midtrans Webhook Success",
             "webhook.xendit": "Xendit Webhook Success",
         },
+<<<<<<< HEAD
+        error: {
+            parameter: "Parameters not valid",
+            auth: "Account not found",
+            "email.exist": "Email already exists",
+            "email.guest.exist": "Cannot use registered email",
+            password: "Invalid password",
+            token: "Invalid token",
+            "token.null": "No token provided",
+            "token.role": "Access not granted",
+            identity: "Identity Number not Valid",
+            "vehicle.data": "Vehicle Data not exists",
+            "vehicle.price": "Vehicle Price not Valid",
+            "vehicle.acc": "Vehicle Accessories not Valid",
+            "vehicle.acc.price": "Vehicle Accessories Price not Valid",
+            "vehicle.function": "Vehicle Function not Valid",
+            "vehicle.protection": "Vehicle Protection not Valid",
+            "vehicle.plate.new": "Vehicle Plate Detail is no need to fill",
+            "vehicle.plate.old": "Vehicle Plate Detail is required",
+            product: "Product not found",
+            "product.data": "Product Data not exists",
+            endpoint: "Endpoint not found",
+            "endpoint.exist": "Endpoint already exist",
+            "compare.product": "Product Comparation not Valid",
+            transaction: "Transaction not exists",
+            "transaction.create": "Transaction Failed",
+            "route.exist": "Route already exists",
+            "role.exist": "Role already exists",
+            "endpoint.notfound": "Endpoint data not found.",
+            "role.notfound": "Role data not found",
+            "address.province": "Province data not found",
+            "address.regency": "Regency data not found",
+            "address.district": "District data not found",
+            "address.village": "Village data not found",
+            "claim.transaction.check": "Transaction ID not valid!",
+            "claim.incident_time":
+                "Request Claim Maximum 30 calendar days from the current/register date",
+=======
         "error": {
             'parameter': 'Parameters not valid',
             'auth': 'Account not found',
@@ -141,6 +215,7 @@ const en_US_strings = {
             'address.regency': 'Regency data not found',
             'address.district': 'District data not found',
             'address.village': 'Village data not found',
+>>>>>>> master
         },
     },
 };
