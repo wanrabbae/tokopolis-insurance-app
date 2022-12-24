@@ -25,6 +25,7 @@ exports.updateAccountData = async (req, res) => {
     if (account == null)
         return res.errorBadRequest(req.polyglot.t("error.auth"));
 
+<<<<<<< HEAD
     if (req.body.unique_id) {
         const checkUniqueId = await service.getAccountWithUniqueId(
             req.body.unique_id
@@ -35,6 +36,8 @@ exports.updateAccountData = async (req, res) => {
             );
     }
 
+=======
+>>>>>>> master
     const update = await service.updateAccountData(account, req.body, req.file);
 
     if (account.email != req.body.email) {
@@ -130,6 +133,7 @@ exports.getTransactions = async (req, res) => {
 };
 
 exports.verifySupervisor = async (req, res) => {
+<<<<<<< HEAD
     const spvAccount = await service.getAccountWithUniqueId(req.body.leader_id);
     if (spvAccount && spvAccount.role_id == 4) {
         let data = {
@@ -162,4 +166,38 @@ exports.verifySupervisor = async (req, res) => {
     } else {
         res.errorNotFound("Code not valid!");
     }
+=======
+    const leadAccount = await service.getAccountWithUniqueId(req.body.leader_id);
+    if (!leadAccount || (leadAccount && leadAccount.unique_id == 5)) return res.errorNotFound("Code not valid!")
+
+    let data = {
+        host: req.fullhost,
+        target: leadAccount.email,
+        title: "User role upgrade",
+        data: {
+            name: req.account.email,
+        },
+    };
+
+    const sendEmail = service.sendEmailVerifySuperVisor(data);
+
+    const sendNotif = notificationService.sendNotification({
+        title: "User role upgrade confirmation",
+        message: "There's user want to upgrade his role",
+        link: "/confirm-spv",
+        user_id: leadAccount.id,
+        sender_user_id: req.account._id,
+    });
+
+    const uniqueId = await generateIdRoleManagementWithUniqueId({
+        role_id: leadAccount.role_id + 1,
+        unique_id: leadAccount.unique_id.split("-")[0],
+    });
+
+    return res.jsonData({
+        message:
+            "Verification success, please wait until supervisor accepted",
+        unique_id: uniqueId.unique_id,
+    });
+>>>>>>> master
 };
