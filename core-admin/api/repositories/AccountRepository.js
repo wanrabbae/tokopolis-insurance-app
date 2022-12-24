@@ -107,18 +107,6 @@ export default class AccountRepository {
         });
     }
 
-    async createAccountDealer(payload) {
-        return await Account.create({
-            fullname: payload.fullname,
-            email: payload.email,
-            password: payload.password,
-            role: "admin",
-            role_id: payload.role_id,
-            unique_id: payload.unique_id,
-            other_id: payload.other_id,
-        });
-    }
-
     async createAccount(payload) {
         const account = await Account.create({
             fullname: payload.fullname,
