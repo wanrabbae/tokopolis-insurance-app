@@ -122,7 +122,7 @@
 
                                 <span class="text-primary fw-bold">Total</span>
                                 <span class="fw-bold">{{ formatPrice(totalExpansionPrice) }}</span>
-                            
+
                             </div>
 
                         </div> <!-- card-body ends -->
@@ -150,9 +150,9 @@
                         <div v-if="addDiscount" class="card-body py-3">
 
                             <div class="form-row">
-                            
+
                                 <div class="col-12 col-md-auto mb-3 mb-md-0">
-                                    
+
                                     <b-form-radio-group
                                         v-model="model.discountType"
                                         :options="[
@@ -316,7 +316,7 @@ export default {
             },
             insuranceDetail:[],
             maxPercentageDiscount: .25, // 25%
-            discount: null,
+            discount: 0,
             addDiscount: false,
             expansionFields: [],
         }
@@ -447,7 +447,7 @@ export default {
             this.addDiscount = !this.addDiscount;
 
             if(!this.addDiscount) {
-                this.discount = null;
+                this.discount = 0;
             }
         },
         onDiscountTypeChange() {
@@ -457,11 +457,11 @@ export default {
                 this.model.discountPercentage = null
             }
 
-            this.discount = null
+            this.discount = 0
         },
         onBlurDiscount() {
             if(!this.model.discountAmount || !this.model.discountPercentage)
-                this.discount = null
+                this.discount = 0
 
             if(this.model.discountType === 'amount') {
                 const value = this.formatNumber(this.model.discountAmount)
@@ -472,7 +472,7 @@ export default {
         },
         submitDiscount() {
             if(!this.model.discountAmount || !this.model.discountPercentage)
-                this.discount = null
+                this.discount = 0
 
             if (this.model.discountType === 'amount') {
                 this.discount = this.formatNumber(this.model.discountAmount)

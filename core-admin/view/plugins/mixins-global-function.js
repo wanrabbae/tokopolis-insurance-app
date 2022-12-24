@@ -23,6 +23,14 @@ const mixin ={
 
             return parseInt(value.toString().replace(/[^\d]/g, ''))
         },
+        titleCase(value) {
+            return value
+                .split(' ')
+                .map(item => {
+                    return item.charAt(0).toUpperCase() + item.substr(1).toLowerCase()
+                })
+                .join(' ')
+        },
     },
 
 }

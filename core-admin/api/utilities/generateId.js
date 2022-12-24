@@ -87,9 +87,11 @@ export const generateIdRoleManagementWithUniqueId = async (payload) => {
 
     const findRole = await roleService.getRoleById(role_id);
     const accounts = await service.getAllAccountWithRoleId(role_id);
+    console.log("ACCOUNTS", accounts);
     if (findRole) {
         if (findRole.name == "Operator Manager") {
             // PULUHAN
+            unique_id += "-01-01";
             other_id = "01";
 
             if (accounts.length > 0) {
@@ -106,6 +108,7 @@ export const generateIdRoleManagementWithUniqueId = async (payload) => {
             unique_id += `-${other_id}`;
         } else if (findRole.name == "Branch Head") {
             // RATUSAN
+            unique_id += "-01-01-01";
             other_id = "001";
 
             if (accounts.length > 0) {
@@ -122,6 +125,7 @@ export const generateIdRoleManagementWithUniqueId = async (payload) => {
             unique_id += `-${other_id}`;
         } else if (findRole.name == "Supervisor") {
             // RATUSAN
+            unique_id += "-01-01-01-001";
             other_id = "001";
 
             if (accounts.length > 0) {
@@ -138,6 +142,7 @@ export const generateIdRoleManagementWithUniqueId = async (payload) => {
             unique_id += `-${other_id}`;
         } else {
             // RIBUAN
+            unique_id += "-01-01-01-001-001";
             other_id = "0001";
 
             if (accounts.length > 0) {
@@ -155,6 +160,7 @@ export const generateIdRoleManagementWithUniqueId = async (payload) => {
         }
     } else {
         // RIBUAN
+        unique_id += "-01-01-01-001-001";
         other_id = "0001";
 
         if (accounts.length > 0) {

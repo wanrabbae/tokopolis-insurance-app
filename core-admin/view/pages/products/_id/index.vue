@@ -43,8 +43,27 @@
                     <hr class="my-4" />
 
                     <div class="text-muted">
+                        <h5 class="font-size-16">Alamat Email</h5>
+                        <p v-html="data.email"></p>
+                    </div>
+
+                    <div class="text-muted">
                         <h5 class="font-size-16">Deskripsi</h5>
                         <p v-html="data.description"></p>
+                    </div>
+
+                    <div class="text-muted">
+                        <h5 class="font-size-16">Fitur Plus</h5>
+                        <h5>
+                            <b-badge v-if="data.commission != 0"
+                                class="badge bg-info">Komisi: {{ data.commission }}%</b-badge>
+
+                            <b-badge v-if="data.extra_point != 0"
+                                class="badge bg-info">Extra Poin: {{ data.extra_point }}%</b-badge>
+
+                            <b-badge v-if="data.commission == 0 && data.extra_point == 0"
+                                class="badge bg-danger">Tidak Tersedia</b-badge>
+                        </h5>
                     </div>
 
                     <div class="text-muted mt-2">
@@ -52,7 +71,7 @@
                         <h5 v-if="data.supported_brands != null">
                             <b-badge v-for="brand in data.supported_brands.split(',')"
                                 v-bind:key="brand"
-                                class="badge bg-primary me-1">{{ brand }}</b-badge>
+                                class="badge bg-primary me-1">{{ titleCase(brand) }}</b-badge>
                         </h5>
                         <h5 v-else>
                             <b-badge class="badge bg-success">Semua Brand</b-badge>
