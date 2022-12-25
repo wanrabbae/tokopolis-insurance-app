@@ -408,6 +408,7 @@ exports.postOffer = async (req, res) => {
             getAdminFee(req.session) -
             discountTotal,
     });
+    
     if (!newOffer)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
 
@@ -551,10 +552,12 @@ exports.postTransaction = async (req, res) => {
             transaction_id: transaction.id,
         });
     }
+
     const totalPrice =
         req.session.product.price +
         req.session.product.expansion_price -
         req.session.product.discount_total;
+
     const newTransaction = await service.createTransaction(
         {
             id: getTransactionID(),

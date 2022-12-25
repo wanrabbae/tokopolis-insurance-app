@@ -71,6 +71,9 @@ const id_ID_strings = {
             "product.brochure": "Brosur",
             "product.workshop": "Bengkel",
             "product.workshop_count": "Jumlah Bengkel",
+            "product.extra_point": "Ekstra Poin",
+            "product.admin_fee": "Biaya Admin",
+            "product.stamp_duty": "Materai",
 
             "transaction.id": "ID Transaksi",
             "transaction.status": "Status Transaksi",
