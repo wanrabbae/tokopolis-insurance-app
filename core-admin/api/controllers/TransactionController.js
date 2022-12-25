@@ -382,10 +382,6 @@ exports.postOffer = async (req, res) => {
         fee_admin: getAdminFee(),
         total: req.session.product.price + expansion.price + getAdminFee() - discountTotal
     })
-<<<<<<< HEAD
-=======
-
->>>>>>> master
     if (!newOffer)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
 
@@ -517,10 +513,12 @@ exports.postTransaction = async (req, res) => {
             transaction_id: transaction.id,
         });
     }
+
     const totalPrice =
         req.session.product.price +
         req.session.product.expansion_price -
         req.session.product.discount_total;
+
     const newTransaction = await service.createTransaction(
         {
             id: getTransactionID(),
@@ -546,7 +544,6 @@ exports.postTransaction = async (req, res) => {
 
                 price: req.session.vehicle.price,
             },
-<<<<<<< HEAD
             start_date: req.session.product.start_date,
             rate: req.session.product.rate,
             price: req.session.product.price,
@@ -569,54 +566,6 @@ exports.postTransaction = async (req, res) => {
                 getAdminFee() - req.session.product.discount_total
         }, req.files
     )
-=======
-        }, req.files)
-
-        if (!updatedTransaction)
-            return res.errorBadRequest(req.polyglot.t('error.transaction.create'))
-
-        return res.jsonData({
-            transaction_id: transaction.id
-        })
-    }
-
-    const newTransaction = await service.createTransaction({
-        id: getTransactionID(),
-        agent_id: account.id,
-        vehicle_id: req.session.vehicle.id,
-        product_id: req.query.product_id,
-        client_data: client,
-        address_village_id: req.body.address_village_id,
-        address_detail: req.body.address_detail,
-        is_address_used_to_ship: req.body.use_address_to_ship === 'true',
-        is_new_condition: condition,
-        vehicle_data: {
-            year: req.session.vehicle.year,
-            capacity: req.session.vehicle.capacity,
-            zone: req.session.vehicle.zone,
-            plate: req.session.vehicle.plate,
-            accessories: req.session.vehicle.accessories,
-
-            plate_detail: req.body.plate_detail,
-            color: req.body.vehicle_color,
-            machine_number: req.body.machine_number,
-            skeleton_number: req.body.skeleton_number,
-
-            price: req.session.vehicle.price,
-        },
-        start_date: req.session.product.start_date,
-        rate: req.session.product.rate,
-        price: req.session.product.price,
-        discount_format: req.session.product.discount_format,
-        discount_value: req.session.product.discount_value,
-        discount_total: req.session.product.discount_total,
-        loading_rate: req.session.product.loading_rate,
-        expansions: req.session.product.expansion,
-        fee_admin: getAdminFee(),
-        total: req.session.product.price + req.session.product.expansion_price +
-            getAdminFee() - req.session.product.discount_total
-    }, req.files)
->>>>>>> master
 
     if (!newTransaction)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
@@ -764,10 +713,6 @@ exports.review = async (req, res) => {
         };
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     return res.jsonData({
         client: client,
         vehicle: {

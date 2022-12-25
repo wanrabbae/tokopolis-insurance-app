@@ -1,58 +1,4 @@
 module.exports = (sequelize, Sequelize) => {
-<<<<<<< HEAD
-    const Product = sequelize.define(
-        "products",
-        {
-            id: {
-                type: Sequelize.INTEGER,
-                autoIncrement: true,
-                primaryKey: true,
-            },
-            name: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            type: {
-                type: Sequelize.ENUM("comprehensive", "tlo"),
-                allowNull: false,
-            },
-            description: {
-                type: Sequelize.TEXT,
-                allowNull: false,
-            },
-            image: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            supported_brands: {
-                type: Sequelize.STRING,
-            },
-            tnc: {
-                type: Sequelize.TEXT,
-                allowNull: false,
-            },
-            claim: {
-                type: Sequelize.TEXT,
-                allowNull: false,
-            },
-            brochure_file: Sequelize.STRING,
-            workshop_file: Sequelize.STRING,
-            workshop_count: Sequelize.INTEGER,
-            extra_point: {
-                type: Sequelize.INTEGER,
-                allowNull: true,
-            },
-            deleted_at: Sequelize.DATE,
-        },
-        {
-            freezeTableName: true,
-            paranoid: true,
-            createdAt: false,
-            updatedAt: false,
-            deletedAt: "deleted_at",
-        }
-    );
-=======
 	const Product = sequelize.define('products', {
 		id: {
 			type: Sequelize.INTEGER,
@@ -109,7 +55,6 @@ module.exports = (sequelize, Sequelize) => {
 		updatedAt: false,
 		deletedAt: 'deleted_at',
 	})
->>>>>>> master
 
     Product.associate = function (models) {
         Product.hasMany(models.ProductFeature, {

@@ -25,10 +25,6 @@ export default class AccountRepository {
                 [Op.or]: [
                     { fullname: { [Op.like]: `%${query}%` } },
                     { email: { [Op.like]: `%${query}%` } },
-<<<<<<< HEAD
-                    { role: { [Op.like]: `%${query}%` } },
-=======
->>>>>>> master
                 ],
             },
             include: {
@@ -56,7 +52,7 @@ export default class AccountRepository {
         return await Account.findByPk(id, {
             include: [
                 { model: Profile, as: "profile" },
-                { model: Role, as: "role" },
+                { model: Role, as: "roles" },
             ],
         });
     }
@@ -88,20 +84,6 @@ export default class AccountRepository {
             where: { email: email },
             include: [{ model: Profile, as: "profile" }],
         });
-<<<<<<< HEAD
-    }
-
-    async createAccountAdmin(payload) {
-    return await Account.create({
-        fullname: payload.fullname,
-        email: payload.email,
-        password: payload.password,
-        role: 'admin',
-        role_id: payload.role_id,
-        parent_id: payload.parent_id
-    })
-  }
-=======
     }
 
     async createAccountAdmin(payload) {
@@ -124,7 +106,6 @@ export default class AccountRepository {
             other_id: payload.other_id,
         });
     }
->>>>>>> master
 
     async createAccountDealer(payload) {
         return await Account.create({
@@ -169,10 +150,6 @@ export default class AccountRepository {
                 [Op.or]: [
                     { fullname: { [Op.like]: `%${query}%` } },
                     { email: { [Op.like]: `%${query}%` } },
-<<<<<<< HEAD
-                    { role: { [Op.like]: `%${query}%` } },
-=======
->>>>>>> master
                 ],
             },
         });
