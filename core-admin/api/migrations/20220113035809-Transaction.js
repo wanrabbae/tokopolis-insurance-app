@@ -102,6 +102,14 @@ module.exports = {
 				type: Sequelize.JSON,
                 comment: "Required if pg_transaction_id not null"
 			},
+            fee_admin: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0,
+            },
+            fee_stamp: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0,
+            },
 			status: {
 				type: Sequelize.ENUM('open', 'waiting', 'paid', 'denied', 'canceled'),
 				defaultValue: 'open'

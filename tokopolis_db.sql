@@ -466,6 +466,8 @@ CREATE TABLE `products` (
   `workshop_file` varchar(255) DEFAULT NULL,
   `workshop_count` int(4) DEFAULT NULL,
   `extra_point` int(11) DEFAULT NULL,
+  `admin_fee` int(11) DEFAULT NULL,
+  `stamp_fee` int(11) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;

@@ -165,7 +165,10 @@ exports.getProductDetail = async (req, res) => {
         return res.errorBadRequest(req.polyglot.t("error.product"));
 
     product.dataValues.price = req.session.product.price;
-    product.dataValues.extra_point = req.session.product.extra_point;
+
+    req.session.product.extra_point = product.extra_point
+    req.session.product.admin_fee = product.admin_fee
+    req.session.product.stamp_fee = product.stamp_fee
 
     return res.jsonData(product);
 };
