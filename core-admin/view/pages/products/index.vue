@@ -80,13 +80,9 @@
                                     <img :src="data.value" :alt="data.item.name" width="120" />
                                 </template>
 
-                                <template #cell(type)="data">
-                                    <h5>
-                                        <b-badge v-if="data.item.type == 'comprehensive'"
-                                            class="badge bg-primary">Komprehensif</b-badge>
-                                        <b-badge v-else
-                                            class="badge bg-primary">Total Loss</b-badge>
-                                    </h5>
+                                <template #cell(name)="data">
+                                    <span v-b-tooltip.hover :title="data.item.type == 'comprehensive' ? 'Komprehensif' : 'Total Loss'">
+                                        {{ data.item.name }}</span>
                                 </template>
 
                                 <template #cell(plus)="data">
@@ -99,6 +95,13 @@
 
                                         <b-badge v-if="data.item.commission == 0 && data.item.extra_point == 0"
                                             class="badge bg-danger">Tidak Tersedia</b-badge>
+                                    </h5>
+                                </template>
+
+                                <template #cell(fee)="data">
+                                    <h5>
+                                        <b-badge class="badge bg-soft-success">Admin: {{ formatPrice(data.item.admin_fee) }}</b-badge>
+                                        <b-badge class="badge bg-soft-success">Materai: {{ formatPrice(data.item.stamp_fee) }}</b-badge>
                                     </h5>
                                 </template>
 
@@ -171,9 +174,9 @@ export default {
                 { key: "id", tdClass: 'align-middle', sortable: true },
                 { key: "image", label: 'Gambar', tdClass: 'align-middle' },
                 { key: "name", label: 'Nama Produk', tdClass: 'align-middle', sortable: true },
-                { key: "type", label: 'Tipe Perlindungan', tdClass: 'align-middle', sortable: true },
                 { key: "email", label: 'Email', tdClass: 'align-middle', sortable: true },
                 { key: "plus", label: 'Fitur Plus', tdClass: 'align-middle', sortable: true },
+                { key: "fee", label: 'Biaya Tembahan', tdClass: 'align-middle', sortable: true },
                 { key: "supported_brands", label: 'Dukungan Brand', tdClass: 'align-middle', sortable: true, thStyle: { width: "25%" }, },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ]
