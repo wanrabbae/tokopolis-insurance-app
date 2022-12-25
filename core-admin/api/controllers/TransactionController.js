@@ -60,8 +60,12 @@ exports.transaction = async (req, res) => {
                 product: transaction.price,
                 expansion: expansionPrice,
                 fee_admin: transaction.fee_admin,
-                discount: getDiscountValue(transaction.price, expansionPrice,
-                    transaction.discount_format, transaction.discount_value)
+                discount: getDiscountValue(
+                    transaction.price,
+                    expansionPrice,
+                    transaction.discount_format,
+                    transaction.discount_value
+                ),
             },
             client: {
                 fullname: transaction.client_data.fullname,
@@ -84,8 +88,9 @@ exports.transaction = async (req, res) => {
             price: {
                 product: req.session.product?.price,
                 expansion: req.session.product.expansion_price,
-                fee_admin: getAdminFee(),
-                discount: getDiscountValue(req.session.product?.price,
+                fee_admin: getAdminFee(req.session),
+                discount: getDiscountValue(
+                    req.session.product?.price,
                     req.session.product.expansion_price,
                     req.session.product.discount_format,
                     req.session.product.discount_value
@@ -189,50 +194,58 @@ const generateQuotation = async (payload) => {
     });
 
     // Add Discount
-    if (payload.discount_format == 'percent') {
+    if (payload.discount_format == "percent") {
         calculation.push({
-            label: 'Diskon',
+            label: "Diskon",
             price: moneyFormatNonSymbol(payload.price),
             percentage: `${payload.discount_value}%`,
             total: moneyFormatNonSymbol(-payload.discount_total),
-        })
+        });
     } else {
         calculation.push({
-            label: 'Diskon',
+            label: "Diskon",
             price: moneyFormatNonSymbol(payload.discount_total),
             total: moneyFormatNonSymbol(-payload.discount_total),
-        })
+        });
     }
 
     calculation.push({
-        label: 'Biaya Admin',
-        price: moneyFormatNonSymbol(payload.fee_admin),
-        total: moneyFormatNonSymbol(payload.fee_admin),
-    })
+        label: "Biaya Admin",
+        price: moneyFormatNonSymbol(
+            payload.product.admin_fee + payload.product.stamp_duty
+        ),
+        total: moneyFormatNonSymbol(
+            payload.product.admin_fee + payload.product.stamp_duty
+        ),
+    });
 
     // Add Discount
     if (payload.discount_total > 0) {
-        if (payload.discount_format == 'percent') {
+        if (payload.discount_format == "percent") {
             calculation.push({
-                label: 'Diskon',
+                label: "Diskon",
                 price: moneyFormatNonSymbol(payload.price),
                 percentage: `${payload.discount_value}%`,
                 total: moneyFormatNonSymbol(-payload.discount_total),
-            })
+            });
         } else {
             calculation.push({
-                label: 'Diskon',
+                label: "Diskon",
                 price: moneyFormatNonSymbol(payload.discount_total),
                 total: moneyFormatNonSymbol(-payload.discount_total),
-            })
+            });
         }
     }
 
     calculation.push({
-        label: 'Biaya Admin',
-        price: moneyFormatNonSymbol(payload.fee_admin),
-        total: moneyFormatNonSymbol(payload.fee_admin),
-    })
+        label: "Biaya Admin",
+        price: moneyFormatNonSymbol(
+            payload.product.admin_fee + payload.product.stamp_duty
+        ),
+        total: moneyFormatNonSymbol(
+            payload.product.admin_fee + payload.product.stamp_duty
+        ),
+    });
 
     const data = {
         logo: {
@@ -345,15 +358,24 @@ exports.postOffer = async (req, res) => {
 
     const discountFormat = req.body.discount_format;
     const discountValue = req.body.discount_value || 0;
-    const discountMaxPercent = 25
-    const discountMaxAmount = getDiscountValue(req.session.product.price,
-            expansion.price, 'percent', discountMaxPercent)
+    const discountMaxPercent = 25;
+    const discountMaxAmount = getDiscountValue(
+        req.session.product.price,
+        expansion.price,
+        "percent",
+        discountMaxPercent
+    );
 
     // If agent give discount
-    if (discountValue != 0 &&
-        (discountFormat == 'amount' && discountValue > discountMaxAmount) ||
-        (discountFormat == 'percent' && discountValue > discountMaxPercent)) {
-        return res.errorBadRequest(req.polyglot.t('error.transaction.discount'))
+    if (
+        (discountValue != 0 &&
+            discountFormat == "amount" &&
+            discountValue > discountMaxAmount) ||
+        (discountFormat == "percent" && discountValue > discountMaxPercent)
+    ) {
+        return res.errorBadRequest(
+            req.polyglot.t("error.transaction.discount")
+        );
     }
 
     const discountTotal = getDiscountValue(
@@ -379,13 +401,13 @@ exports.postOffer = async (req, res) => {
         discount_total: discountTotal,
         loading_rate: req.session.product.loading_rate,
         expansions: expansion.list,
-        fee_admin: getAdminFee(),
-        total: req.session.product.price + expansion.price + getAdminFee() - discountTotal
-    })
-<<<<<<< HEAD
-=======
-
->>>>>>> master
+        fee_admin: getAdminFee(req.session),
+        total:
+            req.session.product.price +
+            expansion.price +
+            getAdminFee(req.session) -
+            discountTotal,
+    });
     if (!newOffer)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
 
@@ -402,24 +424,36 @@ exports.postOffer = async (req, res) => {
 };
 
 exports.postTemporary = async (req, res) => {
-    const validate = validation.postTemporary(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.postTemporary(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-    const expansion = await getExpansions(req.body.product_id, req.session.vehicle,
-        req.body.exp)
+    const expansion = await getExpansions(
+        req.body.product_id,
+        req.session.vehicle,
+        req.body.exp
+    );
 
-    const discountFormat = req.body.discount_format
-    const discountValue = req.body.discount_value || 0
+    const discountFormat = req.body.discount_format;
+    const discountValue = req.body.discount_value || 0;
 
-    const discountMaxPercent = 25
-    const discountMaxAmount = getDiscountValue(req.session.product.price,
-        expansion.price, 'percent', discountMaxPercent)
+    const discountMaxPercent = 25;
+    const discountMaxAmount = getDiscountValue(
+        req.session.product.price,
+        expansion.price,
+        "percent",
+        discountMaxPercent
+    );
 
     // If agent give discount
-    if (discountValue != 0 &&
-        (discountFormat == 'amount' && discountValue > discountMaxAmount) ||
-        (discountFormat == 'percent' && discountValue > discountMaxPercent)) {
-        return res.errorBadRequest(req.polyglot.t('error.transaction.discount'))
+    if (
+        (discountValue != 0 &&
+            discountFormat == "amount" &&
+            discountValue > discountMaxAmount) ||
+        (discountFormat == "percent" && discountValue > discountMaxPercent)
+    ) {
+        return res.errorBadRequest(
+            req.polyglot.t("error.transaction.discount")
+        );
     }
 
     const discountTotal = getDiscountValue(
@@ -546,7 +580,6 @@ exports.postTransaction = async (req, res) => {
 
                 price: req.session.vehicle.price,
             },
-<<<<<<< HEAD
             start_date: req.session.product.start_date,
             rate: req.session.product.rate,
             price: req.session.product.price,
@@ -555,68 +588,15 @@ exports.postTransaction = async (req, res) => {
             discount_total: req.session.product.discount_total,
             loading_rate: req.session.product.loading_rate,
             expansions: req.session.product.expansion,
-            total: totalPrice,
-            start_date: req.session.product.start_date,
-            rate: req.session.product.rate,
-            price: req.session.product.price,
-            discount_format: req.session.product.discount_format,
-            discount_value: req.session.product.discount_value,
-            discount_total: req.session.product.discount_total,
-            loading_rate: req.session.product.loading_rate,
-            expansions: req.session.product.expansion,
-            fee_admin: getAdminFee(),
-            total: req.session.product.price + req.session.product.expansion_price +
-                getAdminFee() - req.session.product.discount_total
-        }, req.files
-    )
-=======
-        }, req.files)
-
-        if (!updatedTransaction)
-            return res.errorBadRequest(req.polyglot.t('error.transaction.create'))
-
-        return res.jsonData({
-            transaction_id: transaction.id
-        })
-    }
-
-    const newTransaction = await service.createTransaction({
-        id: getTransactionID(),
-        agent_id: account.id,
-        vehicle_id: req.session.vehicle.id,
-        product_id: req.query.product_id,
-        client_data: client,
-        address_village_id: req.body.address_village_id,
-        address_detail: req.body.address_detail,
-        is_address_used_to_ship: req.body.use_address_to_ship === 'true',
-        is_new_condition: condition,
-        vehicle_data: {
-            year: req.session.vehicle.year,
-            capacity: req.session.vehicle.capacity,
-            zone: req.session.vehicle.zone,
-            plate: req.session.vehicle.plate,
-            accessories: req.session.vehicle.accessories,
-
-            plate_detail: req.body.plate_detail,
-            color: req.body.vehicle_color,
-            machine_number: req.body.machine_number,
-            skeleton_number: req.body.skeleton_number,
-
-            price: req.session.vehicle.price,
+            fee_admin: getAdminFee(req.session),
+            total:
+                req.session.product.price +
+                req.session.product.expansion_price +
+                getAdminFee(req.session) -
+                req.session.product.discount_total,
         },
-        start_date: req.session.product.start_date,
-        rate: req.session.product.rate,
-        price: req.session.product.price,
-        discount_format: req.session.product.discount_format,
-        discount_value: req.session.product.discount_value,
-        discount_total: req.session.product.discount_total,
-        loading_rate: req.session.product.loading_rate,
-        expansions: req.session.product.expansion,
-        fee_admin: getAdminFee(),
-        total: req.session.product.price + req.session.product.expansion_price +
-            getAdminFee() - req.session.product.discount_total
-    }, req.files)
->>>>>>> master
+        req.files
+    );
 
     if (!newTransaction)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
@@ -684,7 +664,6 @@ exports.postTransaction = async (req, res) => {
             }
         }
     }
-
     return res.jsonData({
         transaction_id: newTransaction.id,
     });
@@ -701,25 +680,25 @@ const getPaymentGatewayFee = async (platform, total) => {
     return result.data;
 };
 
-const getAdminFee = () => {
-    return 50000;
+const getAdminFee = (payload) => {
+    return payload.product.admin_fee + payload.product.stamp_duty;
 };
 
 exports.getAdminFee = async (req, res) => {
-    const adminFee = getAdminFee()
+    const adminFee = getAdminFee();
 
     return res.jsonData({
-        fee: adminFee
-    })
-}
+        fee: adminFee,
+    });
+};
 
 exports.getAdminFee = async (req, res) => {
-    const adminFee = getAdminFee()
+    const adminFee = getAdminFee();
 
     return res.jsonData({
-        fee: adminFee
-    })
-}
+        fee: adminFee,
+    });
+};
 
 exports.review = async (req, res) => {
     const validate = validation.review(req);
@@ -764,10 +743,6 @@ exports.review = async (req, res) => {
         };
     }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     return res.jsonData({
         client: client,
         vehicle: {
@@ -794,10 +769,10 @@ exports.review = async (req, res) => {
             discount_total: transaction.discount_total,
             documents: transaction.documents,
             expansions: transaction.expansions,
-            fee_admin: getAdminFee(),
-        }
-    })
-}
+            fee_admin: getAdminFee(transaction),
+        },
+    });
+};
 
 exports.getPaymentFee = async (req, res) => {
     const validate = validation.getPaymentFee(req);
@@ -812,16 +787,24 @@ exports.getPaymentFee = async (req, res) => {
 };
 
 exports.doPayment = async (req, res) => {
-    const validate = validation.createPayment(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    const validate = validation.createPayment(req);
+    if (validate.error) return res.errorValidation(validate.details);
 
-    const account = await accountService.getAccountData(req.account._id)
-    if (account == null) return res.errorBadRequest(req.polyglot.t('error.auth'))
+    const account = await accountService.getAccountData(req.account._id);
+    if (account == null)
+        return res.errorBadRequest(req.polyglot.t("error.auth"));
 
-    const transaction = await service.getAgentTransactionDetail(account.id, req.body.transaction_id)
-    if (transaction == null) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+    const transaction = await service.getAgentTransactionDetail(
+        account.id,
+        req.body.transaction_id
+    );
+    if (transaction == null)
+        return res.errorBadRequest(req.polyglot.t("error.transaction"));
 
-    const paymentFee = await getPaymentGatewayFee(req.body.platform, transaction.total)
+    const paymentFee = await getPaymentGatewayFee(
+        req.body.platform,
+        transaction.total
+    );
 
     const payload = {
         order_id: transaction.id,
@@ -840,7 +823,7 @@ exports.doPayment = async (req, res) => {
         // Send total without payment fee
         // Even so, the return value of the api is the same as the total.payload + paymentFee
         total: transaction.total,
-    }
+    };
 
     const paymentRequest = await paymentService.createRequest(payload);
 

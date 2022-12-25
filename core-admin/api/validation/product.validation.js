@@ -55,21 +55,26 @@ const create = (req) => {
         image: Joi.string()
             .required()
             .regex(RegExp(imageExt.regex))
-            .label(req.polyglot.t('field.image')),
+            .label(req.polyglot.t("field.image")),
         email: Joi.string()
             .min(6)
             .required()
             .email()
-            .label(req.polyglot.t('field.email')),
-        commission: Joi.number()
-            .label(req.polyglot.t('field.product.commission')),
-        extra_point: Joi.number()
-            .label(req.polyglot.t('field.product.extra_point')),
-        supported_brands: Joi.string()
-            .label(req.polyglot.t('field.image')),
-        tnc: Joi.string()
-            .required()
-            .label(req.polyglot.t('field.product.tnc')),
+            .label(req.polyglot.t("field.email")),
+        commission: Joi.number().label(
+            req.polyglot.t("field.product.commission")
+        ),
+        extra_point: Joi.number().label(
+            req.polyglot.t("field.product.extra_point")
+        ),
+        admin_fee: Joi.number().label(
+            req.polyglot.t("field.product.admin_fee")
+        ),
+        stamp_duty: Joi.number().label(
+            req.polyglot.t("field.product.stamp_duty")
+        ),
+        supported_brands: Joi.string().label(req.polyglot.t("field.image")),
+        tnc: Joi.string().required().label(req.polyglot.t("field.product.tnc")),
         claim: Joi.string()
             .required()
             .label(req.polyglot.t("field.product.claim")),
@@ -112,21 +117,26 @@ const update = (req) => {
             .label(req.polyglot.t("field.description")),
         image: Joi.string()
             .regex(RegExp(imageExt.regex))
-            .label(req.polyglot.t('field.image')),
+            .label(req.polyglot.t("field.image")),
         email: Joi.string()
             .min(6)
             .required()
             .email()
-            .label(req.polyglot.t('field.email')),
-        commission: Joi.number()
-            .label(req.polyglot.t('field.product.commission')),
-        extra_point: Joi.number()
-            .label(req.polyglot.t('field.product.extra_point')),
-        supported_brands: Joi.string()
-            .label(req.polyglot.t('field.image')),
-        tnc: Joi.string()
-            .required()
-            .label(req.polyglot.t('field.product.tnc')),
+            .label(req.polyglot.t("field.email")),
+        commission: Joi.number().label(
+            req.polyglot.t("field.product.commission")
+        ),
+        extra_point: Joi.number().label(
+            req.polyglot.t("field.product.extra_point")
+        ),
+        admin_fee: Joi.number().label(
+            req.polyglot.t("field.product.admin_fee")
+        ),
+        stamp_duty: Joi.number().label(
+            req.polyglot.t("field.product.stamp_duty")
+        ),
+        supported_brands: Joi.string().label(req.polyglot.t("field.image")),
+        tnc: Joi.string().required().label(req.polyglot.t("field.product.tnc")),
         claim: Joi.string()
             .required()
             .label(req.polyglot.t("field.product.claim")),

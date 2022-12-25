@@ -58,30 +58,19 @@ const id_ID_strings = {
             "address.detail": "Alamat Lengkap",
             "address.use_to_ship": "Penggunaan Alamat untuk Pengiriman",
 
-<<<<<<< HEAD
             "product.id": "Id Produk",
             "product.expansion": "Perluasan Asuransi",
             "product.discount.format": "Format Diskon",
             "product.discount.total": "Total Diskon",
+            "product.commission": "Komisi",
+            "product.extra_point": "Ekstra Poin",
+            "product.admin_fee": "Biaya Admin",
+            "product.stamp_duty": "Materai",
             "product.tnc": "Syarat dan Ketentuan",
             "product.claim": "Klaim",
             "product.brochure": "Brosur",
             "product.workshop": "Bengkel",
             "product.workshop_count": "Jumlah Bengkel",
-            "product.extra_point": "Ekstra Poin",
-=======
-            'product.id': 'Id Produk',
-            'product.expansion': 'Perluasan Asuransi',
-            'product.discount.format': 'Format Diskon',
-            'product.discount.total': 'Total Diskon',
-            'product.commission': 'Komisi',
-            'product.extra_point': 'Ekstra Poin',
-            'product.tnc': 'Syarat dan Ketentuan',
-            'product.claim': 'Klaim',
-            'product.brochure': 'Brosur',
-            'product.workshop': 'Bengkel',
-            'product.workshop_count': 'Jumlah Bengkel',
->>>>>>> master
 
             "transaction.id": "ID Transaksi",
             "transaction.status": "Status Transaksi",
@@ -105,7 +94,6 @@ const id_ID_strings = {
             "endpoint.name": "Nama Endpoint",
             "endpoint.route": "URL Route",
             "endpoint.method": "Method",
-<<<<<<< HEAD
 
             "claim.fullname": "Nama Pemegang Polis",
             "claim.transaction.id": "ID Transaksi",
@@ -122,8 +110,6 @@ const id_ID_strings = {
             "claim.damage3": "Foto Kerusakan 3",
             "claim.damage4": "Foto Kerusakan 4",
             "claim.status": "Status Staging",
-=======
->>>>>>> master
         },
         mail: {
             register: "Notifikasi Registrasi",
@@ -133,17 +119,13 @@ const id_ID_strings = {
             "payment.created": "Notifikasi Pembayaran",
             "payment.success": "Pembayaran Berhasil",
             verify_spv: "Notifikasi Konfirmasi Supervisor",
-<<<<<<< HEAD
             request_claim: "Request Claim Asuransi Telah Diterima",
-=======
->>>>>>> master
         },
         success: {
             default: "Aksi Berhasil",
             "webhook.midtrans": "Webhook Midtrans Berhasil",
             "webhook.xendit": "Webhook Xendit Berhasil",
         },
-<<<<<<< HEAD
         error: {
             parameter: "Parameter tidak valid",
             auth: "Akun tidak ditemukan",
@@ -180,41 +162,6 @@ const id_ID_strings = {
             "claim.transaction.check": "ID Transaksi tidak valid!",
             "claim.incident_time":
                 "Request Claim Maksimal 30 hari kalender dari tanggal sekarang/register",
-=======
-        "error": {
-            'parameter': 'Parameter tidak valid',
-            'auth': 'Akun tidak ditemukan',
-            'email.exist': 'Email sudah ada',
-            'email.guest.exist': 'Tidak bisa menggunakan email yang telah terdaftar',
-            'password': 'Kata sandi tidak valid',
-            'token': 'Token tidak valid',
-            'token.null': 'Tidak ada token yang diberikan',
-            'token.role': 'Akses tidak diberikan',
-            'identity': 'Nomor Identitas tidak valid',
-            'vehicle.data': 'Data Kendaraan tidak tersedia',
-            'vehicle.price': 'Harga Kendaraan tidak valid',
-            'vehicle.acc': 'Aksesoris Kendaraan tidak valid',
-            'vehicle.acc.price': 'Harga Aksesoris Kendaraan tidak valid',
-            'vehicle.function': 'Fungsi Kendaraan tidak valid',
-            'vehicle.protection': 'Proteksi Kendaraan tidak valid',
-            'vehicle.plate.new': 'Detail Plat Nomor tidak perlu diisi',
-            'vehicle.plate.old': 'Detail Plat Nomor wajib diisi',
-            'product': 'Produk tidak ditemukan',
-            'product.data': 'Data Produk tidak tersedia',
-            'endpoint': 'Endpoint tidak ditemukan',
-            'compare.product': 'Komparasi Produk tidak valid',
-            'transaction': 'Transaksi Tidak Tersedia',
-            'transaction.create': 'Transaksi Gagal Dibuat',
-            'transaction.discount': 'Diskon Transaksi tidak valid',
-            'route.exist': 'Route sudah ada',
-            'role.exist': 'Role sudah tersedia',
-            'endpoint.notfound' : 'Data endpoint tidak ditemukan.',
-            'role.notfound' : 'Data Role tidak ditemukan.',
-            'address.province': 'Data Provinsi tidak ditemukan',
-            'address.regency': 'Data Kabupaten/Kota tidak ditemukan',
-            'address.district': 'Data Kecamatan tidak ditemukan',
-            'address.village': 'Data Desa/Kelurahan tidak ditemukan',
->>>>>>> master
         },
     },
 };

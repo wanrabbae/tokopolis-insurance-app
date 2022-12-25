@@ -1,5 +1,4 @@
 module.exports = (sequelize, Sequelize) => {
-<<<<<<< HEAD
     const Product = sequelize.define(
         "products",
         {
@@ -24,6 +23,26 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
+            email: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            commission: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0,
+            },
+            extra_point: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0,
+            },
+            admin_fee: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0,
+            },
+            stamp_duty: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0,
+            },
             supported_brands: {
                 type: Sequelize.STRING,
             },
@@ -38,10 +57,6 @@ module.exports = (sequelize, Sequelize) => {
             brochure_file: Sequelize.STRING,
             workshop_file: Sequelize.STRING,
             workshop_count: Sequelize.INTEGER,
-            extra_point: {
-                type: Sequelize.INTEGER,
-                allowNull: true,
-            },
             deleted_at: Sequelize.DATE,
         },
         {
@@ -52,64 +67,6 @@ module.exports = (sequelize, Sequelize) => {
             deletedAt: "deleted_at",
         }
     );
-=======
-	const Product = sequelize.define('products', {
-		id: {
-			type: Sequelize.INTEGER,
-			autoIncrement: true,
-			primaryKey: true
-		},
-		name: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		type: {
-			type: Sequelize.ENUM('comprehensive', 'tlo'),
-			allowNull: false,
-		},
-		description: {
-			type: Sequelize.TEXT,
-			allowNull: false,
-		},
-		image: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		email: {
-			type: Sequelize.STRING,
-			allowNull: false,
-		},
-		commission: {
-			type: Sequelize.INTEGER,
-            defaultValue: 0,
-		},
-		extra_point: {
-			type: Sequelize.INTEGER,
-            defaultValue: 0,
-		},
-		supported_brands: {
-			type: Sequelize.STRING,
-		},
-		tnc: {
-			type: Sequelize.TEXT,
-			allowNull: false,
-		},
-		claim: {
-			type: Sequelize.TEXT,
-			allowNull: false,
-		},
-		brochure_file: Sequelize.STRING,
-		workshop_file: Sequelize.STRING,
-		workshop_count: Sequelize.INTEGER,
-		deleted_at: Sequelize.DATE,
-	}, {
-		freezeTableName: true,
-		paranoid: true,
-		createdAt: false,
-		updatedAt: false,
-		deletedAt: 'deleted_at',
-	})
->>>>>>> master
 
     Product.associate = function (models) {
         Product.hasMany(models.ProductFeature, {

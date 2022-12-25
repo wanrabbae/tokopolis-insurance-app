@@ -166,6 +166,8 @@ exports.getProductDetail = async (req, res) => {
 
     product.dataValues.price = req.session.product.price;
     product.dataValues.extra_point = req.session.product.extra_point;
+    product.dataValues.admin_fee = req.session.product.admin_fee;
+    product.dataValues.stamp_duty = req.session.product.stamp_duty;
 
     return res.jsonData(product);
 };
