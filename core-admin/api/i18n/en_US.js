@@ -69,6 +69,9 @@ const en_US_strings = {
             "product.workshop_count": "Workshop Count",
             "product.extra_point": "Extra Poin",
 
+            "product.admin_fee": "Admin Fee",
+            "product.stamp_duty": "Stamp Duty",
+
             "transaction.id": "Transaction ID",
             "transaction.status": "Transaction Status",
             "transaction.condition": "Vehicle Condition",
