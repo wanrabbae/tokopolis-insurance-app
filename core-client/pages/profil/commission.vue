@@ -183,12 +183,22 @@
 
         </b-table-simple>
 
+        <PenarikanKomisiModal 
+            id="modal-penarikan-komisi"
+        />
+
     </div>
 
 </template>
 
 <script>
+
+import PenarikanKomisiModal from '../../components/modals/PenarikanKomisiModal.vue'
+
 export default {
+    components: {
+        PenarikanKomisiModal
+    },  
     layout: 'userarea',
     data() {
         return {
@@ -251,6 +261,7 @@ export default {
     methods: {
         onWithdraw() {
             // put code here
+            this.$bvModal.show("modal-penarikan-komisi");
         }
     }
 }

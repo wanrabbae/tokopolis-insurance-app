@@ -25,6 +25,16 @@ exports.updateAccountData = async (req, res) => {
     if (account == null)
         return res.errorBadRequest(req.polyglot.t("error.auth"));
 
+    if (req.body.unique_id) {
+        const checkUniqueId = await service.getAccountWithUniqueId(
+            req.body.unique_id
+        );
+        if (checkUniqueId)
+            return res.errorBadRequest(
+                "Code unique id already used, please verify again for upgrade"
+            );
+    }
+
     const update = await service.updateAccountData(account, req.body, req.file);
 
     if (account.email != req.body.email) {

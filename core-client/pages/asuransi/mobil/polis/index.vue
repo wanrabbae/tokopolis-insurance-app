@@ -104,6 +104,11 @@
                                             {{ formatPrice(product.price) }} / {{ product.period }}
                                         </span> -->
 
+                                        <div class="col-6">
+                                            <div class="pt-3 text-right">
+                                                <RekomendasiFlag></RekomendasiFlag>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="row px-3">
@@ -132,13 +137,13 @@
 
                                             </ul>
 
-                                            <!-- <BaseButton
+                                            <BaseButton
                                                 type="link"
                                                 classes="text-primary fw-bold p-0"
                                                 @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
                                             >
                                                 Selengkapnya
-                                            </BaseButton> -->
+                                            </BaseButton>
 
                                         </div>  <!-- col-8 ends -->
 
@@ -176,10 +181,7 @@
                                                 Pilih Produk
                                             </BaseButton>
                                         </div>
-
-
-                                    </div> <!-- card-footer ends -->
-
+                                    </div>
                                 </div>
 
                                 <div v-if="blurActive(i)" class="blur-section d-flex flex-column justify-content-center align-items-center">
@@ -316,13 +318,15 @@ import HtmlContent from '../../../../components/HtmlContent'
 import Loading from '../../../../components/Loading'
 import LoginModal from '../../../../components/modals/LoginModal'
 import CloseIcon from '../../../../assets/svg/close.svg'
+import RekomendasiFlag from '../../../../components/RekomendasiFlag'
 
 export default {
     components: {
         Loading,
         HtmlContent,
         LoginModal,
-        CloseIcon
+        CloseIcon,
+        RekomendasiFlag
     },
     props: {
         mobileView: {

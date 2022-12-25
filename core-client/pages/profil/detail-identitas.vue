@@ -71,6 +71,7 @@
 
                         <input
                             id="identity-image"
+                            ref="fileInput"
                             type="file"
                             accept="image/*"
                             class="d-none"
@@ -78,9 +79,10 @@
                             @change="(e) => onFileChange(e, validate)"
                         />
 
-                        <b-img v-if="model.imgDataUrl" class="uploader-bg" :src="model.imgDataUrl" />
-
-                        <IDCardBackground v-else class="uploader-bg" />
+                        <b-img v-if="model.imgDataUrl" class="uploader-bg" :src="model.imgDataUrl" 
+                            @click="() => { $refs.fileInput.click() }"/>
+                        
+                        <IDCardBackground v-else class="uploader-bg" @click="() => { $refs.fileInput.click() }"/>
 
                         <label
                             v-if="!model.verified"
@@ -89,7 +91,7 @@
                         >
 
                             <div class="upload-icon">
-
+                                
                                 <UploadIcon />
 
                             </div>

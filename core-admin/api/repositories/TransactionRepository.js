@@ -1,8 +1,18 @@
-const { QueryTypes } = require('sequelize')
+const { QueryTypes } = require("sequelize");
 
-const { sequelize, Account, AddressProvince, AddressRegency,
-    AddressDistrict, AddressVillage, Product, Vehicle,
-    Transaction } = require('../models')
+const {
+    sequelize,
+    Account,
+    AddressProvince,
+    AddressRegency,
+    AddressDistrict,
+    AddressVillage,
+    Product,
+    Vehicle,
+    Transaction,
+    Comission,
+    Point,
+} = require("../models");
 
 export default class TransactionRepository {
     constructor() {}
@@ -90,18 +100,18 @@ export default class TransactionRepository {
 
     async getClientTransactionAll(client_id) {
         return await Transaction.findAll({
-            attributes: ['id', 'start_date', 'status'],
+            attributes: ["id", "start_date", "status"],
             where: {
                 client_id: client_id,
             },
             include: [
                 {
-                    attributes: ['name'],
+                    attributes: ["name"],
                     model: Product,
-                    as: 'product'
+                    as: "product",
                 },
-            ]
-        })
+            ],
+        });
     }
 
     async getClientTransactionDetail(client_id, id) {
@@ -111,10 +121,10 @@ export default class TransactionRepository {
                 client_id: client_id,
             },
             include: [
-                { model: Vehicle, as: 'vehicle' },
-                { model: Product, as: 'product' },
-            ]
-        })
+                { model: Vehicle, as: "vehicle" },
+                { model: Product, as: "product" },
+            ],
+        });
     }
 
     async getAgentTransactionDetail(agent_id, id) {
@@ -124,56 +134,59 @@ export default class TransactionRepository {
                 agent_id: agent_id,
             },
             include: [
-                { model: Vehicle, as: 'vehicle' },
-                { model: Product, as: 'product' },
+                { model: Vehicle, as: "vehicle" },
+                { model: Product, as: "product" },
                 {
                     model: AddressVillage,
-                    as: 'village',
-                    attributes: ['name'],
+                    as: "village",
+                    attributes: ["name"],
                     include: {
                         model: AddressDistrict,
-                        attributes: ['name'],
+                        attributes: ["name"],
                         include: {
                             model: AddressRegency,
-                            attributes: ['name'],
+                            attributes: ["name"],
                             include: {
                                 model: AddressProvince,
-                                attributes: ['name'],
-                            }
-                        }
-                    }
+                                attributes: ["name"],
+                            },
+                        },
+                    },
                 },
-            ]
-        })
+            ],
+        });
     }
 
     async getTransactionByPaymentId(pg_transaction_id) {
         return await Transaction.findOne({
             where: { pg_transaction_id: pg_transaction_id },
-            include: [
-                { model: Account, as: 'account' }
-            ]
-        })
+            include: [{ model: Account, as: "account" }],
+        });
     }
 
     async getTransactionByAccountId(client_id) {
         return await Transaction.findAll({
-            attributes: ['id', 'client_id', 'product_id',
-                'start_date', 'status'],
+            attributes: [
+                "id",
+                "client_id",
+                "product_id",
+                "start_date",
+                "status",
+            ],
             where: { client_id: client_id },
             include: [
                 {
-                    attributes: ['fullname'],
+                    attributes: ["fullname"],
                     model: Account,
-                    as: 'client_transactions'
+                    as: "client_transactions",
                 },
                 {
-                    attributes: ['name'],
+                    attributes: ["name"],
                     model: Product,
-                    as: 'product'
+                    as: "product",
                 },
-            ]
-        })
+            ],
+        });
     }
 
     async getTransactionCount(filter) {
@@ -204,39 +217,119 @@ export default class TransactionRepository {
     // }
 
     async createTransaction(payload) {
-        return await Transaction.create(payload)
+        return await Transaction.create(payload);
     }
 
     async updateTransaction(id, payload) {
         return await Transaction.update(payload, {
-            where: { id: id }
-        })
+            where: { id: id },
+        });
     }
 
     async getPaymentData(client_id, transaction_id) {
         return await Transaction.findOne({
             where: {
                 id: transaction_id,
-                client_id: client_id
+                client_id: client_id,
             },
-            attributes: ['total', 'pg_data', 'status']
-        })
+            attributes: ["total", "pg_data", "status"],
+        });
     }
 
     async getAgentPaymentData(agent_id, transaction_id) {
         return await Transaction.findOne({
             where: {
                 id: transaction_id,
-                agent_id: agent_id
+                agent_id: agent_id,
             },
-            attributes: ['id', 'fee_admin', 'fee_pg', 'total',
-                'pg_data', 'status']
-        })
+            attributes: [
+                "id",
+                "fee_admin",
+                "fee_pg",
+                "total",
+                "pg_data",
+                "status",
+            ],
+        });
     }
 
     async setPaymentStatus(pg_transaction_id, payload) {
         return await Transaction.update(payload, {
-            where: { pg_transaction_id: pg_transaction_id }
-        })
+            where: { pg_transaction_id: pg_transaction_id },
+        });
+    }
+
+    async createComission(payload) {
+        return await Comission.create(payload);
+    }
+
+    async getComission(payload) {
+        const comissionIn = await Comission.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+                account_id: payload.account._id,
+                type: "in",
+            },
+        });
+        const comissionOut = await Comission.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+                account_id: payload.account._id,
+                type: "out",
+            },
+        });
+        const total = comissionIn[0].value - comissionOut[0].value;
+        return { account_id: payload.account._id, total: Math.abs(total) };
+    }
+
+    async getComissionHistory(payload) {
+        return await Comission.findAll({
+            where: {
+                account_id: payload.account._id,
+            },
+        });
+    }
+
+    async getPointHistory(payload) {
+        return await Point.findAll({
+            where: {
+                account_id: payload.account._id,
+            },
+        });
+    }
+
+    async getPoint(payload) {
+        const pointIn = await Point.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+                account_id: payload.account._id,
+                type: "in",
+            },
+        });
+        const pointOut = await Point.findAll({
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+                account_id: payload.account._id,
+                type: "out",
+            },
+        });
+        const total = pointIn[0].value - pointOut[0].value;
+        return { account_id: payload.account._id, total: Math.abs(total) };
+    }
+
+    async createPoint(payload) {
+        return await Point.create(payload);
     }
 }

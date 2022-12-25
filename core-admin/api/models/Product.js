@@ -56,28 +56,28 @@ module.exports = (sequelize, Sequelize) => {
 		deletedAt: 'deleted_at',
 	})
 
-	Product.associate = function(models) {
-		Product.hasMany(models.ProductFeature, {
-			as: 'features',
-			sourceKey: 'id',
-			foreignKey: 'product_id',
-			onDelete: 'CASCADE'
-		})
+    Product.associate = function (models) {
+        Product.hasMany(models.ProductFeature, {
+            as: "features",
+            sourceKey: "id",
+            foreignKey: "product_id",
+            onDelete: "CASCADE",
+        });
 
-		Product.hasMany(models.ProductExpansion, {
-			as: 'expansions',
-			sourceKey: 'id',
-			foreignKey: 'product_id',
-			onDelete: 'CASCADE'
-		})
+        Product.hasMany(models.ProductExpansion, {
+            as: "expansions",
+            sourceKey: "id",
+            foreignKey: "product_id",
+            onDelete: "CASCADE",
+        });
 
-		Product.hasMany(models.Transaction, {
-			as: 'transactions',
-			sourceKey: 'id',
-			foreignKey: 'product_id',
-			onDelete: 'CASCADE'
-		})
-	}
+        Product.hasMany(models.Transaction, {
+            as: "transactions",
+            sourceKey: "id",
+            foreignKey: "product_id",
+            onDelete: "CASCADE",
+        });
+    };
 
-	return Product
-}
+    return Product;
+};
