@@ -196,17 +196,19 @@ const generateQuotation = async (payload) => {
 
     // Add Discount
     if (payload.discount_total > 0) {
+        const expansionPriceTotal = payload.expansions.reduce((a, b) => a + b.price, 0)
+
         if (payload.discount_format == "percent") {
             calculation.push({
                 label: "Diskon",
-                price: moneyFormatNonSymbol(payload.price),
+                price: moneyFormatNonSymbol(payload.price + expansionPriceTotal),
                 percentage: `${payload.discount_value}%`,
                 total: moneyFormatNonSymbol(-payload.discount_total),
             });
         } else {
             calculation.push({
                 label: "Diskon",
-                price: moneyFormatNonSymbol(payload.discount_total),
+                price: moneyFormatNonSymbol(payload.discount_total + expansionPriceTotal),
                 total: moneyFormatNonSymbol(-payload.discount_total),
             });
         }
