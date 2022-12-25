@@ -26,12 +26,16 @@ module.exports = (sequelize, Sequelize) => {
     );
 
     Role.associate = function (models) {
-        Role.hasMany(models.RoleEndpoint, {
-            as: "role_endpoints",
-            sourceKey: "id",
-            foreignKey: "role_id",
-            onDelete: "CASCADE",
-        });
+        // Role.hasMany(models.RoleEndpoint, {
+        //     as: "role_endpoints",
+        //     sourceKey: "id",
+        //     foreignKey: "role_id",
+        //     onDelete: "CASCADE",
+        // });
+
+        Role.belongsToMany(models.Endpoint, { foreignKey: 'role_id',
+			through: 'role_endpoints', timestamps: false })
+
         Role.hasMany(models.Account, {
             as: "accounts",
             sourceKey: "id",

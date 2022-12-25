@@ -1,6 +1,6 @@
 const { QueryTypes, Op } = require("sequelize");
 
-const { sequelize, Role, RoleEndpoint, Account } = require("../models");
+const { sequelize, Role, RoleEndpoint, Endpoint, Account } = require("../models");
 
 export default class RoleRepository {
     constructor() {}
@@ -16,8 +16,8 @@ export default class RoleRepository {
     async getRoleAllWithFilter(query, limit, offset) {
         return await Role.findAll({
             include: {
-                model: RoleEndpoint,
-                as: "role_endpoints",
+                model: Endpoint,
+                as: "endpoints",
             },
             where: {
                 [Op.or]: [{ name: { [Op.like]: `%${query}%` } }],

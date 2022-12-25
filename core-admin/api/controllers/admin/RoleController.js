@@ -56,6 +56,8 @@ exports.update = async (req, res) => {
 
     await service.update(role.id, req.body);
 
+    role.setEndpoints(req.body.endpoints)
+
     return res.jsonSuccess(req.polyglot.t("success.default"));
 };
 

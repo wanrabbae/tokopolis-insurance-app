@@ -10,7 +10,7 @@ const create = (req) => {
       .label(req.polyglot.t('field.name')),
     endpoints: Joi.array().items(Joi.number())
       .required()
-      .label(req.polyglot.t('field.endpoints')),
+      .label(req.polyglot.t('field.endpoint.name')),
   })
 
   return joiResponse(schema.validate(req.body, {
@@ -29,7 +29,7 @@ const addEndpoint = (req) => {
       .label(req.polyglot.t('field.role')),
     endpoint_id: Joi.number()
       .required()
-      .label(req.polyglot.t('field.endpoint')),
+      .label(req.polyglot.t('field.endpoint.name')),
   })
 
   return joiResponse(schema.validate(req.body, {
