@@ -30,7 +30,7 @@ export default {
             if(this.$store.state.photo != null && this.$store.state.photo !== 'null') {
                 return this.$config.serverURL + this.$store.state.photo;
             } else {
-                return '/img/DefaultProfile.png';
+                return '/svg/avatar-default.svg';
             }
         }
     },
@@ -51,7 +51,7 @@ export default {
                 .then ((response) => {
                     if (response && response.data.profile.photo != null) {
                         const photo = response.data.profile.photo;
-                        
+
                         cookie.set('photo', photo, { expires: 1 });
                     }
                 })
@@ -62,7 +62,7 @@ export default {
         },
         handleResize(event) {
             const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-            
+
             if (width < this.mobileBreakpoint) {
                 this.mobileView = true;
             } else {

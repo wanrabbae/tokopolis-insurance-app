@@ -1,33 +1,33 @@
 <template>
 
   <div>
-    
+
     <Header :mobile-view="mobileView" :logged-in="isLoggedIn" :photo="userPhoto" />
-    
+
     <main class="main-wrapper" style="background-color: #f6f5fc">
-        
+
         <div class="container py-5 py-md-6">
-            
+
             <div class="row">
-                
+
                 <div class="col-12 col-md-4 mb-3 mb-md-5">
 
                     <NavigationSidebar :user="user" :mobile-view="mobileView"/>
 
                 </div> <!-- col-12.col-md-4 ends -->
-                
+
                 <div class="col-12 col-md-8">
 
                     <NuxtChild keep-alive />
-                
+
                 </div> <!-- col-12.col-md-8 ends -->
-            
+
             </div> <!-- row ends -->
-        
+
         </div> <!-- container ends -->
-    
+
     </main>
-    
+
     <Footer />
 
   </div>
@@ -57,7 +57,7 @@ export default {
             if(this.$store.state.photo != null && this.$store.state.photo !== 'null') {
                 return this.$config.serverURL+this.$store.state.photo;
             } else {
-                return '/img/DefaultProfile.png';
+                return '/svg/avatar-default.svg';
             }
         }
     },

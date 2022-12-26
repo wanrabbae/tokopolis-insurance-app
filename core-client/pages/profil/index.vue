@@ -2,6 +2,8 @@
 
     <div class="card border">
 
+        <UpgradeRoleModal id="modal-upgrade" @submit="upgradeSubmitHandler"></UpgradeRoleModal>
+
         <div class="card-body">
 
             <h2>Profil</h2>
@@ -188,6 +190,7 @@
                         :src="photo"
                         alt="Profile Picture"
                         class="rounded-circle mb-4"
+                        @click="photoClicked"
                     />
 
                     <nuxt-img
@@ -197,9 +200,12 @@
                         :src="imgDataUrl"
                         alt="Profile Picture"
                         class="rounded-circle mb-4"
+                        @click="photoClicked"
                     />
 
                     <BaseButton @click="toggleShow">Pilih Gambar</BaseButton>
+                    <BaseButton v-if="upgradeUnlocked" class="mt-2 btn-secondary"
+                        @click="showUpgrade">Upgrade Role</BaseButton>
 
                 </div> <!-- col-12.col-4 ends -->
 
@@ -238,7 +244,7 @@ import Loading from '../../components/Loading'
 import BaseInput from '../../components/Inputs/BaseInput'
 import BaseSelect from '../../components/Inputs/BaseSelect'
 import BaseTextarea from '../../components/Inputs/BaseTextarea'
-
+import UpgradeRoleModal from '../../components/modals/UpgradeRoleModal'
 
 export default {
     components: {
@@ -246,7 +252,8 @@ export default {
         BaseSelect,
         BaseTextarea,
         Loading,
-        'my-upload': myUpload
+        'my-upload': myUpload,
+        UpgradeRoleModal
     },
     layout: 'userarea',
     data () {
@@ -268,6 +275,7 @@ export default {
             photo : '/svg/avatar-default.svg',
             formData: null,
             loading: true,
+            clickCount: 0,
             months: [
                 { text: 'Pilih Bulan', value: null },
                 { text: 'Januari', value: "0" },
@@ -344,6 +352,9 @@ export default {
             const selectedYear = this.birthyear;
             return ((selectedYear % 4 === 0) && (selectedYear % 100 !== 0)) || (selectedYear % 400 === 0);
         },
+        upgradeUnlocked() {
+            return this.clickCount >= 7
+        }
     },
     mounted(){
         this.getDataProfil()
@@ -459,7 +470,25 @@ export default {
             }
 
         },
+        photoClicked() {
+            this.clickCount++
+        },
+        getUpgradeStatus() {
 
+        },
+        showUpgrade() {
+            if (!this.upgradeUnlocked) return
+
+            this.$bvModal.show('modal-upgrade')
+        },
+        upgradeSubmitHandler(data) {
+            this.$axios.$post(`api/user/verify-upgrade`, {
+                leader_id: data.leader_id,
+            })
+            .then(function(response) {
+                window.location.reload()
+            })
+        }
     }
 }
 </script>
