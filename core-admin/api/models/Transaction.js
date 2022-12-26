@@ -86,6 +86,9 @@ module.exports = (sequelize, Sequelize) => {
         fee_admin: {
             type: Sequelize.INTEGER,
         },
+        fee_stamp: {
+            type: Sequelize.INTEGER,
+        },
         fee_pg: {
             type: Sequelize.INTEGER,
         },

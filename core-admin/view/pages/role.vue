@@ -49,9 +49,9 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
-                        <b-button class="mt-1" variant="primary" @click="showCreate">
+                        <!-- <b-button class="mt-1" variant="primary" @click="showCreate">
                             <i class="uil uil-plus"/> Tambah
-                        </b-button>
+                        </b-button> -->
 
                         <div class="row mt-4">
                             <div class="col-sm-12 col-md-6">
@@ -72,16 +72,22 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
+                                <template #cell(endpoints)="data">
+                                    <h5>
+                                        <b-badge class="badge bg-danger">{{ data.item.endpoints.length }} Endpoint</b-badge>
+                                    </h5>
+                                </template>
+
                                 <template #cell(action)="data">
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
                                         title="Edit Data" v-on:click="showEdit(data.item)">
                                         <i class="uil uil-edit"/>
                                     </b-button>
 
-                                    <b-button type="button" variant="danger" v-b-tooltip.hover
+                                    <!-- <b-button type="button" variant="danger" v-b-tooltip.hover
                                         title="Hapus Data" v-on:click="deleteData(data.item.id)">
                                         <i class="uil uil-trash"/>
-                                    </b-button>
+                                    </b-button> -->
                                 </template>
 
                             </b-table>
@@ -123,6 +129,7 @@ export default {
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: "name", label: 'Nama Role', tdClass: 'align-middle' },
+                { key: "endpoints", label: 'Jumlah Endpoint', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
             isCreate: true,
@@ -176,8 +183,7 @@ export default {
                     this.totalRows = response.data.pagination.length
 
                     var result = response.data.list.map(i => {
-                        i.endpoints = i.role_endpoints.map(y => y = y.endpoint_id)
-                        delete i.role_endpoints
+                        i.endpoints = i.endpoints.map(y => y = y.id)
                         return i
                     })
 

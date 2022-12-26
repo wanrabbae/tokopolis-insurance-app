@@ -111,6 +111,34 @@
 										</div>
 									</div>
 
+                                    <div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Biaya Admin
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<input
+												type="number"
+												class="form-control"
+												v-model="form.admin_fee"
+												placeholder="Masukkan Biaya Admin"
+												required>
+										</div>
+									</div>
+
+                                    <div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Biaya Materai
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<input
+												type="number"
+												class="form-control"
+												v-model="form.stamp_fee"
+												placeholder="Masukkan Biaya Materai"
+												required>
+										</div>
+									</div>
+
 									<div role="group" class="row form-group mb-3">
 										<label class="col-sm-2 col-lg-2 col-form-label">Brand yang Didukung
 											<label class="text-danger">*</label>
@@ -243,6 +271,8 @@ export default {
 				email: null,
 				commission: 0,
 				extra_point: 0,
+				admin_fee: 0,
+				stamp_fee: 0,
                 supported_brands: null,
 				tnc: null,
 				claim: null,

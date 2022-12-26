@@ -31,5 +31,10 @@ module.exports = (sequelize, Sequelize) => {
     deletedAt: 'deleted_at',
 	})
 
+    Endpoint.associate = function (models) {
+        Endpoint.belongsToMany(models.Role, { foreignKey: 'endpoint_id',
+			through: 'role_endpoints', timestamps: false })
+    };
+
 	return Endpoint
 }

@@ -67,6 +67,14 @@
                     </div>
 
                     <div class="text-muted mt-2">
+                        <h5 class="font-size-16">Biaya Tambahan</h5>
+                        <h5>
+                            <b-badge class="badge bg-soft-success">Admin: {{ formatPrice(data.admin_fee) }}</b-badge>
+                            <b-badge class="badge bg-soft-success">Materai: {{ formatPrice(data.stamp_fee) }}</b-badge>
+                        </h5>
+                    </div>
+
+                    <div class="text-muted mt-2">
                         <h5 class="font-size-16">Dukungan Brand</h5>
                         <h5 v-if="data.supported_brands != null">
                             <b-badge v-for="brand in data.supported_brands.split(',')"

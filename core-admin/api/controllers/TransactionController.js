@@ -88,7 +88,8 @@ exports.transaction = async (req, res) => {
             price: {
                 product: req.session.product?.price,
                 expansion: req.session.product.expansion_price,
-                fee_admin: getAdminFee(req.session),
+                fee_admin: req.session.product.admin_fee,
+                fee_stamp: req.session.product.stamp_fee,
                 discount: getDiscountValue(
                     req.session.product?.price,
                     req.session.product.expansion_price,
@@ -194,44 +195,20 @@ const generateQuotation = async (payload) => {
     });
 
     // Add Discount
-    if (payload.discount_format == "percent") {
-        calculation.push({
-            label: "Diskon",
-            price: moneyFormatNonSymbol(payload.price),
-            percentage: `${payload.discount_value}%`,
-            total: moneyFormatNonSymbol(-payload.discount_total),
-        });
-    } else {
-        calculation.push({
-            label: "Diskon",
-            price: moneyFormatNonSymbol(payload.discount_total),
-            total: moneyFormatNonSymbol(-payload.discount_total),
-        });
-    }
-
-    calculation.push({
-        label: "Biaya Admin",
-        price: moneyFormatNonSymbol(
-            payload.product.admin_fee + payload.product.stamp_duty
-        ),
-        total: moneyFormatNonSymbol(
-            payload.product.admin_fee + payload.product.stamp_duty
-        ),
-    });
-
-    // Add Discount
     if (payload.discount_total > 0) {
+        const expansionPriceTotal = payload.expansions.reduce((a, b) => a + b.price, 0)
+
         if (payload.discount_format == "percent") {
             calculation.push({
                 label: "Diskon",
-                price: moneyFormatNonSymbol(payload.price),
+                price: moneyFormatNonSymbol(payload.price + expansionPriceTotal),
                 percentage: `${payload.discount_value}%`,
                 total: moneyFormatNonSymbol(-payload.discount_total),
             });
         } else {
             calculation.push({
                 label: "Diskon",
-                price: moneyFormatNonSymbol(payload.discount_total),
+                price: moneyFormatNonSymbol(payload.discount_total + expansionPriceTotal),
                 total: moneyFormatNonSymbol(-payload.discount_total),
             });
         }
@@ -239,12 +216,14 @@ const generateQuotation = async (payload) => {
 
     calculation.push({
         label: "Biaya Admin",
-        price: moneyFormatNonSymbol(
-            payload.product.admin_fee + payload.product.stamp_duty
-        ),
-        total: moneyFormatNonSymbol(
-            payload.product.admin_fee + payload.product.stamp_duty
-        ),
+        price: moneyFormatNonSymbol(payload.product.admin_fee),
+        total: moneyFormatNonSymbol(payload.product.admin_fee),
+    });
+
+    calculation.push({
+        label: "Biaya Materai",
+        price: moneyFormatNonSymbol(payload.product.stamp_fee),
+        total: moneyFormatNonSymbol(payload.product.stamp_fee),
     });
 
     const data = {
@@ -401,14 +380,16 @@ exports.postOffer = async (req, res) => {
         discount_total: discountTotal,
         loading_rate: req.session.product.loading_rate,
         expansions: expansion.list,
-        fee_admin: getAdminFee(req.session),
+        fee_admin: req.session.product.admin_fee,
+        fee_stamp: req.session.product.stamp_fee,
         total:
             req.session.product.price +
             expansion.price +
-            getAdminFee(req.session) -
+            req.session.product.admin_fee +
+            req.session.product.stamp_fee -
             discountTotal,
     });
-    
+
     if (!newOffer)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
 
@@ -591,11 +572,13 @@ exports.postTransaction = async (req, res) => {
             discount_total: req.session.product.discount_total,
             loading_rate: req.session.product.loading_rate,
             expansions: req.session.product.expansion,
-            fee_admin: getAdminFee(req.session),
+            fee_admin: req.session.product.admin_fee,
+            fee_stamp: req.session.product.stamp_fee,
             total:
                 req.session.product.price +
                 req.session.product.expansion_price +
-                getAdminFee(req.session) -
+                req.session.product.admin_fee +
+                req.session.product.stamp_fee -
                 req.session.product.discount_total,
         },
         req.files
@@ -683,26 +666,6 @@ const getPaymentGatewayFee = async (platform, total) => {
     return result.data;
 };
 
-const getAdminFee = (payload) => {
-    return payload.product.admin_fee + payload.product.stamp_duty;
-};
-
-exports.getAdminFee = async (req, res) => {
-    const adminFee = getAdminFee();
-
-    return res.jsonData({
-        fee: adminFee,
-    });
-};
-
-exports.getAdminFee = async (req, res) => {
-    const adminFee = getAdminFee();
-
-    return res.jsonData({
-        fee: adminFee,
-    });
-};
-
 exports.review = async (req, res) => {
     const validate = validation.review(req);
     if (validate.error) return res.errorValidation(validate.details);
@@ -772,7 +735,8 @@ exports.review = async (req, res) => {
             discount_total: transaction.discount_total,
             documents: transaction.documents,
             expansions: transaction.expansions,
-            fee_admin: getAdminFee(transaction),
+            fee_admin: transaction.fee_admin,
+            fee_stamp: transaction.fee_stamp,
         },
     });
 };

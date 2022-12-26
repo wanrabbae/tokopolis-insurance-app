@@ -42,7 +42,7 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 defaultValue: 0,
             },
-            stamp_duty: {
+            stamp_fee: {
                 type: Sequelize.INTEGER,
                 defaultValue: 0,
                 comment: "Materai",

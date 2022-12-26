@@ -70,8 +70,8 @@ const create = (req) => {
         admin_fee: Joi.number().label(
             req.polyglot.t("field.product.admin_fee")
         ),
-        stamp_duty: Joi.number().label(
-            req.polyglot.t("field.product.stamp_duty")
+        stamp_fee: Joi.number().label(
+            req.polyglot.t("field.product.stamp_fee")
         ),
         supported_brands: Joi.string().label(req.polyglot.t("field.image")),
         tnc: Joi.string().required().label(req.polyglot.t("field.product.tnc")),
@@ -132,8 +132,8 @@ const update = (req) => {
         admin_fee: Joi.number().label(
             req.polyglot.t("field.product.admin_fee")
         ),
-        stamp_duty: Joi.number().label(
-            req.polyglot.t("field.product.stamp_duty")
+        stamp_fee: Joi.number().label(
+            req.polyglot.t("field.product.stamp_fee")
         ),
         supported_brands: Joi.string().label(req.polyglot.t("field.image")),
         tnc: Joi.string().required().label(req.polyglot.t("field.product.tnc")),
