@@ -12,7 +12,7 @@
                             <label class="col-form-label">Pengecekan Dokumen Kendaraan
                                 <label class="text-danger">*</label>
                             </label>
-
+                            {{ assessment }}
                             <table class="table table-responsive">
                                 <tbody>
                                     <tr class="caption" v-for="(item, key) of data.documents" v-bind:key="key">

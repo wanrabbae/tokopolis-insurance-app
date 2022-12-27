@@ -444,7 +444,7 @@ export default {
                 .then ((response) => {
                     this.model.licensePlate = response.data.plate
                     this.model.totalPrice = this.formatPrice(response.data.price.product +
-                        response.data.price.expansion +
+                        response.data.price.expansion + response.data.price.fee_stamp +
                         response.data.price.fee_admin -
                         response.data.price.discount)
 

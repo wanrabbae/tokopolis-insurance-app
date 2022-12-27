@@ -60,6 +60,7 @@ exports.transaction = async (req, res) => {
                 product: transaction.price,
                 expansion: expansionPrice,
                 fee_admin: transaction.fee_admin,
+                fee_stamp: transaction.stamp_fee,
                 discount: getDiscountValue(
                     transaction.price,
                     expansionPrice,
@@ -218,6 +219,12 @@ const generateQuotation = async (payload) => {
         label: "Biaya Admin",
         price: moneyFormatNonSymbol(payload.product.admin_fee),
         total: moneyFormatNonSymbol(payload.product.admin_fee),
+    });
+
+    calculation.push({
+        label: "Biaya Materai",
+        price: moneyFormatNonSymbol(payload.product.stamp_fee),
+        total: moneyFormatNonSymbol(payload.product.stamp_fee),
     });
 
     calculation.push({

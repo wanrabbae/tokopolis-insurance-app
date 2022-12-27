@@ -702,6 +702,10 @@ export default {
                     label: "Biaya Admin"
                 },
                 {
+                    key: "administrationCost",
+                    label: "Biaya Materai"
+                },
+                {
                     key: "pgPrice",
                     label: "Biaya Layanan"
                 },
@@ -718,6 +722,7 @@ export default {
                 premiPrice: 0,
                 expTotal: 0,
                 administrationCost: 0,
+                stampCost: 0,
                 pgPrice: 0,
                 discount: 0,
                 // promo: 0
@@ -888,6 +893,7 @@ export default {
 
                     this.purchaseSummaryDatas.premiPrice = response.data.transaction.price
                     this.purchaseSummaryDatas.administrationCost = response.data.transaction.fee_admin
+                    this.purchaseSummaryDatas.stampCost = response.data.transaction.fee_stamp
                     this.purchaseSummaryDatas.discount = -response.data.transaction.discount_total
 
                     this.transactionId = response.data.transaction.code

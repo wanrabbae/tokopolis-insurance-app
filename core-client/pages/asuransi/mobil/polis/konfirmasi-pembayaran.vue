@@ -160,6 +160,10 @@
                                     <span>{{ formatPrice(paymentPrice.fee_admin) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
+                                    <span>Biaya Materai</span>
+                                    <span>{{ formatPrice(paymentPrice.fee_stamp) }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 mb-last-0">
                                     <span>Biaya Layanan</span>
                                     <span>{{ formatPrice(paymentPrice.fee_pg) }}</span>
                                 </div>
