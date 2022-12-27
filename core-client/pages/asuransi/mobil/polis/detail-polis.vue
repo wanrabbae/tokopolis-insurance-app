@@ -343,7 +343,7 @@ export default {
             return totalExpPrice;
         },
         totalPrice() {
-            return this.product.price + this.totalExpansionPrice + this.model.stampFee + this.model.adminFee - this.discount;
+            return this.product.price + this.totalExpansionPrice + this.model.adminFee + this.model.stampFee - this.discount;
         },
         maxDiscount() {
             return (this.product.price + this.totalExpansionPrice) * this.maxPercentageDiscount;
@@ -357,7 +357,6 @@ export default {
     },
     mounted(){
         this.getProduct()
-        // this.getAdminFee()
         this.getExpansionDetail()
     },
     methods: {

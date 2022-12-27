@@ -702,7 +702,7 @@ export default {
                     label: "Biaya Admin"
                 },
                 {
-                    key: "administrationCost",
+                    key: "stampCost",
                     label: "Biaya Materai"
                 },
                 {
