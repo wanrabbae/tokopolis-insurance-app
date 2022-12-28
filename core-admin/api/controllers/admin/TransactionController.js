@@ -172,7 +172,7 @@ exports.addReview = async (req, res, next) => {
     service.sendEmailTransactionFile({
         host: req.fullhost,
         target: transaction.product_email,
-        title: req.polyglot.t("mail.payment.success"),
+        title: req.polyglot.t("mail.transaction.file"),
         data: {
             name: transaction.client_data.fullname,
             product: transaction.product_name,

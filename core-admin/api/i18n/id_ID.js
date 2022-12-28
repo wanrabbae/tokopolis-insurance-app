@@ -120,6 +120,7 @@ const id_ID_strings = {
             "payment.success": "Pembayaran Berhasil",
             verify_spv: "Notifikasi Konfirmasi Supervisor",
             request_claim: "Request Claim Asuransi Telah Diterima",
+            "transaction.file": "Notifikasi Berkas Transaksi",
         },
         success: {
             default: "Aksi Berhasil",
