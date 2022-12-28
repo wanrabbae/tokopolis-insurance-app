@@ -226,6 +226,11 @@
                                 <span class="fw-bold text-primary">{{ formatPrice(model.adminFee) }}</span>
                             </div>
 
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-bold">Biaya Materai</span>
+                                <span class="fw-bold text-primary">{{ formatPrice(model.stampFee) }}</span>
+                            </div>
+
                             <div role="separator" class="py-3">
                                 <div class="border-bottom"></div>
                             </div>
@@ -307,6 +312,7 @@ export default {
             },
             model:{
                 adminFee: 0,
+                stampFee: 0,
                 discountAmount: 0,
                 discountPercentage: null,
                 discountType: 'amount',
@@ -337,7 +343,7 @@ export default {
             return totalExpPrice;
         },
         totalPrice() {
-            return this.product.price + this.totalExpansionPrice + this.model.adminFee - this.discount;
+            return this.product.price + this.totalExpansionPrice + this.model.adminFee + this.model.stampFee - this.discount;
         },
         maxDiscount() {
             return (this.product.price + this.totalExpansionPrice) * this.maxPercentageDiscount;
@@ -351,7 +357,6 @@ export default {
     },
     mounted(){
         this.getProduct()
-        this.getAdminFee()
         this.getExpansionDetail()
     },
     methods: {
@@ -403,6 +408,8 @@ export default {
                 this.product.tnc = response.data.tnc
                 this.product.claim = response.data.claim
                 this.product.price = response.data.price
+                this.model.adminFee = response.data.admin_fee
+                this.model.stampFee = response.data.stamp_fee
                 if (response.data.brochure_file !== null){
                     this.product.brochure_file = response.data.brochure_file
                     this.condition.brochure = true

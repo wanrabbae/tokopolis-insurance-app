@@ -153,11 +153,15 @@
 
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
                                     <span>Harga Premi</span>
-                                    <span>{{ formatPrice(paymentPrice.total) }}</span>
+                                    <span>{{ formatPrice(paymentPrice.total - paymentPrice.fee_admin - paymentPrice.fee_stamp) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
                                     <span>Biaya Admin</span>
                                     <span>{{ formatPrice(paymentPrice.fee_admin) }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2 mb-last-0">
+                                    <span>Biaya Materai</span>
+                                    <span>{{ formatPrice(paymentPrice.fee_stamp) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2 mb-last-0">
                                     <span>Biaya Layanan</span>

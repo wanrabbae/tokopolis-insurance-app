@@ -246,6 +246,7 @@ export default class TransactionRepository {
             attributes: [
                 "id",
                 "fee_admin",
+                "fee_stamp",
                 "fee_pg",
                 "total",
                 "pg_data",

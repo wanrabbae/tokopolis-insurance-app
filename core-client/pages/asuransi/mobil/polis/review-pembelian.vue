@@ -396,25 +396,25 @@
 
                            <div class="rounded border mb-3 mb-md-4">
                                 <div class="border-top p-3">
-                                    <b-input-group>
+                                    <b-input-group @click="showModaltnc">
 
                                         <b-form-checkbox
                                             v-model="model.termAndCondition"
                                             @change="onAccessoriesCheckboxChange"
                                         >
                                             <span class="fw-bold">
-                                                Saya telah membaca dan menyetujui 
-                                                <span class="text-primary fw-bold" @click="showModaltnc">Syarat & Ketentuan</span> 
+                                                Saya telah membaca dan menyetujui
+                                                <span class="text-primary fw-bold">Syarat & Ketentuan</span>
                                                 yang berlaku.
                                             </span>
                                         </b-form-checkbox>
 
                                     </b-input-group>
-                                    
+
                                 </div>
                            </div>
 
-                           <BaseButton block :disabled="!model.paymentMethod" @click="CreatePayment">Bayar Sekarang</BaseButton>
+                           <BaseButton block :disabled="!model.paymentMethod || !model.termAndCondition" @click="CreatePayment">Bayar Sekarang</BaseButton>
 
                        </div> <!-- col-12 col-md-6 ends -->
 
@@ -702,6 +702,10 @@ export default {
                     label: "Biaya Admin"
                 },
                 {
+                    key: "stampCost",
+                    label: "Biaya Materai"
+                },
+                {
                     key: "pgPrice",
                     label: "Biaya Layanan"
                 },
@@ -718,6 +722,7 @@ export default {
                 premiPrice: 0,
                 expTotal: 0,
                 administrationCost: 0,
+                stampCost: 0,
                 pgPrice: 0,
                 discount: 0,
                 // promo: 0
@@ -888,6 +893,7 @@ export default {
 
                     this.purchaseSummaryDatas.premiPrice = response.data.transaction.price
                     this.purchaseSummaryDatas.administrationCost = response.data.transaction.fee_admin
+                    this.purchaseSummaryDatas.stampCost = response.data.transaction.fee_stamp
                     this.purchaseSummaryDatas.discount = -response.data.transaction.discount_total
 
                     this.transactionId = response.data.transaction.code
@@ -975,7 +981,8 @@ export default {
         },
 
         showModaltnc(){
-            this.$bvModal.show("modal-tnc-pembelian")
+            if (!this.model.termAndCondition)
+                this.$bvModal.show("modal-tnc-pembelian")
         }
     }
 }
