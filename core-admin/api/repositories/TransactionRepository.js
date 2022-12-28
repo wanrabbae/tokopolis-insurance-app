@@ -49,7 +49,7 @@ export default class TransactionRepository {
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
             `vehicle.brand, vehicle.sub_model, product.name as product_name, product.type as product_type, ` +
-            `product.image as product_image, product.email as product_email ` +
+            `product.image as product_image, product.email as product_email, ` +
             `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
             `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
             `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.created_at ` +
