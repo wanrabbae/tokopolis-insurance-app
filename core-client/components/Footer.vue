@@ -70,15 +70,15 @@
                         
                         <ul class="list-unstyled">
                             
-                            <li><a href="#" class="text-reset">Tentang Kami</a></li>
+                            <li><a href="/tentang" class="text-reset">Tentang Kami</a></li>
                             
                             <li><a href="/layanan" class="text-reset">Layanan Kami</a></li>
                             
-                            <li><a href="#" class="text-reset">Kebijakan Privasi</a></li>
+                            <li><a href="/kebijakan-privasi" class="text-reset">Kebijakan Privasi</a></li>
                             
-                            <li><a href="#" class="text-reset">Syarat dan Ketentuan</a></li>
+                            <li><a href="/ketentuan-layanan" class="text-reset">Syarat dan Ketentuan</a></li> 
                             
-                            <li><a href="/faq" class="text-reset">Disclaimer</a></li>
+                            <li><a href="/disclaimer" class="text-reset">Disclaimer</a></li>
                         
                         </ul>
 
@@ -137,7 +137,7 @@
                                 
                                 <div class="mr-2"><fa icon="envelope" width="16"/></div>
                                 
-                                <div>tokopolis.corp@gmail.com</div>
+                                <div>cs@tokopolis.id</div>
                             
                             </li>
                             
