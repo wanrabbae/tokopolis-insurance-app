@@ -96,7 +96,7 @@
 
                     <p>
                         Menyediakan sistem bantuan proses klaim secara digital yang diakses melalui
-                        platform PIQO, dan tak terbatas pelayanan kami menggunakan perangkat lain seperti
+                        platform Tokopolis, dan tak terbatas pelayanan kami menggunakan perangkat lain seperti
                         email, whatsapp, dan telepon guna memberikan bantuan secara maksimal
                         kepada anda.
                     </p>

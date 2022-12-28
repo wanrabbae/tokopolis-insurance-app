@@ -144,4 +144,16 @@ export default class TransactionService {
             assessment: payload
         })
     }
+
+    sendEmailTransactionFile(payload) {
+        let mailer = new Mailer(payload.host);
+        mailer.setType("transaction-file-sent");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            product: payload.data.product,
+            url: payload.data.url,
+        });
+        mailer.send();
+    }
 }

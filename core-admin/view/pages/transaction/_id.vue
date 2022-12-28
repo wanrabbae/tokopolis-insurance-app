@@ -66,6 +66,10 @@
                                     @click="showReview()">
                                     <i class="uil uil-file-check me-1"></i> Review Berkas
                                 </b-button>
+                                <b-button v-else class="float-end" variant="success"
+                                    disabled>
+                                    <i class="uil uil-file-check me-1"></i> Berkas telah direview
+                                </b-button>
                             </div>
                             <div style="display: table">
                                 <img :src="data.product_image" alt="data.name" width="120" />

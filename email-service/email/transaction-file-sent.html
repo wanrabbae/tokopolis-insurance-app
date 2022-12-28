@@ -1,0 +1,45 @@
+{{template "top.html"}}
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top" >
+            <h3>Halo Polis !</h3>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>Kami mengirim email ini untuk memastikan bahwa berkas transaksi client kami telah sesuai dengan syarat dan ketentuan produk asuransi anda.</p>
+        </td>
+    </tr>
+</table>
+
+<table class="row table-grey" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>Nama Client: <strong>{{.Body.name}}</strong></td>
+    </tr>
+    <tr>
+        <td>Produk Asuransi: <strong>{{.Body.product}}</strong></td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>
+                Dimohon untuk segera melakukan evaluasi terhadap berkas-berkas tersebut agar proses transaksi dapat segera selesai.
+            </p>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600" style="margin: 2rem 0;">
+    <tr>
+        <td width="600" valign="top" align="center">
+            <a href="{{.Body.url}}" class="button btn-action" target="_blank">Unduh Berkas</a>
+        </td>
+    </tr>
+</table>
+
+{{template "bottom.html"}}

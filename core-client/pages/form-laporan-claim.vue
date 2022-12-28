@@ -29,10 +29,10 @@
                                 />
 
                                 <BaseInput
-                                    v-model="model.piqoId"
-                                    name="ID Transaksi PIQO"
-                                    label="ID Transaksi PIQO"
-                                    placeholder="ID Transaksi PIQO"
+                                    v-model="model.TokopolisId"
+                                    name="ID Transaksi Tokopolis"
+                                    label="ID Transaksi Tokopolis"
+                                    placeholder="ID Transaksi Tokopolis"
                                     :rules="{ required: true }"
                                     required
                                 />
@@ -70,7 +70,7 @@
 
                                         <div class="col-5">
                                             <b-form-timepicker id="timepicker-placeholder" placeholder="Choose a time" locale="id"></b-form-timepicker>
-                                        </div>                                         
+                                        </div>
 
                                     </div> <!-- row ends -->
 
@@ -179,7 +179,7 @@ export default {
             title: 'Form Laporan Klaim',
             model: {
                 policyHolder: null,
-                piqoId: null,
+                TokopolisId: null,
                 policyNumber: null,
                 date: null,
                 time: null,
