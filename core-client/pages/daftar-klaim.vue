@@ -83,7 +83,7 @@
 
                             <div class="col-12 col-md-8">
 
-                                <span class="fw-bold">No. Claim {{ policy.claimNumber }}</span>
+                                <span class="fw-bold">No. Klaim {{ policy.claimNumber }}</span>
 
                             </div> <!-- col-12.col-md-8 ends -->
 
@@ -119,16 +119,15 @@
 
                                     <div
                                         class="badge py-2 px-3 rounded-pill mr-1"
-                                        :class="policy.isActive ? 'badge-success' : 'badge-warning'"
+                                        :class="policy.status !== 'declined' ? 'badge-primary' : 'badge-warning'"
                                     >
-                                        {{ policy.isActive ? 'Aktif' : 'Belum Aktif' }}
+                                        {{ status[policy.status] }}
                                     </div>
 
                                     <div
-                                        class="badge py-2 px-3 rounded-pill mr-1"
-                                        :class="policy.isPaid ? 'badge-info' : 'badge-warning'"
+                                        class="badge py-2 px-3 rounded-pill badge-info mr-1"
                                     >
-                                        {{ policy.isPaid ? 'Pembayaran Lunas' : 'Belum Lunas' }}
+                                        {{ policy.quotationID }}
                                     </div>
 
                                     <div class="d-inline-block">
@@ -145,7 +144,7 @@
 
                         <div class="text-right">
 
-                            <BaseButton tag="a" href="/detail-klaim">Periksa Claim</BaseButton>
+                            <BaseButton tag="a" :href="'/detail-klaim?id=' + policy.claimNumber">Periksa Klaim</BaseButton>
 
                         </div> <!-- text-right ends -->
 
@@ -195,6 +194,15 @@ export default {
                 { text: 'Siap Diambil', value: "ready" },
                 { text: 'Selesai', value: "done" }
             ],
+            status: {
+                pending: "Tertunda",
+                surveyed: "Telah Disurvey",
+                accepted: "Klaim Diterima",
+                declined: "Klaim Ditolak",
+                fixed: "Sedang Diperbaiki",
+                ready: "Siap Diambil",
+                done: "Selesai",
+            },
             policyCategoryOptions: [
                 { text: 'Semua Polis', value: null },
                 { text: 'Mobil', value: "car" },
@@ -207,13 +215,13 @@ export default {
             ],
             policies: [
                 {
-                    claimNumber: "TKP-00000000-000000-0000",
+                    claimNumber: "C-00.00.0000",
+                    quotationID: "TKP-00000000-000000-0000",
                     holder: "",
                     product: "",
                     periodDate: "",
                     image: "/img/car-icon-comprehensive.png",
-                    isActive: true,
-                    isPaid: true
+                    status: "pending",
                 },
             ]
         }
@@ -232,20 +240,17 @@ export default {
 
             await this.$axios.$get(`api/claim`)
             .then ((response) => {
-                console.log(response.data)
-
                 response.data.forEach((field) => {
                     const start = moment(field.created_at)
 
                     this.policies.push({
-                        claimNumber: field.transaction_id,
+                        claimNumber: field.id,
+                        quotationID: field.transaction_id,
                         holder: field.account.fullname,
                         product: field.product.name,
                         periodDate: `Tanggal Pengajuan: ${start.format('D MMM yyyy')}`,
-                        // endDate: isStarted ? `Berakhir dalam ${period.asDays().toFixed(0)} Hari` : '',
                         image: "/img/car-icon-comprehensive.png",
-                        isActive: true,
-                        isPaid: true
+                        status: field.status,
                     })
                 })
 
