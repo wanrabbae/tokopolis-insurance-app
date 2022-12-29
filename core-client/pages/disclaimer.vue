@@ -67,18 +67,18 @@ h1, h2, h3, h4, p, ol {
     color: #221A29;
 }
 h1 {
-    font-size: 3rem;
+    font-size: 28px;
 }
 h2 {
-    font-size: 2.25rem;
+    font-size: 20px;
     color: #48414D;
 }
 h3 {
-    font-size: 1.75rem;
+    font-size: 18px;
     margin-bottom: 5rem;
 }
 p {
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 a {
     color: #FF7900;

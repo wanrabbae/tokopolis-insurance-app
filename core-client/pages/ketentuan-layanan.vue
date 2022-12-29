@@ -1,6 +1,6 @@
 <template>
     <section id="terms-of-service" class="main-content">
-        <b-container class="py-5">
+        <b-container class="py-5 text-justify">
             <h1 class="text-center my-4">Ketentuan Layanan</h1>
             <h3 class="text-center font-weight-normal">Terima kasih telah menggunakan layanan TOKOPOLIS</h3>
 
@@ -142,25 +142,25 @@ h1, h2, h3, h4, p, ol {
     color: #221A29;
 }
 h1 {
-    font-size: 3rem;
+    font-size: 28px;
 }
 h2 {
-    font-size: 2.25rem;
+    font-size: 20px;
     color: #48414D;
 }
 h3 {
-    font-size: 1.75rem;
-    margin-bottom: 5rem;
+    font-size: 18px;
+    margin-bottom: 3rem;
 }
 p {
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 a {
     color: #FF7900;
     text-decoration: underline;
 }
 ol {
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 li {
     padding-left: 1.5rem;
