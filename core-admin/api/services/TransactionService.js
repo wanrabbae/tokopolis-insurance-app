@@ -16,6 +16,10 @@ export default class TransactionService {
         return this.repository.getTransactionDetail(id);
     }
 
+    getTransactionDetailForClient(id) {
+        return this.repository.getTransactionDetailForClient(id);
+    }
+
     getClientTransactionAll(client_id) {
         return this.repository.getClientTransactionAll(client_id);
     }
@@ -32,8 +36,8 @@ export default class TransactionService {
         return this.repository.getTransactionByPaymentId(pg_transaction_id);
     }
 
-    getTransactionByAccountId(client_id) {
-        return this.repository.getTransactionByAccountId(client_id);
+    getTransactionByAccountId(account_id) {
+        return this.repository.getTransactionByAccountId(account_id);
     }
 
     getTransactionCount(filter) {

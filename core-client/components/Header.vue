@@ -238,13 +238,13 @@ export default {
             scrollOffset: 70,
             scrolled: false,
             menusLogin: [
-                { link: "/", text: "Home" },
-                { link: "/produk", text: "Produk" },
+                { link: "/", text: "Beranda" },
+                // { link: "/produk", text: "Produk" },
                 { link: "/daftar-polis", text: "Polis" },
-                { link: "/daftar-claim", text: "Claim" },
+                { link: "/daftar-klaim", text: "Klaim" },
             ],
             menusGuest: [
-                { link: "/", text: "Home" },
+                { link: "/", text: "Beranda" },
                 { link: "/tentang", text: "Tentang Kami" },
                 { link: "/layanan", text: "Layanan" },
                 { link: "/faq", text: "FAQ" },

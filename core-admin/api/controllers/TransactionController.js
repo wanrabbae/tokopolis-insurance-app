@@ -102,6 +102,13 @@ exports.transaction = async (req, res) => {
     }
 };
 
+exports.detail = async (req, res, next) => {
+    const data = await service.getTransactionDetailForClient(req.params.id)
+    if (data.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+
+    return res.jsonData(data[0])
+}
+
 const getExpansions = async (product_id, vehicle, expansionInput) => {
     const expList = await productService.getExpansionList(vehicle, product_id);
     const json = productService.getExpansionJson(expansionInput);

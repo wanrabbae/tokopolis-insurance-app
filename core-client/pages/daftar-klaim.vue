@@ -20,9 +20,9 @@
 
                     <li role="presentation" class="nav-item">
 
-                        <a href="/daftar-claim" class="nav-link active" tabindex="-1">
+                        <a href="/daftar-klaim" class="nav-link active" tabindex="-1">
 
-                            <h2 class="tab-title">Daftar Claim</h2>
+                            <h2 class="tab-title">Daftar Klaim</h2>
 
                         </a>
 
@@ -42,7 +42,7 @@
 
                             <input
                                 v-model="model.search"
-                                placeholder="Cari Claim"
+                                placeholder="Cari Klaim"
                                 class="form-control"
                                 required
                             >
@@ -89,7 +89,7 @@
 
                             <div class="col-12 col-md-4 text-md-right">
 
-                                <span class="fw-bold">Berakhir dalam 28 Hari</span>
+                                <span class="fw-bold">{{ policy.endDate }}</span>
 
                             </div> <!-- col-12.col-md-4 ends -->
 
@@ -111,9 +111,9 @@
 
                                 <div class="fs-4 fw-bold">{{ policy.holder }}</div>
 
-                                <div class="fs-5 fw-bold mb-1">{{ policy.name }}</div>
+                                <div class="fs-5 fw-bold mb-1">{{ policy.product }}</div>
 
-                                <div class="mb-2">{{ policy.period }}</div>
+                                <div class="mb-2">{{ policy.periodDate }}</div>
 
                                 <div class="d-block">
 
@@ -145,7 +145,7 @@
 
                         <div class="text-right">
 
-                            <BaseButton tag="a" href="/detail-claim">Periksa Claim</BaseButton>
+                            <BaseButton tag="a" href="/detail-klaim">Periksa Claim</BaseButton>
 
                         </div> <!-- text-right ends -->
 
@@ -156,25 +156,30 @@
             </div> <!-- container-content ends -->
 
         </div> <!-- container ends -->
-
+        <Loading :show="loading"/>
     </div>
 
 </template>
 
 <script>
+import moment from 'moment'
+
 import BaseSelect from '../components/Inputs/BaseSelect'
 import BaseButton from '../components/BaseButton'
 import SwiperRadioButtonGroup from '../components/SwiperRadioButtonGroup'
+import Loading from '../components/Loading'
 
 export default {
     components: {
-    BaseSelect,
-    BaseButton,
-    SwiperRadioButtonGroup
-},
+        BaseSelect,
+        BaseButton,
+        SwiperRadioButtonGroup,
+        Loading
+    },
     data() {
         return {
             title: 'Daftar Klaim',
+            loading : true,
             model: {
                 search: null,
                 status: null,
@@ -182,39 +187,34 @@ export default {
             },
             statusOptions: [
                 { text: 'Status', value: null },
-                { text: 'Opsi Status 1', value: "status-1" },
-                { text: 'Opsi Status 2', value: "status-2" },
-                { text: 'Opsi Status 3', value: "status-3" }
+                { text: 'Tertunda', value: "pending" },
+                { text: 'Telah Disurvey', value: "surveyed" },
+                { text: 'Klaim Diterima', value: "accepted" },
+                { text: 'Klaim Ditolak', value: "declined" },
+                { text: 'Sedang Diperbaiki', value: "fixed" },
+                { text: 'Siap Diambil', value: "ready" },
+                { text: 'Selesai', value: "done" }
             ],
             policyCategoryOptions: [
                 { text: 'Semua Polis', value: null },
-                { text: 'Smartphone', value: "smartphone" },
                 { text: 'Mobil', value: "car" },
-                { text: 'Motor', value: "motorcycle" },
-                { text: 'Santunan Tunai', value: "cashCompensation" },
-                { text: 'Jiwa', value: "life" },
-                { text: 'Penyakit Tropis', value: "tropicalDisease" },
-                { text: 'Perjalanan', value: "travel" },
+                // { text: 'Motor', value: "motorcycle" },
+                // { text: 'Smartphone', value: "smartphone" },
+                // { text: 'Santunan Tunai', value: "cashCompensation" },
+                // { text: 'Jiwa', value: "life" },
+                // { text: 'Penyakit Tropis', value: "tropicalDisease" },
+                // { text: 'Perjalanan', value: "travel" },
             ],
             policies: [
                 {
-                    claimNumber: "12345678912345678911237",
-                    holder: "John Doe",
-                    name: "Garda Oto Comprehensive",
-                    period: "22 Januari 2021 - 22 Januari 2022",
-                    image: "/svg/new/polis-car.svg",
+                    claimNumber: "TKP-00000000-000000-0000",
+                    holder: "",
+                    product: "",
+                    periodDate: "",
+                    image: "/img/car-icon-comprehensive.png",
                     isActive: true,
                     isPaid: true
                 },
-                {
-                    claimNumber: "12345678912345678911237",
-                    holder: "John Doe",
-                    name: "Garda Oto Comprehensive",
-                    period: "22 Januari 2021 - 22 Januari 2022",
-                    image: "/svg/new/polis-car.svg",
-                    isActive: true,
-                    isPaid: true
-                }
             ]
         }
     },
@@ -224,9 +224,37 @@ export default {
         }
     },
     mounted(){
+        this.getClaims()
     },
     methods:{
+        async getClaims(){
+            this.policies = []
 
+            await this.$axios.$get(`api/claim`)
+            .then ((response) => {
+                console.log(response.data)
+
+                response.data.forEach((field) => {
+                    const start = moment(field.created_at)
+
+                    this.policies.push({
+                        claimNumber: field.transaction_id,
+                        holder: field.account.fullname,
+                        product: field.product.name,
+                        periodDate: `Tanggal Pengajuan: ${start.format('D MMM yyyy')}`,
+                        // endDate: isStarted ? `Berakhir dalam ${period.asDays().toFixed(0)} Hari` : '',
+                        image: "/img/car-icon-comprehensive.png",
+                        isActive: true,
+                        isPaid: true
+                    })
+                })
+
+                this.loading = false
+
+            }).catch (function () {
+
+            })
+        },
     }
 
 }

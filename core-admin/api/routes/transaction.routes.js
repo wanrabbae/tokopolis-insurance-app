@@ -2,7 +2,7 @@ const { Router } = require("express");
 const verify = require("../middlewares/verifyToken");
 const { uploadFile } = require("../middlewares/uploadFile");
 
-const { getAll, transaction, postTransaction, postOffer,
+const { getAll, transaction, detail, postTransaction, postOffer,
     postTemporary, review, doPayment, getPaymentFee,
     getPaymentDetail, webhookMidtrans, webhookXendit
 } = require('../controllers/TransactionController')
@@ -12,6 +12,7 @@ const auth = verify();
 
 router.get("/transaction/all", auth, getAll);
 router.get("/transaction", auth, transaction);
+router.get("/transaction/:id/detail", auth, detail)
 router.post(
     "/transaction",
     auth,

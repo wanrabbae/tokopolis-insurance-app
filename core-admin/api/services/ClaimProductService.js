@@ -26,25 +26,14 @@ export default class ClaimProductService {
     }
 
     createClaimProduct(payload, files) {
-        const documents = {};
+        payload.documents = {};
 
         Object.keys(files).forEach((key) => {
             const image = uploadHandler(files[key][0].path, "claim");
-            documents[key] = image.clearPath;
+            payload.documents[key] = image.clearPath;
         });
 
-        const data = {
-            account_id: payload.account._id,
-            transaction_id: payload.body.transaction_id,
-            product_id: payload.query.product_id,
-            no_polis: payload.body.no_polis,
-            incident_time: payload.body.incident_time,
-            location: payload.body.location,
-            chronology: payload.body.chronology,
-            documents: documents,
-        };
-
-        return this.repository.createClaimProductData(data);
+        return this.repository.createClaimProductData(payload);
     }
 
     updateStatusData(payload) {

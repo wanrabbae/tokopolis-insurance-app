@@ -20,9 +20,9 @@
 
                     <li role="presentation" class="nav-item">
 
-                        <a href="/daftar-claim" class="nav-link active" tabindex="-1">
+                        <a href="/daftar-klaim" class="nav-link active" tabindex="-1">
 
-                            <h2 class="tab-title">Daftar Claim</h2>
+                            <h2 class="tab-title">Daftar Klaim</h2>
 
                         </a>
 
@@ -52,13 +52,13 @@
 
                             <div class="d-inline-block mr-3">
 
-                                <nuxt-img 
+                                <nuxt-img
                                     width="96"
                                     height="96"
                                     preset="default"
                                     class="rounded-circle"
-                                    :src="policyData.image" 
-                                    alt="Mobil" 
+                                    :src="policyData.image"
+                                    alt="Mobil"
                                 />
 
                             </div>

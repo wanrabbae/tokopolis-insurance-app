@@ -11,7 +11,7 @@
 
                 </div> <!-- card-header ends -->
 
-                <b-form class="card-body" @submit.prevent="submitHandler">
+                <b-form class="card-body" @submit.prevent="postClaim">
 
                     <div class="row">
 
@@ -20,30 +20,37 @@
                             <div class="p-0 p-md-3 rounded border-0 border-md">
 
                                 <BaseInput
-                                    v-model="model.policyHolder"
+                                    v-model="model.plateNumber"
+                                    name="Nomor Plat Kendaraan"
+                                    label="Nomor Plat Kendaraan"
+                                    placeholder="B 1234 ABC"
+                                    :rules="{ required: true }"
+                                    required
+                                />
+
+                                <BaseInput
+                                    v-model="model.policyReporter"
+                                    name="Nama Pelapor"
+                                    label="Nama Pelapor"
+                                    placeholder="John Doe atau selain John Doe"
+                                    :rules="{ required: true }"
+                                    required
+                                />
+
+                                <BaseInput
                                     name="Nama Pemegang Polis"
                                     label="Nama Pemegang Polis"
-                                    placeholder="Nama Pemegang Polis"
-                                    :rules="{ required: true }"
-                                    required
+                                    placeholder="John Doe"
+                                    :value="model.policyHolder"
+                                    disabled
                                 />
 
                                 <BaseInput
-                                    v-model="model.TokopolisId"
                                     name="ID Transaksi Tokopolis"
                                     label="ID Transaksi Tokopolis"
-                                    placeholder="ID Transaksi Tokopolis"
-                                    :rules="{ required: true }"
-                                    required
-                                />
-
-                                <BaseInput
-                                    v-model="model.policyNumber"
-                                    name="Nomor Polis Asuransi"
-                                    label="Nomor Polis Asuransi"
-                                    placeholder="Nomor Polis Asuransi"
-                                    :rules="{ required: true }"
-                                    required
+                                    placeholder="TKP-00000000-000000-0000"
+                                    :value="id"
+                                    disabled
                                 />
 
                                 <b-form-group label="Waktu Kejadian">
@@ -176,10 +183,11 @@ export default {
         minDate.setMonth(minDate.getMonth() - 1)
 
         return {
+            id: this.$route.query.id,
             title: 'Form Laporan Klaim',
             model: {
+                policyReporter: null,
                 policyHolder: null,
-                TokopolisId: null,
                 policyNumber: null,
                 date: null,
                 time: null,
@@ -190,39 +198,39 @@ export default {
             documentImages: [],
             documentFields: [
                 {
-                    key: "id-card",
+                    key: "identity_card",
                     label: "Foto KTP",
                     required: true
                 },
                 {
-                    key: "driver-lisence",
+                    key: "sim",
                     label: "Foto SIM Pengemudi",
                     required: true
                 },
                 {
-                    key: "vehicle-registration-certificate",
+                    key: "stnk",
                     label: "Foto STNK",
                     required: true
                 },
                 {
-                    key: "other-document",
+                    key: "document_optional",
                     label: "Dokumen Lain (Opsional)"
                 },
                 {
-                    key: "vehicle-damage-photo-1",
+                    key: "damage1",
                     label: "Foto Kerusakan 1",
                     required: true
                 },
                 {
-                    key: "vehicle-damage-photo-2",
+                    key: "damage2",
                     label: "Foto Kerusakan 2"
                 },
                 {
-                    key: "vehicle-damage-photo-3",
+                    key: "damage3",
                     label: "Foto Kerusakan 3"
                 },
                 {
-                    key: "vehicle-damage-photo-4",
+                    key: "damage4",
                     label: "Foto Kerusakan 4"
                 }
             ],
@@ -248,6 +256,9 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
+    created() {
+        this.getDataTransaction()
+    },
     methods: {
         datepickerContextHandler(ctx) {
             if(ctx.selectedDate) {
@@ -265,6 +276,57 @@ export default {
             const file = e.target.files[0];
 
             this.documentImages[e.target.id] = URL.createObjectURL(file);
+        },
+        async getDataTransaction() {
+            await this.$axios.$get(`api/transaction/${this.$route.query.id}/detail`)
+                .then((response) => {
+                    this.model.policyReporter = response.data.client_name !== null ?
+                        response.data.client_name : response.data.agent_name
+
+                    this.model.policyHolder = response.data.client_data.fullname
+                })
+        },
+        postClaim() {
+            const self = this
+            const formData = new FormData()
+
+            formData.append('transaction_id', this.id)
+            formData.append('reporter_fullname', this.model.policyReporter)
+            formData.append('holder_fullname', this.model.policyHolder)
+            formData.append('plate_number', this.model.plateNumber)
+            formData.append('incident_time', this.model.date)
+            formData.append('location', this.model.place)
+            formData.append('chronology', this.model.chronology)
+
+            formData.append('identity_card', this.model.identity_card)
+            formData.append('sim', this.model.sim)
+            formData.append('stnk', this.model.stnk)
+            formData.append('damage1', this.model.damage1)
+
+            if (this.model.document_optional !== undefined) {
+                formData.append('document_optional', this.model.document_optional)
+            }
+
+            if (this.model.damage2 !== undefined) {
+                formData.append('damage2', this.model.damage2)
+            }
+
+            if (this.model.damage3 !== undefined) {
+                formData.append('damage3', this.model.damage3)
+            }
+
+            if (this.model.damage4 !== undefined) {
+                formData.append('damage4', this.model.damage4)
+            }
+
+            this.$axios.$post(`api/claim`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+                .then(function (response) {
+                    self.$router.push({
+                        name: "daftar-klaim",
+                    })
+                })
         },
     }
 }
