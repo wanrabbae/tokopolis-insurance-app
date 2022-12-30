@@ -1,112 +1,117 @@
 <template>
+    <div>
+        <br></br>
+        <div class="my-5">
 
-    <div class="my-5">
+            <b-container>
 
-        <div class="container">
-
-            <h1>Layanan Kami</h1>
-
-            <div class="row align-items-center mb-4">
-
-                <div class="col-12 col-md-3 text-right">
-
-                    <b-img src="/svg/computer.svg" alt="Computer Icon"  style="max-height: 160px" />
-
-                </div> <!-- col-12.col-md-3 ends -->
-
-                <div class="col-12 col-md-9 text-right">
-
-                    <p>
-                        Menyediakan informasi, peralatan fitur aplikasi, hingga kecerdasan buatan yang
-                        dapat membantu anda memberikan pemahaman yang lebih mudah,
-                        membandingkan informasi produk sesuai kebutuhan asuransi, informasi fitur
-                        dan manfaat dari perusahaan asuransi, hingga bantuan proses klaim secara
-                        digital dan real-time atas proses yang sedang berlangsung
-                    </p>
-
-                </div> <!-- col-12.col-md-9 ends -->
-
-            </div> <!-- row ends -->
-
-            <div class="row align-items-center mb-4">
-
-                <div class="col-12 col-md-3">
-
-                    <b-img src="/svg/claim.svg" alt="Claim Icon"  style="max-height: 160px"/>
-
+                <div class="text-center">
+                    <h1 class="mb-5"><u>Layanan Kami</u></h1>
                 </div>
 
-                <div class="col-12 col-md-9">
+                <div class="row align-items-center mb-5 p-3" style="border: 1px solid; border-radius: 5px; box-shadow: 5px 5px #888888">
 
-                    <p>
-                        Menyediakan jasa konsultansi, rekomendasi, hingga memberikan bantuan
-                        klaim asuransi secara digital
-                    </p>
+                    <div class="col-12 col-md-2 text-right">
 
-                </div>
+                        <b-img src="/svg/computer.svg" alt="Computer Icon" width="100px"  style="max-height: 160px" />
 
-            </div> <!-- row ends -->
+                    </div> <!-- col-12.col-md-3 ends -->
 
-            <div class="row align-items-center mb-4">
+                    <div class="col-12 col-md-10">
 
-                <div class="col-12 col-md-3 text-right">
+                        <p>
+                            Menyediakan informasi, peralatan fitur aplikasi, hingga kecerdasan buatan yang dapat 
+                            membantu anda memberikan pemahaman yang lebih mudah, membandingkan informasi produk 
+                            sesuai kebutuhan asuransi, informasi fitur dan manfaat dari perusahaan asuransi, hingga 
+                            bantuan proses klaim secara digital dan real-time atas proses yang sedang berlangsung.
+                        </p>
 
-                    <b-img src="/svg/insurance.svg" alt="Insurance Icon"  style="max-height: 160px"></b-img>
+                    </div> <!-- col-12.col-md-9 ends -->
 
-                </div>
+                </div> <!-- row ends -->
 
-                <div class="col-12 col-md-9">
+                <div class="row align-items-center mb-5  p-3" style="border: 1px solid; border-radius: 5px; box-shadow: 5px 5px #888888">
 
-                    <p>
-                        Menyediakan berbagai produk asuransi sesuai kebutuhan anda
-                    </p>
+                    <div class="col-12 col-md-2">
 
-                </div>
+                        <b-img src="/svg/claim.svg" alt="Claim Icon" width="100px"  style="max-height: 160px"/>
 
-            </div> <!-- row ends -->
+                    </div>
 
-            <div class="row align-items-center mb-4">
+                    <div class="col-12 col-md-10">
 
-                <div class="col-12 col-md-3">
+                        <p>
+                            Menyediakan jasa konsultansi, rekomendasi, hingga memberikan bantuan
+                            klaim asuransi secara digital
+                        </p>
 
-                    <b-img src="/svg/payment.svg" alt="Payment Icon"  style="max-height: 160px" />
+                    </div>
 
-                </div> <!-- col-12 col-md-3 ends -->
+                </div> <!-- row ends -->
 
-                <div class="col-12 col-md-9">
+                <div class="row align-items-center mb-5  p-3" style="border: 1px solid; border-radius: 5px; box-shadow: 5px 5px #888888">
 
-                    <p>
-                        Menyediakan sistem pembayaran yang aman, mudah, dan simple sesuai
-                        dengan kebutuhan anda
-                    </p>
+                    <div class="col-12 col-md-2 text-right">
 
-                </div> <!-- col-12 col-md-9 ends -->
+                        <b-img src="/svg/insurance.svg" alt="Insurance Icon" width="100px" style="max-height: 160px"></b-img>
 
-            </div> <!-- row ends -->
+                    </div>
 
-            <div class="row align-items-center mb-4">
+                    <div class="col-12 col-md-10">
 
-                <div class="col-12 col-md-3 text-right">
+                        <p>
+                            Menyediakan berbagai produk asuransi sesuai kebutuhan anda
+                        </p>
 
-                    <b-img src="/svg/shield.svg" alt="Shield Icon"  style="max-height: 160px"></b-img>
+                    </div>
 
-                </div> <!-- col-12 col-md-3 ends -->
+                </div> <!-- row ends -->
 
-                <div class="col-12 col-md-9">
+                <div class="row align-items-center mb-5  p-3" style="border: 1px solid; border-radius: 5px; box-shadow: 5px 5px #888888">
 
-                    <p>
-                        Menyediakan sistem bantuan proses klaim secara digital yang diakses melalui
-                        platform Tokopolis, dan tak terbatas pelayanan kami menggunakan perangkat lain seperti
-                        email, whatsapp, dan telepon guna memberikan bantuan secara maksimal
-                        kepada anda.
-                    </p>
+                    <div class="col-12 col-md-2">
 
-                </div> <!-- col-12 col-md-9 ends -->
+                        <b-img src="/svg/payment.svg" alt="Payment Icon" width="100px" style="max-height: 160px" />
 
-            </div> <!-- row ends -->
+                    </div> <!-- col-12 col-md-3 ends -->
 
-        </div> <!-- container ends -->
+                    <div class="col-12 col-md-10">
 
+                        <p>
+                            Menyediakan sistem pembayaran yang aman, mudah, dan simple sesuai
+                            dengan kebutuhan anda
+                        </p>
+
+                    </div> <!-- col-12 col-md-9 ends -->
+
+                </div> <!-- row ends -->
+
+                <div class="row align-items-center mb-5  p-3" style="border: 1px solid; border-radius: 5px; box-shadow: 5px 5px #888888">
+
+                    <div class="col-12 col-md-2 text-right">
+
+                        <b-img src="/svg/shield.svg" alt="Shield Icon" width="100px" style="max-height: 160px"></b-img>
+
+                    </div> <!-- col-12 col-md-3 ends -->
+
+                    <div class="col-12 col-md-10">
+
+
+                        <p>
+                            Menyediakan sistem bantuan proses klaim secara digital yang diakses melalui
+                            platform TOKOPOLIS, dan tak terbatas pelayanan kami menggunakan perangkat lain seperti
+                            email, whatsapp, dan telepon guna memberikan bantuan secara maksimal
+                            kepada anda.
+                        </p>
+
+
+                    </div> <!-- col-12 col-md-9 ends -->
+
+                </div> <!-- row ends -->
+
+            </b-container> <!-- container ends -->
+
+        </div>
     </div>
 
 </template>

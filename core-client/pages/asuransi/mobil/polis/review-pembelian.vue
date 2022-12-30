@@ -396,25 +396,25 @@
 
                            <div class="rounded border mb-3 mb-md-4">
                                 <div class="border-top p-3">
-                                    <b-input-group @click="showModaltnc">
+                                    <b-input-group>
 
                                         <b-form-checkbox
                                             v-model="model.termAndCondition"
                                             @change="onAccessoriesCheckboxChange"
                                         >
                                             <span class="fw-bold">
-                                                Saya telah membaca dan menyetujui
-                                                <span class="text-primary fw-bold">Syarat & Ketentuan</span>
+                                                Saya telah membaca dan menyetujui 
+                                                <span class="text-primary fw-bold" @click="showModaltnc">Syarat & Ketentuan</span> 
                                                 yang berlaku.
                                             </span>
                                         </b-form-checkbox>
 
                                     </b-input-group>
-
+                                    
                                 </div>
                            </div>
 
-                           <BaseButton block :disabled="!model.paymentMethod || !model.termAndCondition" @click="CreatePayment">Bayar Sekarang</BaseButton>
+                           <BaseButton block :disabled="!model.paymentMethod" @click="CreatePayment">Bayar Sekarang</BaseButton>
 
                        </div> <!-- col-12 col-md-6 ends -->
 
@@ -428,7 +428,7 @@
 
         <!-- <Loading :show="loading"/> -->
 
-        <TncPembelian id="modal-tnc-pembelian" />
+        <TncPembelian id="modal-tnc-pembelian" :product_company="insuranceCompany" />
 
     </div>
 
@@ -452,6 +452,7 @@ export default {
             loading : true,
             idTransaction : null,
             insuranceName:null,
+            insuranceCompany: null,
             model: {
                 promotionCode: null,
                 paymentMethod: null,
@@ -864,6 +865,7 @@ export default {
                 .then ((response) => {
                     console.log(response)
                     this.insuranceName = response.data.transaction.product
+                    this.insuranceCompany = response.data.transaction.product_company
 
                     this.addressDetails.detail = response.data.client.address.detail
                     this.addressDetails.village = response.data.client.address.village
@@ -981,8 +983,7 @@ export default {
         },
 
         showModaltnc(){
-            if (!this.model.termAndCondition)
-                this.$bvModal.show("modal-tnc-pembelian")
+            this.$bvModal.show("modal-tnc-pembelian")
         }
     }
 }

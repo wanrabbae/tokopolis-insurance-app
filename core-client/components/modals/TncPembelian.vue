@@ -19,17 +19,17 @@
         Dengan ini saya menyatakan bahwa : <br />
         <br />
         <ul>
-            <li>Saya mengetahui dan menyetujui pembelian produk asuransi dari PT ASURANSI ABC yang difasilitasi oleh PT Istpro Inti Nusa sebagai Pialang Asuransi pada platform Tokopolis</li>
-            <li>Saya mengetahui dan menyetujui ketentuan produk milik PT ASURANSI ABC</li>
+            <li>Saya mengetahui dan menyetujui pembelian produk asuransi dari {{ product_company }} yang difasilitasi oleh PT Istpro Inti Nusa sebagai Pialang Asuransi pada platform Tokopolis</li>
+            <li>Saya mengetahui dan menyetujui ketentuan produk milik {{ product_company }}</li>
             <li>Saya mengetahui dan menyetujui ketentuan dan besaran Risiko Sendiri / Own Risk (Deductible) produk asuransi yang tercantum pada ikhtisar pertanggungan / schedule polis</li>
-            <li>Data yang diisikan merupakan data yang menyatakan kebenaran yang sesungguhnya, yang sesuai dengan ketentuan produk asuransi milik PT ASURANSI ABC</li>
+            <li>Data yang diisikan merupakan data yang menyatakan kebenaran yang sesungguhnya, yang sesuai dengan ketentuan produk asuransi milik {{ product_company }}</li>
             <li>Saya paham dan mengetahui kendaraan yang ditanggung digunakan sebagai rental individual, dalam hal ini digunakan atau dipindah tangankan ke orang lain, perusahaan rekanan Tokopolis kemungkinkan tidak akan menanggung kerugian tesebut; dan Tokopolis maupun perusahaan asuransi rekanan Tokopolis berhak mengumpulkan data terkait hal tersebut</li>
-            <li>Saya bersedia datanya digunakan untuk keperluan PT ASURANSI ABC dan/atau Pihak Ketiga yang bekerja sama dengan PT ASURANSI ABC</li>
+            <li>Saya bersedia datanya digunakan untuk keperluan {{ product_company }} dan/atau Pihak Ketiga yang bekerja sama dengan {{ product_company }}</li>
         </ul>
         <br />
         Jika saya tidak mengindahkan poin-poin diatas, maka saya bersedia untuk menerima konsekuensi yang berlaku, termasuk namun tak terbatas pada keharusan untuk revisi informasi pada polis, kesalahan pengiriman polis atau tidak berlakunya polis
         <br /><br />
-        Penutupan asuransi dilakukan berdasarkan itikad baik oleh Para Pihak. Apabila ada keterangan/data/informasi yang diberikan tertanggung pada saat penutupan asuransi tidak sesuai dengan keadaan yang sebenarnya, maka pertanggungan akan batal demi hukum. PT ASURANSI ABC dapat melakukan tuntutan hukum terhadap Tertanggung ataupun pihak-pihak yang terlibat dalam penyampaian keterangan/data/informasi palsu tersebut. Untuk kerusakan yang sudah ada sebelum periode asuransi polis dimulai, kerusakan tersebut tidak bisa diajukan klaim (klaim tidak dapat diproses)
+        Penutupan asuransi dilakukan berdasarkan itikad baik oleh Para Pihak. Apabila ada keterangan/data/informasi yang diberikan tertanggung pada saat penutupan asuransi tidak sesuai dengan keadaan yang sebenarnya, maka pertanggungan akan batal demi hukum. {{ product_company }} dapat melakukan tuntutan hukum terhadap Tertanggung ataupun pihak-pihak yang terlibat dalam penyampaian keterangan/data/informasi palsu tersebut. Untuk kerusakan yang sudah ada sebelum periode asuransi polis dimulai, kerusakan tersebut tidak bisa diajukan klaim (klaim tidak dapat diproses)
 
     </div>
         
@@ -51,6 +51,9 @@ export default {
   components: { 
     BaseButton
   },
+  props: [
+    'product_company'
+  ],  
   data () {
     return {
       model: {

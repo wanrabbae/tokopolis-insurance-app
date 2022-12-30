@@ -377,64 +377,118 @@ export default {
                     {
                         question: 'Apa itu asuransi mobil?',
                         answer: `
-                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-
-                                origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                ea proident. Ad vegan excepteur butcher vice lomo.
+                                Salah satu bentuk proteksi finasial atas aset mobil anda atas kejadian yang tidak diinginkan sehingga 
+                                mengakibatkan pengeluaran tak terduga yang besar akibat perbaikan mobil anda di bengkel.
                                 `
                     },
                     {
                         question: 'Mengapa anda harus memiliki asuransi mobil?',
                         answer: `
-                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-
-                                origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                ea proident. Ad vegan excepteur butcher vice lomo.
+                                Bagi anda yang memiliki mobil, selayaknnya anda lengkapi dengan asuransi mobil 
+                                untuk menghindari biaya kerugian yang timbul atas kejadian tak terduga seperti 
+                                kecelakaan beraibat kerusakan mobil.
                                 `
                     },
                     {
                         question: 'Apa saja keuntungan memiliki asuransi mobil?',
                         answer: `
-                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-
-                                origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                ea proident. Ad vegan excepteur butcher vice lomo.
+                                Tidak ada rasa khawatir, jaminan perbaikan mobil jika terjadi kejadian tidak 
+                                diinginkan, transafer risiko ke perusahaan asuransi, jaringan bengkel tersebar 
+                                seluruh Indonesia.
                                 `
                     },
                     {
                         question: 'Apa saja jenis-jenis asuransi mobil yang tersedia?',
                         answer: `
-                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-
-                                origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                ea proident. Ad vegan excepteur butcher vice lomo.
+                                Comprehensive (Jaminan risiko kerusakan sebagian) & Total Loss Only / TLO 
+                                (Jaminan risiko kerusakan total atau min 75% dari harga kendaraan).
                                 `
                     },
                     {
-                        question: 'Istilah-istilah dalam asuransi mobil',
+                        question: 'Apa saja syarat dokumen yang disiapkan untuk pengajuan asuransi mobil?',
                         answer: `
-                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-
-                                origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                ea proident. Ad vegan excepteur butcher vice lomo.
+                                Mobil Baru : Scan copy KTP dan BASTK Mobil <br>
+                                Mobil Bekas : Scan copy KTP,  STNK, Foto Kendaraan tampak depan-belakang-kanan-kiri-dashboard.
                                 `
                     },
                     {
-                        question: 'Dokumen apa saja yang perlu dipersiapkan sebelum melakukan claim?',
+                        question: 'Siapa saja asuransi yang rekanan dengan Tokopolis?',
                         answer: `
-                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-
-                                origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                ea proident. Ad vegan excepteur butcher vice lomo.
+                                Tugu Insurance, Asuransi Astra (Garda Oto), Zurich Insurance, Asuransi Bintang.
                                 `
                     },
                     {
-                        question: 'Syarat dan ketentuan refund',
+                        question: 'Apakah saya bisa mengajukan asuransi mobil apabila mobil saya tergolong tua?',
                         answer: `
-                                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-
-                                origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
-                                helvetica, craft beer labore wes anderson cred nesciunt sapiente
-                                ea proident. Ad vegan excepteur butcher vice lomo.
+                                Tidak Bisa, Maksimal usia kendaraan yang dapat diasuransikan adalah 10 (sepuluh) tahun.
+                                `
+                    },
+                    {
+                        question: 'Apakah semua risiko sudah dilindungi dengan asuransi mobil comprehensive?',
+                        answer: `
+                                Ya, kecuali resiko yang dikecualikan dalam polis asuransi kendaraan bermotor. 
+                                Kami sarankan dapat membaca wording PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia).
+                                `
+                    },
+                    {
+                        question: 'Bagaimana perhitungan tarif asuransi mobil?',
+                        answer: `
+                                Perhitungan menggunakan rate batas bawah OJK.
+                                `
+                    },
+                    {
+                        question: 'Apa saja jenis perluasan asuransi mobil?',
+                        answer: `
+                                Asuransi dapat diperluas dengan menambah perluasan risiko seperti Kerusuhan, 
+                                Huru Hara, Banjir, Gempa Bumi, Tuntutan Pihak Ketiga, Kecelakaan Diri Pengemudi 
+                                dan Penumpang.
+                                `
+                    },
+                    {
+                        question: 'Apa yang dimaksud dengan loading fee/loading rate dan bagaimana cara menghitungnya?',
+                        answer: `
+                                Loading fee/loading rate akan dikenakan sebesar 5% (dari rate standar OJK) per 
+                                tahunnya untuk kendaraan dengan usia di atas 5 (lima) tahun.
+                                `
+                    },
+                    {
+                        question: 'Dokumen apa saja yang perlu saya siapkan sebelum melakukan klaim dan bagaimana cara mengajukan claim?',
+                        answer: `
+                                Dokumen yang perlu disiapkan yaitu scan copy KTP, polis asuransi dan foto kerusakan kendaraan, 
+                                selanjurnya silahkan mengisi form laporan claim pada web app kami tokopolis.id.
+                                `
+                    },
+                    {
+                        question: 'Jika ada kesalahan pengisian, apakah saya dapat melakuka  perbaikan nama, alamat, atau keterangan detil kendaraan?',
+                        answer: `
+                                Bisa, melalui pengajuan endorsement ditujukan ke email cs@tokopolis.id atau hubungi contact center kami.
+                                `
+                    },
+                    {
+                        question: 'Apakah saya dapat menambahkan perluasan risiko lagi, ketika polis sudah terbit?',
+                        answer: `
+                                Bisa, syarat dilakukan desk survey (melampirkan foto kendaraan) dan biasanya dikenakan tambahan premi. 
+                                Adapun pengajuan endorsement ditujukan ke email cs@tokopolis.id atau hubungi contact center kami.
+                                `
+                    },
+                    {
+                        question: 'Apakah saya dapat mengubah tanggal aktif atau periode polis saya?',
+                        answer: `
+                                Tidak bisa berdasarkan kebijakan Asuransi.
+                                `
+                    },
+                    {
+                        question: 'Apakah polis yang sudah saya beli dapat dibatalkan dan bagaimana caranya?',
+                        answer: `
+                                Dokumen yang perlu disiapkan yaitu scan copy KTP, dan pengajuan pembatalan secara tertulis disertai alasan, 
+                                selanjurnya ditujukan ke email cs@tokopolis.id atau hubungi contact center kami.
+                                `
+                    },
+                    {
+                        question: 'Apakah saya dapat menerima refund atas pembatalan polis yang dibatalkan?',
+                        answer: `
+                                Kebijakan atau perhitungan pengembalian dana refund akan disampaikan setelah mendapatkan konfirmasi dari 
+                                pihak Asuransi.
                                 `
                     },
                 ]

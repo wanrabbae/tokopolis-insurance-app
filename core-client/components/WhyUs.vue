@@ -60,7 +60,7 @@ export default {
                 },
                 {
                     image: "img/why-us-icon-cooperation.png",
-                    text: "40+ Partner Asuransi"
+                    text: "Partner Asuransi Terbaik"
                 },
                 {
                     image: "img/why-us-icon-compare.png",

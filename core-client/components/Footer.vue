@@ -36,10 +36,9 @@
                         
                         <a href="#" class="d-inline-block mr-2">
                             
-                            <nuxt-img  
-                                format="svg"
-                                height="24" 
-                                src="svg/badge-google-play.svg"
+                            <img  
+                                style="width: 90px; height: 30px" 
+                                src="img/black_play_store.png"
                                 alt="Get it on Google Play" 
                                 loading="lazy"
                             />
@@ -48,10 +47,9 @@
 
                         <a href="#" class="d-inline-block">
                             
-                            <nuxt-img  
-                                format="svg"
-                                height="24" 
-                                src="svg/badge-app-store.svg"
+                            <img  
+                                style="width: 90px; height: 30px" 
+                                src="img/black_app_store.png"
                                 alt="Download on the App Store" 
                                 loading="lazy"
                             />
@@ -70,15 +68,15 @@
                         
                         <ul class="list-unstyled">
                             
-                            <li><a href="#" class="text-reset">Tentang Kami</a></li>
+                            <li><a href="/tentang" class="text-reset">Tentang Kami</a></li>
                             
                             <li><a href="/layanan" class="text-reset">Layanan Kami</a></li>
                             
-                            <li><a href="#" class="text-reset">Kebijakan Privasi</a></li>
+                            <li><a href="/kebijakan-privasi" class="text-reset">Kebijakan Privasi</a></li>
                             
-                            <li><a href="#" class="text-reset">Syarat dan Ketentuan</a></li>
+                            <li><a href="/ketentuan-layanan" class="text-reset">Syarat dan Ketentuan</a></li> 
                             
-                            <li><a href="/faq" class="text-reset">Disclaimer</a></li>
+                            <li><a href="/disclaimer" class="text-reset">Disclaimer</a></li>
                         
                         </ul>
 
@@ -137,7 +135,7 @@
                                 
                                 <div class="mr-2"><fa icon="envelope" width="16"/></div>
                                 
-                                <div>tokopolis.corp@gmail.com</div>
+                                <div>cs@tokopolis.id</div>
                             
                             </li>
                             
@@ -145,7 +143,7 @@
                                 
                                 <div class="mr-2"><fa :icon="['fab', 'whatsapp']"  width="16" /></div>
                                 
-                                <div>081234567890</div>
+                                <div>08111625999</div>
 
                             </li>
 
