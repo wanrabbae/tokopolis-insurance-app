@@ -106,7 +106,7 @@ exports.updateIdentity = async (req, res) => {
     const fields = {
         account_id: account.id,
         identity_number: req.body.identity_number,
-        type: account.role == "client" ? "ktp" : "npwp",
+        type: req.body.type,
         verified_at: null,
     };
 
@@ -116,6 +116,39 @@ exports.updateIdentity = async (req, res) => {
         await service.updateIdentity(account.id, fields, req.file);
     } else {
         await service.createIdentity(fields, req.file);
+    }
+
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
+
+exports.getBank = async (req, res) => {
+    const bank = await service.getBank(req.account._id);
+
+    return res.jsonData(bank);
+};
+
+exports.updateBank = async (req, res) => {
+    const validate = validation.bank(req);
+    if (validate.error) return res.errorValidation(validate.details);
+
+    const account = await service.getAccount(req.account._id);
+    if (account == null)
+        return res.errorBadRequest(req.polyglot.t("error.auth"));
+
+    const fields = {
+        account_id: account.id,
+        type: req.body.type,
+        account_number: req.body.account_number,
+        fullname: req.body.fullname,
+        verified_at: null,
+    };
+
+    const bank = await service.getBank(account.id);
+
+    if (bank != null) {
+        await service.updateBank(account.id, fields);
+    } else {
+        await service.createBank(fields);
     }
 
     return res.jsonSuccess(req.polyglot.t("success.default"));

@@ -3,7 +3,7 @@ import { Product } from "../models";
 const moment = require("moment");
 const { Op } = require("sequelize");
 
-const { Account, Profile, Identity, AccountToken, Role } = require("../models");
+const { Account, Profile, Identity, Bank, AccountToken, Role } = require("../models");
 
 export default class AccountRepository {
     constructor() {}
@@ -169,6 +169,22 @@ export default class AccountRepository {
 
     async createIdentity(payload) {
         return await Identity.create(payload);
+    }
+
+    async getBank(account_id) {
+        return await Bank.findOne({
+            where: { account_id: account_id },
+        });
+    }
+
+    async createBank(payload) {
+        return await Bank.create(payload);
+    }
+
+    async updateBank(account_id, payload) {
+        return await Bank.update(payload, {
+            where: { account_id: account_id },
+        });
     }
 
     async getProfile(account_id) {

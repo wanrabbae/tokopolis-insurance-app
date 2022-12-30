@@ -97,6 +97,14 @@ module.exports = (sequelize, Sequelize) => {
             onDelete: "CASCADE",
         });
 
+        Account.hasOne(models.Bank, {
+            as: "bank",
+            sourceKey: "id",
+            foreignKey: "account_id",
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
+        });
+
         Account.hasMany(models.AccountToken, {
             as: "tokens",
             sourceKey: "id",

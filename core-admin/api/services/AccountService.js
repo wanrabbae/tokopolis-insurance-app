@@ -203,6 +203,18 @@ export default class AccountService {
         return payload;
     }
 
+    getBank(account_id) {
+        return this.repository.getBank(account_id);
+    }
+
+    createBank(payload) {
+        return this.repository.createBank(payload);
+    }
+
+    updateBank(account_id, payload) {
+        return this.repository.updateBank(account_id, payload);
+    }
+
     checkResetToken(token) {
         return this.repository.checkResetToken(token);
     }
