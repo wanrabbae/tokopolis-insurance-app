@@ -1,9 +1,8 @@
-import { Product } from "../models";
-
 const moment = require("moment");
 const { Op } = require("sequelize");
 
-const { Account, Profile, Identity, Bank, AccountToken, Role } = require("../models");
+const { Account, Profile, Identity, Bank,
+    AccountToken, Role, RoleUpgrade } = require("../models");
 
 export default class AccountRepository {
     constructor() {}
@@ -268,5 +267,46 @@ export default class AccountRepository {
         return await Account.destroy({
             where: { id: id },
         });
+    }
+
+    async getUpgradeRequestAll(leader_id, filter, limit, offset) {
+        return await RoleUpgrade.findAll({
+            where: {
+                leader_id: leader_id,
+                status: "waiting",
+                '$subordinate_upgrades.fullname$': { [Op.like]: `%${filter.fullname}%` },
+                '$subordinate_upgrades.email$': { [Op.like]: `%${filter.email}%` },
+            },
+            include: [
+                { model: Account, as: "subordinate_upgrades" },
+            ],
+            limit: limit,
+            offset: offset,
+        })
+    }
+
+    async getUpgradeRequestCount(leader_id, filter) {
+        return await RoleUpgrade.count({
+            where: {
+                leader_id: leader_id,
+                status: "waiting",
+                '$subordinate_upgrades.fullname$': { [Op.like]: `%${filter.fullname}%` },
+                '$subordinate_upgrades.email$': { [Op.like]: `%${filter.email}%` },
+            },
+            include: [
+                { model: Account, as: "subordinate_upgrades" },
+            ],
+        });
+    }
+
+    async getUpgradeRequestDetail(id) {
+        return await RoleUpgrade.findByPk(id)
+    }
+
+    async createUpgradeRequest(payload) {
+        return await RoleUpgrade.create({
+            leader_id: payload.leader_id,
+            subordinate_id: payload.subordinate_id,
+        })
     }
 }

@@ -3,6 +3,7 @@ import { generateIdRoleManagement } from "../../utilities/generateId.js";
 
 const validation = require("../../validation/user.validation");
 const { randomString } = require("../../utilities/functions");
+const { generateIdRoleManagementWithUniqueId } = require("../../utilities/generateId.js");
 
 const service = new AccountService();
 
@@ -127,3 +128,59 @@ exports.destroy = async (req, res, next) => {
 
     return res.jsonSuccess(req.polyglot.t("success.default"));
 };
+
+exports.upgradeList = async (req, res, next) => {
+    const leader_id = req.account._id
+
+    const filter = {
+        fullname: req.query.fullname || '',
+        email: req.query.email || '',
+    }
+
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 10
+    const offset = (current - 1) * limit
+
+    const count = await service.getUpgradeRequestCount(leader_id, filter)
+    const list = await service.getUpgradeRequestAll(leader_id, filter, limit, offset)
+
+    return res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: list,
+    })
+}
+
+exports.verifyUpgrade = async (req, res) => {
+    const upgrade = await service.getUpgradeRequestDetail(req.params.id)
+    if (!upgrade) return res.errorNotFound("Upgrade request not found")
+
+    console.log(upgrade.leader_id)
+
+    const leadAccount = await service.getAccount(upgrade.leader_id)
+    if (!leadAccount) return res.errorBadRequest("Code not valid!")
+
+    const uniqueId = await generateIdRoleManagementWithUniqueId({
+        role_id: leadAccount.role_id + 1,
+        unique_id: leadAccount.unique_id.split("-")[0],
+    })
+
+    if (req.body.status == "approve") {
+        await service.updateAccount(upgrade.subordinate_id, {
+            role_id: leadAccount.role_id + 1,
+            unique_id: uniqueId.unique_id,
+            other_id: uniqueId.other_id,
+        })
+    }
+
+    upgrade.update({
+        status: req.body.status == "approve" ? "approved" : "rejected",
+        updated_at: new Date(),
+    })
+
+    return res.jsonSuccess("Upgrade success")
+}

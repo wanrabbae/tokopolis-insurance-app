@@ -482,7 +482,7 @@ export default {
             this.$bvModal.show('modal-upgrade')
         },
         upgradeSubmitHandler(data) {
-            this.$axios.$post(`api/user/verify-upgrade`, {
+            this.$axios.$post(`api/user/request-upgrade`, {
                 leader_id: data.leader_id,
             })
             .then(function(response) {

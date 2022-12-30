@@ -12,7 +12,7 @@ const {
     getBank,
     updateBank,
     getTransactions,
-    verifySupervisor,
+    requestUpgrade,
 } = require("../controllers/UserController.js");
 
 const router = Router()
@@ -31,6 +31,6 @@ router.post('/user/bank', auth, updateBank)
 
 router.get('/user/transactions', auth, getTransactions)
 
-router.post("/user/verify-upgrade", auth, verifySupervisor);
+router.post("/user/request-upgrade", auth, requestUpgrade);
 
 module.exports = router;

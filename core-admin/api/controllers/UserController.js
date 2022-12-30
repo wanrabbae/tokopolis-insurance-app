@@ -162,33 +162,42 @@ exports.getTransactions = async (req, res) => {
     return res.jsonData(transactions);
 };
 
-exports.verifySupervisor = async (req, res) => {
+exports.requestUpgrade = async (req, res) => {
     const leadAccount = await service.getAccountWithUniqueId(req.body.leader_id);
-    if (!leadAccount || (leadAccount && leadAccount.unique_id == 5)) return res.errorNotFound("Code not valid!")
+    if (!leadAccount || (leadAccount && leadAccount.role_id == 5))
+        return res.errorNotFound("Code not valid!")
 
-    let data = {
-        host: req.fullhost,
-        target: leadAccount.email,
-        title: "User role upgrade",
-        data: {
-            name: req.account.email,
-        },
-    };
+    if (req.account.role != null) return res.errorBadRequest("You already have role")
 
-    const sendEmail = service.sendEmailVerifySuperVisor(data);
+    // let data = {
+    //     host: req.fullhost,
+    //     target: leadAccount.email,
+    //     title: "User role upgrade",
+    //     data: {
+    //         name: req.account.email,
+    //     },
+    // };
 
-    const sendNotif = notificationService.sendNotification({
-        title: "User role upgrade confirmation",
-        message: "There's user want to upgrade his role",
-        link: "/confirm-spv",
-        user_id: leadAccount.id,
-        sender_user_id: req.account._id,
-    });
+    // const sendEmail = service.sendEmailVerifySuperVisor(data);
 
+    // const sendNotif = notificationService.sendNotification({
+    //     title: "User role upgrade confirmation",
+    //     message: "There's user want to upgrade his role",
+    //     link: "/confirm-spv",
+    //     user_id: leadAccount.id,
+    //     sender_user_id: req.account._id,
+    // });
+
+    // will be delete soon
     const uniqueId = await generateIdRoleManagementWithUniqueId({
         role_id: leadAccount.role_id + 1,
         unique_id: leadAccount.unique_id.split("-")[0],
     });
+
+    await service.createUpgradeRequest({
+        leader_id: leadAccount.id,
+        subordinate_id: req.account._id,
+    })
 
     return res.jsonData({
         message:

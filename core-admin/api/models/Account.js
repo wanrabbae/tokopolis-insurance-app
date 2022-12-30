@@ -126,6 +126,13 @@ module.exports = (sequelize, Sequelize) => {
             onDelete: "CASCADE",
         });
 
+        Account.hasMany(models.RoleUpgrade, {
+            as: "subordinate_upgrades",
+            sourceKey: "id",
+            foreignKey: "subordinate_id",
+            onDelete: "CASCADE",
+        });
+
         Account.belongsToMany(models.Vehicle, {
             foreignKey: "account_id",
             through: "account_vehicles",

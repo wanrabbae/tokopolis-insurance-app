@@ -258,6 +258,22 @@ export default class AccountService {
         return this.repository.confirmEmail(account_id);
     }
 
+    getUpgradeRequestAll(leader_id, filter, limit, offset) {
+        return this.repository.getUpgradeRequestAll(leader_id, filter, limit, offset)
+    }
+
+    getUpgradeRequestCount(leader_id, filter) {
+        return this.repository.getUpgradeRequestCount(leader_id, filter)
+    }
+
+    getUpgradeRequestDetail(id) {
+        return this.repository.getUpgradeRequestDetail(id)
+    }
+
+    createUpgradeRequest(payload) {
+        return this.repository.createUpgradeRequest(payload)
+    }
+
     sendEmailRegister(payload) {
         let mailer = new Mailer(payload.host);
         mailer.setUrl("/confirm-email");
