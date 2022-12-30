@@ -33,7 +33,7 @@
 
                 <b-row class="justify-content-center">
                     <b-col v-for="(card, index) in coreValueCards" :key="index" cols="12" md="6" lg="4" class="mb-4">
-                        <b-card bg-variant="white" align="center" class="h-100 py-4 border shadow-none" style="border-color: #435A8C!important; border-radius: 44px">
+                        <b-card bg-variant="white" align="center" class="h-100 py-4  shadow-none" style="border-color: #435A8C!important; border-radius: 44px">
                             <b-card-img :src="card.icon" :alt="card.title" class="mb-4 mx-auto" style="max-width: 100px"></b-card-img>
                             <b-card-title title-tag="h2" class="mb-4">{{ card.title }}</b-card-title>
                             <b-card-text>{{ card.description }}</b-card-text>

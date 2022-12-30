@@ -428,7 +428,7 @@
 
         <!-- <Loading :show="loading"/> -->
 
-        <TncPembelian id="modal-tnc-pembelian" />
+        <TncPembelian id="modal-tnc-pembelian" :product_company="insuranceCompany" />
 
     </div>
 
@@ -452,6 +452,7 @@ export default {
             loading : true,
             idTransaction : null,
             insuranceName:null,
+            insuranceCompany: null,
             model: {
                 promotionCode: null,
                 paymentMethod: null,
@@ -864,6 +865,7 @@ export default {
                 .then ((response) => {
                     console.log(response)
                     this.insuranceName = response.data.transaction.product
+                    this.insuranceCompany = response.data.transaction.product_company
 
                     this.addressDetails.detail = response.data.client.address.detail
                     this.addressDetails.village = response.data.client.address.village

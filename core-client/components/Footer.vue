@@ -36,10 +36,9 @@
                         
                         <a href="#" class="d-inline-block mr-2">
                             
-                            <nuxt-img  
-                                format="svg"
-                                height="24" 
-                                src="svg/badge-google-play.svg"
+                            <img  
+                                style="width: 90px; height: 30px" 
+                                src="img/black_play_store.png"
                                 alt="Get it on Google Play" 
                                 loading="lazy"
                             />
@@ -48,10 +47,9 @@
 
                         <a href="#" class="d-inline-block">
                             
-                            <nuxt-img  
-                                format="svg"
-                                height="24" 
-                                src="svg/badge-app-store.svg"
+                            <img  
+                                style="width: 90px; height: 30px" 
+                                src="img/black_app_store.png"
                                 alt="Download on the App Store" 
                                 loading="lazy"
                             />
@@ -145,7 +143,7 @@
                                 
                                 <div class="mr-2"><fa :icon="['fab', 'whatsapp']"  width="16" /></div>
                                 
-                                <div>081234567890</div>
+                                <div>08111625999</div>
 
                             </li>
 
