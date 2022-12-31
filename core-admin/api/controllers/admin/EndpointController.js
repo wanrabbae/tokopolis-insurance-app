@@ -43,11 +43,7 @@ exports.list = async (req, res, next) => {
 }
 
 exports.update = async (req, res) => {
-  console.log(req.method)
-  console.log(req.url)
-  console.log(req.url.split('/'))
-
-  const validate = validation.create(req)
+  const validate = validation.update(req)
   if (validate.error) return res.errorValidation(validate.details)
 
   const endpoint = await service.getEndpoint(req.params.id)

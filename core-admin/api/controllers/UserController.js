@@ -106,7 +106,7 @@ exports.updateIdentity = async (req, res) => {
     const fields = {
         account_id: account.id,
         identity_number: req.body.identity_number,
-        type: account.role == "client" ? "ktp" : "npwp",
+        type: req.body.type,
         verified_at: null,
     };
 
@@ -121,6 +121,39 @@ exports.updateIdentity = async (req, res) => {
     return res.jsonSuccess(req.polyglot.t("success.default"));
 };
 
+exports.getBank = async (req, res) => {
+    const bank = await service.getBank(req.account._id);
+
+    return res.jsonData(bank);
+};
+
+exports.updateBank = async (req, res) => {
+    const validate = validation.bank(req);
+    if (validate.error) return res.errorValidation(validate.details);
+
+    const account = await service.getAccount(req.account._id);
+    if (account == null)
+        return res.errorBadRequest(req.polyglot.t("error.auth"));
+
+    const fields = {
+        account_id: account.id,
+        type: req.body.type,
+        account_number: req.body.account_number,
+        fullname: req.body.fullname,
+        verified_at: null,
+    };
+
+    const bank = await service.getBank(account.id);
+
+    if (bank != null) {
+        await service.updateBank(account.id, fields);
+    } else {
+        await service.createBank(fields);
+    }
+
+    return res.jsonSuccess(req.polyglot.t("success.default"));
+};
+
 exports.getTransactions = async (req, res) => {
     const transactions = await transactionService.getTransactionByAccountId(
         req.account._id
@@ -129,33 +162,42 @@ exports.getTransactions = async (req, res) => {
     return res.jsonData(transactions);
 };
 
-exports.verifySupervisor = async (req, res) => {
+exports.requestUpgrade = async (req, res) => {
     const leadAccount = await service.getAccountWithUniqueId(req.body.leader_id);
-    if (!leadAccount || (leadAccount && leadAccount.unique_id == 5)) return res.errorNotFound("Code not valid!")
+    if (!leadAccount || (leadAccount && leadAccount.role_id == 5))
+        return res.errorNotFound("Code not valid!")
 
-    let data = {
-        host: req.fullhost,
-        target: leadAccount.email,
-        title: "User role upgrade",
-        data: {
-            name: req.account.email,
-        },
-    };
+    if (req.account.role != null) return res.errorBadRequest("You already have role")
 
-    const sendEmail = service.sendEmailVerifySuperVisor(data);
+    // let data = {
+    //     host: req.fullhost,
+    //     target: leadAccount.email,
+    //     title: "User role upgrade",
+    //     data: {
+    //         name: req.account.email,
+    //     },
+    // };
 
-    const sendNotif = notificationService.sendNotification({
-        title: "User role upgrade confirmation",
-        message: "There's user want to upgrade his role",
-        link: "/confirm-spv",
-        user_id: leadAccount.id,
-        sender_user_id: req.account._id,
-    });
+    // const sendEmail = service.sendEmailVerifySuperVisor(data);
 
+    // const sendNotif = notificationService.sendNotification({
+    //     title: "User role upgrade confirmation",
+    //     message: "There's user want to upgrade his role",
+    //     link: "/confirm-spv",
+    //     user_id: leadAccount.id,
+    //     sender_user_id: req.account._id,
+    // });
+
+    // will be delete soon
     const uniqueId = await generateIdRoleManagementWithUniqueId({
         role_id: leadAccount.role_id + 1,
         unique_id: leadAccount.unique_id.split("-")[0],
     });
+
+    await service.createUpgradeRequest({
+        leader_id: leadAccount.id,
+        subordinate_id: req.account._id,
+    })
 
     return res.jsonData({
         message:

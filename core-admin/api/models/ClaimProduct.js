@@ -19,9 +19,17 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            no_polis: {
+            plate_number: {
                 type: Sequelize.STRING,
-                allowNull: true,
+                allowNull: false,
+            },
+            reporter_fullname: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
+            holder_fullname: {
+                type: Sequelize.STRING,
+                allowNull: false,
             },
             incident_time: Sequelize.DATE,
             location: {

@@ -22,12 +22,12 @@ export const menuItems = [
         icon: "uil-graph-bar",
         link: "/role"
     },
-    // {
-    //     id: 5,
-    //     label: "menuitems.account.text",
-    //     icon: "uil-users-alt",
-    //     link: "/account"
-    // },
+    {
+        id: 5,
+        label: "menuitems.upgrade.text",
+        icon: "uil-users-alt",
+        link: "/upgrade"
+    },
     {
         id: 6,
         label: "menuitems.vehicle.text",

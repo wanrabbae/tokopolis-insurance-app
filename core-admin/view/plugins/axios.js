@@ -25,7 +25,7 @@ export default async function (ctx) {
                 return Promise.reject(error)
 
             case 401:
-                // ctx.$logoutAccount()
+                ctx.$logoutAccount()
                 break
         }
     })

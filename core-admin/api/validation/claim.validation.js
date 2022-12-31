@@ -6,15 +6,18 @@ const { extensionHelper } = require("../utilities/functions");
 const claimProduct = (req) => {
     const extensions = extensionHelper(["png", "jpg", "jpeg"]);
     const schema = Joi.object({
-        fullname: Joi.string()
-            .required()
-            .label(req.polyglot.t("field.claim.fullname")),
         transaction_id: Joi.string()
             .required()
             .label(req.polyglot.t("field.claim.transaction.id")),
-        no_polis: Joi.string()
+        reporter_fullname: Joi.string()
             .required()
-            .label(req.polyglot.t("field.claim.no_polis")),
+            .label(req.polyglot.t("field.claim.fullname")),
+        holder_fullname: Joi.string()
+            .required()
+            .label(req.polyglot.t("field.claim.fullname")),
+        plate_number: Joi.string()
+            .required()
+            .label(req.polyglot.t("field.claim.plate_number")),
         incident_time: Joi.date()
             .required()
             .label(req.polyglot.t("field.claim.incident_time")),

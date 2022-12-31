@@ -10,6 +10,9 @@ const {
     updatePassword,
     adminUpdate,
     destroy,
+
+    upgradeList,
+    verifyUpgrade,
 } = require("../../controllers/admin/AccountController");
 const { uploadFile } = require("../../middlewares/uploadFile");
 
@@ -29,5 +32,8 @@ router.put('/admin/account/password', AuthRoleMiddleware, updatePassword)
 
 // Dealer Account
 router.post("/admin/account/dealer", AuthRoleMiddleware, createDealerAccount);
+
+router.get("/admin/account/upgrade/list", AuthRoleMiddleware, upgradeList);
+router.put("/admin/account/:id/upgrade", AuthRoleMiddleware, verifyUpgrade);
 
 module.exports = router;

@@ -97,6 +97,14 @@ module.exports = (sequelize, Sequelize) => {
             onDelete: "CASCADE",
         });
 
+        Account.hasOne(models.Bank, {
+            as: "bank",
+            sourceKey: "id",
+            foreignKey: "account_id",
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
+        });
+
         Account.hasMany(models.AccountToken, {
             as: "tokens",
             sourceKey: "id",
@@ -115,6 +123,13 @@ module.exports = (sequelize, Sequelize) => {
             as: "agent_transactions",
             sourceKey: "id",
             foreignKey: "agent_id",
+            onDelete: "CASCADE",
+        });
+
+        Account.hasMany(models.RoleUpgrade, {
+            as: "subordinate_upgrades",
+            sourceKey: "id",
+            foreignKey: "subordinate_id",
             onDelete: "CASCADE",
         });
 
