@@ -114,6 +114,8 @@ module.exports = {
 				type: Sequelize.ENUM('open', 'waiting', 'paid', 'denied', 'canceled'),
 				defaultValue: 'open'
 			},
+            created_at: Sequelize.DATE,
+            updated_at: Sequelize.DATE,
 		})
 	},
 

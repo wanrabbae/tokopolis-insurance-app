@@ -203,6 +203,18 @@ export default class AccountService {
         return payload;
     }
 
+    getBank(account_id) {
+        return this.repository.getBank(account_id);
+    }
+
+    createBank(payload) {
+        return this.repository.createBank(payload);
+    }
+
+    updateBank(account_id, payload) {
+        return this.repository.updateBank(account_id, payload);
+    }
+
     checkResetToken(token) {
         return this.repository.checkResetToken(token);
     }
@@ -244,6 +256,22 @@ export default class AccountService {
 
     confirmEmail(account_id) {
         return this.repository.confirmEmail(account_id);
+    }
+
+    getUpgradeRequestAll(leader_id, filter, limit, offset) {
+        return this.repository.getUpgradeRequestAll(leader_id, filter, limit, offset)
+    }
+
+    getUpgradeRequestCount(leader_id, filter) {
+        return this.repository.getUpgradeRequestCount(leader_id, filter)
+    }
+
+    getUpgradeRequestDetail(id) {
+        return this.repository.getUpgradeRequestDetail(id)
+    }
+
+    createUpgradeRequest(payload) {
+        return this.repository.createUpgradeRequest(payload)
     }
 
     sendEmailRegister(payload) {

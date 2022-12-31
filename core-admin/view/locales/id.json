@@ -68,6 +68,9 @@
       "account": {
         "text": "Daftar Pengguna"
       },
+      "upgrade": {
+        "text": "Daftar Role Upgrade"
+      },
       "vehicle": {
         "text": "Daftar Kendaraan"
       },

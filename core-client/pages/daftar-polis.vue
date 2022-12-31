@@ -9,8 +9,8 @@
                         </a>
                     </li>
                     <li role="presentation" class="nav-item">
-                        <a href="/daftar-claim" class="nav-link " tabindex="-1">
-                            <h2 class="tab-title">Daftar Claim</h2>
+                        <a href="/daftar-klaim" class="nav-link " tabindex="-1">
+                            <h2 class="tab-title">Daftar Klaim</h2>
                         </a>
                     </li>
                 </ul>
@@ -22,7 +22,7 @@
                         <b-input-group class="addon-combined">
                             <input
                                 v-model="model.search"
-                                placeholder="Cari Claim"
+                                placeholder="Cari Polis"
                                 class="form-control"
                                 required
                             >
@@ -55,12 +55,12 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <span class="fw-bold">
-                                    No. Polis {{ policy.polisNumber }}
+                                    No. Quotation: {{ policy.quotationID }}
                                 </span>
                             </div>
                             <div class="col-md-4 text-md-right">
                                 <span class="fw-bold">
-                                    Berakhir dalam 28 Hari
+                                    {{ policy.endDate }}
                                 </span>
                             </div>
                         </div>
@@ -72,11 +72,19 @@
                             </div>
                             <div class="d-inline-block align-top">
                                 <div class="fs-4 fw-bold">{{ policy.holder }}</div>
-                                <div class="fs-5 fw-bold mb-1">{{ policy.name }}</div>
-                                <div class="mb-2">{{ policy.period }}</div>
+                                <div class="fs-5 fw-bold mb-1">{{ policy.product }} - {{ policy.vehicle }}</div>
+                                <div class="mb-2">{{ policy.periodDate }}</div>
                                 <div class="d-block">
-                                    <div class="badge py-2 px-3 rounded-pill mr-1" :class="policy.isActive ? 'badge-success' : 'badge-warning'" >{{ policy.isActive ? 'Aktif' : 'Belum Aktif' }}</div>
-                                    <div class="badge py-2 px-3 rounded-pill mr-1" :class="policy.isPaid ? 'badge-info' : 'badge-warning'" >{{ policy.isPaid ? 'Pembayaran Lunas' : 'Belum Lunas' }}</div>
+                                    <div class="badge py-2 px-3 rounded-pill mr-1" :class="policy.status === 'paid' ? 'badge-success' : 'badge-danger'" >
+                                        {{ policy.status === "paid" ? 'Aktif' : 'Belum Aktif' }}
+                                    </div>
+
+                                    <div v-if="policy.status == 'open'" class="badge py-2 px-3 rounded-pill badge-primary mr-1">Penawaran</div>
+                                    <div v-else-if="policy.status == 'waiting'" class="badge py-2 px-3 rounded-pill badge-info mr-1">Menunggu Pembayaran</div>
+                                    <div v-else-if="policy.status == 'paid'" class="badge py-2 px-3 rounded-pill badge-success mr-1">Pembayaran Diterima</div>
+                                    <div v-else-if="policy.status == 'rejected'" class="badge py-2 px-3 rounded-pill badge-danger mr-1">Pembayaran Ditolak</div>
+                                    <div v-else-if="policy.status == 'canceled'" class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
+
                                     <div class="d-inline-block">
                                         <fa icon="share-nodes" style="width: 16px; height: 16px;"/>
                                     </div>
@@ -84,8 +92,8 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <BaseButton tag="a" href="/form-laporan-claim">Ajukan Claim</BaseButton>
-                            <BaseButton tag="a" href="">Beli Lagi</BaseButton>
+                            <BaseButton tag="a" :href="'/ajukan-klaim?id=' + policy.quotationID">Ajukan Klaim</BaseButton>
+                            <BaseButton tag="a" href="#" disabled>Beli Lagi</BaseButton>
                         </div>
                     </div>
                 </div>
@@ -96,6 +104,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 import BaseSelect from '../components/Inputs/BaseSelect'
 import BaseButton from '../components/BaseButton'
 import SwiperRadioButtonGroup from '../components/SwiperRadioButtonGroup'
@@ -103,11 +113,11 @@ import Loading from '../components/Loading'
 
 export default {
     components: {
-    BaseSelect,
-    BaseButton,
-    SwiperRadioButtonGroup,
-    Loading
-},
+        BaseSelect,
+        BaseButton,
+        SwiperRadioButtonGroup,
+        Loading
+    },
     data() {
         return {
             title: 'Daftar Polis',
@@ -119,29 +129,30 @@ export default {
             },
             statusOptions: [
                 { text: 'Status', value: null },
-                { text: 'Opsi Status 1', value: "status-1" },
-                { text: 'Opsi Status 2', value: "status-2" },
-                { text: 'Opsi Status 3', value: "status-3" }
+                { text: 'Menunggu Pembayaran', value: "waiting" },
+                { text: 'Pembayaran Diterima', value: "paid" },
+                { text: 'Pembayaran Ditolak', value: "denied" },
+                { text: 'Dibatalkan', value: "canceled" }
             ],
             policyCategoryOptions: [
                 { text: 'Semua Polis', value: null },
-                { text: 'Smartphone', value: "smartphone" },
                 { text: 'Mobil', value: "car" },
-                { text: 'Motor', value: "motorcycle" },
-                { text: 'Santunan Tunai', value: "cashCompensation" },
-                { text: 'Jiwa', value: "life" },
-                { text: 'Penyakit Tropis', value: "tropicalDisease" },
-                { text: 'Perjalanan', value: "travel" },
+                // { text: 'Motor', value: "motorcycle" },
+                // { text: 'Smartphone', value: "smartphone" },
+                // { text: 'Santunan Tunai', value: "cashCompensation" },
+                // { text: 'Jiwa', value: "life" },
+                // { text: 'Penyakit Tropis', value: "tropicalDisease" },
+                // { text: 'Perjalanan', value: "travel" },
             ],
             policies: [
                 {
-                    // polisNumber: "12345678912345678911237",
-                    // holder: "John Doe",
-                    // name: "Garda Oto Comprehensive",
-                    // period: "22 Januari 2021 - 22 Januari 2022",
-                    // image: "/svg/car.svg",
-                    // isActive: true,
-                    // isPaid: true
+                    quotationID: "TKP-00000000-000000-0000",
+                    holder: "",
+                    name: "",
+                    periodDate: "",
+                    endDate: "",
+                    image: "/img/car-icon-comprehensive.png",
+                    status: true
                 },
             ]
         }
@@ -156,20 +167,28 @@ export default {
     },
     methods: {
         async getTransactions(){
-            // const self = this
+            this.policies = []
+
             await this.$axios.$get(`api/user/transactions`)
             .then ((response) => {
-                this.policies = []
+                console.log(response.data)
 
                 response.data.forEach((field) => {
+                    const start = moment(field.start_date)
+                    const end = moment(field.start_date).add(1, 'year')
+                    const now = moment()
+                    const period = moment.duration(end.diff(now))
+                    const isStarted = (moment().diff(moment(field.start_date))) >= 0
+
                     this.policies.push({
-                        polisNumber: field.product_id,
-                        holder: "Ansori",
-                        name: field.product.name,
-                        period: field.start_date,
-                        image: "/svg/new/polis-car.svg",
-                        isActive: true,
-                        isPaid: true
+                        quotationID: field.id,
+                        holder: field.client_data.fullname,
+                        product: field.product.name,
+                        vehicle: field.vehicle.brand,
+                        periodDate: `Periode: ${start.format('D MMM yyyy')} - ${end.format('D MMM yyyy')}`,
+                        endDate: isStarted ? `Berakhir dalam ${period.asDays().toFixed(0)} Hari` : '',
+                        image: field.product.type === "comprehensive" ? "/img/car-icon-comprehensive.png" : "/img/car-icon-tlo.png",
+                        status: field.status
                     })
                 })
 

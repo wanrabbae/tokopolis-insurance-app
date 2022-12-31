@@ -29,10 +29,10 @@ function verify(role = '') {
                 if (typeof role === 'string' && role == 'auth:role') {
                     const endpoints = await roleService.getAllEndpointExist(req.account.role, endpoint, method)
                     if (endpoints.length == 0) {
-                        return res.errorUnauthorized(req.polyglot.t('error.token.role'))
+                        return res.errorForbidden(req.polyglot.t('error.token.role'))
                     }
                 }
-                
+
                 return next()
             } catch (err) {
                 return res.errorUnauthorized(req.polyglot.t('error.token'))

@@ -120,6 +120,7 @@ const en_US_strings = {
             "payment.success": "Payment Success",
             verify_spv: "Supervisor Confirmation Notification",
             request_claim: "Insurance Claim Request Has Been Received",
+            "transaction.file": "Transaction File Notification",
         },
         success: {
             default: "Action Success",
