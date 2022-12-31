@@ -34,6 +34,7 @@
     "bcrypt": "^5.0.1",
     "bootstrap": "^5.0.0-beta2",
     "bootstrap-vue": "^2.21.2",
+    "Buffer": "^0.0.0",
     "chart.js": "^2.9.3",
     "chartist": "^0.11.4",
     "cookie": "^0.4.1",
