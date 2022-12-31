@@ -86,9 +86,9 @@ export default {
             title: 'FAQ',
             search: null,
             questions: [
-                "Bagaimana Cara Mendaftar Di PIQO?",
+                "Bagaimana Cara Mendaftar Di Tokopolis?",
                 "Bagaimana Cara Melihat Asuransi yang tersedia?",
-                "Metode pembayaran apa saja yang bisa digunakan untuk membeli asuransi dari PIQO?",
+                "Metode pembayaran apa saja yang bisa digunakan untuk membeli asuransi dari Tokopolis?",
                 "Apa yang harus saya lakukan jika kontrak Polis saya hilang atau rusak?",
                 "Apa maksud dari Asuransi Kendaraan TLO?",
                 "Bagaimana jika mobil yang saya beli sudah memiliki asuransi?"

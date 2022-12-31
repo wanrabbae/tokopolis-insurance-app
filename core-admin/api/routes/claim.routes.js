@@ -20,9 +20,9 @@ router.post(
         fileSize: 5,
     }).fields([
         { name: "identity_card" },
-        { name: "driver_license" },
+        { name: "sim" },
         { name: "stnk" },
-        { name: "other_document" },
+        { name: "document_optional" },
         { name: "damage1" },
         { name: "damage2" },
         { name: "damage3" },

@@ -58,6 +58,10 @@ module.exports = {
                 type: Sequelize.TEXT,
                 allowNull: false,
             },
+            company: {
+                type: Sequelize.TEXT,
+                allowNull: false
+            },
             brochure_file: Sequelize.STRING,
             workshop_file: Sequelize.STRING,
             workshop_count: Sequelize.INTEGER,

@@ -9,8 +9,10 @@ const {
     updatePassword,
     getIdentity,
     updateIdentity,
+    getBank,
+    updateBank,
     getTransactions,
-    verifySupervisor,
+    requestUpgrade,
 } = require("../controllers/UserController.js");
 
 const router = Router()
@@ -24,9 +26,11 @@ router.post('/user/change-password', auth, updatePassword)
 router.get('/user/identity', auth, getIdentity)
 router.post('/user/identity', auth,
     uploadFile().single('image'), updateIdentity)
+router.get('/user/bank', auth, getBank)
+router.post('/user/bank', auth, updateBank)
 
 router.get('/user/transactions', auth, getTransactions)
 
-router.post("/user/verify-upgrade", auth, verifySupervisor);
+router.post("/user/request-upgrade", auth, requestUpgrade);
 
 module.exports = router;

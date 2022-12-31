@@ -7,7 +7,7 @@ module.exports = {
 
         return queryInterface.bulkInsert('accounts', [{
             fullname: 'Administrator',
-            email: 'admin@piqo.com',
+            email: 'admin@tokopolis.id',
             password: hashedPassword,
             role_id: 1,
         }], {})

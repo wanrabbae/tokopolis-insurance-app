@@ -1,4 +1,4 @@
-const { QueryTypes } = require("sequelize");
+const { Op, QueryTypes } = require("sequelize");
 
 const {
     sequelize,
@@ -48,10 +48,11 @@ export default class TransactionRepository {
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
-            `vehicle.brand, vehicle.sub_model, product.name as product_name, product.image as product_image, trans.vehicle_data, ` +
-            `trans.documents, trans.assessment, trans.price, ` +
-            `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, trans.total, ` +
-            `trans.status, trans.pg_data, trans.created_at ` +
+            `vehicle.brand, vehicle.sub_model, product.id as product_id, product.name as product_name, product.type as product_type, ` +
+            `product.image as product_image, product.email as product_email, ` +
+            `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
+            `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
+            `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.created_at ` +
             `FROM transactions as trans ` +
             `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
@@ -61,6 +62,17 @@ export default class TransactionRepository {
             `JOIN address_districts as district ON village.district_id = district.id ` +
             `JOIN address_regencies as regency ON district.regency_id = regency.id ` +
             `JOIN address_provinces as province ON regency.province_id = province.id ` +
+            `WHERE trans.id = '${id}' `,
+            { type: QueryTypes.SELECT })
+    }
+
+    async getTransactionDetailForClient(id) {
+        return await sequelize.query(`SELECT trans.id, trans.client_data, ` +
+            `client_transactions.fullname as client_name, ` +
+            `agent_transactions.fullname as agent_name, trans.vehicle_data ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
             `WHERE trans.id = '${id}' `,
             { type: QueryTypes.SELECT })
     }
@@ -164,27 +176,35 @@ export default class TransactionRepository {
         });
     }
 
-    async getTransactionByAccountId(client_id) {
+    async getTransactionByAccountId(account_id) {
         return await Transaction.findAll({
             attributes: [
                 "id",
-                "client_id",
                 "product_id",
                 "start_date",
+                "client_data",
                 "status",
             ],
-            where: { client_id: client_id },
+            where: {
+                [Op.or]: [
+                    { client_id: account_id },
+                    { agent_id: account_id },
+                ]
+            },
             include: [
                 {
-                    attributes: ["fullname"],
-                    model: Account,
-                    as: "client_transactions",
-                },
-                {
-                    attributes: ["name"],
+                    attributes: ["name", "type"],
                     model: Product,
                     as: "product",
                 },
+                {
+                    attributes: ["brand"],
+                    model: Vehicle,
+                    as: "vehicle",
+                },
+            ],
+            order: [
+                ['created_at', 'DESC'],
             ],
         });
     }
@@ -245,6 +265,7 @@ export default class TransactionRepository {
             attributes: [
                 "id",
                 "fee_admin",
+                "fee_stamp",
                 "fee_pg",
                 "total",
                 "pg_data",
