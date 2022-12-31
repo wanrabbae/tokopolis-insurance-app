@@ -388,10 +388,10 @@ export default {
                 .then(res => res.blob())
                 .then(blob => {
                     const file = new File([blob], this.user.fullname+' '+new Date().toISOString()+'.jpg',{ type: "image/jpg" })
-                    this.photo = file
+                    this.user.photo = file
                 })
 
-            this.imgDataUrl = imgDataUrl
+            this.user.imgDataUrl = imgDataUrl
         },
         async getDataProfil() {
             await this.$axios.$get('api/user')
@@ -454,7 +454,7 @@ export default {
             this.checkFieldValue('province',this.user.province)
             this.checkFieldValue('city',this.user.city)
 
-            if (this.imgDataUrl != null) {
+            if (this.user.imgDataUrl != null) {
                 this.formData.append('photo', this.user.photo,this.user.photo.name)
             }
 
@@ -483,7 +483,7 @@ export default {
             this.user.birthday = this.limitValue(this.user.birthday, this.maxDay);
 
             if(e.inputType === 'insertText') {
-                this.birthyear = this.limitValue(this.birthyear, this.maxYear);
+                this.user.birthyear = this.limitValue(this.user.birthyear, this.maxYear);
             }
         },
         limitValue(value, max) {
