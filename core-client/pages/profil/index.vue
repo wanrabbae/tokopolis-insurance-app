@@ -19,7 +19,7 @@
                     <b-form method="post" @submit.prevent="observer.handleSubmit(submitFile)">
 
                         <BaseInput
-                            v-model="email"
+                            v-model="user.email"
                             name="Email"
                             label="Email"
                             placeholder="Masukkan Email"
@@ -28,7 +28,7 @@
                         />
 
                         <BaseInput
-                            v-model="fullname"
+                            v-model="user.fullname"
                             name="Nama Lengkap"
                             label="Nama Lengkap"
                             placeholder="Masukkan Nama Lengkap"
@@ -38,7 +38,7 @@
                         </BaseInput>
 
                         <BaseSelect
-                            v-model="gender"
+                            v-model="user.gender"
                             name="Jenis Kelamin"
                             label="Jenis Kelamin"
                             :options="[
@@ -67,7 +67,7 @@
                                 >
 
                                     <input
-                                        v-model="birthday"
+                                        v-model="user.birthday"
                                         type="number"
                                         placeholder="DD"
                                         min="1"
@@ -85,11 +85,11 @@
                                     tag="div"
                                     name="Bulan Lahir"
                                     class="col"
-                                    :rules="{ required_if: birthday >= 1 && birthday <= maxDay || birthyear >= 1970 && birthyear <= maxYear }"
+                                    :rules="{ required_if: user.birthday >= 1 && user.birthday <= maxDay || user.birthyear >= 1970 && user.birthyear <= maxYear }"
                                 >
 
                                     <b-form-select
-                                        v-model="birthmonth"
+                                        v-model="user.birthmonth"
                                         label-field="Bulan"
                                         :options="months"
                                         class="rounded-0"
@@ -108,7 +108,7 @@
                                 >
 
                                     <input
-                                        v-model="birthyear"
+                                        v-model="user.birthyear"
                                         type="number"
                                         name="birthyear"
                                         min="1970"
@@ -137,7 +137,7 @@
                         </validation-observer>
 
                         <BaseInput
-                            v-model="phone"
+                            v-model="user.phone"
                             type="number"
                             name="Nomor Telepon"
                             label="Nomor Telepon"
@@ -147,21 +147,21 @@
                         />
 
                         <BaseInput
-                            v-model="province"
+                            v-model="user.province"
                             name="Provinsi"
                             label="Provinsi"
                             placeholder="Masukkan Provinsi"
                         />
 
                         <BaseInput
-                            v-model="city"
+                            v-model="user.city"
                             name="Kota"
                             placeholder="Masukkan Kota"
                             label="Kota"
                         />
 
                         <BaseTextarea
-                            v-model="address"
+                            v-model="user.address"
                             label="Alamat Lengkap"
                             name="Alamat Lengkap"
                             placeholder="Masukkan Alamat Lengkap"
@@ -187,7 +187,7 @@
                         width="120"
                         height="120"
                         preset="default"
-                        :src="photo"
+                        :src="user.photo"
                         alt="Profile Picture"
                         class="rounded-circle mb-4"
                         @click="photoClicked"
@@ -197,15 +197,25 @@
                         v-else
                         width="120"
                         height="120"
-                        :src="imgDataUrl"
+                        :src="user.imgDataUrl"
                         alt="Profile Picture"
                         class="rounded-circle mb-4"
                         @click="photoClicked"
                     />
 
                     <BaseButton @click="toggleShow">Pilih Gambar</BaseButton>
-                    <BaseButton v-if="upgradeUnlocked" class="mt-2 btn-secondary"
+                    <BaseButton v-if="upgradeUnlocked && user.role == null && upgrade == null" class="mt-2 btn-secondary"
                         @click="showUpgrade">Upgrade Role</BaseButton>
+
+                    <div v-if="upgrade != null" class="text-secondary mt-3">
+                        <span class="mr-1"><fa class="loop" icon="spinner" style="width: 16px; height: 16px;"/></span>
+                        <span class="fw-bold">Proses Verifikasi</span>
+                    </div>
+
+                    <div v-if="user.role != null" class="text-secondary mt-3">
+                        <span class="mr-1"><fa icon="star" style="width: 16px; height: 16px;"/></span>
+                        <span class="fw-bold">{{ user.role }}</span>
+                    </div>
 
                 </div> <!-- col-12.col-4 ends -->
 
@@ -218,7 +228,7 @@
         <client-only>
 
             <my-upload
-                v-model="show"
+                v-model="user.show"
                 no-square
                 no-circle
                 field="img"
@@ -260,22 +270,26 @@ export default {
         return {
             title: 'Profil',
             upload:true,
-            fullname : null,
-            gender: null,
-            birthday: null,
-            birthmonth: null,
-            birthyear: null,
-            email: null,
-            phone: null,
-            address: null,
-            province: null,
-            city: null,
-            imgDataUrl: null,
-            show:false,
-            photo : '/svg/avatar-default.svg',
+            user: {
+                fullname : null,
+                gender: null,
+                birthday: null,
+                birthmonth: null,
+                birthyear: null,
+                email: null,
+                phone: null,
+                address: null,
+                province: null,
+                city: null,
+                imgDataUrl: null,
+                show:false,
+                photo : '/svg/avatar-default.svg',
+                role: null
+            },
             formData: null,
             loading: true,
             clickCount: 0,
+            upgrade: null,
             months: [
                 { text: 'Pilih Bulan', value: null },
                 { text: 'Januari', value: "0" },
@@ -319,7 +333,7 @@ export default {
     },
     computed: {
         maxDay() {
-            const selectedMonth = parseInt(this.birthmonth);
+            const selectedMonth = parseInt(this.user.birthmonth);
 
             if(selectedMonth < 7) {
                 if(selectedMonth === 1) {
@@ -349,7 +363,7 @@ export default {
             return new Date().getFullYear();
         },
         isLeapYear() {
-            const selectedYear = this.birthyear;
+            const selectedYear = this.user.birthyear;
             return ((selectedYear % 4 === 0) && (selectedYear % 100 !== 0)) || (selectedYear % 400 === 0);
         },
         upgradeUnlocked() {
@@ -358,10 +372,14 @@ export default {
     },
     mounted(){
         this.getDataProfil()
+
+        if (this.user.role == null) {
+            this.getUpgrade()
+        }
     },
     methods: {
         toggleShow() {
-				this.show = !this.show;
+				this.user.show = !this.user.show;
 			},
         cropSuccess(imgDataUrl){
             this.upload = false
@@ -369,7 +387,7 @@ export default {
             fetch(imgDataUrl)
                 .then(res => res.blob())
                 .then(blob => {
-                    const file = new File([blob], this.fullname+' '+new Date().toISOString()+'.jpg',{ type: "image/jpg" })
+                    const file = new File([blob], this.user.fullname+' '+new Date().toISOString()+'.jpg',{ type: "image/jpg" })
                     this.photo = file
                 })
 
@@ -379,29 +397,33 @@ export default {
             await this.$axios.$get('api/user')
                 .then ((response) => {
                     if (response) {
-
-                        this.email = response.data.email
-                        this.fullname = response.data.fullname
-                        this.gender = response.data.profile.gender
+                        this.user.email = response.data.email
+                        this.user.fullname = response.data.fullname
+                        this.user.gender = response.data.profile.gender
 
                         if (response.data.profile.birth_date != null) {
                             const birthdate = this.$dayjs(response.data.profile.birth_date)
-                            this.birthday = birthdate.get('date')
-                            this.birthmonth =  birthdate.get('month')
-                            this.birthyear =  birthdate.get('year')
+                            this.user.birthday = birthdate.get('date')
+                            this.user.birthmonth =  birthdate.get('month')
+                            this.user.birthyear =  birthdate.get('year')
                         }
 
-                        this.phone = response.data.profile.phone
-                        this.city = response.data.profile.city
-                        this.province = response.data.profile.province
-                        this.address = response.data.profile.address
+                        this.user.phone = response.data.profile.phone
+                        this.user.city = response.data.profile.city
+                        this.user.province = response.data.profile.province
+                        this.user.address = response.data.profile.address
 
                         if (response.data.profile.photo != null) {
-                            this.photo = this.$config.serverURL+ response.data.profile.photo
+                            this.user.photo = this.$config.serverURL+ response.data.profile.photo
                         }
                         else {
-                            this.photo = '/svg/avatar-default.svg'
+                            this.user.photo = '/svg/avatar-default.svg'
                         }
+
+                        if (response.data.roles != null) {
+                            this.user.role = response.data.roles.name
+                        }
+
                         this.loading = false
                     }
                 })
@@ -410,23 +432,30 @@ export default {
                     this.logout()
                 })
         },
+        async getUpgrade() {
+            await this.$axios.$get('api/user/upgrade')
+                .then ((response) => {
+                    console.log(response)
+                    this.upgrade = response.data
+                })
+        },
         submitFile() {
             this.formData = new FormData()
 
-            this.checkFieldValue('email', this.email)
-            this.checkFieldValue('fullname', this.fullname)
-            this.checkFieldValue('gender',this.gender)
+            this.checkFieldValue('email', this.user.email)
+            this.checkFieldValue('fullname', this.user.fullname)
+            this.checkFieldValue('gender',this.user.gender)
 
-            const birthdate = this.$dayjs().date(this.birthday).month(this.birthmonth).year(this.birthyear)
+            const birthdate = this.$dayjs().date(this.user.birthday).month(this.user.birthmonth).year(this.user.birthyear)
             this.checkFieldValue('birth_date', birthdate.format('YYYY-MM-DD'))
 
-            this.checkFieldValue('address',this.address)
-            this.checkFieldValue('phone',this.phone)
-            this.checkFieldValue('province',this.province)
-            this.checkFieldValue('city',this.city)
+            this.checkFieldValue('address',this.user.address)
+            this.checkFieldValue('phone',this.user.phone)
+            this.checkFieldValue('province',this.user.province)
+            this.checkFieldValue('city',this.user.city)
 
             if (this.imgDataUrl != null) {
-                this.formData.append('photo', this.photo,this.photo.name)
+                this.formData.append('photo', this.user.photo,this.user.photo.name)
             }
 
 
@@ -444,14 +473,14 @@ export default {
         },
         onBirthdayInput(e) {
             if(e.inputType === 'insertText') {
-                this.birthday = this.limitValue(this.birthday, this.maxDay);
+                this.user.birthday = this.limitValue(this.user.birthday, this.maxDay);
             }
         },
         onBirthmonthChange() {
-            this.birthday = this.limitValue(this.birthday, this.maxDay);
+            this.user.birthday = this.limitValue(this.user.birthday, this.maxDay);
         },
         onBirthyearInput(e) {
-            this.birthday = this.limitValue(this.birthday, this.maxDay);
+            this.user.birthday = this.limitValue(this.user.birthday, this.maxDay);
 
             if(e.inputType === 'insertText') {
                 this.birthyear = this.limitValue(this.birthyear, this.maxYear);
@@ -482,7 +511,7 @@ export default {
             this.$bvModal.show('modal-upgrade')
         },
         upgradeSubmitHandler(data) {
-            this.$axios.$post(`api/user/request-upgrade`, {
+            this.$axios.$post(`api/user/upgrade`, {
                 leader_id: data.leader_id,
             })
             .then(function(response) {
@@ -492,3 +521,19 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    .loop {
+        -webkit-animation: infinite-spinning 1s ease-out 0s infinite normal;
+        animation: infinite-spinning 1s ease-out 0s infinite normal;
+    }
+
+    @keyframes infinite-spinning {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>

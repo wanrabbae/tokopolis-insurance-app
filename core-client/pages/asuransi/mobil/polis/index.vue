@@ -152,10 +152,10 @@
                                     <div class="p-3">
                                         <div>Premi Dasar</div>
                                         <div class="fw-bold"><h4>{{ formatPrice(product.price) }}</h4></div>
-                                        <div v-if="product.commission != 0">Komisi {{ product.commission }}%
+                                        <div v-if="isAgent() && product.commission != 0">Komisi {{ product.commission }}%
                                             <span class="fw-bold">{{ formatPrice(product.price * product.commission / 100) }}</span>
                                         </div>
-                                        <div v-if="product.extra_point != 0" class="mt-1" style="width: fit-content;
+                                        <div v-if="isAgent() && product.extra_point != 0" class="mt-1" style="width: fit-content;
                                             padding: 7px 11px;
                                             background: #e3f6ff;
                                             color: #5f668d;

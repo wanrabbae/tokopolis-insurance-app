@@ -17,6 +17,18 @@ exports.getAccountData = async (req, res) => {
     return res.jsonData(account);
 };
 
+exports.getAccountSimple = async (req, res) => {
+    const account = await service.getAccountSimple(req.account._id)
+
+    return res.jsonData(account)
+}
+
+exports.getAccountPhoto = async (req, res) => {
+    const account = await service.getAccountPhoto(req.account._id)
+
+    return res.jsonData(account)
+}
+
 exports.updateAccountData = async (req, res) => {
     const validate = validation.update(req);
     if (validate.error) return res.errorValidation(validate.details);
@@ -162,7 +174,16 @@ exports.getTransactions = async (req, res) => {
     return res.jsonData(transactions);
 };
 
+exports.getUpgrade = async (req, res) => {
+    const upgrade = await service.getUpgradeRequestByAccount(req.account._id)
+
+    return res.jsonData(upgrade)
+}
+
 exports.requestUpgrade = async (req, res) => {
+    const upgrade = await service.getUpgradeRequestByAccount(req.account._id);
+    if (upgrade) return res.errorBadRequest("You already request upgrade")
+
     const leadAccount = await service.getAccountWithUniqueId(req.body.leader_id);
     if (!leadAccount || (leadAccount && leadAccount.role_id == 5))
         return res.errorNotFound("Code not valid!")

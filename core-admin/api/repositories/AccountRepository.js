@@ -85,6 +85,21 @@ export default class AccountRepository {
         });
     }
 
+    async getAccountSimple(id) {
+        return await Account.findByPk(id, {
+            attributes: ['fullname', 'email']
+        });
+    }
+
+    async getAccountPhoto(account_id) {
+        return await Profile.findOne({
+            where: {
+                account_id: account_id,
+            },
+            attributes: ['photo']
+        });
+    }
+
     async createAccountAdmin(payload) {
         return await Account.create({
             fullname: payload.fullname,
@@ -301,6 +316,15 @@ export default class AccountRepository {
 
     async getUpgradeRequestDetail(id) {
         return await RoleUpgrade.findByPk(id)
+    }
+
+    async getUpgradeRequestByAccount(account_id) {
+        return await RoleUpgrade.findOne({
+            where: {
+                subordinate_id: account_id,
+                status: "waiting",
+            }
+        })
     }
 
     async createUpgradeRequest(payload) {
