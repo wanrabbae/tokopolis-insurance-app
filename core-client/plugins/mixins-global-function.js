@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import cookie from 'js-cookie'
+import atob from 'atob'
 
 const mixin ={
     methods: {
@@ -34,7 +35,7 @@ const mixin ={
             }
         },
         isAgent() {
-            const accessToken = cookie.get('token')
+            const accessToken = this.$store.state.token
             if (!accessToken) return false
 
             const payload = JSON.parse(atob(accessToken.split('.')[1]))
