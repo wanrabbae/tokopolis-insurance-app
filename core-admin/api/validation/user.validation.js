@@ -179,6 +179,30 @@ const identity = (req) => {
     );
 };
 
+const bank = (req) => {
+    const schema = Joi.object({
+        type: Joi.valid('bca', 'bni', 'bri', 'mandiri', 'btn', 'cimb')
+            .required()
+            .label(req.polyglot.t("field.bank_type")),
+        account_number: Joi.string()
+            .required()
+            .label(req.polyglot.t("field.account_number")),
+        fullname: Joi.string()
+            .required()
+            .label(req.polyglot.t("field.fullname")),
+    });
+
+    return joiResponse(
+        schema.validate(req.body, {
+            abortEarly: false,
+            messages: joiErrorMessages(),
+            errors: {
+                language: req.locale.language,
+            },
+        })
+    );
+};
+
 module.exports = {
     create,
     update,
@@ -186,4 +210,5 @@ module.exports = {
     adminUpdate,
     updatePassword,
     identity,
+    bank,
 };

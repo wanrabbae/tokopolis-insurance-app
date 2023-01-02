@@ -69,7 +69,7 @@
                 <b-dropdown variant="white" class="dropdown d-inline-block" toggle-class="header-item noti-icon" right menu-class="dropdown-menu-lg p-0 dropdown-menu-end">
                     <template #button-content>
                         <i class="uil-bell"></i>
-                        <span class="badge bg-danger rounded-pill">3</span>
+                        <!-- <span class="badge bg-danger rounded-pill">3</span> -->
                     </template>
 
                     <div class="p-3">
@@ -139,7 +139,7 @@
 
                         <a href class="text-reset notification-item">
                             <div class="media">
-                                <img src="~/assets/images/users/avatar-4.jpg" class="me-3 rounded-circle avatar-xs" alt="user-pic" />
+                                <img src="~/static/img/DefaultProfile.png" class="me-3 rounded-circle avatar-xs" alt="user-pic" />
                                 <div class="media-body">
                                     <h6 class="mt-0 mb-1">{{ $t('navbar.dropdown.notification.salena.title')}}</h6>
                                     <div class="font-size-12 text-muted">
@@ -163,7 +163,7 @@
 
                 <b-dropdown class="d-inline-block" toggle-class="header-item" right variant="white" menu-class="dropdown-menu-end">
                     <template #button-content>
-                        <img class="rounded-circle header-profile-user" src="~/assets/images/users/avatar-4.jpg" alt="Header Avatar" />
+                        <img class="rounded-circle header-profile-user" src="~/static/img/DefaultProfile.png" alt="Header Avatar" />
                         <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">Administrator</span>
                         <i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
                     </template>

@@ -12,11 +12,7 @@
 
                 </div> <!-- card-header ends-->
 
-                <validation-observer
-                    v-slot="{ invalid }"
-                    tag="div"
-                    class="card-body"
-                >
+                <validation-observer v-slot="{ invalid }" tag="div" class="card-body">
 
                     <div class="row">
 
@@ -36,12 +32,8 @@
 
                             <div class="mb-4">
 
-                                <b-form-radio-group
-                                    v-model="model.vehicleCondition"
-                                    :options="vehicleConditionOptions"
-                                    button-variant="primary"
-                                    buttons
-                                ></b-form-radio-group>
+                                <b-form-radio-group v-model="model.vehicleCondition" :options="vehicleConditionOptions"
+                                    button-variant="primary" buttons></b-form-radio-group>
 
                             </div>
 
@@ -51,14 +43,10 @@
 
                             <div class="p-0 p-md-3 rounded border-0 border-md">
 
-                                <validation-provider
-                                    v-for="(field, i) in documentFields"
-                                    :key="i" v-slot="{ errors, validate }"
+                                <validation-provider v-for="(field, i) in documentFields" :key="i"
+                                    v-slot="{ errors, validate }"
                                     :rules="field.required ? 'required|image|mimes:image/jpeg,image/png' : 'image|mimes:image/jpeg,image/png'"
-                                    tag="fieldset"
-                                    class="form-group"
-                                    :name="field.label"
-                                >
+                                    tag="fieldset" class="form-group" :name="field.label">
 
                                     <div class="d-flex align-items-center">
 
@@ -75,16 +63,9 @@
                                             <span v-if="field.required" class="text-danger">*</span>
                                         </label>
 
-                                        <b-form-file
-                                            :id="field.key"
-                                            v-model="model[field.key]"
-                                            name="identity-image"
-                                            class="d-none"
-                                            accept="image/jpeg, image/png"
-                                            plain
-                                            :required="field.required"
-                                            @change="(e) => onFileChange(e, validate)"
-                                        />
+                                        <b-form-file :id="field.key" v-model="model[field.key]" name="identity-image"
+                                            class="d-none" accept="image/jpeg, image/png" plain
+                                            :required="field.required" @change="(e) => onFileChange(e, validate)" />
 
                                         <BaseButton tag="label" classes="mb-0" :for="field.key">Upload</BaseButton>
 
@@ -108,33 +89,15 @@
 
                             <div class="p-0 p-md-3 rounded border-0 border-md mb-4">
 
-                                <BaseInput
-                                    v-model="model.client.fullname"
-                                    name="Nama"
-                                    label="Nama"
-                                    placeholder="Josua Jostar"
-                                    rules="required"
-                                    required
-                                    asterix
-                                />
+                                <BaseInput v-model="model.client.fullname" name="Nama" label="Nama"
+                                    placeholder="Josua Jostar" rules="required" required asterix />
 
-                                <BaseInput
-                                    v-model="model.client.phone"
-                                    type="number"
-                                    name="Nomor Telepon"
-                                    label="Nomor Telepon"
-                                    placeholder="+62812345678"
-                                    input-classes="custom-number"
-                                    onkeypress="if(this.value.length==14) return false;"
-                                />
+                                <BaseInput v-model="model.client.phone" type="number" name="Nomor Telepon"
+                                    label="Nomor Telepon" placeholder="+62812345678" input-classes="custom-number"
+                                    onkeypress="if(this.value.length==14) return false;" />
 
-                                <BaseInput
-                                    v-model="model.client.email"
-                                    name="Email"
-                                    label="Email"
-                                    placeholder="user@email.com"
-                                    rules="email"
-                                />
+                                <BaseInput v-model="model.client.email" name="Email" label="Email"
+                                    placeholder="user@email.com" rules="email" />
 
                             </div>
 
@@ -144,75 +107,27 @@
 
                             <div class="p-0 p-md-3 rounded border-0 border-md mb-4">
 
-                                <BaseTextarea
-                                    v-model="model.fullAddress"
-                                    name="Alamat Lengkap"
-                                    label="Alamat Lengkap"
-                                    placeholder="Jl. TB Simatupang Banjarsari I no. 8C"
-                                    rules="required"
-                                    rows="2"
-                                    required
-                                    asterix
-                                />
+                                <BaseTextarea v-model="model.fullAddress" name="Alamat Lengkap" label="Alamat Lengkap"
+                                    placeholder="Jl. TB Simatupang Banjarsari I no. 8C" rules="required" rows="2"
+                                    required asterix />
 
-                                <BaseSelect
-                                    v-model="model.province"
-                                    name="Provinsi"
-                                    label="Provinsi"
-                                    rules="required"
-                                    :options="provinceOptions"
-                                    required
-                                    asterix
-                                    @change="getCity"
-                                />
+                                <BaseSelect v-model="model.province" name="Provinsi" label="Provinsi" rules="required"
+                                    :options="provinceOptions" required asterix @change="getCity" />
 
-                                <BaseSelect
-                                    v-model="model.city"
-                                    name="Kota/Kabupaten"
-                                    label="Kota/Kabupaten"
-                                    rules="required"
-                                    :options="cityOptions"
-                                    :disabled="!condition.city"
-                                    required
-                                    asterix
-                                    @change="getDistrict"
-                                />
+                                <BaseSelect v-model="model.city" name="Kota/Kabupaten" label="Kota/Kabupaten"
+                                    rules="required" :options="cityOptions" :disabled="!condition.city" required asterix
+                                    @change="getDistrict" />
 
-                                <BaseSelect
-                                    v-model="model.district"
-                                    name="Kecamatan"
-                                    label="Kecamatan"
-                                    rules="required"
-                                    :options="districtOptions"
-                                    :disabled="!condition.district"
-                                    required
-                                    asterix
-                                    @change="getUrban"
-                                />
+                                <BaseSelect v-model="model.district" name="Kecamatan" label="Kecamatan" rules="required"
+                                    :options="districtOptions" :disabled="!condition.district" required asterix
+                                    @change="getUrban" />
 
-                                <BaseSelect
-                                    v-model="model.urban"
-                                    name="Kelurahan"
-                                    label="Kelurahan"
-                                    rules="required"
-                                    :options="urbanOptions"
-                                    :disabled="!condition.urban"
-                                    required
-                                    asterix
-                                />
+                                <BaseSelect v-model="model.urban" name="Kelurahan" label="Kelurahan" rules="required"
+                                    :options="urbanOptions" :disabled="!condition.urban" required asterix />
 
-                                <BaseInput
-                                    v-model="model.postalCode"
-                                    type="number"
-                                    name="Kode Pos"
-                                    label="Kode Pos"
-                                    placeholder="12500"
-                                    rules="required|digits:5"
-                                    input-classes="custom-number"
-                                    required
-                                    asterix
-                                    onkeypress="if(this.value.length==5) return false;"
-                                />
+                                <BaseInput v-model="model.postalCode" type="number" name="Kode Pos" label="Kode Pos"
+                                    placeholder="12500" rules="required|digits:5" input-classes="custom-number" required
+                                    asterix onkeypress="if(this.value.length==5) return false;" />
 
                                 <b-form-checkbox v-model="model.useAdressToShip">
                                     Kirim File Polis dalam bentuk Hard Copy menuju alamat ini
@@ -226,47 +141,18 @@
 
                             <div class="p-0 p-md-3 rounded border-0 border-md mb-4">
 
-                                <BaseInput
-                                    v-model="model.vehicleColor"
-                                    name="Warna Mobil"
-                                    label="Warna Mobil"
-                                    placeholder="Putih"
-                                    rules="required"
-                                    required
-                                    asterix
-                                />
+                                <BaseInput v-model="model.vehicleColor" name="Warna Mobil" label="Warna Mobil"
+                                    placeholder="Putih" rules="required" required asterix />
 
-                                <BaseInput
-                                    v-if="model.vehicleCondition !== 'new'"
-                                    v-model="model.plateDetail"
-                                    name="Nomor Plat"
-                                    label="Nomor Plat"
-                                    :prefix-text= model.licensePlate
-                                    placeholder="1234 WW"
-                                    rules="required"
-                                    required
-                                    asterix
-                                />
+                                <BaseInput v-if="model.vehicleCondition !== 'new'" v-model="model.plateDetail"
+                                    name="Nomor Plat" label="Nomor Plat" :prefix-text=model.licensePlate
+                                    placeholder="1234 WW" rules="required" required asterix />
 
-                                <BaseInput
-                                    v-model="model.machineNumber"
-                                    name="Nomor Mesin"
-                                    label="Nomor Mesin"
-                                    placeholder="SDR72V2500W2017060104R"
-                                    rules="required"
-                                    required
-                                    asterix
-                                />
+                                <BaseInput v-model="model.machineNumber" name="Nomor Mesin" label="Nomor Mesin"
+                                    placeholder="SDR72V2500W2017060104R" rules="required" required asterix />
 
-                                <BaseInput
-                                    v-model="model.skeletonNumber"
-                                    name="Nomor Rangka"
-                                    label="Nomor Rangka"
-                                    placeholder="1HGBH41JXMN109186"
-                                    rules="required"
-                                    required
-                                    asterix
-                                />
+                                <BaseInput v-model="model.skeletonNumber" name="Nomor Rangka" label="Nomor Rangka"
+                                    placeholder="1HGBH41JXMN109186" rules="required" required asterix />
 
                             </div>
 
@@ -282,7 +168,7 @@
 
         </main> <!-- container ends-->
 
-        <Loading :show="loading"/>
+        <Loading :show="loading" />
     </div>
 
 </template>
@@ -298,13 +184,13 @@ export default {
         BaseSelect,
         BaseTextarea
     },
-    data () {
+    data() {
         return {
             title: 'Pembelian',
             id: null,
             formData: null,
             url: [],
-            loading : true,
+            loading: true,
             model: {
                 totalPrice: this.formatPrice(0),
                 vehicleCondition: 'new',
@@ -321,11 +207,11 @@ export default {
                 postalCode: null,
                 useAdressToShip: false,
                 plateDetail: null,
-                licensePlate:null,
+                licensePlate: null,
                 vehicleColor: null,
                 machineNumber: null
             },
-            condition:{
+            condition: {
                 city: false,
                 district: false,
                 urban: false
@@ -418,22 +304,22 @@ export default {
             return this.model.vehicleCondition === 'new' ? this.newVehicleDocumentFields : this.usedVehicledocumentFields;
         }
     },
-    deactivated(){
+    deactivated() {
         this.$destroy()
     },
-    created(){
-        this.id =  this.$store.state.product_id
+    created() {
+        this.id = this.$store.state.product_id
     },
-    mounted(){
+    mounted() {
         this.getDataTransaction()
         this.getProvince()
     },
     methods: {
         reviewPayment() {
-            this.$router.push({name: "asuransi-mobil-polis-review-pembelian"})
+            this.$router.push({ name: "asuransi-mobil-polis-review-pembelian" })
         },
         onFileChange(e, validate) {
-            if(!e.target.files[0]) return;
+            if (!e.target.files[0]) return;
             this.url[e.target.id] = URL.createObjectURL(e.target.files[0])
             validate();
         },
@@ -441,22 +327,22 @@ export default {
             const param = this.$route.query.id == null ? '' : `?transaction_id=${this.$route.query.id}`
 
             await this.$axios.$get(`api/transaction` + param)
-                .then ((response) => {
+                .then((response) => {
                     this.model.licensePlate = response.data.plate
                     this.model.totalPrice = this.formatPrice(response.data.price.product +
                         response.data.price.expansion +
                         response.data.price.fee_admin + response.data.price.fee_stamp -
                         response.data.price.discount)
 
-                    if(response.data.client != null){
+                    if (response.data.client != null) {
                         this.model.client = response.data.client
                     }
 
                     this.loading = false
                 })
-                .catch (error => {
-                    if(error.response.status === 400){
-                        this.$router.push({name: "asuransi-mobil-polis"})
+                .catch(error => {
+                    if (error.response.status === 400) {
+                        this.$router.push({ name: "asuransi-mobil-polis" })
                     }
                 })
         },
@@ -470,62 +356,63 @@ export default {
             }
 
             // silahkan diperbaiki kalau ada yang salah
-            if(this.model.vehicleCondition === 'new') {
-                this.formData.append('bastk',this.model.bastk)
-                this.formData.append('identity_card',this.model.identityCard)
+            if (this.model.vehicleCondition === 'new') {
+                this.formData.append('bastk', this.model.bastk)
+                this.formData.append('identity_card', this.model.identityCard)
             } else {
-                this.formData.append('stnk',this.model.stnk)
-                this.formData.append('front_side',this.model.frontSide)
-                this.formData.append('back_side',this.model.backSide)
-                this.formData.append('left_side',this.model.leftSide)
-                this.formData.append('right_side',this.model.rightSide)
-                this.formData.append('dashboard',this.model.dashboard)
+                this.formData.append('stnk', this.model.stnk)
+                this.formData.append('front_side', this.model.frontSide)
+                this.formData.append('back_side', this.model.backSide)
+                this.formData.append('left_side', this.model.leftSide)
+                this.formData.append('right_side', this.model.rightSide)
+                this.formData.append('dashboard', this.model.dashboard)
 
-                this.formData.append('plate_detail',this.model.plateDetail)
+                this.formData.append('plate_detail', this.model.plateDetail)
             }
 
             this.formData.append('fullname', this.model.client.fullname)
             this.formData.append('email', this.model.client.email)
             this.formData.append('phone', this.model.client.phone)
 
-            this.formData.append('address_village_id',this.model.urban)
-            this.formData.append('address_detail',this.model.fullAddress + " " + this.model.postalCode)
-            this.formData.append('use_address_to_ship',this.model.useAdressToShip)
+            this.formData.append('address_village_id', this.model.urban)
+            this.formData.append('address_detail', this.model.fullAddress + " " + this.model.postalCode)
+            this.formData.append('use_address_to_ship', this.model.useAdressToShip)
 
-            this.formData.append('condition',this.model.vehicleCondition)
-            this.formData.append('vehicle_color',this.model.vehicleColor)
-            this.formData.append('machine_number',this.model.machineNumber)
-            this.formData.append('skeleton_number',this.model.skeletonNumber)
+            this.formData.append('condition', this.model.vehicleCondition)
+            this.formData.append('vehicle_color', this.model.vehicleColor)
+            this.formData.append('machine_number', this.model.machineNumber)
+            this.formData.append('skeleton_number', this.model.skeletonNumber)
 
             this.$axios.$post(`api/transaction?product_id=${this.id}`, this.formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
-            .then(function(response) {
-                self.$router.push({name: "asuransi-mobil-polis-review-pembelian",
-                    query: {
-                        id: response.data.transaction_id
-                    }
+                .then(function (response) {
+                    self.$router.push({
+                        name: "asuransi-mobil-polis-review-pembelian",
+                        query: {
+                            id: response.data.transaction_id
+                        }
+                    })
                 })
-            })
         },
         isNull(data) {
             return (data === null || data === "")
         },
-        resetField(){
+        resetField() {
             this.condition.city = false
             this.condition.district = false
             this.condition.urban = false
         },
-        async getProvince(){
+        async getProvince() {
             this.resetField()
-        
+
             this.provinceOptions = [{ text: 'Pilih Provinsi', value: null }]
             this.model.city = null
             this.model.district = null
             this.model.urban = null
 
             await this.$axios.$get('api/address/provinces')
-                .then ((response) => {
+                .then((response) => {
                     response.data.forEach(element => {
                         this.provinceOptions.push({
                             text: element.name,
@@ -534,7 +421,7 @@ export default {
                     })
                 })
         },
-        async getCity(){
+        async getCity() {
             this.resetField()
 
             this.cityOptions = [{ text: 'Pilih Kota/Kabupaten', value: null }]
@@ -546,7 +433,7 @@ export default {
             }
 
             await this.$axios.$get(`api/address/regencies?province_id=${this.model.province}`)
-                .then ((response) => {
+                .then((response) => {
                     this.model.city = null
                     this.condition.city = true
 
@@ -558,7 +445,7 @@ export default {
                     })
                 })
         },
-        async getDistrict(){
+        async getDistrict() {
             this.resetField()
 
             this.condition.city = true
@@ -571,7 +458,7 @@ export default {
             }
 
             await this.$axios.$get(`api/address/districts?regency_id=${this.model.city}`)
-                .then ((response) => {
+                .then((response) => {
                     this.model.district = null
                     this.condition.district = true
 
@@ -583,7 +470,7 @@ export default {
                     })
                 })
         },
-        async getUrban(){
+        async getUrban() {
             this.resetField()
 
             this.condition.city = true
@@ -596,7 +483,7 @@ export default {
             }
 
             await this.$axios.$get(`api/address/villages?district_id=${this.model.district}`)
-                .then ((response) => {
+                .then((response) => {
                     this.model.urban = null
                     this.condition.urban = true
 

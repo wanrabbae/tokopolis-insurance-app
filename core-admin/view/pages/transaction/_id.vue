@@ -12,6 +12,7 @@
                             <label class="col-form-label">Pengecekan Dokumen Kendaraan
                                 <label class="text-danger">*</label>
                             </label>
+
                             <table class="table table-responsive">
                                 <tbody>
                                     <tr class="caption" v-for="(item, key) of data.documents" v-bind:key="key">
@@ -64,6 +65,10 @@
                                     :disabled="data.documents == null"
                                     @click="showReview()">
                                     <i class="uil uil-file-check me-1"></i> Review Berkas
+                                </b-button>
+                                <b-button v-else class="float-end" variant="success"
+                                    disabled>
+                                    <i class="uil uil-file-check me-1"></i> Berkas telah direview
                                 </b-button>
                             </div>
                             <div style="display: table">

@@ -16,6 +16,10 @@ export default class TransactionService {
         return this.repository.getTransactionDetail(id);
     }
 
+    getTransactionDetailForClient(id) {
+        return this.repository.getTransactionDetailForClient(id);
+    }
+
     getClientTransactionAll(client_id) {
         return this.repository.getClientTransactionAll(client_id);
     }
@@ -32,8 +36,8 @@ export default class TransactionService {
         return this.repository.getTransactionByPaymentId(pg_transaction_id);
     }
 
-    getTransactionByAccountId(client_id) {
-        return this.repository.getTransactionByAccountId(client_id);
+    getTransactionByAccountId(account_id) {
+        return this.repository.getTransactionByAccountId(account_id);
     }
 
     getTransactionCount(filter) {
@@ -143,5 +147,17 @@ export default class TransactionService {
         return this.repository.updateTransaction(id, {
             assessment: payload
         })
+    }
+
+    sendEmailTransactionFile(payload) {
+        let mailer = new Mailer(payload.host);
+        mailer.setType("transaction-file-sent");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            product: payload.data.product,
+            url: payload.data.url,
+        });
+        mailer.send();
     }
 }

@@ -38,43 +38,43 @@ exports.claimProduct = async (req, res) => {
         const validate = validation.claimProduct(req);
         if (validate.error) return res.errorValidation(validate.details);
 
-        const checkTransaction = await transactionService.getTransactionDetail(
-            req.body.transaction_id
-        );
-        if (!checkTransaction) {
-            return res.errorBadRequest(
-                req.polyglot.t("error.claim.transaction.check")
-            );
-        }
+        const checkTransaction = await transactionService.getTransactionDetail(req.body.transaction_id)
+        if (checkTransaction.length <= 0) return res.errorBadRequest(req.polyglot.t("error.claim.transaction.check"))
 
         if (
             new Date(req.body.incident_time) <
-            new Date(checkTransaction.start_date)
+            new Date(checkTransaction[0].start_date)
         ) {
             return res.errorBadRequest(
                 req.polyglot.t("error.claim.incident_time")
             );
         }
 
-        const checkProduct = await productService.getProduct(
-            req.query.product_id
-        );
+        const checkProduct = await productService.getProduct(checkTransaction[0].product_id)
+        if (!checkProduct) return res.errorBadRequest(req.polyglot.t("error.product"))
 
-        if (!checkProduct) {
-            return res.errorBadRequest(req.polyglot.t("error.product"));
-        }
-
-        await service.createClaimProduct(req, req.files);
+        await service.createClaimProduct({
+            account_id: req.account._id,
+            transaction_id: req.body.transaction_id,
+            product_id: checkTransaction[0].product_id,
+            reporter_fullname: req.body.reporter_fullname,
+            holder_fullname: req.body.holder_fullname,
+            plate_number: req.body.plate_number,
+            incident_time: req.body.incident_time,
+            location: req.body.location,
+            chronology: req.body.chronology,
+        }, req.files);
 
         service.sendEmailRequestClaimSuccess({
             host: req.fullhost,
-            target: account.email,
+            target: req.account.email,
             title: req.polyglot.t("mail.request_claim"),
             data: {
                 name: transaction.client_data.fullname,
                 date: new Date().toDateString(),
             },
         });
+
         return res.jsonSuccess("Success request claim product");
     } catch (error) {
         console.log(error);
