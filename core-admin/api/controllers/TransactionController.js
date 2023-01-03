@@ -597,38 +597,23 @@ exports.postTransaction = async (req, res) => {
 
     if (req.account.role == 5) {
         const discountMaxPercent = 25;
-        const discountMaxAmount = 1250000;
         const discountValue = req.session.product.discount_value;
         const totalPriceForComission =
         req.session.product.price + req.session.product.expansion_price;
         
         if (req.session.product.discount_format == "percent") {
-            if (discountValue < discountMaxPercent) {
-                // add comission
-                const comission = await service.createComission({
-                    account_id: req.account._id,
-                    value: totalPriceForComission * (Math.abs(discountValue -  discountMaxPercent) / 100),
-                });
-            }else if(discountValue == 0) {
-                const comission = await service.createComission({
-                    account_id: req.account._id,
-                    value: totalPriceForComission * (discountMaxPercent / 100),
-                });
-            }
+            await service.createComission({
+                account_id: req.account._id,
+                value: totalPriceForComission * (Math.abs(discountValue -  discountMaxPercent) / 100),
+            });
         }
         
         if(req.session.product.discount_format == "amount") {
-            if(discountValue == 0) {
-                const comission = await service.createComission({
-                    account_id: req.account._id,
-                    value: discountMaxAmount,
-                });
-            }else if(discountValue < discountMaxAmount) {
-                const comission = await service.createComission({
-                    account_id: req.account._id,
-                    value: parseInt(discountMaxAmount - discountValue)
-                })
-            }
+            const comissionValue = totalPriceForComission * (25 / 100) - discountValue
+            await service.createComission({
+                account_id: req.account._id,
+                value: comissionValue,
+            });
         }
             // add points here
         if (req.session.product.extra_point) {
