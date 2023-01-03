@@ -5,7 +5,7 @@
             <h3 class="text-center font-weight-normal">Terima kasih telah menggunakan layanan TOKOPOLIS</h3>
 
             <p class="mb-5"><b>PT Tokopolis Handal Nusantara</b> atau disebut TOKOPOLIS, merupakan sebuah Platform Web Application yang memiliki fungsi dan manfaat sebagai penyedia berbagai produk asuransi dari perusahaan asuransi rekanan kami, yang oleh pengunjung/nasabah/mitra dapat dipergunakan untuk membeli produk asuransi sesuai kebutuhan, hingga keperluan bantuan untuk pengajuan klaim ke perusahaan asuransi melalui mekanisme digitalisasi yang telah kami terapkan kepada perusahaan rekanan asuransi yang produk asuransinya dipasarkan melalui platform kami.</p>
-            <p class="mb-5">Dalam menjalankan usaha tersebut, TOKOPOLIS telah menjalin kerjasama dengan <a href="#" class="font-weight-bold">PT Istpro Inti Nusa</a>, yakni merupakan pialang asuransi yang telah terdaftar dan memiliki izin usaha serta dibawah pengawasan Otoritas Jasa Keuangan dengan izin nomor : KEP-157/KM.10/2007</p>
+            <p class="mb-5">Dalam menjalankan usaha tersebut, TOKOPOLIS telah menjalin kerjasama dengan <a target="_blank" href="https://istpro.com/contact-us/" class="font-weight-bold">PT Istpro Inti Nusa</a>, yakni merupakan pialang asuransi yang telah terdaftar dan memiliki izin usaha serta dibawah pengawasan Otoritas Jasa Keuangan dengan izin nomor : KEP-157/KM.10/2007</p>
             <p class="mb-5">Dengan mengunjungi, menggunakan, dan/atau mendaftar di platform kami, Anda telah membaca, menyetujui dan menerima Syarat & Ketentuan kami dan hal-hal yang dijelaskan dalam Syarat & Ketentuan ini.</p>
 
             <h2 class="text-uppercase">A. Definisi</h2>

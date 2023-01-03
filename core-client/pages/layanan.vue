@@ -13,7 +13,7 @@
 
                     <div class="col-12 col-md-2 text-right">
 
-                        <b-img src="/svg/computer.svg" alt="Computer Icon" width="100px"  style="max-height: 160px" />
+                        <b-img src="/img/computer.png" alt="Computer Icon" width="100px"  style="max-height: 160px" />
 
                     </div> <!-- col-12.col-md-3 ends -->
 
@@ -34,7 +34,7 @@
 
                     <div class="col-12 col-md-2">
 
-                        <b-img src="/svg/claim.svg" alt="Claim Icon" width="100px"  style="max-height: 160px"/>
+                        <b-img src="/img/jasa_konsultasi.png" alt="Claim Icon" width="100px"  style="max-height: 160px"/>
 
                     </div>
 
@@ -53,7 +53,7 @@
 
                     <div class="col-12 col-md-2 text-right">
 
-                        <b-img src="/svg/insurance.svg" alt="Insurance Icon" width="100px" style="max-height: 160px"></b-img>
+                        <b-img src="/img/produk_asuransi.png" alt="Insurance Icon" width="100px" style="max-height: 160px"></b-img>
 
                     </div>
 
@@ -71,7 +71,7 @@
 
                     <div class="col-12 col-md-2">
 
-                        <b-img src="/svg/payment.svg" alt="Payment Icon" width="100px" style="max-height: 160px" />
+                        <b-img src="/img/secure_payment.png" alt="Payment Icon" width="100px" style="max-height: 160px" />
 
                     </div> <!-- col-12 col-md-3 ends -->
 
@@ -90,12 +90,11 @@
 
                     <div class="col-12 col-md-2 text-right">
 
-                        <b-img src="/svg/shield.svg" alt="Shield Icon" width="100px" style="max-height: 160px"></b-img>
+                        <b-img src="/img/bantuan_proses.png" alt="Shield Icon" width="100px" style="max-height: 160px"></b-img>
 
                     </div> <!-- col-12 col-md-3 ends -->
 
                     <div class="col-12 col-md-10">
-
 
                         <p>
                             Menyediakan sistem bantuan proses klaim secara digital yang diakses melalui
@@ -103,7 +102,6 @@
                             email, whatsapp, dan telepon guna memberikan bantuan secara maksimal
                             kepada anda.
                         </p>
-
 
                     </div> <!-- col-12 col-md-9 ends -->
 
