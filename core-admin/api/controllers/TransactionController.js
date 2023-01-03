@@ -463,6 +463,66 @@ exports.postTemporary = async (req, res) => {
     return res.jsonSuccess();
 };
 
+const setTransactionBonus = async (payload) => {
+    const discountMaxPercent = 25;
+    const totalPriceForComission = payload.price + payload.expansion_price;
+
+    var comissionValue = 0
+
+    if (payload.discount_format == "percent") {
+        comissionValue = totalPriceForComission * (Math.abs(payload.discount_value -  discountMaxPercent) / 100)
+    } else {
+        comissionValue = totalPriceForComission * (25 / 100) - payload.discount_value
+    }
+
+    if (comissionValue > 0) {
+        await service.createComission({
+            account_id: payload.account_id,
+            transaction_id: payload.transaction_id,
+            value: comissionValue,
+        })
+    }
+
+    // add points here
+    if (payload.extra_point) {
+        // for agent
+        const pointValue = totalPriceForComission * (payload.extra_point / 100) / 1000;
+        await service.createPoint({
+            account_id: payload.account_id,
+            transaction_id: payload.transaction_id,
+            value: pointValue,
+        });
+
+        const findUniqueId = await accountService.getAccountData(payload.account_id);
+        const uniqueCodeArray = findUniqueId.unique_id.split("-");
+        const leaderPointValue = (totalPriceForComission * (5 / 100)) / 1000
+
+        // for supervisor
+        const spvCode = uniqueCodeArray.slice(0, -1).join("-");
+        const findAccountSpv = await accountService.getAccountWithUniqueId(spvCode);
+
+        if (findAccountSpv) {
+            await service.createPoint({
+                account_id: findAccountSpv.id,
+                transaction_id: payload.transaction_id,
+                value: leaderPointValue,
+            });
+        }
+
+        // for branch head
+        const bhCode = uniqueCodeArray.slice(0, -2).join("-");
+        const findAccountBH = await accountService.getAccountWithUniqueId(bhCode);
+
+        if (findAccountBH) {
+            await service.createPoint({
+                account_id: findAccountBH.id,
+                transaction_id: payload.transaction_id,
+                value: leaderPointValue,
+            });
+        }
+    }
+}
+
 exports.postTransaction = async (req, res) => {
     const validate = validation.post(req);
     if (validate.error) return res.errorValidation(validate.details);
@@ -537,15 +597,22 @@ exports.postTransaction = async (req, res) => {
                 req.polyglot.t("error.transaction.create")
             );
 
+        if (req.account != null && req.account.role == 5) {
+            await setTransactionBonus({
+                account_id: req.account._id,
+                transaction_id: transaction.id,
+                discount_format: transaction.discount_format,
+                discount_value: transaction.discount_value,
+                extra_point: transaction.product.extra_point,
+                price: transaction.price,
+                expansion_price: transaction.expansions.reduce((a, b) => a + b.price, 0),
+            })
+        }
+
         return res.jsonData({
             transaction_id: transaction.id,
         });
     }
-
-    const totalPrice =
-        req.session.product.price +
-        req.session.product.expansion_price -
-        req.session.product.discount_total;
 
     const newTransaction = await service.createTransaction(
         {
@@ -595,70 +662,18 @@ exports.postTransaction = async (req, res) => {
     if (!newTransaction)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
 
-    if (req.account.role == 5) {
-        const discountMaxPercent = 25;
-        const discountValue = req.session.product.discount_value;
-        const totalPriceForComission =
-        req.session.product.price + req.session.product.expansion_price;
-        
-        if (req.session.product.discount_format == "percent") {
-            await service.createComission({
-                account_id: req.account._id,
-                value: totalPriceForComission * (Math.abs(discountValue -  discountMaxPercent) / 100),
-            });
-        }
-        
-        if(req.session.product.discount_format == "amount") {
-            const comissionValue = totalPriceForComission * (25 / 100) - discountValue
-            await service.createComission({
-                account_id: req.account._id,
-                value: comissionValue,
-            });
-        }
-            // add points here
-        if (req.session.product.extra_point) {
-            const pointValue = totalPriceForComission * (req.session.product.extra_point / 100);
-            const point = await service.createPoint({
-                account_id: req.account._id,
-                value: parseInt(pointValue.toString().slice(0, -3)),
-            });
-
-            const findUniqueId = await accountService.getAccountData(
-                req.account._id
-            );
-
-            const spvCodeArray = findUniqueId.unique_id.split("-");
-            const spvCode = spvCodeArray.slice(0, -1).join("-");
-
-            const findAccountSpv = await accountService.getAccountWithUniqueId(spvCode);
-
-            if (findAccountSpv) {
-                // add point to his supervisor
-                const pointValueSpv = totalPriceForComission * (5 / 100);
-                await service.createPoint({
-                    account_id: findAccountSpv.id,
-                    value: parseInt(pointValueSpv.toString().slice(0, -3)),
-                });
-
-                const bhCodeArray = findAccountSpv.unique_id.split("-");
-                const bhCode = bhCodeArray.slice(0, -1).join("-");
-
-                const findAccountBH = await accountService.getAccountWithUniqueId(bhCode);
-
-                if (findAccountBH) {
-                    // add point to his branch head
-                    const pointValueBH = totalPriceForComission * (5 / 100);
-                    await service.createPoint({
-                        account_id: findAccountBH.id,
-                        value: parseInt(
-                            pointValueBH.toString().slice(0, -3)
-                        ),
-                        });
-                }
-            }
-        }
-        
+    if (req.account != null && req.account.role == 5) {
+        await setTransactionBonus({
+            account_id: req.account._id,
+            transaction_id: newTransaction.id,
+            discount_format: req.session.product.discount_format,
+            discount_value: req.session.product.discount_value,
+            extra_point: req.session.product.extra_point,
+            price: req.session.product.price,
+            expansion_price: req.session.product.expansion_price,
+        })
     }
+
     return res.jsonData({
         transaction_id: newTransaction.id,
     });

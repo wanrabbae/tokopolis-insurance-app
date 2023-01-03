@@ -15,18 +15,19 @@ module.exports = {
                 primaryKey: true,
             },
             account_id: {
+				type: Sequelize.INTEGER,
+				primaryKey: true
+			},
+            transaction_id: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                primaryKey: true,
+                allowNull: true,
             },
             value: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
             description: {
-                type: Sequelize.STRING,
-                allowNull: true,
-            },
-            type: {
                 type: Sequelize.STRING,
                 allowNull: true,
             },
