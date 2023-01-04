@@ -108,11 +108,13 @@ exports.productCalculation = async (req, res, next) => {
 exports.getProductData = async (req, res) => {
     const page = Number(req.query.page) || 1;
 
-    const product_price = req.session.product.price;
+    const startYear = moment(req.session.product.start_date).format('YYYY')
+    const vehicleAge = Number(startYear - req.session.vehicle.year)
 
-    const vehicle_data = {
+    const payload = {
         brand: req.session.vehicle.brand,
         protection: req.session.vehicle.protection,
+        vehicle_age: vehicleAge,
     };
 
     var returnData = {};
@@ -122,12 +124,12 @@ exports.getProductData = async (req, res) => {
         const limit = 5;
         const offset = (page - 1) * limit;
 
-        const count = await service.getCountByVehicle(vehicle_data);
+        const count = await service.getCountByVehicle(payload);
         const data = await service.getProductList(
-            vehicle_data,
+            payload,
             limit,
             offset,
-            product_price
+            req.session.product.price
         );
 
         returnData = {
@@ -141,10 +143,10 @@ exports.getProductData = async (req, res) => {
         };
     } else {
         const data = await service.getProductList(
-            vehicle_data,
+            payload,
             3,
             0,
-            product_price
+            req.session.product.price
         );
 
         returnData = { data: data };
