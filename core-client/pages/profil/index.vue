@@ -212,9 +212,21 @@
                         <span class="fw-bold">Proses Verifikasi</span>
                     </div>
 
-                    <div v-if="user.role != null" class="text-secondary mt-3">
-                        <span class="mr-1"><fa icon="star" style="width: 16px; height: 16px;"/></span>
-                        <span class="fw-bold">{{ user.role }}</span>
+                    <div v-if="user.role != null" class="d-block">
+                        <div id="role-id" class="text-secondary clickable mt-3"
+                            @click="copyToClipboard(user.unique_id)">
+                            <span class="mr-1"><fa icon="star" style="width: 16px; height: 16px;"/></span>
+                            <span class="fw-bold">{{ user.role }}</span>
+                        </div>
+
+                        <b-tooltip
+                            triggers="click blur"
+                            target="role-id"
+                            :variant="tooltip.success ? 'secondary' : 'danger'"
+                            placement="bottom"
+                        >
+                            {{ tooltip.message }}
+                        </b-tooltip>
                     </div>
 
                 </div> <!-- col-12.col-4 ends -->
@@ -284,7 +296,8 @@ export default {
                 imgDataUrl: null,
                 show:false,
                 photo : '/svg/avatar-default.svg',
-                role: null
+                role: null,
+                unique_id: null,
             },
             formData: null,
             loading: true,
@@ -323,7 +336,11 @@ export default {
                     outOfSize: 'Batas ukuran gambar: ',
                     lowestPx: 'Ukuran gambar terlalu rendah. Setidaknya dibutuhkan: '
                 }
-            }
+            },
+            tooltip: {
+                success: false,
+                message: null
+            },
         }
     },
     head() {
@@ -422,6 +439,7 @@ export default {
 
                         if (response.data.roles != null) {
                             this.user.role = response.data.roles.name
+                            this.user.unique_id = response.data.unique_id
                         }
 
                         this.loading = false
@@ -517,23 +535,18 @@ export default {
             .then(function(response) {
                 window.location.reload()
             })
-        }
+        },
+        async copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+
+                this.tooltip.success = true;
+                this.tooltip.message = 'Berhasil menyalin kode unik';
+            } catch(err) {
+                this.tooltip.success = false;
+                this.tooltip.message = 'Gagal menyalin: ' + err;
+            }
+        },
     }
 }
 </script>
-
-<style scoped>
-    .loop {
-        -webkit-animation: infinite-spinning 1s ease-out 0s infinite normal;
-        animation: infinite-spinning 1s ease-out 0s infinite normal;
-    }
-
-    @keyframes infinite-spinning {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-</style>
