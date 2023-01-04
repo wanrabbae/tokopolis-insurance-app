@@ -967,26 +967,34 @@ exports.webhookXendit = async (req, res) => {
     return res.jsonSuccess(req.polyglot.t("success.webhook.xendit"));
 };
 
-exports.getComission = async (req, res) => {
-    const comission = await service.getComission(req);
+exports.getTransactionTotal = async (req, res) => {
+    const total = await service.getTransactionTotal(req.account._id)
 
-    res.jsonData(comission);
+    return res.jsonData({ total: total })
+}
+
+exports.getComission = async (req, res) => {
+    const comission = await service.getComission(req.account._id);
+    if (comission.length <= 0) return res.jsonData({ total: 0 })
+
+    return res.jsonData({ total: comission[0].value })
 };
 
 exports.getComissionHistory = async (req, res) => {
-    const comission = await service.getComissionHistory(req);
+    const comission = await service.getComissionHistory(req.account._id);
 
     res.jsonData(comission);
 };
 
 exports.getPoint = async (req, res) => {
-    const point = await service.getPoint(req);
+    const point = await service.getPoint(req.account._id);
+    if (point.length <= 0) return res.jsonData({ total: 0 })
 
-    res.jsonData(point);
+    return res.jsonData({ total: point[0].value })
 };
 
 exports.getPointHistory = async (req, res) => {
-    const point = await service.getPointHistory(req);
+    const point = await service.getPointHistory(req.account._id);
 
     res.jsonData(point);
 };

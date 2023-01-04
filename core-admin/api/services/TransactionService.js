@@ -44,6 +44,10 @@ export default class TransactionService {
         return this.repository.getTransactionCount(filter);
     }
 
+    getTransactionTotal(account_id) {
+        return this.repository.getTransactionTotal(account_id)
+    }
+
     createOffer(payload) {
         return this.repository.createTransaction(payload);
     }
@@ -94,20 +98,20 @@ export default class TransactionService {
         return this.repository.createComission(payload);
     }
 
-    getComission(req) {
-        return this.repository.getComission(req);
+    getComission(account_id) {
+        return this.repository.getComission(account_id);
     }
 
-    getComissionHistory(req) {
-        return this.repository.getComissionHistory(req);
+    getComissionHistory(account_id) {
+        return this.repository.getComissionHistory(account_id);
     }
 
-    getPoint(req) {
-        return this.repository.getPoint(req);
+    getPoint(account_id) {
+        return this.repository.getPoint(account_id);
     }
 
-    getPointHistory(req) {
-        return this.repository.getPointHistory(req);
+    getPointHistory(account_id) {
+        return this.repository.getPointHistory(account_id);
     }
 
     createPoint(payload) {

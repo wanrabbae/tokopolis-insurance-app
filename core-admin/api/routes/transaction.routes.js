@@ -4,7 +4,8 @@ const { uploadFile } = require("../middlewares/uploadFile");
 
 const { getAll, transaction, detail, postTransaction, postOffer,
     postTemporary, review, doPayment, getPaymentFee,
-    getPaymentDetail, webhookMidtrans, webhookXendit, 
+    getPaymentDetail, webhookMidtrans, webhookXendit,
+    getTransactionTotal,
     getComission, getComissionHistory, getPoint, getPointHistory
 } = require('../controllers/TransactionController')
 
@@ -34,6 +35,8 @@ router.post('/transaction/payment', auth, doPayment)
 
 router.post('/transaction/midtrans', webhookMidtrans)
 router.post('/transaction/xendit', webhookXendit)
+
+router.get('/transaction/total', auth, getTransactionTotal)
 
 router.get('/comissions', auth, getComission)
 router.get('/comissions/history', auth, getComissionHistory)

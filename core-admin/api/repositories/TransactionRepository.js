@@ -232,9 +232,16 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
-    // async getTransactionCount() {
-    //     return await Transaction.count()
-    // }
+    async getTransactionTotal(account_id) {
+        return await Transaction.count({
+            where: {
+                [Op.or]: [
+                    { client_id: account_id },
+                    { agent_id: account_id },
+                ]
+            },
+        })
+    }
 
     async createTransaction(payload) {
         return await Transaction.create(payload);
@@ -284,70 +291,44 @@ export default class TransactionRepository {
         return await Comission.create(payload);
     }
 
-    async getComission(payload) {
-        const comissionIn = await Comission.findAll({
+    async getComission(account_id) {
+        return await Comission.findAll({
             attributes: [
                 "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
             where: {
-                account_id: payload.account._id,
-                type: "in",
+                account_id: account_id,
             },
-        });
-        const comissionOut = await Comission.findAll({
-            attributes: [
-                "id",
-                [sequelize.fn("sum", sequelize.col("value")), "value"],
-            ],
-            where: {
-                account_id: payload.account._id,
-                type: "out",
-            },
-        });
-        const total = comissionIn[0].value - comissionOut[0].value;
-        return { account_id: payload.account._id, total: Math.abs(total) };
+        })
     }
 
-    async getComissionHistory(payload) {
+    async getComissionHistory(account_id) {
         return await Comission.findAll({
             where: {
-                account_id: payload.account._id,
+                account_id: account_id,
             },
         });
     }
 
-    async getPointHistory(payload) {
+    async getPointHistory(account_id) {
         return await Point.findAll({
             where: {
-                account_id: payload.account._id,
+                account_id: account_id,
             },
         });
     }
 
-    async getPoint(payload) {
-        const pointIn = await Point.findAll({
+    async getPoint(account_id) {
+        return await Point.findAll({
             attributes: [
                 "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
             where: {
-                account_id: payload.account._id,
-                type: "in",
+                account_id: account_id,
             },
-        });
-        const pointOut = await Point.findAll({
-            attributes: [
-                "id",
-                [sequelize.fn("sum", sequelize.col("value")), "value"],
-            ],
-            where: {
-                account_id: payload.account._id,
-                type: "out",
-            },
-        });
-        const total = pointIn[0].value - pointOut[0].value;
-        return { account_id: payload.account._id, total: Math.abs(total) };
+        })
     }
 
     async createPoint(payload) {

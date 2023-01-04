@@ -7,30 +7,30 @@
             <div class="row no-gutters">
 
                 <div class="col-12 p-3 p-md-4 border-bottom">
-                
+
                     <div class="d-flex align-items-center mb-2">
 
                         <div class="d-flex align-items-center flex-grow-1 fs-5 fs-md-4 fw-bold">
 
                             <span class="mr-2">
-                                
-                                <nuxt-img 
+
+                                <nuxt-img
                                     height="36"
                                     preset="default"
-                                    src="/svg/coins.svg" 
+                                    src="/svg/coins.svg"
                                 />
-                                
+
                             </span>
-                            
+
                             Poin
-                            
-                            <small 
-                                v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Poin di sini'" 
+
+                            <small
+                                v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Poin di sini'"
                                 class="ml-1 pr-2 align-top text-primary opacity-75"
                             >
                                 <fa icon="circle-info"/>
                             </small>
-                        
+
                         </div>
 
                         <BaseButton @click="onWithdraw">Penarikan</BaseButton>
@@ -42,27 +42,27 @@
                         <span class="fs-4 fs-md-2 fw-bold">{{ points }}</span>
 
                     </div>
-            
+
                 </div>
 
                 <div class="col-12 p-3 p-md-4">
-                    
+
                     <div class="d-flex align-items-center fs-5 fs-md-4 fw-bold mb-2">
-                        
+
                         <span class="mr-2">
 
-                            <nuxt-img 
+                            <nuxt-img
                                 height="36"
                                 preset="default"
-                                src="/img/shield-checkmark.png" 
+                                src="/img/shield-checkmark.png"
                             />
-                            
+
                         </span>
 
                         Polis Terjual
-                        
-                        <small 
-                            v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Polis Terjual di sini'" 
+
+                        <small
+                            v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Polis Terjual di sini'"
                             class="ml-1 pr-2 align-top text-primary opacity-75"
                         >
                             <fa icon="circle-info"/>
@@ -128,7 +128,7 @@
                             :style="{ backgroundColor: type[historyItem.type].iconBgColor }"
                         >
 
-                            <nuxt-img 
+                            <nuxt-img
                                 preset="default"
                                 :src="type[historyItem.type].icon"
                                 sizes="lg:32px"
@@ -169,18 +169,18 @@ export default {
             points: 0,
             productSold: 0,
             history: [
-                {
-                    date: '2022-07-31 04:23:56',
-                    type: 'withdraw',
-                    status: 'pending',
-                    value: 102
-                },
-                {
-                    date: '2022-07-31 04:23:56',
-                    type: 'receive',
-                    status: 'success',
-                    value: 104
-                },
+                // {
+                //     date: '2022-07-31 04:23:56',
+                //     type: 'withdraw',
+                //     status: 'pending',
+                //     value: 102
+                // },
+                // {
+                //     date: '2022-07-31 04:23:56',
+                //     type: 'receive',
+                //     status: 'success',
+                //     value: 104
+                // },
             ],
             type: {
                 withdraw: {
@@ -220,11 +220,52 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
+    mounted() {
+        this.getPoint()
+        this.getTotal()
+        this.getHistory()
+    },
     methods: {
         onWithdraw() {
             // put code here
             this.$bvModal.show("modal-penarikan-poin")
-        }
+        },
+        async getPoint() {
+            await this.$axios.$get('api/point')
+                .then ((response) => {
+                    this.points = response.data.total
+                })
+                .catch (error => {
+                    console.log(error)
+                })
+        },
+        async getTotal() {
+            await this.$axios.$get('api/transaction/total')
+                .then ((response) => {
+                    this.productSold = response.data.total
+                })
+                .catch (error => {
+                    console.log(error)
+                })
+        },
+        async getHistory() {
+            this.history = []
+
+            await this.$axios.$get('api/point/history')
+                .then ((response) => {
+                    for (const item of response.data) {
+                        this.history.push({
+                            date: item.created_at,
+                            type: item.value > 0 ? 'receive' : 'withdraw',
+                            status: 'success',
+                            value: item.value
+                        })
+                    }
+                })
+                .catch (error => {
+                    console.log(error)
+                })
+        },
     }
 }
 </script>
