@@ -78,6 +78,11 @@
 
                     </div>
 
+                    <div v-if="!shownProducts.length" class="text-center">
+                        <b-img center src="/img/box.png" alt="No Polis" width="100px" style="max-height: 160px" />
+                        <p>Belum Ada Polis</p>
+                    </div>
+
                     <b-form>
 
                         <b-form-checkbox-group
@@ -200,7 +205,7 @@
 
                     </b-form>
 
-                    <b-pagination
+                    <b-pagination v-if="shownProducts.length"
                         v-model="currentPage"
                         v-bind="paginationOptions"
                         @page-click="onPageClick"
