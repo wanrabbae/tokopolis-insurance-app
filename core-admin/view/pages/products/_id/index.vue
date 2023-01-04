@@ -43,6 +43,11 @@
                     <hr class="my-4" />
 
                     <div class="text-muted">
+                        <h5 class="font-size-16">Nama Perusahaan</h5>
+                        <p v-html="data.company"></p>
+                    </div>
+
+                    <div class="text-muted">
                         <h5 class="font-size-16">Alamat Email</h5>
                         <p v-html="data.email"></p>
                     </div>
@@ -52,7 +57,15 @@
                         <p v-html="data.description"></p>
                     </div>
 
-                    <div class="text-muted">
+                    <div class="text-muted mt-3">
+                        <h5 class="font-size-16">Usia Maksimal Kendaraan</h5>
+                        <h5>
+                            <b-badge v-if="data.vehicle_max_year != null" class="badge bg-primary">{{ data.vehicle_max_year }} Tahun</b-badge>
+                            <b-badge v-else class="badge bg-success">Tidak Ada Batas Maksimal</b-badge>
+                        </h5>
+                    </div>
+
+                    <div class="text-muted mt-3">
                         <h5 class="font-size-16">Fitur Plus</h5>
                         <h5>
                             <b-badge v-if="data.commission != 0"
@@ -66,7 +79,7 @@
                         </h5>
                     </div>
 
-                    <div class="text-muted mt-2">
+                    <div class="text-muted mt-3">
                         <h5 class="font-size-16">Biaya Tambahan</h5>
                         <h5>
                             <b-badge class="badge bg-soft-success">Admin: {{ formatPrice(data.admin_fee) }}</b-badge>
@@ -74,7 +87,7 @@
                         </h5>
                     </div>
 
-                    <div class="text-muted mt-2">
+                    <div class="text-muted mt-3">
                         <h5 class="font-size-16">Dukungan Brand</h5>
                         <h5 v-if="data.supported_brands != null">
                             <b-badge v-for="brand in data.supported_brands.split(',')"

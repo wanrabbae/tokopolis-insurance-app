@@ -43,6 +43,9 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.INTEGER,
                 defaultValue: 0,
             },
+            vehicle_max_year: {
+                type: Sequelize.INTEGER,
+            },
             supported_brands: {
                 type: Sequelize.STRING,
             },
