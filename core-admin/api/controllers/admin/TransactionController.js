@@ -170,7 +170,7 @@ exports.addReview = async (req, res, next) => {
     generateXls(transaction, destination)
 
     service.sendEmailTransactionFile({
-        host: req.fullhost,
+        host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: transaction.product_email,
         title: req.polyglot.t("mail.transaction.file"),
         data: {

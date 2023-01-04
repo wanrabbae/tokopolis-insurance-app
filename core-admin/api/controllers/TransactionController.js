@@ -835,7 +835,7 @@ exports.doPayment = async (req, res) => {
         });
 
         service.sendEmailPayment({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: account.email,
             title: req.polyglot.t("mail.payment.created"),
             data: {
@@ -903,7 +903,7 @@ exports.webhookMidtrans = async (req, res) => {
 
     if (result == "paid") {
         service.sendEmailPaymentSuccess({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: transaction.account.email,
             title: req.polyglot.t("mail.payment.success"),
             data: {
@@ -952,7 +952,7 @@ exports.webhookXendit = async (req, res) => {
 
     if (result == "paid") {
         service.sendEmailPaymentSuccess({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: transaction.account.email,
             title: req.polyglot.t("mail.payment.success"),
             data: {

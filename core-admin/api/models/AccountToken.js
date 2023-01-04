@@ -12,10 +12,12 @@ module.exports = (sequelize, Sequelize) => {
 			type: Sequelize.ENUM('email', 'password'),
 			allowNull: false,
 		},
+        created_at: Sequelize.DATE,
+        updated_at: Sequelize.DATE,
 	}, {
 		freezeTableName: true,
-		updatedAt: false,
 		createdAt: 'created_at',
+		updatedAt: 'updated_at',
 	})
 
 	AccountToken.associate = function(models) {

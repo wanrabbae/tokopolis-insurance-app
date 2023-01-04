@@ -82,7 +82,7 @@ exports.updateData = async (req, res) => {
         );
 
         service.sendEmailProfile({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: account.email,
             title: req.polyglot.t("mail.email"),
             data: {

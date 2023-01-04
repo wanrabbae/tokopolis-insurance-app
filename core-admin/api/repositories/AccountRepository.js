@@ -210,7 +210,7 @@ export default class AccountRepository {
             where: {
                 token: token,
                 type: "password",
-                created_at: {
+                updated_at: {
                     [Op.gt]: moment().subtract(1, "hours").toDate(),
                 },
             },
