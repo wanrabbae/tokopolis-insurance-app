@@ -96,14 +96,12 @@
 
                     <div class="col-12 col-md-10">
 
-
                         <p>
                             Menyediakan sistem bantuan proses klaim secara digital yang diakses melalui
                             platform TOKOPOLIS, dan tak terbatas pelayanan kami menggunakan perangkat lain seperti
                             email, whatsapp, dan telepon guna memberikan bantuan secara maksimal
                             kepada anda.
                         </p>
-
 
                     </div> <!-- col-12 col-md-9 ends -->
 

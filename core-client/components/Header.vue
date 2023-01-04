@@ -216,7 +216,7 @@
 </template>
 
 <script>
-import cookie from 'js-cookie'
+// import cookie from 'js-cookie'
 
 export default {
     props: {
@@ -260,25 +260,6 @@ export default {
                 this.scrolled = false;
             }
         },
-        // async handleClick(){
-        //     await this.$axios.$get('api/transaction')
-        //         .then ((response) => {
-        //             console.log(response)
-        //         })
-        //         .catch (error => {
-        //             console.log(error)
-        //         })
-        // }
-        // ,
-        async logout(){
-            await cookie.remove('token')
-            await cookie.remove('photo')
-
-            await this.$store.commit('setData', { token: null, photo: null })
-            // await this.$router.app.refresh()
-
-            this.$router.push('/')
-        }
     }
 }
 </script>

@@ -46,19 +46,14 @@ export default {
     },
     methods: {
         async getUserPhoto() {
-            if(this.$store.state.photo === null && this.$store.state.photo === 'null') {
-                await this.$axios.$get('api/user')
-                .then ((response) => {
-                    if (response && response.data.profile.photo != null) {
-                        const photo = response.data.profile.photo;
-
-                        cookie.set('photo', photo, { expires: 1 });
-                    }
-                })
-                .catch (error => {
-                    console.log(error);
-                })
-            }
+            await this.$axios.$get('api/user/photo')
+            .then ((response) => {
+                const photo = response.data.photo
+                cookie.set('photo', photo, { expires: 1 })
+            })
+            .catch (error => {
+                console.log(error)
+            })
         },
         handleResize(event) {
             const width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;

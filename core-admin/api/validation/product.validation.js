@@ -73,11 +73,17 @@ const create = (req) => {
         stamp_fee: Joi.number().label(
             req.polyglot.t("field.product.stamp_fee")
         ),
-        supported_brands: Joi.string().label(req.polyglot.t("field.image")),
+        vehicle_max_year: Joi.number().label(
+            req.polyglot.t("field.product.vehicle_max_year")
+        ),
+        supported_brands: Joi.string().label(req.polyglot.t("field.product.supported_brands")),
         tnc: Joi.string().required().label(req.polyglot.t("field.product.tnc")),
         claim: Joi.string()
             .required()
             .label(req.polyglot.t("field.product.claim")),
+        company: Joi.string()
+            .required()
+            .label(req.polyglot.t("field.product.company")),
         brochure_file: Joi.string()
             .regex(RegExp(pdfExt.regex))
             .label(req.polyglot.t("field.product.brochure")),
@@ -135,11 +141,17 @@ const update = (req) => {
         stamp_fee: Joi.number().label(
             req.polyglot.t("field.product.stamp_fee")
         ),
-        supported_brands: Joi.string().label(req.polyglot.t("field.image")),
+        vehicle_max_year: Joi.number().label(
+            req.polyglot.t("field.product.vehicle_max_year")
+        ),
+        supported_brands: Joi.string().label(req.polyglot.t("field.product.supported_brands")),
         tnc: Joi.string().required().label(req.polyglot.t("field.product.tnc")),
         claim: Joi.string()
             .required()
             .label(req.polyglot.t("field.product.claim")),
+        company: Joi.string()
+            .required()
+            .label(req.polyglot.t("field.product.company")),
         brochure_file: Joi.string()
             .regex(RegExp(pdfExt.regex))
             .label(req.polyglot.t("field.product.brochure")),

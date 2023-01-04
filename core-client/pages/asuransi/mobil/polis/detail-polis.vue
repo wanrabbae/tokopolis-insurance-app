@@ -129,7 +129,7 @@
 
                     </div> <!-- card ends -->
 
-                    <div class="card border">
+                    <div v-if="isAgent()" class="card border">
 
                         <div class="card-body d-flex justify-content-between align-items-center py-3" :class="{['border-bottom']: addDiscount}">
 
@@ -242,7 +242,8 @@
 
                         </div>
 
-                        <BaseButton type="white" classes="text-primary border-primary mb-1" block @click="openInsuranceDetailModal" >Buat Penawaran</BaseButton>
+                        <BaseButton v-if="isAgent()" type="white" classes="text-primary border-primary mb-1"
+                            block @click="openInsuranceDetailModal">Buat Penawaran</BaseButton>
 
                         <BaseButton block @click="postData">Beli Sekarang</BaseButton>
 

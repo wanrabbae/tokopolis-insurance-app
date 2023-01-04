@@ -22,8 +22,8 @@ export default class VehicleService {
         return await this.repository.getProductAll(filter, limit, offset)
     }
 
-    async getProductList(vehicle, limit, offset, product_price) {
-        const data = await this.repository.getProductList(vehicle, limit, offset)
+    async getProductList(payload, limit, offset, product_price) {
+        const data = await this.repository.getProductList(payload, limit, offset)
         data.map(data => data.dataValues.price = product_price)
 
         return data
@@ -60,8 +60,8 @@ export default class VehicleService {
         return products
     }
 
-    getCountByVehicle(vehicle) {
-        return this.repository.getCountByVehicle(vehicle)
+    getCountByVehicle(payload) {
+        return this.repository.getCountByVehicle(payload)
     }
 
     async getCountByQuery(filter) {

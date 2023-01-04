@@ -80,7 +80,8 @@
                                     </div>
 
                                     <div v-if="policy.status == 'open'" class="badge py-2 px-3 rounded-pill badge-primary mr-1">Penawaran</div>
-                                    <div v-else-if="policy.status == 'waiting'" class="badge py-2 px-3 rounded-pill badge-info mr-1">Menunggu Pembayaran</div>
+                                    <div v-else-if="policy.status == 'waiting'" class="badge py-2 px-3 rounded-pill badge-info clickable mr-1"
+                                        @click="openPayment(policy.quotationID)">Menunggu Pembayaran</div>
                                     <div v-else-if="policy.status == 'paid'" class="badge py-2 px-3 rounded-pill badge-success mr-1">Pembayaran Diterima</div>
                                     <div v-else-if="policy.status == 'rejected'" class="badge py-2 px-3 rounded-pill badge-danger mr-1">Pembayaran Ditolak</div>
                                     <div v-else-if="policy.status == 'canceled'" class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
@@ -198,6 +199,9 @@ export default {
                 // self.$router.push({name: "produk-cari-mobil"})
             })
         },
+        openPayment(id) {
+            window.location.href = `/asuransi/mobil/polis/konfirmasi-pembayaran?id=${id}`
+        }
     }
 }
 </script>

@@ -47,6 +47,9 @@ module.exports = {
                 defaultValue: 0,
                 comment: "Materai",
             },
+            vehicle_max_year: {
+                type: Sequelize.INTEGER,
+            },
             supported_brands: {
                 type: Sequelize.STRING,
             },

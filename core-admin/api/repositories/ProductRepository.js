@@ -23,13 +23,19 @@ export default class ProductRepository {
         })
     }
 
-    async getProductList(vehicle, limit, offset) {
+    async getProductList(payload, limit, offset) {
         return await Product.findAll({
             where: {
-                type: vehicle.protection,
+                type: payload.protection,
                 supported_brands: {
                     [Op.or]: {
-                        [Op.like]: `%${vehicle.brand}%`,
+                        [Op.like]: `%${payload.brand}%`,
+                        [Op.is]: null
+                    }
+                },
+                vehicle_max_year: {
+                    [Op.or]: {
+                        [Op.gte]: payload.vehicle_age,
                         [Op.is]: null
                     }
                 },
@@ -56,13 +62,19 @@ export default class ProductRepository {
         })
     }
 
-    async getCountByVehicle(vehicle) {
+    async getCountByVehicle(payload) {
         return await Product.count({
             where: {
-                type: vehicle.protection,
+                type: payload.protection,
                 supported_brands: {
                     [Op.or]: {
-                        [Op.like]: `%${vehicle.brand}%`,
+                        [Op.like]: `%${payload.brand}%`,
+                        [Op.is]: null
+                    }
+                },
+                vehicle_max_year: {
+                    [Op.or]: {
+                        [Op.gte]: payload.vehicle_age,
                         [Op.is]: null
                     }
                 },

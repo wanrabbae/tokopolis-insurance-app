@@ -34,6 +34,14 @@ export default class AccountService {
         return this.repository.getAccountDataFromEmail(email);
     }
 
+    getAccountSimple(id) {
+        return this.repository.getAccountSimple(id)
+    }
+
+    getAccountPhoto(account_id) {
+        return this.repository.getAccountPhoto(account_id)
+    }
+
     getAllAccountWithRoleId(role_id) {
         return this.repository.getAccountDataWithRoleId(role_id);
     }
@@ -268,6 +276,10 @@ export default class AccountService {
 
     getUpgradeRequestDetail(id) {
         return this.repository.getUpgradeRequestDetail(id)
+    }
+
+    getUpgradeRequestByAccount(account_id) {
+        return this.repository.getUpgradeRequestByAccount(account_id)
     }
 
     createUpgradeRequest(payload) {

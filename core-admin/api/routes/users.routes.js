@@ -5,6 +5,8 @@ const { uploadFile } = require('../middlewares/uploadFile')
 
 const {
     getAccountData,
+    getAccountSimple,
+    getAccountPhoto,
     updateAccountData,
     updatePassword,
     getIdentity,
@@ -12,6 +14,7 @@ const {
     getBank,
     updateBank,
     getTransactions,
+    getUpgrade,
     requestUpgrade,
 } = require("../controllers/UserController.js");
 
@@ -20,6 +23,9 @@ const auth = verify()
 const AuthRoleMiddleware = verifyToken('auth:role')
 
 router.get("/user", auth, getAccountData);
+router.get("/user/simple", auth, getAccountSimple)
+router.get("/user/photo", auth, getAccountPhoto)
+
 router.post("/user", auth, uploadFile().single("photo"), updateAccountData);
 
 router.post('/user/change-password', auth, updatePassword)
@@ -31,6 +37,7 @@ router.post('/user/bank', auth, updateBank)
 
 router.get('/user/transactions', auth, getTransactions)
 
-router.post("/user/request-upgrade", auth, requestUpgrade);
+router.get("/user/upgrade", auth, getUpgrade)
+router.post("/user/upgrade", auth, requestUpgrade)
 
 module.exports = router;

@@ -139,6 +139,19 @@
 										</div>
 									</div>
 
+                                    <div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Batas Usia Kendaraan
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<input
+												type="number"
+												class="form-control"
+												v-model="form.vehicle_max_year"
+												placeholder="Masukkan Batas Usia Kendaraan">
+										</div>
+									</div>
+
 									<div role="group" class="row form-group mb-3">
 										<label class="col-sm-2 col-lg-2 col-form-label">Brand yang Didukung
 											<label class="text-danger">*</label>
@@ -177,6 +190,20 @@
 												v-model="form.claim"
 												:state="validateState('claim')"
 												:editor="editor"/>
+										</div>
+									</div>
+
+                                    <div role="group" class="row form-group mb-3">
+										<label class="col-sm-2 col-lg-2 col-form-label">Nama Perusahaan
+											<label class="text-danger">*</label>
+										</label>
+										<div class="col-sm-10 col-lg-10">
+											<input
+												type="text"
+												class="form-control"
+												v-model="form.company"
+												placeholder="Masukkan Nama Perusahaan"
+												required>
 										</div>
 									</div>
 
@@ -273,9 +300,11 @@ export default {
 				extra_point: 0,
 				admin_fee: 0,
 				stamp_fee: 0,
+                vehicle_max_year: null,
                 supported_brands: null,
 				tnc: null,
 				claim: null,
+				company: null,
 				workshop_count: null,
 			},
 			submitted: false,
@@ -301,6 +330,7 @@ export default {
             email: { required },
             tnc: { required },
             claim: { required },
+            company: { required },
             workshop_count: { numeric },
         },
     },
