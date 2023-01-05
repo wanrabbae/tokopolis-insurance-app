@@ -75,9 +75,9 @@
                     class="mb-4"
                 />
 
-                <div v-if="!policies.length" class="text-center h-100 bg-white rounded p-5 p-md-5">
-                    <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px" />
-                    <h4 style="color:#ff7900;" class="mt-3">Belum Ada Klaim</h4>
+                <div v-if="!policies.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
+                    <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
+                    <h4 class="mt-3 text-secondary">Belum Ada Klaim</h4>
                 </div>
 
                 <div v-for="(policy, id) in policies" :key="id" class="card" :class="{ 'mb-4': id < policies.length - 1 }">
