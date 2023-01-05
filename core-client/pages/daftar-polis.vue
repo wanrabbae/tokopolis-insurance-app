@@ -151,15 +151,15 @@ export default {
                 // { text: 'Perjalanan', value: "travel" },
             ],
             policies: [
-                {
-                    quotationID: "TKP-00000000-000000-0000",
-                    holder: "",
-                    name: "",
-                    periodDate: "",
-                    endDate: "",
-                    image: "/img/car-icon-comprehensive.png",
-                    status: true
-                },
+                // {
+                //     quotationID: "TKP-00000000-000000-0000",
+                //     holder: "",
+                //     name: "",
+                //     periodDate: "",
+                //     endDate: "",
+                //     image: "/img/car-icon-comprehensive.png",
+                //     status: true
+                // },
             ]
         }
     },
@@ -177,8 +177,6 @@ export default {
 
             await this.$axios.$get(`api/user/transactions`)
             .then ((response) => {
-                console.log(response.data)
-
                 response.data.forEach((field) => {
                     const start = moment(field.start_date)
                     const end = moment(field.start_date).add(1, 'year')
@@ -200,8 +198,6 @@ export default {
 
                 this.loading = false
 
-            }).catch (function () {
-                // self.$router.push({name: "produk-cari-mobil"})
             })
         },
         openPayment(id) {

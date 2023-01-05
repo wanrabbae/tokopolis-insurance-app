@@ -99,7 +99,6 @@ export default {
 					cookie.set('token', accessToken, { expires: 1 })
 					cookie.set('photo', payload.photo, { expires: 1 })
 
-					this.$store.commit('setToken',accessToken)
 					this.$router.go()
 				})}
             catch (e) {

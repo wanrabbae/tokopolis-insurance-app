@@ -78,7 +78,7 @@
 
                     </div>
 
-                    <div v-if="!policies.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
+                    <div v-if="!shownProducts.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
                         <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
                         <h4 class="mt-3 text-secondary">Belum Ada Polis</h4>
                     </div>
@@ -120,11 +120,11 @@
 
                                         <div  class="col-4 d-flex justify-content-center align-items-center">
 
-                                            <nuxt-img 
+                                            <nuxt-img
                                                 preset="default"
                                                 height="96"
-                                                :src="product.image" 
-                                                :alt="product.name" 
+                                                :src="product.image"
+                                                :alt="product.name"
                                                 loading="lazy"
                                             />
 
@@ -230,12 +230,12 @@
                         <div class="h-100 bg-white rounded p-2 p-md-3">
 
                             <div class="row no-gutters">
-                                
+
                                 <div class="col col-md-12 product-image mr-2 mr-md-0 mb-md-2">
 
-                                    <nuxt-img 
+                                    <nuxt-img
                                         preset="default"
-                                        :src="product.image" 
+                                        :src="product.image"
                                         :alt="product.name"
                                         sizes="md:32px lg:192px"
                                     />
@@ -251,9 +251,9 @@
                             </div>
 
                             <div class="d-none d-md-block text-center">
-                            
+
                                 {{ formatPrice(product.price) }} / {{ product.period }}
-                            
+
                             </div>
 
                         </div> <!-- card ends -->
@@ -382,30 +382,30 @@ export default {
                     {
                         question: 'Apa itu asuransi mobil?',
                         answer: `
-                                Salah satu bentuk proteksi finasial atas aset mobil anda atas kejadian yang tidak diinginkan sehingga 
+                                Salah satu bentuk proteksi finasial atas aset mobil anda atas kejadian yang tidak diinginkan sehingga
                                 mengakibatkan pengeluaran tak terduga yang besar akibat perbaikan mobil anda di bengkel.
                                 `
                     },
                     {
                         question: 'Mengapa anda harus memiliki asuransi mobil?',
                         answer: `
-                                Bagi anda yang memiliki mobil, selayaknnya anda lengkapi dengan asuransi mobil 
-                                untuk menghindari biaya kerugian yang timbul atas kejadian tak terduga seperti 
+                                Bagi anda yang memiliki mobil, selayaknnya anda lengkapi dengan asuransi mobil
+                                untuk menghindari biaya kerugian yang timbul atas kejadian tak terduga seperti
                                 kecelakaan beraibat kerusakan mobil.
                                 `
                     },
                     {
                         question: 'Apa saja keuntungan memiliki asuransi mobil?',
                         answer: `
-                                Tidak ada rasa khawatir, jaminan perbaikan mobil jika terjadi kejadian tidak 
-                                diinginkan, transafer risiko ke perusahaan asuransi, jaringan bengkel tersebar 
+                                Tidak ada rasa khawatir, jaminan perbaikan mobil jika terjadi kejadian tidak
+                                diinginkan, transafer risiko ke perusahaan asuransi, jaringan bengkel tersebar
                                 seluruh Indonesia.
                                 `
                     },
                     {
                         question: 'Apa saja jenis-jenis asuransi mobil yang tersedia?',
                         answer: `
-                                Comprehensive (Jaminan risiko kerusakan sebagian) & Total Loss Only / TLO 
+                                Comprehensive (Jaminan risiko kerusakan sebagian) & Total Loss Only / TLO
                                 (Jaminan risiko kerusakan total atau min 75% dari harga kendaraan).
                                 `
                     },
@@ -431,7 +431,7 @@ export default {
                     {
                         question: 'Apakah semua risiko sudah dilindungi dengan asuransi mobil comprehensive?',
                         answer: `
-                                Ya, kecuali resiko yang dikecualikan dalam polis asuransi kendaraan bermotor. 
+                                Ya, kecuali resiko yang dikecualikan dalam polis asuransi kendaraan bermotor.
                                 Kami sarankan dapat membaca wording PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia).
                                 `
                     },
@@ -444,22 +444,22 @@ export default {
                     {
                         question: 'Apa saja jenis perluasan asuransi mobil?',
                         answer: `
-                                Asuransi dapat diperluas dengan menambah perluasan risiko seperti Kerusuhan, 
-                                Huru Hara, Banjir, Gempa Bumi, Tuntutan Pihak Ketiga, Kecelakaan Diri Pengemudi 
+                                Asuransi dapat diperluas dengan menambah perluasan risiko seperti Kerusuhan,
+                                Huru Hara, Banjir, Gempa Bumi, Tuntutan Pihak Ketiga, Kecelakaan Diri Pengemudi
                                 dan Penumpang.
                                 `
                     },
                     {
                         question: 'Apa yang dimaksud dengan loading fee/loading rate dan bagaimana cara menghitungnya?',
                         answer: `
-                                Loading fee/loading rate akan dikenakan sebesar 5% (dari rate standar OJK) per 
+                                Loading fee/loading rate akan dikenakan sebesar 5% (dari rate standar OJK) per
                                 tahunnya untuk kendaraan dengan usia di atas 5 (lima) tahun.
                                 `
                     },
                     {
                         question: 'Dokumen apa saja yang perlu saya siapkan sebelum melakukan klaim dan bagaimana cara mengajukan claim?',
                         answer: `
-                                Dokumen yang perlu disiapkan yaitu scan copy KTP, polis asuransi dan foto kerusakan kendaraan, 
+                                Dokumen yang perlu disiapkan yaitu scan copy KTP, polis asuransi dan foto kerusakan kendaraan,
                                 selanjurnya silahkan mengisi form laporan claim pada web app kami tokopolis.id.
                                 `
                     },
@@ -472,7 +472,7 @@ export default {
                     {
                         question: 'Apakah saya dapat menambahkan perluasan risiko lagi, ketika polis sudah terbit?',
                         answer: `
-                                Bisa, syarat dilakukan desk survey (melampirkan foto kendaraan) dan biasanya dikenakan tambahan premi. 
+                                Bisa, syarat dilakukan desk survey (melampirkan foto kendaraan) dan biasanya dikenakan tambahan premi.
                                 Adapun pengajuan endorsement ditujukan ke email cs@tokopolis.id atau hubungi contact center kami.
                                 `
                     },
@@ -485,14 +485,14 @@ export default {
                     {
                         question: 'Apakah polis yang sudah saya beli dapat dibatalkan dan bagaimana caranya?',
                         answer: `
-                                Dokumen yang perlu disiapkan yaitu scan copy KTP, dan pengajuan pembatalan secara tertulis disertai alasan, 
+                                Dokumen yang perlu disiapkan yaitu scan copy KTP, dan pengajuan pembatalan secara tertulis disertai alasan,
                                 selanjurnya ditujukan ke email cs@tokopolis.id atau hubungi contact center kami.
                                 `
                     },
                     {
                         question: 'Apakah saya dapat menerima refund atas pembatalan polis yang dibatalkan?',
                         answer: `
-                                Kebijakan atau perhitungan pengembalian dana refund akan disampaikan setelah mendapatkan konfirmasi dari 
+                                Kebijakan atau perhitungan pengembalian dana refund akan disampaikan setelah mendapatkan konfirmasi dari
                                 pihak Asuransi.
                                 `
                     },

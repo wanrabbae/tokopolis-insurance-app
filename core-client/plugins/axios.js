@@ -1,5 +1,16 @@
-export default function ({ $axios, $auth, redirect, store }) {
-    // dijalankan oleh sebelum axios request
-    if (store.state.token != '')
-        $axios.setToken(`Bearer ${store.state.token}`)
+export default function (ctx) {
+    // dijalankan sebelum axios request
+    if (ctx.store.state.token !== '') {
+        ctx.$axios.setToken(`Bearer ${ctx.store.state.token}`)
+    }
+
+    ctx.$axios.onError((error) => {
+        console.log(error)
+
+        switch (error.response.status) {
+            case 401:
+                ctx.$logoutClient()
+                break
+        }
+    })
 }

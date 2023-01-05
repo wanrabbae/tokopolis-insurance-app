@@ -219,15 +219,15 @@ export default {
                 // { text: 'Perjalanan', value: "travel" },
             ],
             policies: [
-                {
-                    claimNumber: "C-00.00.0000",
-                    quotationID: "TKP-00000000-000000-0000",
-                    holder: "",
-                    product: "",
-                    periodDate: "",
-                    image: "/img/car-icon-comprehensive.png",
-                    status: "pending",
-                },
+                // {
+                //     claimNumber: "C-00.00.0000",
+                //     quotationID: "TKP-00000000-000000-0000",
+                //     holder: "",
+                //     product: "",
+                //     periodDate: "",
+                //     image: "/img/car-icon-comprehensive.png",
+                //     status: "pending",
+                // },
             ]
         }
     },
@@ -260,8 +260,6 @@ export default {
                 })
 
                 this.loading = false
-
-            }).catch (function () {
 
             })
         },

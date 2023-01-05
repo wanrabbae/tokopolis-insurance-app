@@ -1,8 +1,7 @@
 import Vue from 'vue'
-import cookie from 'js-cookie'
 import atob from 'atob'
 
-const mixin ={
+const mixin = {
     methods: {
         formatPrice(value, locales='id-ID', style='currency', currency = 'IDR') {
             const formatter = new Intl.NumberFormat(locales, {
@@ -42,18 +41,7 @@ const mixin ={
 
             return payload.role === 5
         },
-        async logout(){
-            await cookie.remove('token')
-            await cookie.remove('photo')
-
-            await this.$store.commit('setData', { token: null, photo: null })
-            await this.$router.app.refresh()
-
-            this.$router.go('/')
-        },
-        
     },
-    
 }
 
 Vue.mixin(mixin)

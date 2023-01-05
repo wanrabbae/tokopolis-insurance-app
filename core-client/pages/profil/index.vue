@@ -435,10 +435,6 @@ export default {
                         this.loading = false
                     }
                 })
-                .catch (error => {
-                    console.log(error)
-                    this.logout()
-                })
         },
         async getUpgrade() {
             await this.$axios.$get('api/user/upgrade')

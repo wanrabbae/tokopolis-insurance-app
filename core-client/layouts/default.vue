@@ -38,7 +38,7 @@ export default {
         window.addEventListener('resize', this.handleResize);
     },
     mounted() {
-        this.getUserPhoto();
+        // this.getUserPhoto();
         this.handleResize();
     },
     beforeDestroy() {

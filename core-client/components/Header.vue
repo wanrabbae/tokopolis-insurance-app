@@ -260,6 +260,9 @@ export default {
                 this.scrolled = false;
             }
         },
+        logout() {
+            this.$logoutClient()
+        }
     }
 }
 </script>

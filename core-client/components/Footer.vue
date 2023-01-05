@@ -35,22 +35,22 @@
                         <h4>Unduh</h4>
                         
                         <a href="#" class="d-inline-block mr-2">
-                            
-                            <img  
-                                style="width: 90px; height: 30px" 
-                                src="img/black_play_store.png"
-                                alt="Get it on Google Play" 
+
+                            <img
+                                style="width: 90px; height: 30px"
+                                src="/img/black_play_store.png"
+                                alt="Get it on Google Play"
                                 loading="lazy"
                             />
 
                         </a>
 
                         <a href="#" class="d-inline-block">
-                            
-                            <img  
-                                style="width: 90px; height: 30px" 
-                                src="img/black_app_store.png"
-                                alt="Download on the App Store" 
+
+                            <img
+                                style="width: 90px; height: 30px"
+                                src="/img/black_app_store.png"
+                                alt="Download on the App Store"
                                 loading="lazy"
                             />
 

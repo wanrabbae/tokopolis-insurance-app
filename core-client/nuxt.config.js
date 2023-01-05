@@ -69,6 +69,7 @@ export default {
   */
   plugins: [
     '~/plugins/mixins-global-function.js',
+    '~/plugins/global-function.js',
     '~/plugins/bootstrap-vue.js',
     '~/plugins/vee-validate.js',
     '~/plugins/persistedState.client.js',
