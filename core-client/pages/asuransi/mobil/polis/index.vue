@@ -78,9 +78,9 @@
 
                     </div>
 
-                    <div v-if="!shownProducts.length" class="text-center">
-                        <b-img center src="/img/box.png" alt="No Polis" width="100px" style="max-height: 160px" />
-                        <p>Belum Ada Polis</p>
+                    <div v-if="!policies.length" class="text-center h-100 bg-white rounded p-10 p-md-10">
+                        <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px" />
+                        <h4 style="color:#ff7900;" class="mt-3">Belum Ada Polis</h4>
                     </div>
 
                     <b-form>
