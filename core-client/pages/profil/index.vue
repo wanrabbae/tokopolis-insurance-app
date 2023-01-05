@@ -212,21 +212,11 @@
                         <span class="fw-bold">Proses Verifikasi</span>
                     </div>
 
-                    <div v-if="user.role != null" class="d-block">
-                        <div id="role-id" class="text-secondary clickable mt-3"
-                            @click="copyToClipboard(user.unique_id)">
-                            <span class="mr-1"><fa icon="star" style="width: 16px; height: 16px;"/></span>
-                            <span class="fw-bold">{{ user.role }}</span>
-                        </div>
-
-                        <b-tooltip
-                            triggers="click blur"
-                            target="role-id"
-                            :variant="tooltip.success ? 'secondary' : 'danger'"
-                            placement="bottom"
-                        >
-                            {{ tooltip.message }}
-                        </b-tooltip>
+                    <div v-if="user.role != null" v-b-tooltip.click.blur.bottom.v-dark="tooltip.message"
+                        class="text-secondary clickable mt-3"
+                        @click="copyToClipboard(user.unique_id)">
+                        <span class="mr-1"><fa icon="award" style="width: 16px; height: 16px;"/></span>
+                        <span class="fw-bold">{{ user.role }}</span>
                     </div>
 
                 </div> <!-- col-12.col-4 ends -->

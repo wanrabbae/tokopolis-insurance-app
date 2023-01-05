@@ -25,7 +25,7 @@
                             Komisi
 
                             <small
-                                v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Komisi di sini'"
+                                v-b-tooltip.hover.right.v-dark="'Jumlah akumulasi komisi yang tersedia'"
                                 class="ml-1 pr-2 align-top text-primary opacity-75"
                             >
                                 <fa icon="circle-info"/>
@@ -33,7 +33,12 @@
 
                         </div>
 
-                        <BaseButton @click="onWithdraw">Penarikan</BaseButton>
+                        <div v-if="bank.verified">
+                            <BaseButton @click="onWithdraw">Penarikan</BaseButton>
+                        </div>
+                        <div v-else v-b-tooltip.hover.top.v-dark="'Data Rekening Bank belum diverifikasi'">
+                            <BaseButton disabled>Penarikan</BaseButton>
+                        </div>
 
                     </div>
 
@@ -62,7 +67,7 @@
                         Polis Terjual
 
                         <small
-                            v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Polis Terjual di sini'"
+                            v-b-tooltip.hover.right.v-dark="'Akumulasi Transaksi Polis yang terbayar'"
                             class="ml-1 pr-2 align-top text-primary opacity-75"
                         >
                             <fa icon="circle-info"/>
@@ -95,7 +100,7 @@
                         GWP
 
                         <small
-                            v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Gross Written Premium (GWP) di sini'"
+                            v-b-tooltip.hover.right.v-dark="'Jumlah akumulasi premi Gross atas transaksi polis yang terbayar'"
                             class="ml-1 pr-2 align-top text-primary opacity-75"
                         >
                             <fa icon="circle-info"/>
@@ -137,7 +142,7 @@
 
             </b-tr>
 
-            <b-tr v-if="!history" class="border-bottom" style="background-color: #efedfa">
+            <b-tr v-if="history.length == 0" class="border-bottom" style="background-color: #efedfa">
 
                 <b-td class="col-12 text-center align-middle" colspan="4">
 
@@ -149,14 +154,14 @@
 
             <b-tr v-for="(historyItem, i) in history" v-else :key="i" class="border-bottom" style="background-color: #efedfa">
 
-                <b-td class="col-2 text-center align-middle">{{ $dayjs(historyItem.date).format('DD-MM-YYYY') }}</b-td>
+                <b-td class="col-2 text-center align-middle">{{ $dayjs(historyItem.date).format('DD MMM YYYY') }}</b-td>
 
                 <b-td class="col-6 text-center align-middle">
 
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex justify-content-center align-items-center">
 
                         <span
-                            class="d-inline-flex justify-content-center align-items-center rounded-circle mr-3 p-2"
+                            class="d-inline-flex justify-content-center align-items-center rounded-circle mr-2 p-2"
                             style="flex: 0 0 36px; width:36px; height:36px"
                             :style="{ backgroundColor: type[historyItem.type].iconBgColor }"
                         >
@@ -185,6 +190,8 @@
 
         <PenarikanKomisiModal
             id="modal-penarikan-komisi"
+            :fields="commissionData"
+            @submit="onSubmit"
         />
 
     </div>
@@ -250,7 +257,21 @@ export default {
             dateRangeOptions: [
                 { value: 'last-30-days', text: '30 Hari Terakhir' },
                 { value: 'last-7-days', text: '7 Hari Terakhir' }
-            ]
+            ],
+            bank: {
+                name: null,
+                accountNumber: null,
+                accountName: null,
+                verified: false
+            },
+            bankAlias: {
+                'bca': 'BCA',
+                'bni': 'BNI',
+                'mandiri': 'Mandiri',
+                'bri': 'BRI',
+                'btn': 'BTN',
+                'cmb': 'CIMB Niaga',
+            }
         }
     },
     head() {
@@ -258,10 +279,21 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
+    computed: {
+        commissionData() {
+            return {
+                value: this.commission,
+                bank: this.bankAlias[this.bank.name],
+                accountNumber: this.bank.accountNumber,
+                accountName: this.bank.accountName
+            }
+        }
+    },
     mounted() {
         this.getCommission()
         this.getTotal()
         this.getHistory()
+        this.getBank()
     },
     methods: {
         onWithdraw() {
@@ -271,7 +303,7 @@ export default {
         async getCommission() {
             await this.$axios.$get('api/comissions')
                 .then ((response) => {
-                    this.commission = response.data.total
+                    this.commission = response.data.total || 0
                 })
                 .catch (error => {
                     console.log(error)
@@ -304,6 +336,22 @@ export default {
                     console.log(error)
                 })
         },
+        async getBank() {
+            await this.$axios.$get('api/user/bank')
+                .then ((response) => {
+                    if (response.data != null) {
+                        this.bank = {
+                            name: response.data.type,
+                            accountNumber: response.data.account_number,
+                            accountName: response.data.fullname,
+                            verified: response.data.is_verified,
+                        }
+                    }
+                })
+        },
+        onSubmit(data) {
+            console.log(data)
+        }
     }
 }
 </script>
