@@ -50,6 +50,11 @@
                     class="mb-4"
                 />
 
+                <div v-if="!policies.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
+                    <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
+                    <h4 class="mt-3 text-secondary">Belum Ada Polis</h4>
+                </div>
+
                 <div v-for="(policy, id) in policies" :key="id" class="card" :class="{ 'mb-4': id < policies.length - 1 }">
                     <div class="card-header border-bottom">
                         <div class="row">
