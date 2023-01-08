@@ -84,7 +84,8 @@
                                         {{ policy.status === "paid" ? 'Aktif' : 'Belum Aktif' }}
                                     </div>
 
-                                    <div v-if="policy.status == 'open'" class="badge py-2 px-3 rounded-pill badge-primary mr-1">Penawaran</div>
+                                    <div v-if="policy.status == 'open'" class="badge py-2 px-3 rounded-pill badge-primary clickable mr-1"
+                                        @click="openDocument(policy.quotationID)">Penawaran</div>
                                     <div v-else-if="policy.status == 'waiting'" class="badge py-2 px-3 rounded-pill badge-info clickable mr-1"
                                         @click="openPayment(policy.quotationID)">Menunggu Pembayaran</div>
                                     <div v-else-if="policy.status == 'paid'" class="badge py-2 px-3 rounded-pill badge-success mr-1">Pembayaran Diterima</div>
@@ -98,7 +99,8 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <BaseButton tag="a" :href="'/ajukan-klaim?id=' + policy.quotationID">Ajukan Klaim</BaseButton>
+                            <BaseButton v-if="policy.status != 'open'" tag="a"
+                                :href="'/ajukan-klaim?id=' + policy.quotationID">Ajukan Klaim</BaseButton>
                             <BaseButton tag="a" href="#" disabled>Beli Lagi</BaseButton>
                         </div>
                     </div>
@@ -202,7 +204,10 @@ export default {
         },
         openPayment(id) {
             window.location.href = `/asuransi/mobil/polis/konfirmasi-pembayaran?id=${id}`
-        }
+        },
+        openDocument(id) {
+            window.open(`/quotation/${id}`, '_blank')
+        },
     }
 }
 </script>

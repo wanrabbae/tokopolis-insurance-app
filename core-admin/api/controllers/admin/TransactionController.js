@@ -47,15 +47,21 @@ exports.detail = async (req, res, next) => {
     return res.jsonData(data[0])
 }
 
-const generateXls = (transaction, destination) => {
+const generateXls = (review, transaction, destination) => {
     var workbook = new excel.Workbook()
     var worksheet = workbook.addWorksheet('Sheet1')
 
     const isNew = transaction.documents.bastk != undefined
 
-    const values = {
+    const accessoriesPriceTotal = transaction.vehicle_data.accessories.reduce((a, b) => a + b.price, 0)
+    const expansionPriceTotal = transaction.expansions.reduce((a, b) => a + b.price, 0)
+
+    var addressDetail = transaction.address_detail.split(' ')
+    var postalCode = addressDetail.pop()
+
+    var values = {
         'Registration Date': moment(transaction.created_at).format("DD/MMM/YYYY"),
-        'Processed Time': '-',
+        // 'Processed Time': '-', // get date ketika virtual account dibuat
         'Quotation No.': transaction.id,
         'Insurance Name': transaction.product_name,
         'Tokopolis Policy Number': '-',
@@ -75,37 +81,70 @@ const generateXls = (transaction, destination) => {
         'Tampak 3D': !isNew ? 'Terlampir' : 'N/A',
         'Tampak Dashboard': !isNew ? 'Terlampir' : 'N/A',
         'Tahun Kendaraan': transaction.vehicle_data.year,
-        'Pemakaian': '',
+        'Pemakaian': transaction.vehicle_data.use == 'private' ? 'PERSONAL' : 'KOMERSIL',
         'Kondisi': isNew != undefined ? 'BARU' : 'BEKAS',
         'Merek Kendaraan': transaction.brand,
-        'Tipe Kendaraan': '',
+        'Tipe Kendaraan': transaction.model,
         'Seri Kendaraan': transaction.sub_model,
         'Nomor Polisi': !isNew && transaction.vehicle_data.plate_detail != undefined ?
-            `${transaction.vehicle_data.plate} ${transaction.vehicle_data.plate_detail}` : transaction.vehicle_data.plate,
+            `${transaction.vehicle_data.plate} ${transaction.vehicle_data.plate_detail}` :
+            transaction.vehicle_data.plate,
         'Coverage': transaction.product_type == 'comprehensive' ? 'Komprehensif' : 'Total Loss',
-        'TSI': '',
-        'Premi Jaminan Utama': '',
-        'STRIKE_RIOT_CIVIL_COMMOTION': '',
-        'TYPHOON_STORM_FLOOD_HAIL_LANDSLIDE': '',
-        'EARTHQUAKE_TSUNAMI_VOLCANIC_ERUPTION': '',
-        'THIRD_PARTY_LIABILITY': '',
-        'AUTHORIZED_WORKSHOP': '',
-        'Harga Aksesoris': '',
-        'Detil Aksesoris': '',
-        'GWP': '',
-        'Diskon': '',
-        'Persenan Diskon': '',
+        'TSI': transaction.vehicle_data.price,
+        'Premi Jaminan Utama': transaction.price,
+        // ====================== LINE FOR EXPANSION_CODES ======================
+        'Harga Aksesoris': accessoriesPriceTotal,
+        'Detail Aksesoris': transaction.vehicle_data.accessories
+            .map(item => `${item.type} (${item.brand})`)
+            .join(', '),
+        'GWP': transaction.price + expansionPriceTotal,
+        'Diskon': transaction.discount_total,
+        'Persenan Diskon': transaction.discount_format == 'percent' ? transaction.discount_value :
+            transaction.discount_total / (transaction.price + expansionPriceTotal) * 100,
         'Biaya Admin': transaction.fee_admin + transaction.fee_stamp,
-        'NWP': '',
+        'NWP': (transaction.price + expansionPriceTotal) - transaction.discount_total +
+            transaction.fee_admin + transaction.fee_stamp, // gwp - discount + biaya admin
         'Nama Tertanggung': transaction.client_data.fullname,
-        'Tanggal Lahir Tertanggung': '-',
         'Tipe Identitas Tertanggung': '-',
-        'Alamat Tertanggung': `${transaction.address_detail}, ${transaction.village_name},
-            ${transaction.district_name}, ${transaction.regency_name}, ${transaction.province_name}`,
-        'Insurance Notes': '-',
+        'Alamat Tertanggung': (`${addressDetail.join(' ')}, ${transaction.village_name}, ` +
+            `${transaction.district_name}, ${transaction.regency_name}, ` +
+            `${transaction.province_name} ${postalCode}`)
+            .replace((/  |\r\n|\n|\r/gm), ''),
+        'Insurance Notes': Object.entries(review.item)
+            .filter(el => el[1].note != null)
+            .map(a => `${a[0]} (${a[1].note})`)
+            .join(', ') || '-',
         'Quotation Status': 'WAITING',
     }
 
+    const expansionCodes = {
+        'srcc': 'STRIKE_RIOT_CIVIL_COMMOTION',
+        'terorism': 'TERRORISM_SABOTAGE',
+        'flood': 'TYPHOON_STORM_FLOOD_HAIL_LANDSLIDE',
+        'earthquake': 'EARTHQUAKE_TSUNAMI_VOLCANIC_ERUPTION',
+        'tpl': 'THIRD_PARTY_LIABILITY',
+        'pad': 'PERSONAL_ACCIDENT_DRIVER',
+        'pap': 'PERSONAL_ACCIDENT_PASSANGER',
+        'taxi_allowance': 'TRANSPORTATION_ALLOWANCE',
+    }
+
+    // Append Expansion into object
+    var expansionIndex = 30
+    var valueEntries = Object.entries(values)
+
+    for (const item of transaction.expansions) {
+        if (item.code in expansionCodes) {
+            valueEntries.splice(expansionIndex, 0, [expansionCodes[item.code], item.price])
+        } else {
+            valueEntries.splice(expansionIndex, 0, [item.code.toUpperCase(), item.price])
+        }
+
+        expansionIndex++
+    }
+
+    values = Object.fromEntries(valueEntries)
+
+    // Print object into excel file
     for (let index = 0; index < Object.keys(values).length; index++) {
         const key = Object.keys(values)[index]
 
@@ -167,7 +206,7 @@ exports.addReview = async (req, res, next) => {
     const destination = `view/static/documents/${transaction.id}`
 
     generateZip(transaction, destination)
-    generateXls(transaction, destination)
+    generateXls(req.body, transaction, destination)
 
     service.sendEmailTransactionFile({
         host: process.env.REDIRECT_CLIENT || req.fullhost,
@@ -181,6 +220,20 @@ exports.addReview = async (req, res, next) => {
     })
 
     return res.jsonData(data)
+}
+
+exports.getTransactionQuotation = async (req, res, next) => {
+    const transactions = await service.getTransactionDetailForClient(req.params.id)
+    if (transactions.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+
+    const transaction = transactions[0]
+    const quotationFile = `quotation/${transaction.id}.pdf`
+
+    if (!fs.existsSync(`view/static/${quotationFile}`)) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+
+    return res.jsonData({
+        quotation: `${req.fullhost}/${quotationFile}`
+    })
 }
 
 exports.getTransactionFile = async (req, res, next) => {

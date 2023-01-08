@@ -5,9 +5,9 @@
         <Hero id="hero" tag="section" class="my-5 my-md-6" />
 
         <PromotionCarousel id="promotion" tag="section" :images="promotionImages" class="my-5 my-md-6" />
-        
+
         <section id="partner" class="container my-5 my-md-6">
-            
+
             <BrandCarousel :brand-images="partnerImages" grayscale />
 
         </section>
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="col-12 col-md-9">
-            
+
                     <BrandCarousel :brand-images="covererImages"/>
 
                 </div>
@@ -67,15 +67,15 @@ export default {
         return {
             promotionImages: [
                 {
-                    source: "/img/promotion-banner-1.png",
+                    source: "/img/promotion-1.png",
                     alt: "Promotion Banner 1"
                 },
                 {
-                    source: "/img/promotion-banner-2.png",
+                    source: "/img/promotion-2.png",
                     alt: "Promotion Banner 2"
                 },
                 {
-                    source: "/img/promotion-banner-3.png",
+                    source: "/img/promotion-3.png",
                     alt: "Promotion Banner 3"
                 }
             ],

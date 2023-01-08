@@ -578,6 +578,7 @@ exports.postTransaction = async (req, res) => {
                     year: transaction.vehicle_data.year,
                     capacity: transaction.vehicle_data.capacity,
                     zone: transaction.vehicle_data.zone,
+                    use: transaction.vehicle_data.use,
                     plate: transaction.vehicle_data.plate,
                     accessories: transaction.vehicle_data.accessories,
 
@@ -629,6 +630,7 @@ exports.postTransaction = async (req, res) => {
                 year: req.session.vehicle.year,
                 capacity: req.session.vehicle.capacity,
                 zone: req.session.vehicle.zone,
+                use: req.session.vehicle.use,
                 plate: req.session.vehicle.plate,
                 accessories: req.session.vehicle.accessories,
 

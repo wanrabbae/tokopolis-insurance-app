@@ -7,7 +7,7 @@
 
                 <div class="card-header border-bottom">
 
-                    <h2 class="mb-0">Form Laporan Claim</h2>
+                    <h2 class="mb-0">Form Laporan Klaim</h2>
 
                 </div> <!-- card-header ends -->
 
@@ -151,7 +151,7 @@
                         </div> <!-- col ends -->
 
                         <div class="col-12">
-                            <BaseButton native-type="submit" block>Ajukan Claim</BaseButton>
+                            <BaseButton native-type="submit" block>Ajukan Klaim</BaseButton>
                         </div>
 
                     </div> <!-- row ends -->
