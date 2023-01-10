@@ -2,6 +2,9 @@
     <div>
         <Header :mobile-view="mobileView" :logged-in="isLoggedIn" :photo="userPhoto" />
         <NuxtChild class="main-wrapper" :mobile-view="mobileView" keep-alive />
+        <notifications
+            group="error"
+            position="top right" />
         <Footer />
     </div>
 </template>

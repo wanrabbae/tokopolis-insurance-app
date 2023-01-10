@@ -20,3 +20,16 @@
         transform: rotate(360deg);
     }
 }
+
+.vue-notif-custom {
+    margin: 10px 10px 0 0 !important;
+    border-radius: 4px;
+
+    .notification-title {
+        font-size: 14px;
+    }
+
+    .notification-content {
+        font-size: 13px;
+    }
+}

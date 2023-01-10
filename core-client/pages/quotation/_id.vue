@@ -31,6 +31,10 @@ export default {
                 })
                 .catch(() => {
                     this.status = false
+
+                    setTimeout(() => {
+                        window.close()
+                    }, 1000)
                 })
         },
     }

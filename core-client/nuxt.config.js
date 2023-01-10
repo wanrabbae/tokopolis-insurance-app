@@ -76,6 +76,7 @@ export default {
     { mode: 'client', src: '~/plugins/axios' },
     { mode: 'client', src: '~/plugins/vue-awesome-swiper.js' },
     { mode: 'client', src:'~/plugins/avatar.js', ssr: false },
+    { mode: 'client', src: '~/plugins/vue-notification.js' },
   ],
 
   /*
