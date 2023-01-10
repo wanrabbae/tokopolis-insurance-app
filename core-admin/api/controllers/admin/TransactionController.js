@@ -229,10 +229,11 @@ exports.getTransactionQuotation = async (req, res, next) => {
     const transaction = transactions[0]
     const quotationFile = `quotation/${transaction.id}.pdf`
 
-    if (!fs.existsSync(`view/static/${quotationFile}`)) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+    if (!fs.existsSync(`view/static/${quotationFile}`))
+        return res.errorBadRequest(req.polyglot.t('error.transaction.quotation'))
 
     return res.jsonData({
-        quotation: `${req.fullhost}/${quotationFile}`
+        quotation: `${process.env.REDIRECT_ADMIN}/${quotationFile}`
     })
 }
 
