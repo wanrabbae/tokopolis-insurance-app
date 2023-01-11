@@ -14,21 +14,15 @@
 
                             <span class="mr-2">
 
-                                <nuxt-img
-                                    height="36"
-                                    preset="default"
-                                    src="/svg/coins.svg"
-                                />
+                                <nuxt-img height="36" preset="default" src="/svg/coins.svg" />
 
                             </span>
 
                             Komisi
 
-                            <small
-                                v-b-tooltip.hover.right.v-dark="'Jumlah akumulasi komisi yang tersedia'"
-                                class="ml-1 pr-2 align-top text-primary opacity-75"
-                            >
-                                <fa icon="circle-info"/>
+                            <small v-b-tooltip.hover.right.v-dark="'Jumlah akumulasi komisi yang tersedia'"
+                                class="ml-1 pr-2 align-top text-primary opacity-75">
+                                <fa icon="circle-info" />
                             </small>
 
                         </div>
@@ -56,21 +50,15 @@
 
                         <span class="mr-2">
 
-                            <nuxt-img
-                                height="36"
-                                preset="default"
-                                src="/img/shield-checkmark.png"
-                            />
+                            <nuxt-img height="36" preset="default" src="/img/shield-checkmark.png" />
 
                         </span>
 
                         Polis Terjual
 
-                        <small
-                            v-b-tooltip.hover.right.v-dark="'Akumulasi Transaksi Polis yang terbayar'"
-                            class="ml-1 pr-2 align-top text-primary opacity-75"
-                        >
-                            <fa icon="circle-info"/>
+                        <small v-b-tooltip.hover.right.v-dark="'Akumulasi Transaksi Polis yang terbayar'"
+                            class="ml-1 pr-2 align-top text-primary opacity-75">
+                            <fa icon="circle-info" />
                         </small>
 
                     </div>
@@ -89,11 +77,7 @@
 
                         <span class="mr-2">
 
-                            <nuxt-img
-                                height="36"
-                                preset="default"
-                                src="/svg/stripes.svg"
-                            />
+                            <nuxt-img height="36" preset="default" src="/svg/stripes.svg" />
 
                         </span>
 
@@ -101,9 +85,8 @@
 
                         <small
                             v-b-tooltip.hover.right.v-dark="'Jumlah akumulasi premi Gross atas transaksi polis yang terbayar'"
-                            class="ml-1 pr-2 align-top text-primary opacity-75"
-                        >
-                            <fa icon="circle-info"/>
+                            class="ml-1 pr-2 align-top text-primary opacity-75">
+                            <fa icon="circle-info" />
                         </small>
 
                     </div>
@@ -152,7 +135,8 @@
 
             </b-tr>
 
-            <b-tr v-for="(historyItem, i) in history" v-else :key="i" class="border-bottom" style="background-color: #efedfa">
+            <b-tr v-for="(historyItem, i) in history" v-else :key="i" class="border-bottom"
+                style="background-color: #efedfa">
 
                 <b-td class="col-2 text-center align-middle">{{ $dayjs(historyItem.date).format('DD MMM YYYY') }}</b-td>
 
@@ -160,17 +144,11 @@
 
                     <div class="d-flex justify-content-center align-items-center">
 
-                        <span
-                            class="d-inline-flex justify-content-center align-items-center rounded-circle mr-2 p-2"
+                        <span class="d-inline-flex justify-content-center align-items-center rounded-circle mr-2 p-2"
                             style="flex: 0 0 36px; width:36px; height:36px"
-                            :style="{ backgroundColor: type[historyItem.type].iconBgColor }"
-                        >
+                            :style="{ backgroundColor: type[historyItem.type].iconBgColor }">
 
-                            <nuxt-img
-                                preset="default"
-                                :src="type[historyItem.type].icon"
-                                sizes="lg:32px"
-                            />
+                            <nuxt-img preset="default" :src="type[historyItem.type].icon" sizes="lg:32px" />
 
                         </span>
 
@@ -182,17 +160,22 @@
 
                 <b-td class="col-2 text-center align-middle">{{ formatPrice(historyItem.value) }}</b-td>
 
-                <b-td class="col-2 text-center align-middle"><span :class="'text-' + status[historyItem.status].color">{{ status[historyItem.status].text }}</span></b-td>
+                <b-td class="col-2 text-center align-middle"><span
+                        :class="'text-' + status[historyItem.status].color">{{
+                            status[historyItem.status].text
+                        }}</span></b-td>
 
             </b-tr>
 
         </b-table-simple>
 
-        <PenarikanKomisiModal
-            id="modal-penarikan-komisi"
-            :fields="commissionData"
-            @submit="onSubmit"
+        <b-pagination v-if="history.length" v-model="currentPage"
+            class="mt-4"
+            v-bind="paginationOptions"
+            @page-click="onPageClick"
         />
+
+        <PenarikanKomisiModal id="modal-penarikan-komisi" :fields="commissionData" @submit="onSubmit" />
 
     </div>
 
@@ -227,6 +210,14 @@ export default {
                 //     value: 1000000
                 // },
             ],
+            currentPage: 1,
+            paginationOptions: {
+                align: "center",
+                disabled: !this.isLoggedIn,
+                limit: 3,
+                perPage: 6,
+                totalSearchResult: 10,
+            },
             type: {
                 withdraw: {
                     iconBgColor: '#F56060',
@@ -302,19 +293,19 @@ export default {
         },
         async getCommission() {
             await this.$axios.$get('api/comissions')
-                .then ((response) => {
+                .then((response) => {
                     this.commission = response.data.total || 0
                 })
-                .catch (error => {
+                .catch(error => {
                     console.log(error)
                 })
         },
         async getTotal() {
             await this.$axios.$get('api/transaction/total')
-                .then ((response) => {
+                .then((response) => {
                     this.productSold = response.data.total
                 })
-                .catch (error => {
+                .catch(error => {
                     console.log(error)
                 })
         },
@@ -322,7 +313,7 @@ export default {
             this.history = []
 
             await this.$axios.$get('api/comissions/history')
-                .then ((response) => {
+                .then((response) => {
                     for (const item of response.data) {
                         this.history.push({
                             date: item.created_at,
@@ -332,13 +323,13 @@ export default {
                         })
                     }
                 })
-                .catch (error => {
+                .catch(error => {
                     console.log(error)
                 })
         },
         async getBank() {
             await this.$axios.$get('api/user/bank')
-                .then ((response) => {
+                .then((response) => {
                     if (response.data != null) {
                         this.bank = {
                             name: response.data.type,
@@ -351,7 +342,11 @@ export default {
         },
         onSubmit(data) {
             console.log(data)
-        }
+        },
+        onPageClick(event, page) {
+            this.loading = true
+            this.getProductList(page)
+        },
     }
 }
 </script>

@@ -40,15 +40,12 @@
 
                         <b-input-group class="addon-combined">
 
-                            <input
-                                v-model="model.search"
-                                placeholder="Cari Klaim"
-                                class="form-control"
-                                required
-                            >
+                            <input v-model="model.search" placeholder="Cari Klaim" class="form-control" required>
 
                             <b-input-group-append>
-                                <BaseButton type="icon" classes="px-3"><fa icon="magnifying-glass"/></BaseButton>
+                                <BaseButton type="icon" classes="px-3">
+                                    <fa icon="magnifying-glass" />
+                                </BaseButton>
                             </b-input-group-append>
 
                         </b-input-group>
@@ -57,30 +54,23 @@
 
                     <div class="col-12 col-md-3 pl-md-1 mb-2">
 
-                        <BaseSelect
-                            v-model="model.status"
-                            name="Status"
-                            :options="statusOptions"
-                        />
+                        <BaseSelect v-model="model.status" name="Status" :options="statusOptions" />
 
                     </div> <!-- col-12.col-md-3 ends -->
 
                 </div> <!-- row ends -->
 
-                <SwiperRadioButtonGroup
-                    id="policy-category"
-                    v-model="model.policyCategory"
-                    name="policy-category"
-                    :options="policyCategoryOptions"
-                    class="mb-4"
-                />
+                <SwiperRadioButtonGroup id="policy-category" v-model="model.policyCategory" name="policy-category"
+                    :options="policyCategoryOptions" class="mb-4" />
 
-                <div v-if="!policies.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
-                    <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
+                <div v-if="!policies.length" class="text-center bg-white rounded"
+                    style=" padding-top: 100px; padding-bottom: 100px;">
+                    <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;" />
                     <h4 class="mt-3 text-secondary">Belum Ada Klaim</h4>
                 </div>
 
-                <div v-for="(policy, id) in policies" :key="id" class="card" :class="{ 'mb-4': id < policies.length - 1 }">
+                <div v-for="(policy, id) in policies" :key="id" class="card"
+                    :class="{ 'mb-4': id < policies.length - 1 }">
 
                     <div class="card-header border-bottom">
 
@@ -108,7 +98,8 @@
 
                             <div class="d-inline-block align-top mr-3">
 
-                                <img :src="policy.image" alt="Mobil" height="96px" width="96px" class="rounded-circle" style="max-height: 96px">
+                                <img :src="policy.image" alt="Mobil" height="96px" width="96px" class="rounded-circle"
+                                    style="max-height: 96px">
 
                             </div>
 
@@ -122,22 +113,18 @@
 
                                 <div class="d-block">
 
-                                    <div
-                                        class="badge py-2 px-3 rounded-pill mr-1"
-                                        :class="policy.status !== 'declined' ? 'badge-primary' : 'badge-warning'"
-                                    >
+                                    <div class="badge py-2 px-3 rounded-pill mr-1"
+                                        :class="policy.status !== 'declined' ? 'badge-primary' : 'badge-warning'">
                                         {{ status[policy.status] }}
                                     </div>
 
-                                    <div
-                                        class="badge py-2 px-3 rounded-pill badge-info mr-1"
-                                    >
+                                    <div class="badge py-2 px-3 rounded-pill badge-info mr-1">
                                         {{ policy.quotationID }}
                                     </div>
 
                                     <div class="d-inline-block">
 
-                                        <fa icon="share-nodes" style="width: 16px; height: 16px;"/>
+                                        <fa icon="share-nodes" style="width: 16px; height: 16px;" />
 
                                     </div>
 
@@ -149,7 +136,8 @@
 
                         <div class="text-right">
 
-                            <BaseButton tag="a" :href="'/detail-klaim?id=' + policy.claimNumber">Periksa Klaim</BaseButton>
+                            <BaseButton tag="a" :href="'/detail-klaim?id=' + policy.claimNumber">Periksa Klaim
+                            </BaseButton>
 
                         </div> <!-- text-right ends -->
 
@@ -157,10 +145,13 @@
 
                 </div> <!-- card ends -->
 
+                <b-pagination v-if="policies.length" v-model="currentPage" class="mt-4" v-bind="paginationOptions"
+                    @page-click="onPageClick" />
+
             </div> <!-- container-content ends -->
 
         </div> <!-- container ends -->
-        <Loading :show="loading"/>
+        <Loading :show="loading" />
     </div>
 
 </template>
@@ -183,7 +174,7 @@ export default {
     data() {
         return {
             title: 'Daftar Klaim',
-            loading : true,
+            loading: true,
             model: {
                 search: null,
                 status: null,
@@ -228,7 +219,15 @@ export default {
                 //     image: "/img/car-icon-comprehensive.png",
                 //     status: "pending",
                 // },
-            ]
+            ],
+            currentPage: 1,
+            paginationOptions: {
+                align: "center",
+                disabled: !this.isLoggedIn,
+                limit: 3,
+                perPage: 6,
+                totalSearchResult: 10,
+            },
         }
     },
     head() {
@@ -236,32 +235,36 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
-    mounted(){
+    mounted() {
         this.getClaims()
     },
-    methods:{
-        async getClaims(){
+    methods: {
+        async getClaims() {
             this.policies = []
 
             await this.$axios.$get(`api/claim`)
-            .then ((response) => {
-                response.data.forEach((field) => {
-                    const start = moment(field.created_at)
+                .then((response) => {
+                    response.data.forEach((field) => {
+                        const start = moment(field.created_at)
 
-                    this.policies.push({
-                        claimNumber: field.id,
-                        quotationID: field.transaction_id,
-                        holder: field.account.fullname,
-                        product: field.product.name,
-                        periodDate: `Tanggal Pengajuan: ${start.format('D MMM yyyy')}`,
-                        image: "/img/car-icon-comprehensive.png",
-                        status: field.status,
+                        this.policies.push({
+                            claimNumber: field.id,
+                            quotationID: field.transaction_id,
+                            holder: field.account.fullname,
+                            product: field.product.name,
+                            periodDate: `Tanggal Pengajuan: ${start.format('D MMM yyyy')}`,
+                            image: "/img/car-icon-comprehensive.png",
+                            status: field.status,
+                        })
                     })
+
+                    this.loading = false
+
                 })
-
-                this.loading = false
-
-            })
+        },
+        onPageClick(event, page) {
+            this.loading = true
+            this.getProductList(page)
         },
     }
 
