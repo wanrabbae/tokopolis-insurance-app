@@ -105,6 +105,12 @@
                         </div>
                     </div>
                 </div>
+
+                <b-pagination v-if="policies.length" v-model="currentPage"
+                    class="mt-4"
+                    v-bind="paginationOptions"
+                    @page-click="onPageClick"
+                />
             </div>
         </b-container>
         <Loading :show="loading"/>
@@ -166,7 +172,15 @@ export default {
                     image: "/img/car-icon-comprehensive.png",
                     status: true
                 },
-            ]
+            ],
+            currentPage: 1,
+            paginationOptions: {
+                align: "center",
+                disabled: !this.isLoggedIn,
+                limit: 3,
+                perPage: 6,
+                totalSearchResult: 10,
+            },
         }
     },
     head() {
@@ -216,6 +230,10 @@ export default {
         openShareModal() {
             this.$bvModal.show('share-popup')
         },  
+        onPageClick(event, page) {
+            this.loading = true
+            this.getProductList(page)
+        },
     }
 }
 </script>

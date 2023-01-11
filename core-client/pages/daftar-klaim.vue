@@ -157,6 +157,11 @@
 
                 </div> <!-- card ends -->
 
+                <b-pagination v-if="policies.length" v-model="currentPage"
+                    class="mt-4"
+                    v-bind="paginationOptions"
+                    @page-click="onPageClick"
+                />
             </div> <!-- container-content ends -->
 
         </div> <!-- container ends -->
@@ -228,7 +233,15 @@ export default {
                     image: "/img/car-icon-comprehensive.png",
                     status: "pending",
                 },
-            ]
+            ],
+            currentPage: 1,
+            paginationOptions: {
+                align: "center",
+                disabled: !this.isLoggedIn,
+                limit: 3,
+                perPage: 6,
+                totalSearchResult: 10,
+            },
         }
     },
     head() {
@@ -247,7 +260,7 @@ export default {
             .then ((response) => {
                 response.data.forEach((field) => {
                     const start = moment(field.created_at)
-
+                    
                     this.policies.push({
                         claimNumber: field.id,
                         quotationID: field.transaction_id,
@@ -264,6 +277,10 @@ export default {
             }).catch (function () {
 
             })
+        },
+        onPageClick(event, page) {
+            this.loading = true
+            this.getProductList(page)
         },
     }
 

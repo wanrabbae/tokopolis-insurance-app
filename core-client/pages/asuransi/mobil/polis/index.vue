@@ -78,7 +78,7 @@
 
                     </div>
 
-                    <div v-if="!policies.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
+                    <div v-if="!shownProducts.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
                         <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
                         <h4 class="mt-3 text-secondary">Belum Ada Polis</h4>
                     </div>

@@ -150,6 +150,12 @@
 
         </b-table-simple>
 
+        <b-pagination v-if="history.length" v-model="currentPage"
+            class="mt-4"
+            v-bind="paginationOptions"
+            @page-click="onPageClick"
+        />
+
         <PenarikanPoinModal id="modal-penarikan-poin"/>
 
     </div>
@@ -212,7 +218,15 @@ export default {
             dateRangeOptions: [
                 { value: 'last-30-days', text: '30 Hari Terakhir' },
                 { value: 'last-7-days', text: '7 Hari Terakhir' }
-            ]
+            ],            
+            currentPage: 1,
+            paginationOptions: {
+                align: "center",
+                disabled: !this.isLoggedIn,
+                limit: 3,
+                perPage: 6,
+                totalSearchResult: 10,
+            },
         }
     },
     head() {
@@ -224,7 +238,11 @@ export default {
         onWithdraw() {
             // put code here
             this.$bvModal.show("modal-penarikan-poin")
-        }
+        },        
+        onPageClick(event, page) {
+            this.loading = true
+            this.getProductList(page)
+        },
     }
 }
 </script>

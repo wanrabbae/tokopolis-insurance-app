@@ -67,17 +67,17 @@ export default {
         return {
             promotionImages: [
                 {
-                    source: "/img/promotion-banner-1.png",
+                    source: "/img/slider/slider1.jpg",
                     alt: "Promotion Banner 1"
                 },
                 {
-                    source: "/img/promotion-banner-2.png",
+                    source: "/img/slider/slider2.jpg",
                     alt: "Promotion Banner 2"
                 },
                 {
-                    source: "/img/promotion-banner-3.png",
+                    source: "/img/slider/slider3.jpg",
                     alt: "Promotion Banner 3"
-                }
+                },
             ],
             partnerImages: [
                 {
