@@ -59,7 +59,13 @@
             </p>
             <p class="mt-3">Copy Link</p>
             <p>
-                <input type="text" class="form-control" value="https://tokopolis.id/">
+                <div class="input-group mb-3">
+                    <span class="input-group-text rounded-0 border-right-0">
+                        <img src="/img/link.png" width="15px" height="15px" />
+                    </span>
+                    <input type="text" class="form-control border-left-0" readonly value="https://tokopolis.id/">
+                    <button class="btn btn-primary rounded-0">Copy</button>
+                </div>
             </p>
             <p class="mt-3">Atau Cetak Pdf</p>
             <p>
