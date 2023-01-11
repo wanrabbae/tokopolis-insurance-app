@@ -92,7 +92,9 @@
                                     <div v-else-if="policy.status == 'canceled'" class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
 
                                     <div class="d-inline-block">
-                                        <fa icon="share-nodes" style="width: 16px; height: 16px;"/>
+                                        <div style="cursor: pointer;" title="Share Document">
+                                            <fa icon="share-nodes" style="width: 16px; height: 16px;" @click="openShareModal()"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -106,6 +108,8 @@
             </div>
         </b-container>
         <Loading :show="loading"/>
+
+        <Share id="share-popup"/>
     </div>
 </template>
 
@@ -116,13 +120,15 @@ import BaseSelect from '../components/Inputs/BaseSelect'
 import BaseButton from '../components/BaseButton'
 import SwiperRadioButtonGroup from '../components/SwiperRadioButtonGroup'
 import Loading from '../components/Loading'
+import Share from '../components/modals/Share.vue'
 
 export default {
     components: {
         BaseSelect,
         BaseButton,
         SwiperRadioButtonGroup,
-        Loading
+        Loading,
+        Share
     },
     data() {
         return {
@@ -206,7 +212,10 @@ export default {
         },
         openPayment(id) {
             window.location.href = `/asuransi/mobil/polis/konfirmasi-pembayaran?id=${id}`
-        }
+        },
+        openShareModal() {
+            this.$bvModal.show('share-popup')
+        },  
     }
 }
 </script>
