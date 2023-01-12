@@ -67,15 +67,15 @@ export default {
         return {
             promotionImages: [
                 {
-                    source: "/img/promotion-1.png",
+                    source: "/img/slider/slider1.jpg",
                     alt: "Promotion Banner 1"
                 },
                 {
-                    source: "/img/promotion-2.png",
+                    source: "/img/slider/slider2.jpg",
                     alt: "Promotion Banner 2"
                 },
                 {
-                    source: "/img/promotion-3.png",
+                    source: "/img/slider/slider3.jpg",
                     alt: "Promotion Banner 3"
                 }
             ],
