@@ -8,7 +8,7 @@
 
         <section id="partner" class="container my-5 my-md-6">
 
-            <BrandCarousel :brand-images="partnerImages" grayscale />
+            <BrandCarousel :brand-images="partnerImages" />
 
         </section>
 
@@ -30,7 +30,7 @@
 
                 <div class="col-12 col-md-9">
 
-                    <BrandCarousel :brand-images="covererImages"/>
+                    <BrandCarousel :brand-images="covererImages" grayscale/>
 
                 </div>
 
