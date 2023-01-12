@@ -124,7 +124,9 @@
 
                                     <div class="d-inline-block">
 
-                                        <fa icon="share-nodes" style="width: 16px; height: 16px;" />
+                                        <div style="cursor: pointer;" title="Share Document">
+                                            <fa icon="share-nodes" style="width: 16px; height: 16px;" @click="openShareModal()"/>
+                                        </div>
 
                                     </div>
 
@@ -152,6 +154,7 @@
 
         </div> <!-- container ends -->
         <Loading :show="loading" />
+        <Share id="share-popup"/>
     </div>
 
 </template>
@@ -163,13 +166,15 @@ import BaseSelect from '../components/Inputs/BaseSelect'
 import BaseButton from '../components/BaseButton'
 import SwiperRadioButtonGroup from '../components/SwiperRadioButtonGroup'
 import Loading from '../components/Loading'
+import Share from '../components/modals/Share.vue'
 
 export default {
     components: {
         BaseSelect,
         BaseButton,
         SwiperRadioButtonGroup,
-        Loading
+        Loading,
+        Share
     },
     data() {
         return {
@@ -265,6 +270,9 @@ export default {
         onPageClick(event, page) {
             this.loading = true
             this.getProductList(page)
+        },
+        openShareModal() {
+            this.$bvModal.show('share-popup')
         },
     }
 

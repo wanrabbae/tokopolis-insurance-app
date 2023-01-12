@@ -43,18 +43,6 @@
                             </ShareNetwork>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="border rounded-circle border-success p-2">
-                            <ShareNetwork
-                                network="line"
-                                url="https://tokopolis.id/"
-                                title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                                description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
-                            >
-                                <img src="/img/line.png" width="50px" height="50px"/>
-                            </ShareNetwork>
-                        </div>
-                    </div>
                 </div>
             </p>
             <p class="mt-3">Copy Link</p>

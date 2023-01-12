@@ -69,15 +69,15 @@ export default {
             assistanceList: [
                 {
                     image: "img/claim-assistance-icon-report.png",
-                    text: "Lapor Claim"
+                    text: "Lapor Klaim"
                 },
                 {
                     image: "img/claim-assistance-icon-status.png",
-                    text: "Claim Status"
+                    text: "Klaim Status"
                 },
                 {
                     image: "img/claim-assistance-icon-emergency.png",
-                    text: "Emergency"
+                    text: "Bantuan Klaim Secara Online"
                 }
             ],
         }
