@@ -90,13 +90,14 @@
                                     <div v-else-if="policy.status == 'canceled'"
                                         class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
 
-                                        <div class="d-inline-block">
+                                    <div class="d-inline-block">
 
-                                            <div style="cursor: pointer;" title="Share Document">
-                                                <fa icon="share-nodes" style="width: 16px; height: 16px;" @click="openShareModal()"/>
-                                            </div>
-
+                                        <div style="cursor: pointer;" title="Share Document">
+                                            <fa icon="share-nodes" style="width: 16px; height: 16px;"
+                                                @click="openShareModal()" />
                                         </div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

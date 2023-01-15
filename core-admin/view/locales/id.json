@@ -59,17 +59,26 @@
       "dashboard": {
         "text": "Beranda"
       },
+      "permission": {
+        "text": "Akses"
+      },
       "endpoint": {
         "text": "Daftar Endpoint"
       },
       "role": {
         "text": "Daftar Role"
       },
+      "dealer": {
+        "text": "Daftar Dealer"
+      },
       "account": {
         "text": "Daftar Pengguna"
       },
       "upgrade": {
         "text": "Daftar Role Upgrade"
+      },
+      "sale": {
+        "text": "Penjualan"
       },
       "vehicle": {
         "text": "Daftar Kendaraan"

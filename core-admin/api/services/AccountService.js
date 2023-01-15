@@ -292,6 +292,34 @@ export default class AccountService {
         return this.repository.createUpgradeRequest(payload)
     }
 
+    getDealerAll() {
+        return this.repository.getDealerAll()
+    }
+
+    getDealerAllWithFilter(query, limit, offset) {
+        return this.repository.getDealerAllWithFilter(query, limit, offset)
+    }
+
+    async getDealerCountByQuery(query) {
+        return this.repository.getDealerCountByQuery(query);
+    }
+
+    getDealer(id) {
+        return this.repository.getDealer(id)
+    }
+
+    createDealer(payload) {
+        return this.repository.createDealer(payload)
+    }
+
+    updateDealer(id, payload) {
+        return this.repository.updateDealer(id, payload)
+    }
+
+    deleteDealer(id) {
+        return this.repository.deleteDealer(id);
+    }
+
     sendEmailRegister(payload) {
         let mailer = new Mailer(payload.host);
         mailer.setUrl("/confirm-email");

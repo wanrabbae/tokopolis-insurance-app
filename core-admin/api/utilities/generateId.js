@@ -4,6 +4,28 @@ import RoleService from "../services/RoleService.js";
 const service = new AccountService();
 const roleService = new RoleService();
 
+export const generateDealerID = async (location_id) => {
+    let unique_id = location_id; // already has a unique_id
+    let other_id;
+
+    const dealers = await service.getDealerAll();
+
+    other_id = "01";
+
+    if (dealers.length > 0) {
+        const arrayOfOtherId = [];
+        dealers.map((account) => arrayOfOtherId.push(account.other_id));
+
+        const arrayOfNumbers = arrayOfOtherId.map(Number);
+        const largest = Math.max.apply(0, arrayOfNumbers);
+        other_id = (largest + 1).toString().padStart(2, "0");
+    }
+
+    unique_id += `-${other_id}`;
+
+    return { unique_id, other_id };
+};
+
 export const generateIdRoleManagement = async (payload) => {
     const role_id = payload.role_id;
     let unique_id =

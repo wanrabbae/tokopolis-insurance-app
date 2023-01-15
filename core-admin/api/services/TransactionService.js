@@ -20,8 +20,8 @@ export default class TransactionService {
         return this.repository.getTransactionDetailForClient(id);
     }
 
-    getTransactionForXlsx() {
-        return this.repository.getTransactionForXlsx();
+    getTransactionForXlsx(data) {
+        return this.repository.getTransactionForXlsx(data);
     }
 
     getClientTransactionAll(client_id) {
