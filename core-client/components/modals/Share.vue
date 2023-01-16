@@ -35,9 +35,8 @@
                         <div class="border rounded-circle border-danger p-2">
                             <ShareNetwork
                                 network="email"
-                                url="https://tokopolis.id/"
-                                title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                                description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You."
+                                :url="model.description"
+                                title="Polis Quotation."
                             >
                                 <img src="/img/gmail.png" width="50px" height="50px"/>
                             </ShareNetwork>
@@ -90,7 +89,19 @@ export default {
         value:'0',
         bank:'Bank Mandiri',
         rekening: '12345678',
-        nama_rekening: 'John Doe'
+        nama_rekening: 'John Doe',
+        description: `
+Nasabah yang terhormat, 
+        
+Berikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. 
+Link : https://tokopolis.id/ . Besar harapan kami atas kepercayaan yang anda berikan. 
+        
+Terima Kasih. 
+        
+Regards,
+        
+Team Tokopolis.
+        `
       }
     }
   },
