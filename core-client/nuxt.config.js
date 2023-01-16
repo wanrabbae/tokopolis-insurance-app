@@ -109,6 +109,7 @@ export default {
     'bootstrap-vue/nuxt',
     'nuxt-session',
     'nuxt-fontawesome',
+    'vue-social-sharing/nuxt'
   ],
 
   fontawesome: {
