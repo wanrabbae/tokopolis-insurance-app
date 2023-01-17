@@ -16,24 +16,18 @@
 
                 <div class="d-none d-md-block col-12 col-md-4">
 
-                   <div class="bg-white rounded border">
+                    <div class="bg-white rounded border">
 
                         <div class="p-3 border-bottom">
 
-                            <fa icon="sort" class="mr-3" style="font-size: 1rem"/>
+                            <fa icon="sort" class="mr-3" style="font-size: 1rem" />
 
                             <span class="fs-5">Urut Berdasarkan</span>
 
                         </div>
 
-                        <b-form-radio-group
-                            id="sort-by"
-                            v-model="sortBy"
-                            :options="sortOptions"
-                            name="sort-by"
-                            class="p-3"
-                            stacked
-                        />
+                        <b-form-radio-group id="sort-by" v-model="sortBy" :options="sortOptions" name="sort-by"
+                            class="p-3" stacked />
 
                     </div> <!-- card ends -->
 
@@ -45,17 +39,12 @@
 
                         <b-input-group class="addon-combined">
 
-                            <input
-                                v-model="search"
-                                placeholder="Cari Asuransi"
-                                class="form-control"
-                                required
-                            >
+                            <input v-model="search" placeholder="Cari Asuransi" class="form-control" required>
 
                             <b-input-group-append>
 
                                 <BaseButton type="icon" classes="px-3">
-                                    <fa icon="magnifying-glass"/>
+                                    <fa icon="magnifying-glass" />
                                 </BaseButton>
 
                             </b-input-group-append>
@@ -64,7 +53,8 @@
 
                     </b-form>
 
-                    <div v-b-modal.modal-sort class="d-flex d-md-none justify-content-between bg-white rounded border p-3 mb-3 mb-md-4">
+                    <div v-b-modal.modal-sort
+                        class="d-flex d-md-none justify-content-between bg-white rounded border p-3 mb-3 mb-md-4">
 
                         <span>Urut Berdasarkan</span>
 
@@ -72,36 +62,32 @@
 
                             <span class="fw-bold">{{ selectedSortOption.text }}</span>
 
-                            <fa icon="sort" class="ml-2" style="font-size: 1rem"/>
+                            <fa icon="sort" class="ml-2" style="font-size: 1rem" />
 
                         </div>
 
                     </div>
 
-                    <div v-if="!shownProducts.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
-                        <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
+                    <div v-if="!shownProducts.length" class="text-center bg-white rounded"
+                        style=" padding-top: 100px; padding-bottom: 100px;">
+                        <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;" />
                         <h4 class="mt-3 text-secondary">Belum Ada Produk</h4>
                     </div>
 
                     <b-form>
 
-                        <b-form-checkbox-group
-                            id="selected-products"
-                            v-model="productToCompare"
-                            name="selected-products"
-                        >
+                        <b-form-checkbox-group id="selected-products" v-model="productToCompare"
+                            name="selected-products">
 
-                            <div v-for="(product, i) in shownProducts" :key="product.id" class="position-relative mb-3 mb-md-4">
+                            <div v-for="(product, i) in shownProducts" :key="product.id"
+                                class="position-relative mb-3 mb-md-4">
 
-                                <div class="bg-white rounded border" :class="{ 'blur-active' : blurActive(i) }">
+                                <div class="bg-white rounded border" :class="{ 'blur-active': blurActive(i) }">
 
                                     <div class="d-flex justify-content-between p-3">
 
-                                        <BaseButton
-                                            type="link"
-                                            classes="text-left p-0"
-                                            @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
-                                        >
+                                        <BaseButton type="link" classes="text-left p-0"
+                                            @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
                                             <span class="fs-md-4 fw-bold text-dark">{{ product.name }}</span>
                                         </BaseButton>
 
@@ -118,15 +104,10 @@
 
                                     <div class="row px-3">
 
-                                        <div  class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="col-4 d-flex justify-content-center align-items-center">
 
-                                            <nuxt-img
-                                                preset="default"
-                                                height="96"
-                                                :src="product.image"
-                                                :alt="product.name"
-                                                loading="lazy"
-                                            />
+                                            <nuxt-img preset="default" height="96" :src="product.image"
+                                                :alt="product.name" loading="lazy" />
 
                                         </div> <!-- col-4 ends -->
 
@@ -136,60 +117,65 @@
 
                                                 <li v-for="(features, j) in product.features" :key="j">
 
-                                                    <HtmlContent :html="features.name"/>
+                                                    <HtmlContent :html="features.name" />
 
                                                 </li>
 
                                             </ul>
 
-                                            <BaseButton
-                                                type="link"
-                                                classes="text-primary fw-bold p-0"
-                                                @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
-                                            >
+                                            <BaseButton type="link" classes="text-primary fw-bold p-0"
+                                                @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
                                                 Selengkapnya
                                             </BaseButton>
 
-                                        </div>  <!-- col-8 ends -->
+                                        </div> <!-- col-8 ends -->
 
                                     </div> <!-- card-body ends -->
 
                                     <div class="p-3">
                                         <div>Premi Dasar</div>
-                                        <div class="fw-bold"><h4>{{ formatPrice(product.price) }}</h4></div>
-                                        <div v-if="isAgent() && product.commission != 0">Komisi {{ product.commission }}%
-                                            <span class="fw-bold">{{ formatPrice(product.price * product.commission / 100) }}</span>
+                                        <div class="fw-bold">
+                                            <h4>{{ formatPrice(product.price) }}</h4>
+                                        </div>
+                                        <div v-if="isAgent() && product.commission != 0">Komisi {{
+                                            product.commission
+                                        }}%
+                                            <span class="fw-bold">{{
+                                                formatPrice(product.price * product.commission /
+                                                    100)
+                                            }}</span>
                                         </div>
                                         <div v-if="isAgent() && product.extra_point != 0" class="mt-1" style="width: fit-content;
                                             padding: 7px 11px;
                                             background: #e3f6ff;
                                             color: #5f668d;
                                             border-radius: 3px;">
-                                            <fa :icon="'star'" class="me-2"/> Extra Poin {{ product.extra_point }}%: <span class="fw-bold">{{ (product.price * product.extra_point / 100000).toFixed(0) }} Poin</span>
+                                            <fa :icon="'star'" class="me-2" /> Extra Poin {{ product.extra_point }}%:
+                                            <span class="fw-bold">{{ (product.price * product.extra_point /
+                                            100000).toFixed(0) }} Poin</span>
                                         </div>
 
                                         <div class="text-right">
-                                            <b-form-checkbox
-                                                :value="product.id"
-                                                :disabled="disableProduct(product.id)"
+                                            <b-form-checkbox :value="product.id" :disabled="disableProduct(product.id)"
                                                 @change="() => {
-                                                    if(!isLoggedIn) {
+                                                    if (!isLoggedIn) {
                                                         productToCompare = [];
                                                         openLoginModal(product.id);
                                                     }
-                                                }"
-                                            >
+                                                }">
                                                 Bandingkan
                                             </b-form-checkbox>
 
-                                            <BaseButton  @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
+                                            <BaseButton
+                                                @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
                                                 Pilih Produk
                                             </BaseButton>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div v-if="blurActive(i)" class="blur-section d-flex flex-column justify-content-center align-items-center">
+                                <div v-if="blurActive(i)"
+                                    class="blur-section d-flex flex-column justify-content-center align-items-center">
 
                                     <div class="mb-3">Ingin melihat produk asuransi lainnya?</div>
 
@@ -205,11 +191,8 @@
 
                     </b-form>
 
-                    <b-pagination v-if="shownProducts.length"
-                        v-model="currentPage"
-                        v-bind="paginationOptions"
-                        @page-click="onPageClick"
-                    />
+                    <b-pagination v-if="shownProducts.length" v-model="currentPage" v-bind="paginationOptions"
+                        @page-click="onPageClick" />
 
                 </div>
 
@@ -233,12 +216,8 @@
 
                                 <div class="col col-md-12 product-image mr-2 mr-md-0 mb-md-2">
 
-                                    <nuxt-img
-                                        preset="default"
-                                        :src="product.image"
-                                        :alt="product.name"
-                                        sizes="md:32px lg:192px"
-                                    />
+                                    <nuxt-img preset="default" :src="product.image" :alt="product.name"
+                                        sizes="md:32px lg:192px" />
 
                                 </div>
 
@@ -264,11 +243,8 @@
 
                 <div class="d-flex">
 
-                    <BaseButton
-                        :disabled="compareProducts.length < 2"
-                        classes="mx-auto px-5 w-100 w-md-auto"
-                        @click="comparePolis"
-                    >
+                    <BaseButton :disabled="compareProducts.length < 2" classes="mx-auto px-5 w-100 w-md-auto"
+                        @click="comparePolis">
                         Bandingkan
                     </BaseButton>
 
@@ -286,19 +262,13 @@
 
                 <div class="pointer" @click="close">
 
-                    <CloseIcon width="28px"/>
+                    <CloseIcon width="28px" />
 
                 </div>
 
             </template>
 
-            <b-form-radio-group
-                id="sort-by"
-                v-model="sortBy"
-                :options="sortOptions"
-                name="sort-by"
-                stacked
-            />
+            <b-form-radio-group id="sort-by" v-model="sortBy" :options="sortOptions" name="sort-by" stacked />
 
             <template #modal-footer="{ ok }">
 
@@ -308,11 +278,9 @@
 
         </b-modal>
 
-        <LoginModal
-            id="modal-guest-sign-in"
-        />
+        <LoginModal id="modal-guest-sign-in" />
 
-        <Loading :show="loading"/>
+        <Loading :show="loading" />
 
     </div>
 
@@ -339,7 +307,7 @@ export default {
             default: false
         }
     },
-    data () {
+    data() {
         return {
             title: 'Asuransi Mobil',
             model: {
@@ -348,8 +316,8 @@ export default {
                 series: null,
                 yearProduction: null,
                 price: null,
-                minPrice : null,
-                maxPrice : null,
+                minPrice: null,
+                maxPrice: null,
                 usage: null,
                 licensePlate: null,
                 startDatePeriod: null,
@@ -362,7 +330,7 @@ export default {
             productToCompare: [],
             productIndex: -1,
             guestShownProductsLimit: 3,
-            isLoggedIn : false,
+            isLoggedIn: false,
             currentPage: 1,
             paginationOptions: {
                 align: "center",
@@ -505,9 +473,9 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
-    computed:{
+    computed: {
         shownProducts() {
-            if(this.isLoggedIn) {
+            if (this.isLoggedIn) {
                 return this.products;
             } else {
                 return this.products.slice(0, this.guestShownProductsLimit);
@@ -516,44 +484,44 @@ export default {
         compareProducts() {
             const result = this.shownProducts.filter(product => {
                 return this.productToCompare.find(productId => {
-                        return product.id === productId;
-                    });
+                    return product.id === productId;
                 });
+            });
             return result;
         },
         selectedSortOption() {
-            return this.sortOptions.find( option => option.value === this.sortBy );
+            return this.sortOptions.find(option => option.value === this.sortBy);
         }
     },
-    deactivated(){
+    deactivated() {
         this.$destroy()
     },
-    created(){
+    created() {
         this.model = this.$route.params.data
     },
-    mounted(){
+    mounted() {
         this.getProductList()
     },
     methods: {
         detailProduct(id) {
-            this.$store.commit('setProductId',id)
-            this.$router.push({name: "asuransi-mobil-polis-detail-polis"})
+            this.$store.commit('setProductId', id)
+            this.$router.push({ name: "asuransi-mobil-polis-detail-polis" })
         },
         detailPayment(id) {
-            this.$store.commit('setProductId',id)
-            this.$router.push({name: "asuransi-mobil-polis-pembelian"})
+            this.$store.commit('setProductId', id)
+            this.$router.push({ name: "asuransi-mobil-polis-pembelian" })
         },
-        comparePolis(){
-            this.$store.commit('setSelectedId',this.productToCompare)
-            this.$router.push({name: "asuransi-mobil-polis-komparasi"})
+        comparePolis() {
+            this.$store.commit('setSelectedId', this.productToCompare)
+            this.$router.push({ name: "asuransi-mobil-polis-komparasi" })
         },
         // blur produk paling akhir dari produk yang ditampilkan
         blurActive(index) {
             return !this.isLoggedIn && index === this.shownProducts.length - 1;
         },
         disableProduct(id) {
-            if(this.mobileView && this.productToCompare.length < 2) return false;
-            if(!this.mobileView && this.productToCompare.length < 3) return false;
+            if (this.mobileView && this.productToCompare.length < 2) return false;
+            if (!this.mobileView && this.productToCompare.length < 3) return false;
 
             return !this.productToCompare.find(productId => {
                 return id === productId;
@@ -563,7 +531,7 @@ export default {
             this.loading = true
             this.getProductList(page)
         },
-        async getProductList(page){
+        async getProductList(page) {
             const param = () => {
                 if (this.model !== null && this.model !== undefined)
                     return {
@@ -585,10 +553,10 @@ export default {
 
             await this.$axios.$get('api/product', {
                 params: param()
-            }).then ((response) => {
+            }).then((response) => {
                 this.products = []
 
-                if(response.data.pagination != null){
+                if (response.data.pagination != null) {
                     this.isLoggedIn = true
                     this.paginationOptions.totalSearchResult = response.data.pagination.total
                     this.paginationOptions.perPage = response.data.pagination.per_page
@@ -600,7 +568,7 @@ export default {
                     this.products.push({
                         id: element.id,
                         name: element.name,
-                        description : element.description,
+                        description: element.description,
                         price: element.price,
                         image: this.$config.serverURL + element.image,
                         commission: element.commission,
@@ -609,16 +577,16 @@ export default {
                         period: "Tahun",
                         claim: element.claim,
                         features: element.features,
-                        brochure_file : element.brochure_file,
-                        workshop_file : element.workshop_file,
-                        workshop_count : element.workshop_count
+                        brochure_file: element.brochure_file,
+                        workshop_file: element.workshop_file,
+                        workshop_count: element.workshop_count
                     })
                 })
 
                 this.loading = false
-            }).catch (error => {
-                if(error.response.status === 400){
-                    this.$router.push({name: "asuransi-mobil"})
+            }).catch(error => {
+                if (error.response.status === 400) {
+                    this.$router.push({ name: "asuransi-mobil" })
                 }
             })
         },

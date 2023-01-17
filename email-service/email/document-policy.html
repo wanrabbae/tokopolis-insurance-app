@@ -1,0 +1,46 @@
+{{template "top.html"}}
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <h3>Dokumen Polis</h3>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>Hai <strong class="text-primary">{{.Body.name}}</strong>,</p>
+            <br />
+            <p>Berikut link untuk mengunduh softcopy e-polis, invoice dan dokumen tambahan untuk :</p>
+            <br />
+            <table>
+                <tr>
+                    <td><strong>Kategori Produk</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.kategori_produk}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Quotation Number</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.quotation_number}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Nama Pemegang Polis</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.pemegang_polis}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Link</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.link_dokumen}}</td>
+                </tr>
+            </table>
+            <br />
+            <p>Mohon untuk dokumen tersebut supaya bisa diterima dengan baik.</p>
+            <br />
+            <p>Terima Kasih</p>
+        </td>
+    </tr>
+</table>
+{{template "bottom.html"}}
