@@ -94,6 +94,10 @@ exports.productCalculation = async (req, res, next) => {
     req.session.vehicle.id = vehicle.id;
     req.session.vehicle.capacity = vehicle.capacity;
     req.session.vehicle.zone = plate.zone;
+<<<<<<< HEAD
+=======
+    req.session.vehicle.use = body.use;
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     req.session.vehicle.price = Number(body.price); // Convert price to number
     req.session.vehicle.accessories = accessories;
 

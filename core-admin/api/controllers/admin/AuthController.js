@@ -37,7 +37,7 @@ exports.forgetPassword = async (req, res) => {
     await service.createResetToken(account.id, token)
 
     service.sendEmailReset({
-        host: req.fullhost,
+        host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: account.email,
         title: req.polyglot.t('mail.forget_password'),
         data: {

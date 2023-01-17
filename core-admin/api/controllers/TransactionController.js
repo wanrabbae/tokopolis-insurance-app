@@ -578,6 +578,10 @@ exports.postTransaction = async (req, res) => {
                     year: transaction.vehicle_data.year,
                     capacity: transaction.vehicle_data.capacity,
                     zone: transaction.vehicle_data.zone,
+<<<<<<< HEAD
+=======
+                    use: transaction.vehicle_data.use,
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                     plate: transaction.vehicle_data.plate,
                     accessories: transaction.vehicle_data.accessories,
 
@@ -629,6 +633,10 @@ exports.postTransaction = async (req, res) => {
                 year: req.session.vehicle.year,
                 capacity: req.session.vehicle.capacity,
                 zone: req.session.vehicle.zone,
+<<<<<<< HEAD
+=======
+                use: req.session.vehicle.use,
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                 plate: req.session.vehicle.plate,
                 accessories: req.session.vehicle.accessories,
 
@@ -835,7 +843,7 @@ exports.doPayment = async (req, res) => {
         });
 
         service.sendEmailPayment({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: account.email,
             title: req.polyglot.t("mail.payment.created"),
             data: {
@@ -903,7 +911,7 @@ exports.webhookMidtrans = async (req, res) => {
 
     if (result == "paid") {
         service.sendEmailPaymentSuccess({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: transaction.account.email,
             title: req.polyglot.t("mail.payment.success"),
             data: {
@@ -952,7 +960,7 @@ exports.webhookXendit = async (req, res) => {
 
     if (result == "paid") {
         service.sendEmailPaymentSuccess({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: transaction.account.email,
             title: req.polyglot.t("mail.payment.success"),
             data: {
@@ -967,6 +975,7 @@ exports.webhookXendit = async (req, res) => {
     return res.jsonSuccess(req.polyglot.t("success.webhook.xendit"));
 };
 
+<<<<<<< HEAD
 exports.getComission = async (req, res) => {
     const comission = await service.getComission(req);
 
@@ -975,11 +984,29 @@ exports.getComission = async (req, res) => {
 
 exports.getComissionHistory = async (req, res) => {
     const comission = await service.getComissionHistory(req);
+=======
+exports.getTransactionTotal = async (req, res) => {
+    const total = await service.getTransactionTotal(req.account._id)
+
+    return res.jsonData({ total: total })
+}
+
+exports.getComission = async (req, res) => {
+    const comission = await service.getComission(req.account._id);
+    if (comission.length <= 0) return res.jsonData({ total: 0 })
+
+    return res.jsonData({ total: comission[0].value })
+};
+
+exports.getComissionHistory = async (req, res) => {
+    const comission = await service.getComissionHistory(req.account._id);
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
     res.jsonData(comission);
 };
 
 exports.getPoint = async (req, res) => {
+<<<<<<< HEAD
     const point = await service.getPoint(req);
 
     res.jsonData(point);
@@ -987,6 +1014,16 @@ exports.getPoint = async (req, res) => {
 
 exports.getPointHistory = async (req, res) => {
     const point = await service.getPointHistory(req);
+=======
+    const point = await service.getPoint(req.account._id);
+    if (point.length <= 0) return res.jsonData({ total: 0 })
+
+    return res.jsonData({ total: point[0].value })
+};
+
+exports.getPointHistory = async (req, res) => {
+    const point = await service.getPointHistory(req.account._id);
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
     res.jsonData(point);
 };

@@ -190,6 +190,12 @@
                         </div>
 
                         <div class="row mt-4">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
                             <div class="col-sm-12 col-md-6">
                                 <div id="tickets-table_length" class="dataTables_length">
                                     <label class="d-inline-flex align-items-center">

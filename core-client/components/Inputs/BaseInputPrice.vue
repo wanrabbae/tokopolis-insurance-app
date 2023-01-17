@@ -8,7 +8,7 @@
         </label>
       </slot>
       <div :class="[
-        {'input-group addon-combined': hasCurrency},
+        {'input-group': hasCurrency},
         {'focused': focused},
         {'input-group-alternative': alternative},
         {'has-label': label || $slots.label},

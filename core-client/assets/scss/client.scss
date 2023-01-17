@@ -1,3 +1,38 @@
 .clickable {
     cursor: pointer;
 }
+<<<<<<< HEAD
+=======
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #e4e4e454;
+}
+
+.loop {
+    -webkit-animation: infinite-spinning 1s ease-out 0s infinite normal;
+    animation: infinite-spinning 1s ease-out 0s infinite normal;
+}
+
+@keyframes infinite-spinning {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.vue-notif-custom {
+    margin: 10px 10px 0 0 !important;
+    border-radius: 4px;
+
+    .notification-title {
+        font-size: 14px;
+    }
+
+    .notification-content {
+        font-size: 13px;
+    }
+}
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3

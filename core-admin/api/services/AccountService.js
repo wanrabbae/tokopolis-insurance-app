@@ -231,7 +231,14 @@ export default class AccountService {
         const data = await this.repository.checkResetTokenWithId(account_id);
 
         if (data != null) {
+<<<<<<< HEAD
             return await data.update({ token: token });
+=======
+            return await data.update({
+                token: token,
+                updated_at: new Date()
+            });
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         }
 
         return this.repository.createResetToken(account_id, token);
@@ -252,7 +259,14 @@ export default class AccountService {
         const data = await this.repository.checkEmailTokenWithId(account_id);
 
         if (data != null) {
+<<<<<<< HEAD
             return await data.update({ token: token });
+=======
+            return await data.update({
+                token: token,
+                updated_at: new Date()
+            });
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         }
 
         return this.repository.createEmailToken(account_id, token);

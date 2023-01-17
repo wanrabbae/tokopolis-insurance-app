@@ -56,7 +56,7 @@ exports.updateAccountData = async (req, res) => {
         );
 
         service.sendEmailProfile({
-            host: req.fullhost,
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: account.email,
             title: req.polyglot.t("mail.email"),
             data: {
@@ -191,7 +191,11 @@ exports.requestUpgrade = async (req, res) => {
     if (req.account.role != null) return res.errorBadRequest("You already have role")
 
     // let data = {
+<<<<<<< HEAD
     //     host: req.fullhost,
+=======
+    //     host: process.env.REDIRECT_CLIENT || req.fullhost,
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     //     target: leadAccount.email,
     //     title: "User role upgrade",
     //     data: {

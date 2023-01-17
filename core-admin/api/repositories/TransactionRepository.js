@@ -48,8 +48,13 @@ export default class TransactionRepository {
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+<<<<<<< HEAD
             `vehicle.brand, vehicle.sub_model, product.id as product_id, product.name as product_name, product.type as product_type, ` +
             `product.image as product_image, product.email as product_email, ` +
+=======
+            `vehicle.brand, vehicle.model, vehicle.sub_model, product.id as product_id, product.name as product_name, ` +
+            `product.type as product_type, product.image as product_image, product.email as product_email, ` +
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
             `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
             `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.created_at ` +
@@ -232,9 +237,16 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
-    // async getTransactionCount() {
-    //     return await Transaction.count()
-    // }
+    async getTransactionTotal(account_id) {
+        return await Transaction.count({
+            where: {
+                [Op.or]: [
+                    { client_id: account_id },
+                    { agent_id: account_id },
+                ]
+            },
+        })
+    }
 
     async createTransaction(payload) {
         return await Transaction.create(payload);
@@ -278,6 +290,7 @@ export default class TransactionRepository {
         return await Transaction.update(payload, {
             where: { pg_transaction_id: pg_transaction_id },
         });
+<<<<<<< HEAD
     }
 
     async createComission(payload) {
@@ -313,25 +326,62 @@ export default class TransactionRepository {
         return await Comission.findAll({
             where: {
                 account_id: payload.account._id,
-            },
-        });
+=======
     }
 
-    async getPointHistory(payload) {
-        return await Point.findAll({
-            where: {
-                account_id: payload.account._id,
-            },
-        });
+    async createComission(payload) {
+        return await Comission.create(payload);
     }
 
-    async getPoint(payload) {
-        const pointIn = await Point.findAll({
+    async getComission(account_id) {
+        return await Comission.findAll({
             attributes: [
                 "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
             where: {
+                account_id: account_id,
+            },
+        })
+    }
+
+    async getComissionHistory(account_id) {
+        return await Comission.findAll({
+            where: {
+                account_id: account_id,
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
+            },
+        });
+    }
+
+<<<<<<< HEAD
+    async getPointHistory(payload) {
+        return await Point.findAll({
+            where: {
+                account_id: payload.account._id,
+=======
+    async getPointHistory(account_id) {
+        return await Point.findAll({
+            where: {
+                account_id: account_id,
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
+            },
+        });
+    }
+
+<<<<<<< HEAD
+    async getPoint(payload) {
+        const pointIn = await Point.findAll({
+=======
+    async getPoint(account_id) {
+        return await Point.findAll({
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
+            attributes: [
+                "id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            where: {
+<<<<<<< HEAD
                 account_id: payload.account._id,
                 type: "in",
             },
@@ -348,6 +398,11 @@ export default class TransactionRepository {
         });
         const total = pointIn[0].value - pointOut[0].value;
         return { account_id: payload.account._id, total: Math.abs(total) };
+=======
+                account_id: account_id,
+            },
+        })
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     }
 
     async createPoint(payload) {

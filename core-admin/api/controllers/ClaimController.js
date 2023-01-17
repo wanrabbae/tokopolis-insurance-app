@@ -66,7 +66,11 @@ exports.claimProduct = async (req, res) => {
         }, req.files);
 
         service.sendEmailRequestClaimSuccess({
+<<<<<<< HEAD
             host: req.fullhost,
+=======
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             target: req.account.email,
             title: req.polyglot.t("mail.request_claim"),
             data: {

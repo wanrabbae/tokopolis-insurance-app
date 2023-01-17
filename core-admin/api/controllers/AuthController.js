@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
     const confirmToken = await service.createEmailToken(account.id, randomString(40))
 
     service.sendEmailRegister({
-        host: req.fullhost,
+        host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: account.email,
         title: req.polyglot.t('mail.register'),
         data: {
@@ -50,7 +50,7 @@ exports.login = async (req, res) => {
     if(!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
 
     service.sendEmailLogin({
-        host: req.fullhost,
+        host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: account.email,
         title: req.polyglot.t('mail.login'),
         data: {
@@ -79,7 +79,7 @@ exports.forgetPassword = async (req, res) => {
     await service.createResetToken(account.id, token)
 
     service.sendEmailReset({
-        host: req.fullhost,
+        host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: account.email,
         title: req.polyglot.t('mail.forget_password'),
         data: {

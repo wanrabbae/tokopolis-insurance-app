@@ -18,7 +18,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap' }
     ]
   },
@@ -69,12 +69,14 @@ export default {
   */
   plugins: [
     '~/plugins/mixins-global-function.js',
+    '~/plugins/global-function.js',
     '~/plugins/bootstrap-vue.js',
     '~/plugins/vee-validate.js',
     '~/plugins/persistedState.client.js',
     { mode: 'client', src: '~/plugins/axios' },
     { mode: 'client', src: '~/plugins/vue-awesome-swiper.js' },
     { mode: 'client', src:'~/plugins/avatar.js', ssr: false },
+    { mode: 'client', src: '~/plugins/vue-notification.js' },
   ],
 
   /*

@@ -43,6 +43,7 @@
                             </ShareNetwork>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <div class="col-md-2">
                         <div class="border rounded-circle border-success p-2">
                             <ShareNetwork
@@ -55,6 +56,8 @@
                             </ShareNetwork>
                         </div>
                     </div>
+=======
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                 </div>
             </p>
             <p class="mt-3">Copy Link</p>
@@ -112,4 +115,8 @@ export default {
     }
   }
 }
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3

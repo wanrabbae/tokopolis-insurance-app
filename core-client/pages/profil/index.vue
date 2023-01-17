@@ -212,8 +212,15 @@
                         <span class="fw-bold">Proses Verifikasi</span>
                     </div>
 
+<<<<<<< HEAD
                     <div v-if="user.role != null" class="text-secondary mt-3">
                         <span class="mr-1"><fa icon="star" style="width: 16px; height: 16px;"/></span>
+=======
+                    <div v-if="user.role != null" v-b-tooltip.click.blur.bottom.v-dark="tooltip.message"
+                        class="text-secondary clickable mt-3"
+                        @click="copyToClipboard(user.unique_id)">
+                        <span class="mr-1"><fa icon="award" style="width: 16px; height: 16px;"/></span>
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                         <span class="fw-bold">{{ user.role }}</span>
                     </div>
 
@@ -284,7 +291,12 @@ export default {
                 imgDataUrl: null,
                 show:false,
                 photo : '/svg/avatar-default.svg',
+<<<<<<< HEAD
                 role: null
+=======
+                role: null,
+                unique_id: null,
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             },
             formData: null,
             loading: true,
@@ -323,7 +335,11 @@ export default {
                     outOfSize: 'Batas ukuran gambar: ',
                     lowestPx: 'Ukuran gambar terlalu rendah. Setidaknya dibutuhkan: '
                 }
-            }
+            },
+            tooltip: {
+                success: false,
+                message: null
+            },
         }
     },
     head() {
@@ -422,14 +438,21 @@ export default {
 
                         if (response.data.roles != null) {
                             this.user.role = response.data.roles.name
+<<<<<<< HEAD
+=======
+                            this.user.unique_id = response.data.unique_id
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                         }
 
                         this.loading = false
                     }
                 })
-                .catch (error => {
-                    console.log(error)
-                    this.logout()
+        },
+        async getUpgrade() {
+            await this.$axios.$get('api/user/upgrade')
+                .then ((response) => {
+                    console.log(response)
+                    this.upgrade = response.data
                 })
         },
         async getUpgrade() {
@@ -517,7 +540,22 @@ export default {
             .then(function(response) {
                 window.location.reload()
             })
+<<<<<<< HEAD
         }
+=======
+        },
+        async copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+
+                this.tooltip.success = true;
+                this.tooltip.message = 'Berhasil menyalin kode unik';
+            } catch(err) {
+                this.tooltip.success = false;
+                this.tooltip.message = 'Gagal menyalin: ' + err;
+            }
+        },
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     }
 }
 </script>

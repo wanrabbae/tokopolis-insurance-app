@@ -8,7 +8,7 @@
         </label>
       </slot>
       <div :class="[
-        'input-group addon-combined',
+        'input-group',
         {'focused': focused},
         {'has-label': label || $slots.label},
         {'is-valid': hasAddon && valid && validated && successMessage},

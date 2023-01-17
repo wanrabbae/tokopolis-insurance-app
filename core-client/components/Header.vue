@@ -260,6 +260,12 @@ export default {
                 this.scrolled = false;
             }
         },
+<<<<<<< HEAD
+=======
+        logout() {
+            this.$logoutClient()
+        }
+>>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     }
 }
 </script>

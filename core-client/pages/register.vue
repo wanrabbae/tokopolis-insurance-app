@@ -151,10 +151,9 @@ export default {
                     if (response.status === 200 && response.data.data.token!=null) {
                         const accessToken = response.data.data.token
                         const expired = 1
-                        cookie.set('token', accessToken, { expires: expired })
-                        this.$store.commit('setToken',accessToken)
-                        this.$router.go('/');
 
+                        cookie.set('token', accessToken, { expires: expired })
+                        this.$router.go('/')
                     }
                 })
 
