@@ -21,23 +21,6 @@ exports.create = async (req, res) => {
     return res.jsonData(account);
 };
 
-exports.createDealerAccount = async (req, res) => {
-    const validate = validation.create(req);
-    if (validate.error) return res.errorValidation(validate.details);
-
-    const emailExist = await service.getAccountFromEmail(req.body.email);
-    if (emailExist != null)
-        return res.errorBadRequest(req.polyglot.t("error.email.exist"));
-
-    const { unique_id, other_id } = await generateIdRoleManagement(req.body);
-    req.body.unique_id = unique_id;
-    req.body.other_id = other_id;
-
-    const account = await service.createAccountDealer(req);
-
-    return res.jsonData(account);
-};
-
 exports.list = async (req, res, next) => {
     const query = req.query.query || null;
 

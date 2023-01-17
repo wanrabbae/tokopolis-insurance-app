@@ -12,24 +12,46 @@ export const menuItems = [
     },
     {
         id: 3,
+        label: "menuitems.permission.text",
+        isTitle: true
+    },
+    {
+        id: 4,
         label: "menuitems.endpoint.text",
         icon: "uil-link",
         link: "/endpoint"
     },
     {
-        id: 4,
+        id: 5,
         label: "menuitems.role.text",
         icon: "uil-graph-bar",
         link: "/role"
     },
     {
-        id: 5,
+        id: 6,
+        label: "menuitems.dealer.text",
+        icon: "uil-building",
+        link: "/dealer"
+    },
+    {
+        id: 7,
+        label: "menuitems.account.text",
+        icon: "uil-user",
+        link: "/account"
+    },
+    {
+        id: 8,
         label: "menuitems.upgrade.text",
         icon: "uil-users-alt",
         link: "/upgrade"
     },
     {
-        id: 6,
+        id: 9,
+        label: "menuitems.sale.text",
+        isTitle: true
+    },
+    {
+        id: 10,
         label: "menuitems.vehicle.text",
         icon: "uil-car",
         link: "/vehicle"

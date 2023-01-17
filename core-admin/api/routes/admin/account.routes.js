@@ -4,7 +4,6 @@ const verifyToken = require('../../middlewares/verifyRole')
 const {
     list,
     create,
-    createDealerAccount,
     account,
     updateData,
     updatePassword,
@@ -29,9 +28,6 @@ router.delete('/admin/account/:id', AuthRoleMiddleware, destroy)
 router.get('/admin/account', AuthRoleMiddleware, account)
 router.put('/admin/account', AuthRoleMiddleware, updateData)
 router.put('/admin/account/password', AuthRoleMiddleware, updatePassword)
-
-// Dealer Account
-router.post("/admin/account/dealer", AuthRoleMiddleware, createDealerAccount);
 
 router.get("/admin/account/upgrade/list", AuthRoleMiddleware, upgradeList);
 router.put("/admin/account/:id/upgrade", AuthRoleMiddleware, verifyUpgrade);
