@@ -191,7 +191,7 @@
 
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <button class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</button>
+                                <a :href="downloadLink" target="_blank" class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</a>
                             </div>
                         </div>
 
@@ -307,6 +307,7 @@ export default {
             currentPage: 1,
             perPage: 5,
             pageOptions: [5, 10, 25, 50],
+            downloadLink: '',
             filterList: {
                 brands: [],
                 types: [],
@@ -455,7 +456,7 @@ export default {
                 })
                 .then ((response) => {
                     this.totalRows = response.data.pagination.total
-
+                    this.downloadLink = response.data.download_link
                     return response.data.list
                 })
                 .catch ([])
