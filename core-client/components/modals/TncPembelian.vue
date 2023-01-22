@@ -25,6 +25,7 @@
             <li>Data yang diisikan merupakan data yang menyatakan kebenaran yang sesungguhnya, yang sesuai dengan ketentuan produk asuransi milik {{ product_company }}</li>
             <li>Saya paham dan mengetahui kendaraan yang ditanggung digunakan sebagai rental individual, dalam hal ini digunakan atau dipindah tangankan ke orang lain, perusahaan rekanan Tokopolis kemungkinkan tidak akan menanggung kerugian tesebut; dan Tokopolis maupun perusahaan asuransi rekanan Tokopolis berhak mengumpulkan data terkait hal tersebut</li>
             <li>Saya bersedia datanya digunakan untuk keperluan {{ product_company }} dan/atau Pihak Ketiga yang bekerja sama dengan {{ product_company }}</li>
+            <li>Saya mengetahui dan memahami bahwa pertanggungan mulai berlaku setelah H+1 hari kerja dari tanggal pengajuan (untuk mobil baru) atau H+3 hari kerja (untuk mobil bekas) dan telah dalam status lunas pembayaran premi.</li>
         </ul>
         <br />
         Jika saya tidak mengindahkan poin-poin diatas, maka saya bersedia untuk menerima konsekuensi yang berlaku, termasuk namun tak terbatas pada keharusan untuk revisi informasi pada polis, kesalahan pengiriman polis atau tidak berlakunya polis
