@@ -9,6 +9,7 @@ import TransactionService from '../../services/TransactionService'
 const service = new TransactionService()
 
 exports.list = async (req, res, next) => {
+
     const filter = {
         id: req.query.id || '',
         name: req.query.name || '',
@@ -28,7 +29,6 @@ exports.list = async (req, res, next) => {
     const list = await service.getTransactionAll(filter, limit, offset)
 
     if (count.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
-
     return res.jsonData({
         pagination: {
             total: count[0].total,
@@ -255,11 +255,11 @@ exports.getTransactionFile = async (req, res, next) => {
     })
 }
 
-const getXlsxAllTransaction = async (filter, req) => {
+exports.getXlsxAllTransaction = async (req, res) => {
     var workbook = new excel.Workbook()
     var worksheet = workbook.addWorksheet('Sheet1')
 
-    const list = await service.getTransactionForXlsx(filter)
+    const list = await service.getTransactionForXlsx(req.body)
 
     for (let index = 0; index < list.length; index++) {
         const data2 = list[index]
@@ -369,5 +369,7 @@ const getXlsxAllTransaction = async (filter, req) => {
 
     workbook.write(`view/static/doc/transaction_${req.query.start_period}-${req.query.end_period}.xlsx`);
 
-    return `${process.env.REDIRECT_ADMIN}/doc/transaction_${req.query.start_period}-${req.query.end_period}.xlsx`
+    return res.jsonData({
+        download_link: `${process.env.REDIRECT_ADMIN}/doc/transaction_${req.query.start_period}-${req.query.end_period}.xlsx`
+    })
 }
