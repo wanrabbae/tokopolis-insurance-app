@@ -191,7 +191,7 @@
 
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <a :href="downloadLink" target="_blank" class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</a>
+                                <a target="_blank" class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</a>
                             </div>
                         </div>
 

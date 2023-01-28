@@ -31,7 +31,11 @@ export default class EndpointRepository {
   }
 
   async getAll() {
-    return await Endpoint.findAll()
+    return await Endpoint.findAll({
+        order: [
+            ['name', 'ASC'],
+        ],
+    })
   }
 
   async getEndpoints(limit, offset) {
