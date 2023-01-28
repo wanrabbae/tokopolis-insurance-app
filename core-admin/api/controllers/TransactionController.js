@@ -827,7 +827,7 @@ exports.doPayment = async (req, res) => {
         delete data["transaction_id"];
         delete data["status"];
 
-        data["due"] = getMoment().add(1, "d").format("YYYY-MM-DD HH:mm:ss");
+        data["due"] = getMoment().add(3, "d").format("YYYY-MM-DD HH:mm:ss");
 
         await service.setPaymentData(transaction.id, {
             fee_pg: paymentFee,
