@@ -9,6 +9,7 @@ import TransactionService from '../../services/TransactionService'
 const service = new TransactionService()
 
 exports.list = async (req, res, next) => {
+
     const filter = {
         id: req.query.id || '',
         name: req.query.name || '',
@@ -28,7 +29,6 @@ exports.list = async (req, res, next) => {
     const list = await service.getTransactionAll(filter, limit, offset)
 
     if (count.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
-
     return res.jsonData({
         pagination: {
             total: count[0].total,
@@ -47,21 +47,12 @@ exports.detail = async (req, res, next) => {
     return res.jsonData(data[0])
 }
 
-<<<<<<< HEAD
-const generateXls = (transaction, destination) => {
-=======
 const generateXls = (review, transaction, destination) => {
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     var workbook = new excel.Workbook()
     var worksheet = workbook.addWorksheet('Sheet1')
 
     const isNew = transaction.documents.bastk != undefined
 
-<<<<<<< HEAD
-    const values = {
-        'Registration Date': moment(transaction.created_at).format("DD/MMM/YYYY"),
-        'Processed Time': '-',
-=======
     const accessoriesPriceTotal = transaction.vehicle_data.accessories.reduce((a, b) => a + b.price, 0)
     const expansionPriceTotal = transaction.expansions.reduce((a, b) => a + b.price, 0)
 
@@ -71,7 +62,6 @@ const generateXls = (review, transaction, destination) => {
     var values = {
         'Registration Date': moment(transaction.created_at).format("DD/MMM/YYYY"),
         // 'Processed Time': '-', // get date ketika virtual account dibuat
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         'Quotation No.': transaction.id,
         'Insurance Name': transaction.product_name,
         'Tokopolis Policy Number': '-',
@@ -91,39 +81,6 @@ const generateXls = (review, transaction, destination) => {
         'Tampak 3D': !isNew ? 'Terlampir' : 'N/A',
         'Tampak Dashboard': !isNew ? 'Terlampir' : 'N/A',
         'Tahun Kendaraan': transaction.vehicle_data.year,
-<<<<<<< HEAD
-        'Pemakaian': '',
-        'Kondisi': isNew != undefined ? 'BARU' : 'BEKAS',
-        'Merek Kendaraan': transaction.brand,
-        'Tipe Kendaraan': '',
-        'Seri Kendaraan': transaction.sub_model,
-        'Nomor Polisi': !isNew && transaction.vehicle_data.plate_detail != undefined ?
-            `${transaction.vehicle_data.plate} ${transaction.vehicle_data.plate_detail}` : transaction.vehicle_data.plate,
-        'Coverage': transaction.product_type == 'comprehensive' ? 'Komprehensif' : 'Total Loss',
-        'TSI': '',
-        'Premi Jaminan Utama': '',
-        'STRIKE_RIOT_CIVIL_COMMOTION': '',
-        'TYPHOON_STORM_FLOOD_HAIL_LANDSLIDE': '',
-        'EARTHQUAKE_TSUNAMI_VOLCANIC_ERUPTION': '',
-        'THIRD_PARTY_LIABILITY': '',
-        'AUTHORIZED_WORKSHOP': '',
-        'Harga Aksesoris': '',
-        'Detil Aksesoris': '',
-        'GWP': '',
-        'Diskon': '',
-        'Persenan Diskon': '',
-        'Biaya Admin': transaction.fee_admin + transaction.fee_stamp,
-        'NWP': '',
-        'Nama Tertanggung': transaction.client_data.fullname,
-        'Tanggal Lahir Tertanggung': '-',
-        'Tipe Identitas Tertanggung': '-',
-        'Alamat Tertanggung': `${transaction.address_detail}, ${transaction.village_name},
-            ${transaction.district_name}, ${transaction.regency_name}, ${transaction.province_name}`,
-        'Insurance Notes': '-',
-        'Quotation Status': 'WAITING',
-    }
-
-=======
         'Pemakaian': transaction.vehicle_data.use == 'private' ? 'PERSONAL' : 'KOMERSIL',
         'Kondisi': isNew != undefined ? 'BARU' : 'BEKAS',
         'Merek Kendaraan': transaction.brand,
@@ -188,7 +145,6 @@ const generateXls = (review, transaction, destination) => {
     values = Object.fromEntries(valueEntries)
 
     // Print object into excel file
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     for (let index = 0; index < Object.keys(values).length; index++) {
         const key = Object.keys(values)[index]
 
@@ -205,7 +161,7 @@ const generateXls = (review, transaction, destination) => {
 
 const generateZip = (transaction, destination) => {
     // Generate Folder & move file
-    if (!fs.existsSync(destination)){
+    if (!fs.existsSync(destination)) {
         fs.mkdirSync(destination, { recursive: true })
     }
 
@@ -226,7 +182,7 @@ const generateZip = (transaction, destination) => {
         console.log('archiver has been finalized and the output file descriptor has closed.')
     });
 
-    archive.on('error', function(err){
+    archive.on('error', function (err) {
         return
     })
 
@@ -250,17 +206,10 @@ exports.addReview = async (req, res, next) => {
     const destination = `view/static/documents/${transaction.id}`
 
     generateZip(transaction, destination)
-<<<<<<< HEAD
-    generateXls(transaction, destination)
-
-    service.sendEmailTransactionFile({
-        host: req.fullhost,
-=======
     generateXls(req.body, transaction, destination)
 
     service.sendEmailTransactionFile({
         host: process.env.REDIRECT_CLIENT || req.fullhost,
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         target: transaction.product_email,
         title: req.polyglot.t("mail.transaction.file"),
         data: {
@@ -273,8 +222,6 @@ exports.addReview = async (req, res, next) => {
     return res.jsonData(data)
 }
 
-<<<<<<< HEAD
-=======
 exports.getTransactionQuotation = async (req, res, next) => {
     const transactions = await service.getTransactionDetailForClient(req.params.id)
     if (transactions.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
@@ -290,7 +237,6 @@ exports.getTransactionQuotation = async (req, res, next) => {
     })
 }
 
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 exports.getTransactionFile = async (req, res, next) => {
     const transactions = await service.getTransactionDetail(req.params.id)
     if (transactions.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
@@ -306,5 +252,124 @@ exports.getTransactionFile = async (req, res, next) => {
     return res.jsonData({
         document: checkFileExists(`${transaction.id}.zip`),
         excel: checkFileExists(`${transaction.id}.xlsx`),
+    })
+}
+
+exports.getXlsxAllTransaction = async (req, res) => {
+    var workbook = new excel.Workbook()
+    var worksheet = workbook.addWorksheet('Sheet1')
+
+    const list = await service.getTransactionForXlsx(req.body)
+
+    for (let index = 0; index < list.length; index++) {
+        const data2 = list[index]
+
+        const isNew = data2.documents.bastk != undefined
+
+        const accessoriesPriceTotal = data2.vehicle_data.accessories.reduce((a, b) => a + b.price, 0)
+        const expansionPriceTotal = data2.expansions.reduce((a, b) => a + b.price, 0)
+
+        var addressDetail = data2.address_detail.split(' ')
+        var postalCode = addressDetail.pop()
+
+        worksheet.cell(1, 1).string("Registration Date")
+        worksheet.cell(1, 2).string("Quotation No.")
+        worksheet.cell(1, 3).string("Insurance Name")
+        worksheet.cell(1, 4).string("Tokopolis Policy Number")
+        worksheet.cell(1, 5).string("Period Of Insured")
+        worksheet.cell(1, 6).string("Nomor Rangka")
+        worksheet.cell(1, 7).string("Nomor Mesin")
+        worksheet.cell(1, 8).string("Warna")
+        worksheet.cell(1, 9).string("Foto STNK")
+        worksheet.cell(1, 10).string("Foto NPWP")
+        worksheet.cell(1, 11).string("Foto KTP")
+        worksheet.cell(1, 12).string("Foto BSTK")
+        worksheet.cell(1, 13).string("Tampak Depan")
+        worksheet.cell(1, 14).string("Tampak Belakang")
+        worksheet.cell(1, 15).string("Tampak Kanan")
+        worksheet.cell(1, 16).string("Tampak Kiri")
+        worksheet.cell(1, 17).string("Tampak Mesin")
+        worksheet.cell(1, 18).string("Tampak 3D")
+        worksheet.cell(1, 20).string("Tampak Dashboard")
+        worksheet.cell(1, 21).string("Tahun Kendaraan")
+        worksheet.cell(1, 22).string("Pemakaian")
+        worksheet.cell(1, 23).string("Kondisi")
+        worksheet.cell(1, 24).string("Merek Kendaraan")
+        worksheet.cell(1, 25).string("Tipe Kendaraan")
+        worksheet.cell(1, 26).string("Seri Kendaraan")
+        worksheet.cell(1, 27).string("Nomor Polisi")
+        worksheet.cell(1, 28).string("Coverage")
+        worksheet.cell(1, 29).string("TSI")
+        worksheet.cell(1, 30).string("Premi Jaminan Utama")
+        worksheet.cell(1, 31).string("Harga Aksesoris")
+        worksheet.cell(1, 32).string("Detail Aksesoris")
+        worksheet.cell(1, 33).string("GWP")
+        worksheet.cell(1, 34).string("Diskon")
+        worksheet.cell(1, 35).string("Persenan Diskon")
+        worksheet.cell(1, 36).string("Biaya Admin")
+        worksheet.cell(1, 37).string("NWP")
+        worksheet.cell(1, 38).string("Nama Tertanggung")
+        worksheet.cell(1, 39).string("Tipe Identitas Tertanggung")
+        worksheet.cell(1, 40).string("Alamat Tertanggung")
+        worksheet.cell(1, 41).string("Insurance Notes")
+        worksheet.cell(1, 42).string("Quotation Status")
+
+        worksheet.cell(index + 1, 1).string(`${moment(data2.created_at).format("DD/MMM/YYYY")}`)
+        worksheet.cell(index + 1, 2).string(`${data2.id}`)
+        worksheet.cell(index + 1, 3).string(`${data2.product_name}`)
+        worksheet.cell(index + 1, 4).string("-")
+        worksheet.cell(index + 1, 5).string(`${moment(data2.start_date).format("DD/MMM/YYYY")} - ${moment(data2.start_date).add(1, 'year').format("DD/MMM/YYYY")}`)
+        worksheet.cell(index + 1, 6).string(`${data2.vehicle_data.skeleton_number}`)
+        worksheet.cell(index + 1, 7).string(`${data2.vehicle_data.machine_number}`)
+        worksheet.cell(index + 1, 8).string(`${data2.vehicle_data.color}`)
+        worksheet.cell(index + 1, 9).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 10).string("-")
+        worksheet.cell(index + 1, 11).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 12).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 13).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 14).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 15).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 16).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 17).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 18).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 20).string(!isNew ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 21).string(data2.vehicle_data.year)
+        worksheet.cell(index + 1, 22).string(data2.vehicle_data.use == 'private' ? 'PERSONAL' : 'KOMERSIL')
+        worksheet.cell(index + 1, 23).string(isNew != undefined ? 'BARU' : 'BEKAS')
+        worksheet.cell(index + 1, 24).string(data2.brand)
+        worksheet.cell(index + 1, 25).string(data2.model)
+        worksheet.cell(index + 1, 26).string(data2.sub_model)
+        worksheet.cell(index + 1, 27).string(!isNew && data2.vehicle_data.plate_detail != undefined ?
+            `${data2.vehicle_data.plate} ${data2.vehicle_data.plate_detail}` :
+            data2.vehicle_data.plate)
+        worksheet.cell(index + 1, 28).string(data2.product_type == 'comprehensive' ? 'Komprehensif' : 'Total Loss')
+        worksheet.cell(index + 1, 29).string(`${data2.vehicle_data.price}`)
+        worksheet.cell(index + 1, 30).string(`${data2.price}`)
+        // ====================== LINE FOR EXPANSION_CODES ======================
+        worksheet.cell(index + 1, 31).string(`${accessoriesPriceTotal}`)
+        worksheet.cell(index + 1, 32).string(data2.vehicle_data.accessories
+            .map(item => `${item.type} (${item.brand})`)
+            .join(', '))
+        worksheet.cell(index + 1, 33).string(`${data2.price + expansionPriceTotal}`)
+        worksheet.cell(index + 1, 34).string(`${data2.discount_total}`)
+        worksheet.cell(index + 1, 35).string(`${data2.discount_format == 'percent' ? data2.discount_value :
+            data2.discount_total / (data2.price + expansionPriceTotal) * 100}`)
+        worksheet.cell(index + 1, 36).string(data2.fee_admin + data2.fee_stamp)
+        worksheet.cell(index + 1, 37).string(`${(data2.price + expansionPriceTotal) - data2.discount_total +
+            data2.fee_admin + data2.fee_stamp}`)
+        worksheet.cell(index + 1, 38).string(data2.client_data.fullname)
+        worksheet.cell(index + 1, 39).string("-")
+        worksheet.cell(index + 1, 40).string((`${addressDetail.join(' ')}, ${data2.village_name}, ` +
+            `${data2.district_name}, ${data2.regency_name}, ` +
+            `${data2.province_name} ${postalCode}`)
+            .replace((/  |\r\n|\n|\r/gm), ''))
+        worksheet.cell(index + 1, 41).string('-')
+        worksheet.cell(index + 1, 42).string("WAITING")
+    }
+
+    workbook.write(`view/static/doc/transaction_${req.query.start_period}-${req.query.end_period}.xlsx`);
+
+    return res.jsonData({
+        download_link: `${process.env.REDIRECT_ADMIN}/doc/transaction_${req.query.start_period}-${req.query.end_period}.xlsx`
     })
 }

@@ -20,16 +20,7 @@
                 <div class="row no-gutters">
                     <div class="col-md-9 pr-md-1 mb-2">
                         <b-input-group class="addon-combined">
-<<<<<<< HEAD
-                            <input
-                                v-model="model.search"
-                                placeholder="Cari Polis"
-                                class="form-control"
-                                required
-                            >
-=======
                             <input v-model="model.search" placeholder="Cari Polis" class="form-control" required>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                             <b-input-group-append>
                                 <BaseButton type="icon" classes="px-3">
@@ -47,14 +38,6 @@
                 <SwiperRadioButtonGroup id="policy-category" v-model="model.policyCategory" name="policy-category"
                     :options="policyCategoryOptions" class="mb-4" />
 
-<<<<<<< HEAD
-                <div v-if="!policies.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
-                    <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
-                    <h4 class="mt-3 text-secondary">Belum Ada Polis</h4>
-                </div>
-
-                <div v-for="(policy, id) in policies" :key="id" class="card" :class="{ 'mb-4': id < policies.length - 1 }">
-=======
                 <div v-if="!policies.length" class="text-center bg-white rounded"
                     style=" padding-top: 100px; padding-bottom: 100px;">
                     <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;" />
@@ -63,7 +46,6 @@
 
                 <div v-for="(policy, id) in policies" :key="id" class="card"
                     :class="{ 'mb-4': id < policies.length - 1 }">
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                     <div class="card-header border-bottom">
                         <div class="row">
                             <div class="col-md-8">
@@ -89,23 +71,6 @@
                                 <div class="fs-5 fw-bold mb-1">{{ policy.product }} - {{ policy.vehicle }}</div>
                                 <div class="mb-2">{{ policy.periodDate }}</div>
                                 <div class="d-block">
-<<<<<<< HEAD
-                                    <div class="badge py-2 px-3 rounded-pill mr-1" :class="policy.status === 'paid' ? 'badge-success' : 'badge-danger'" >
-                                        {{ policy.status === "paid" ? 'Aktif' : 'Belum Aktif' }}
-                                    </div>
-
-                                    <div v-if="policy.status == 'open'" class="badge py-2 px-3 rounded-pill badge-primary mr-1">Penawaran</div>
-                                    <div v-else-if="policy.status == 'waiting'" class="badge py-2 px-3 rounded-pill badge-info clickable mr-1"
-                                        @click="openPayment(policy.quotationID)">Menunggu Pembayaran</div>
-                                    <div v-else-if="policy.status == 'paid'" class="badge py-2 px-3 rounded-pill badge-success mr-1">Pembayaran Diterima</div>
-                                    <div v-else-if="policy.status == 'rejected'" class="badge py-2 px-3 rounded-pill badge-danger mr-1">Pembayaran Ditolak</div>
-                                    <div v-else-if="policy.status == 'canceled'" class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
-
-                                    <div class="d-inline-block">
-                                        <div style="cursor: pointer;" title="Share Document">
-                                            <fa icon="share-nodes" style="width: 16px; height: 16px;" @click="openShareModal()"/>
-                                        </div>
-=======
                                     <div class="badge py-2 px-3 rounded-pill mr-1"
                                         :class="policy.status === 'paid' ? 'badge-success' : 'badge-danger'">
                                         {{ policy.status === "paid" ? 'Aktif' : 'Belum Aktif' }}
@@ -126,42 +91,29 @@
                                         class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
 
                                     <div class="d-inline-block">
-                                        <fa icon="share-nodes" style="width: 16px; height: 16px;" />
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
+
+                                        <div style="cursor: pointer;" title="Share Document">
+                                            <fa icon="share-nodes" style="width: 16px; height: 16px;"
+                                                @click="openShareModal()" />
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="text-right">
-<<<<<<< HEAD
-                            <BaseButton tag="a" :href="'/ajukan-klaim?id=' + policy.quotationID">Ajukan Klaim</BaseButton>
-=======
                             <BaseButton v-if="policy.status != 'open'" tag="a"
                                 :href="'/ajukan-klaim?id=' + policy.quotationID">Ajukan Klaim</BaseButton>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                             <BaseButton tag="a" href="#" disabled>Beli Lagi</BaseButton>
                         </div>
                     </div>
                 </div>
-<<<<<<< HEAD
-
-                <b-pagination v-if="policies.length" v-model="currentPage"
-                    class="mt-4"
-                    v-bind="paginationOptions"
-                    @page-click="onPageClick"
-                />
-            </div>
-        </b-container>
-        <Loading :show="loading"/>
-
-        <Share id="share-popup"/>
-=======
                 <b-pagination v-if="policies.length" v-model="currentPage" class="mt-4" v-bind="paginationOptions"
                     @page-click="onPageClick" />
             </div>
         </b-container>
         <Loading :show="loading" />
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
+        <Share id="share-popup"/>
     </div>
 </template>
 
@@ -179,12 +131,8 @@ export default {
         BaseSelect,
         BaseButton,
         SwiperRadioButtonGroup,
-<<<<<<< HEAD
         Loading,
         Share
-=======
-        Loading
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     },
     data() {
         return {
@@ -213,17 +161,6 @@ export default {
                 // { text: 'Perjalanan', value: "travel" },
             ],
             policies: [
-<<<<<<< HEAD
-                {
-                    quotationID: "TKP-00000000-000000-0000",
-                    holder: "",
-                    name: "",
-                    periodDate: "",
-                    endDate: "",
-                    image: "/img/car-icon-comprehensive.png",
-                    status: true
-                },
-=======
                 // {
                 //     quotationID: "TKP-00000000-000000-0000",
                 //     holder: "",
@@ -233,7 +170,6 @@ export default {
                 //     image: "/img/car-icon-comprehensive.png",
                 //     status: true
                 // },
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             ],
             currentPage: 1,
             paginationOptions: {
@@ -254,31 +190,6 @@ export default {
         this.getTransactions()
     },
     methods: {
-<<<<<<< HEAD
-        async getTransactions(){
-            this.policies = []
-
-            await this.$axios.$get(`api/user/transactions`)
-            .then ((response) => {
-                console.log(response.data)
-
-                response.data.forEach((field) => {
-                    const start = moment(field.start_date)
-                    const end = moment(field.start_date).add(1, 'year')
-                    const now = moment()
-                    const period = moment.duration(end.diff(now))
-                    const isStarted = (moment().diff(moment(field.start_date))) >= 0
-
-                    this.policies.push({
-                        quotationID: field.id,
-                        holder: field.client_data.fullname,
-                        product: field.product.name,
-                        vehicle: field.vehicle.brand,
-                        periodDate: `Periode: ${start.format('D MMM yyyy')} - ${end.format('D MMM yyyy')}`,
-                        endDate: isStarted ? `Berakhir dalam ${period.asDays().toFixed(0)} Hari` : '',
-                        image: field.product.type === "comprehensive" ? "/img/car-icon-comprehensive.png" : "/img/car-icon-tlo.png",
-                        status: field.status
-=======
         async getTransactions() {
             this.policies = []
 
@@ -301,7 +212,6 @@ export default {
                             image: field.product.type === "comprehensive" ? "/img/car-icon-comprehensive.png" : "/img/car-icon-tlo.png",
                             status: field.status
                         })
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                     })
 
                     this.loading = false
@@ -318,15 +228,8 @@ export default {
             this.loading = true
             this.getProductList(page)
         },
-        openPayment(id) {
-            window.location.href = `/asuransi/mobil/polis/konfirmasi-pembayaran?id=${id}`
-        },
         openShareModal() {
             this.$bvModal.show('share-popup')
-        },  
-        onPageClick(event, page) {
-            this.loading = true
-            this.getProductList(page)
         },
     }
 }

@@ -39,7 +39,7 @@ export default class TransactionRepository {
             (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
             `AND trans.status IN ('waiting', 'paid') ` +
             `ORDER BY trans.created_at ASC ` +
-            `LIMIT ${limit} OFFSET ${offset}`,
+            (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT })
     }
 
@@ -48,13 +48,8 @@ export default class TransactionRepository {
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
-<<<<<<< HEAD
-            `vehicle.brand, vehicle.sub_model, product.id as product_id, product.name as product_name, product.type as product_type, ` +
-            `product.image as product_image, product.email as product_email, ` +
-=======
             `vehicle.brand, vehicle.model, vehicle.sub_model, product.id as product_id, product.name as product_name, ` +
             `product.type as product_type, product.image as product_image, product.email as product_email, ` +
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
             `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
             `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.created_at ` +
@@ -81,6 +76,35 @@ export default class TransactionRepository {
             `WHERE trans.id = '${id}' `,
             { type: QueryTypes.SELECT })
     }
+
+    async getTransactionForXlsx(data) {
+        const dateFilter = `trans.start_date >= '${data.start_period}' ` +
+            `AND trans.start_date <= '${data.end_period}' `
+
+        return await sequelize.query(`SELECT trans.id, trans.client_data, trans.address_detail, ` +
+            `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
+            `province.name as province_name, trans.start_date, trans.status, ` +
+            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+            `vehicle.brand, vehicle.model, vehicle.sub_model, product.id as product_id, product.name as product_name, ` +
+            `product.type as product_type, product.image as product_image, product.email as product_email, ` +
+            `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
+            `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
+            `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.created_at ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
+            `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
+            `JOIN products as product ON trans.product_id = product.id ` +
+            `JOIN address_villages as village ON trans.address_village_id = village.id ` +
+            `JOIN address_districts as district ON village.district_id = district.id ` +
+            `JOIN address_regencies as regency ON district.regency_id = regency.id ` +
+            `JOIN address_provinces as province ON regency.province_id = province.id ` +
+            `WHERE ${dateFilter}` +
+            `AND trans.status IN ('waiting', 'paid') ` +
+            `ORDER BY trans.created_at ASC `,
+            { type: QueryTypes.SELECT })
+    }
+
 
     // async getTransactionAll(limit, offset) {
     //     return await Transaction.findAll({
@@ -290,43 +314,6 @@ export default class TransactionRepository {
         return await Transaction.update(payload, {
             where: { pg_transaction_id: pg_transaction_id },
         });
-<<<<<<< HEAD
-    }
-
-    async createComission(payload) {
-        return await Comission.create(payload);
-    }
-
-    async getComission(payload) {
-        const comissionIn = await Comission.findAll({
-            attributes: [
-                "id",
-                [sequelize.fn("sum", sequelize.col("value")), "value"],
-            ],
-            where: {
-                account_id: payload.account._id,
-                type: "in",
-            },
-        });
-        const comissionOut = await Comission.findAll({
-            attributes: [
-                "id",
-                [sequelize.fn("sum", sequelize.col("value")), "value"],
-            ],
-            where: {
-                account_id: payload.account._id,
-                type: "out",
-            },
-        });
-        const total = comissionIn[0].value - comissionOut[0].value;
-        return { account_id: payload.account._id, total: Math.abs(total) };
-    }
-
-    async getComissionHistory(payload) {
-        return await Comission.findAll({
-            where: {
-                account_id: payload.account._id,
-=======
     }
 
     async createComission(payload) {
@@ -349,60 +336,28 @@ export default class TransactionRepository {
         return await Comission.findAll({
             where: {
                 account_id: account_id,
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             },
         });
     }
 
-<<<<<<< HEAD
-    async getPointHistory(payload) {
-        return await Point.findAll({
-            where: {
-                account_id: payload.account._id,
-=======
     async getPointHistory(account_id) {
         return await Point.findAll({
             where: {
                 account_id: account_id,
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             },
         });
     }
 
-<<<<<<< HEAD
-    async getPoint(payload) {
-        const pointIn = await Point.findAll({
-=======
     async getPoint(account_id) {
         return await Point.findAll({
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             attributes: [
                 "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
             where: {
-<<<<<<< HEAD
-                account_id: payload.account._id,
-                type: "in",
-            },
-        });
-        const pointOut = await Point.findAll({
-            attributes: [
-                "id",
-                [sequelize.fn("sum", sequelize.col("value")), "value"],
-            ],
-            where: {
-                account_id: payload.account._id,
-                type: "out",
-            },
-        });
-        const total = pointIn[0].value - pointOut[0].value;
-        return { account_id: payload.account._id, total: Math.abs(total) };
-=======
                 account_id: account_id,
             },
         })
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     }
 
     async createPoint(payload) {

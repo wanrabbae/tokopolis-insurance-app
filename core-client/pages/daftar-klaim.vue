@@ -40,24 +40,12 @@
 
                         <b-input-group class="addon-combined">
 
-<<<<<<< HEAD
-                            <input
-                                v-model="model.search"
-                                placeholder="Cari Klaim"
-                                class="form-control"
-                                required
-                            >
-
-                            <b-input-group-append>
-                                <BaseButton type="icon" classes="px-3"><fa icon="magnifying-glass"/></BaseButton>
-=======
                             <input v-model="model.search" placeholder="Cari Klaim" class="form-control" required>
 
                             <b-input-group-append>
                                 <BaseButton type="icon" classes="px-3">
                                     <fa icon="magnifying-glass" />
                                 </BaseButton>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                             </b-input-group-append>
 
                         </b-input-group>
@@ -66,36 +54,12 @@
 
                     <div class="col-12 col-md-3 pl-md-1 mb-2">
 
-<<<<<<< HEAD
-                        <BaseSelect
-                            v-model="model.status"
-                            name="Status"
-                            :options="statusOptions"
-                        />
-=======
                         <BaseSelect v-model="model.status" name="Status" :options="statusOptions" />
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                     </div> <!-- col-12.col-md-3 ends -->
 
                 </div> <!-- row ends -->
 
-<<<<<<< HEAD
-                <SwiperRadioButtonGroup
-                    id="policy-category"
-                    v-model="model.policyCategory"
-                    name="policy-category"
-                    :options="policyCategoryOptions"
-                    class="mb-4"
-                />
-
-                <div v-if="!policies.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
-                    <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
-                    <h4 class="mt-3 text-secondary">Belum Ada Klaim</h4>
-                </div>
-
-                <div v-for="(policy, id) in policies" :key="id" class="card" :class="{ 'mb-4': id < policies.length - 1 }">
-=======
                 <SwiperRadioButtonGroup id="policy-category" v-model="model.policyCategory" name="policy-category"
                     :options="policyCategoryOptions" class="mb-4" />
 
@@ -107,7 +71,6 @@
 
                 <div v-for="(policy, id) in policies" :key="id" class="card"
                     :class="{ 'mb-4': id < policies.length - 1 }">
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                     <div class="card-header border-bottom">
 
@@ -135,12 +98,8 @@
 
                             <div class="d-inline-block align-top mr-3">
 
-<<<<<<< HEAD
-                                <img :src="policy.image" alt="Mobil" height="96px" width="96px" class="rounded-circle" style="max-height: 96px">
-=======
                                 <img :src="policy.image" alt="Mobil" height="96px" width="96px" class="rounded-circle"
                                     style="max-height: 96px">
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                             </div>
 
@@ -154,37 +113,20 @@
 
                                 <div class="d-block">
 
-<<<<<<< HEAD
-                                    <div
-                                        class="badge py-2 px-3 rounded-pill mr-1"
-                                        :class="policy.status !== 'declined' ? 'badge-primary' : 'badge-warning'"
-                                    >
-                                        {{ status[policy.status] }}
-                                    </div>
-
-                                    <div
-                                        class="badge py-2 px-3 rounded-pill badge-info mr-1"
-                                    >
-=======
                                     <div class="badge py-2 px-3 rounded-pill mr-1"
                                         :class="policy.status !== 'declined' ? 'badge-primary' : 'badge-warning'">
                                         {{ status[policy.status] }}
                                     </div>
 
                                     <div class="badge py-2 px-3 rounded-pill badge-info mr-1">
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                         {{ policy.quotationID }}
                                     </div>
 
                                     <div class="d-inline-block">
 
-<<<<<<< HEAD
-                                        <fa icon="share-nodes" style="width: 16px; height: 16px;"/>
-=======
                                         <div style="cursor: pointer;" title="Share Document">
                                             <fa icon="share-nodes" style="width: 16px; height: 16px;" @click="openShareModal()"/>
                                         </div>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                                     </div>
 
@@ -196,12 +138,8 @@
 
                         <div class="text-right">
 
-<<<<<<< HEAD
-                            <BaseButton tag="a" :href="'/detail-klaim?id=' + policy.claimNumber">Periksa Klaim</BaseButton>
-=======
                             <BaseButton tag="a" :href="'/detail-klaim?id=' + policy.claimNumber">Periksa Klaim
                             </BaseButton>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                         </div> <!-- text-right ends -->
 
@@ -209,17 +147,6 @@
 
                 </div> <!-- card ends -->
 
-<<<<<<< HEAD
-                <b-pagination v-if="policies.length" v-model="currentPage"
-                    class="mt-4"
-                    v-bind="paginationOptions"
-                    @page-click="onPageClick"
-                />
-            </div> <!-- container-content ends -->
-
-        </div> <!-- container ends -->
-        <Loading :show="loading"/>
-=======
                 <b-pagination v-if="policies.length" v-model="currentPage" class="mt-4" v-bind="paginationOptions"
                     @page-click="onPageClick" />
 
@@ -228,7 +155,6 @@
         </div> <!-- container ends -->
         <Loading :show="loading" />
         <Share id="share-popup"/>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     </div>
 
 </template>
@@ -240,31 +166,20 @@ import BaseSelect from '../components/Inputs/BaseSelect'
 import BaseButton from '../components/BaseButton'
 import SwiperRadioButtonGroup from '../components/SwiperRadioButtonGroup'
 import Loading from '../components/Loading'
-<<<<<<< HEAD
-=======
 import Share from '../components/modals/Share.vue'
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
 export default {
     components: {
         BaseSelect,
         BaseButton,
         SwiperRadioButtonGroup,
-<<<<<<< HEAD
-        Loading
-=======
         Loading,
         Share
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     },
     data() {
         return {
             title: 'Daftar Klaim',
-<<<<<<< HEAD
-            loading : true,
-=======
             loading: true,
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             model: {
                 search: null,
                 status: null,
@@ -300,17 +215,6 @@ export default {
                 // { text: 'Perjalanan', value: "travel" },
             ],
             policies: [
-<<<<<<< HEAD
-                {
-                    claimNumber: "C-00.00.0000",
-                    quotationID: "TKP-00000000-000000-0000",
-                    holder: "",
-                    product: "",
-                    periodDate: "",
-                    image: "/img/car-icon-comprehensive.png",
-                    status: "pending",
-                },
-=======
                 // {
                 //     claimNumber: "C-00.00.0000",
                 //     quotationID: "TKP-00000000-000000-0000",
@@ -320,7 +224,6 @@ export default {
                 //     image: "/img/car-icon-comprehensive.png",
                 //     status: "pending",
                 // },
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             ],
             currentPage: 1,
             paginationOptions: {
@@ -337,36 +240,6 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
-<<<<<<< HEAD
-    mounted(){
-        this.getClaims()
-    },
-    methods:{
-        async getClaims(){
-            this.policies = []
-
-            await this.$axios.$get(`api/claim`)
-            .then ((response) => {
-                response.data.forEach((field) => {
-                    const start = moment(field.created_at)
-                    
-                    this.policies.push({
-                        claimNumber: field.id,
-                        quotationID: field.transaction_id,
-                        holder: field.account.fullname,
-                        product: field.product.name,
-                        periodDate: `Tanggal Pengajuan: ${start.format('D MMM yyyy')}`,
-                        image: "/img/car-icon-comprehensive.png",
-                        status: field.status,
-                    })
-                })
-
-                this.loading = false
-
-            }).catch (function () {
-
-            })
-=======
     mounted() {
         this.getClaims()
     },
@@ -393,18 +266,14 @@ export default {
                     this.loading = false
 
                 })
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         },
         onPageClick(event, page) {
             this.loading = true
             this.getProductList(page)
         },
-<<<<<<< HEAD
-=======
         openShareModal() {
             this.$bvModal.show('share-popup')
         },
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     }
 
 }

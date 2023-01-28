@@ -2,7 +2,7 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 
 const { Account, Profile, Identity, Bank,
-    AccountToken, Role, RoleUpgrade } = require("../models");
+    AccountToken, Role, RoleUpgrade, Dealer } = require("../models");
 
 export default class AccountRepository {
     constructor() {}
@@ -210,11 +210,7 @@ export default class AccountRepository {
             where: {
                 token: token,
                 type: "password",
-<<<<<<< HEAD
-                created_at: {
-=======
                 updated_at: {
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                     [Op.gt]: moment().subtract(1, "hours").toDate(),
                 },
             },
@@ -336,5 +332,55 @@ export default class AccountRepository {
             leader_id: payload.leader_id,
             subordinate_id: payload.subordinate_id,
         })
+    }
+
+    async getDealerAll() {
+        return await Dealer.findAll()
+    }
+
+    async getDealerAllWithFilter(query, limit, offset) {
+        return await Dealer.findAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.like]: `%${query}%` } },
+                ],
+            },
+            limit: limit,
+            offset: offset,
+        })
+    }
+
+    async getDealerCountByQuery(query) {
+        return await Dealer.count({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.like]: `%${query}%` } },
+                ],
+            },
+        });
+    }
+
+    async getDealer(id) {
+        return await Dealer.findByPk(id)
+    }
+
+    async createDealer(payload) {
+        return await Dealer.create({
+            id: payload.id,
+            other_id: payload.other_id,
+            name: payload.name,
+        })
+    }
+
+    async updateDealer(id, payload) {
+        return await Dealer.update(payload, {
+            where: { id: id },
+        });
+    }
+
+    async deleteDealer(id) {
+        return await Dealer.destroy({
+            where: { id: id },
+        });
     }
 }

@@ -68,16 +68,10 @@
 
                     </div>
 
-<<<<<<< HEAD
-                    <div v-if="!shownProducts.length" class="text-center bg-white rounded" style=" padding-top: 100px; padding-bottom: 100px;">
-                        <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;"/>
-                        <h4 class="mt-3 text-secondary">Belum Ada Polis</h4>
-=======
                     <div v-if="!shownProducts.length" class="text-center bg-white rounded"
                         style=" padding-top: 100px; padding-bottom: 100px;">
                         <b-img center src="/img/box.png" alt="Payment Icon" width="100px" style="max-height: 160px;" />
                         <h4 class="mt-3 text-secondary">Belum Ada Produk</h4>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                     </div>
 
                     <b-form>
@@ -129,16 +123,8 @@
 
                                             </ul>
 
-<<<<<<< HEAD
-                                            <BaseButton
-                                                type="link"
-                                                classes="text-primary fw-bold p-0"
-                                                @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)"
-                                            >
-=======
                                             <BaseButton type="link" classes="text-primary fw-bold p-0"
                                                 @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                                 Selengkapnya
                                             </BaseButton>
 
@@ -148,11 +134,6 @@
 
                                     <div class="p-3">
                                         <div>Premi Dasar</div>
-<<<<<<< HEAD
-                                        <div class="fw-bold"><h4>{{ formatPrice(product.price) }}</h4></div>
-                                        <div v-if="isAgent() && product.commission != 0">Komisi {{ product.commission }}%
-                                            <span class="fw-bold">{{ formatPrice(product.price * product.commission / 100) }}</span>
-=======
                                         <div class="fw-bold">
                                             <h4>{{ formatPrice(product.price) }}</h4>
                                         </div>
@@ -163,33 +144,12 @@
                                                 formatPrice(product.price * product.commission /
                                                     100)
                                             }}</span>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                         </div>
                                         <div v-if="isAgent() && product.extra_point != 0" class="mt-1" style="width: fit-content;
                                             padding: 7px 11px;
                                             background: #e3f6ff;
                                             color: #5f668d;
                                             border-radius: 3px;">
-<<<<<<< HEAD
-                                            <fa :icon="'star'" class="me-2"/> Extra Poin {{ product.extra_point }}%: <span class="fw-bold">{{ (product.price * product.extra_point / 100000).toFixed(0) }} Poin</span>
-                                        </div>
-
-                                        <div class="text-right">
-                                            <b-form-checkbox
-                                                :value="product.id"
-                                                :disabled="disableProduct(product.id)"
-                                                @change="() => {
-                                                    if(!isLoggedIn) {
-                                                        productToCompare = [];
-                                                        openLoginModal(product.id);
-                                                    }
-                                                }"
-                                            >
-                                                Bandingkan
-                                            </b-form-checkbox>
-
-                                            <BaseButton  @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
-=======
                                             <fa :icon="'star'" class="me-2" /> Extra Poin {{ product.extra_point }}%:
                                             <span class="fw-bold">{{ (product.price * product.extra_point /
                                             100000).toFixed(0) }} Poin</span>
@@ -208,7 +168,6 @@
 
                                             <BaseButton
                                                 @click="isLoggedIn ? detailProduct(product.id) : openLoginModal(product.id)">
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                                 Pilih Produk
                                             </BaseButton>
                                         </div>
@@ -232,16 +191,8 @@
 
                     </b-form>
 
-<<<<<<< HEAD
-                    <b-pagination v-if="shownProducts.length"
-                        v-model="currentPage"
-                        v-bind="paginationOptions"
-                        @page-click="onPageClick"
-                    />
-=======
                     <b-pagination v-if="shownProducts.length" v-model="currentPage" v-bind="paginationOptions"
                         @page-click="onPageClick" />
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                 </div>
 
@@ -399,48 +350,30 @@ export default {
                     {
                         question: 'Apa itu asuransi mobil?',
                         answer: `
-<<<<<<< HEAD
-                                Salah satu bentuk proteksi finasial atas aset mobil anda atas kejadian yang tidak diinginkan sehingga 
-=======
                                 Salah satu bentuk proteksi finasial atas aset mobil anda atas kejadian yang tidak diinginkan sehingga
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 mengakibatkan pengeluaran tak terduga yang besar akibat perbaikan mobil anda di bengkel.
                                 `
                     },
                     {
                         question: 'Mengapa anda harus memiliki asuransi mobil?',
                         answer: `
-<<<<<<< HEAD
-                                Bagi anda yang memiliki mobil, selayaknnya anda lengkapi dengan asuransi mobil 
-                                untuk menghindari biaya kerugian yang timbul atas kejadian tak terduga seperti 
-=======
                                 Bagi anda yang memiliki mobil, selayaknnya anda lengkapi dengan asuransi mobil
                                 untuk menghindari biaya kerugian yang timbul atas kejadian tak terduga seperti
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 kecelakaan beraibat kerusakan mobil.
                                 `
                     },
                     {
                         question: 'Apa saja keuntungan memiliki asuransi mobil?',
                         answer: `
-<<<<<<< HEAD
-                                Tidak ada rasa khawatir, jaminan perbaikan mobil jika terjadi kejadian tidak 
-                                diinginkan, transafer risiko ke perusahaan asuransi, jaringan bengkel tersebar 
-=======
                                 Tidak ada rasa khawatir, jaminan perbaikan mobil jika terjadi kejadian tidak
                                 diinginkan, transafer risiko ke perusahaan asuransi, jaringan bengkel tersebar
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 seluruh Indonesia.
                                 `
                     },
                     {
                         question: 'Apa saja jenis-jenis asuransi mobil yang tersedia?',
                         answer: `
-<<<<<<< HEAD
-                                Comprehensive (Jaminan risiko kerusakan sebagian) & Total Loss Only / TLO 
-=======
                                 Comprehensive (Jaminan risiko kerusakan sebagian) & Total Loss Only / TLO
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 (Jaminan risiko kerusakan total atau min 75% dari harga kendaraan).
                                 `
                     },
@@ -466,11 +399,7 @@ export default {
                     {
                         question: 'Apakah semua risiko sudah dilindungi dengan asuransi mobil comprehensive?',
                         answer: `
-<<<<<<< HEAD
-                                Ya, kecuali resiko yang dikecualikan dalam polis asuransi kendaraan bermotor. 
-=======
                                 Ya, kecuali resiko yang dikecualikan dalam polis asuransi kendaraan bermotor.
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 Kami sarankan dapat membaca wording PSAKBI (Polis Standar Asuransi Kendaraan Bermotor Indonesia).
                                 `
                     },
@@ -483,35 +412,22 @@ export default {
                     {
                         question: 'Apa saja jenis perluasan asuransi mobil?',
                         answer: `
-<<<<<<< HEAD
-                                Asuransi dapat diperluas dengan menambah perluasan risiko seperti Kerusuhan, 
-                                Huru Hara, Banjir, Gempa Bumi, Tuntutan Pihak Ketiga, Kecelakaan Diri Pengemudi 
-=======
                                 Asuransi dapat diperluas dengan menambah perluasan risiko seperti Kerusuhan,
                                 Huru Hara, Banjir, Gempa Bumi, Tuntutan Pihak Ketiga, Kecelakaan Diri Pengemudi
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 dan Penumpang.
                                 `
                     },
                     {
                         question: 'Apa yang dimaksud dengan loading fee/loading rate dan bagaimana cara menghitungnya?',
                         answer: `
-<<<<<<< HEAD
-                                Loading fee/loading rate akan dikenakan sebesar 5% (dari rate standar OJK) per 
-=======
                                 Loading fee/loading rate akan dikenakan sebesar 5% (dari rate standar OJK) per
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 tahunnya untuk kendaraan dengan usia di atas 5 (lima) tahun.
                                 `
                     },
                     {
                         question: 'Dokumen apa saja yang perlu saya siapkan sebelum melakukan klaim dan bagaimana cara mengajukan claim?',
                         answer: `
-<<<<<<< HEAD
-                                Dokumen yang perlu disiapkan yaitu scan copy KTP, polis asuransi dan foto kerusakan kendaraan, 
-=======
                                 Dokumen yang perlu disiapkan yaitu scan copy KTP, polis asuransi dan foto kerusakan kendaraan,
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 selanjurnya silahkan mengisi form laporan claim pada web app kami tokopolis.id.
                                 `
                     },
@@ -524,11 +440,7 @@ export default {
                     {
                         question: 'Apakah saya dapat menambahkan perluasan risiko lagi, ketika polis sudah terbit?',
                         answer: `
-<<<<<<< HEAD
-                                Bisa, syarat dilakukan desk survey (melampirkan foto kendaraan) dan biasanya dikenakan tambahan premi. 
-=======
                                 Bisa, syarat dilakukan desk survey (melampirkan foto kendaraan) dan biasanya dikenakan tambahan premi.
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 Adapun pengajuan endorsement ditujukan ke email cs@tokopolis.id atau hubungi contact center kami.
                                 `
                     },
@@ -541,22 +453,14 @@ export default {
                     {
                         question: 'Apakah polis yang sudah saya beli dapat dibatalkan dan bagaimana caranya?',
                         answer: `
-<<<<<<< HEAD
-                                Dokumen yang perlu disiapkan yaitu scan copy KTP, dan pengajuan pembatalan secara tertulis disertai alasan, 
-=======
                                 Dokumen yang perlu disiapkan yaitu scan copy KTP, dan pengajuan pembatalan secara tertulis disertai alasan,
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 selanjurnya ditujukan ke email cs@tokopolis.id atau hubungi contact center kami.
                                 `
                     },
                     {
                         question: 'Apakah saya dapat menerima refund atas pembatalan polis yang dibatalkan?',
                         answer: `
-<<<<<<< HEAD
-                                Kebijakan atau perhitungan pengembalian dana refund akan disampaikan setelah mendapatkan konfirmasi dari 
-=======
                                 Kebijakan atau perhitungan pengembalian dana refund akan disampaikan setelah mendapatkan konfirmasi dari
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                                 pihak Asuransi.
                                 `
                     },

@@ -1,8 +1,4 @@
 import Vue from 'vue'
-<<<<<<< HEAD
-import cookie from 'js-cookie'
-=======
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 import atob from 'atob'
 
 const mixin = {
@@ -40,17 +36,6 @@ const mixin = {
         isAgent() {
             const accessToken = this.$store.state.token
             if (!accessToken) return false
-<<<<<<< HEAD
-
-            const payload = JSON.parse(atob(accessToken.split('.')[1]))
-
-            return payload.role === 5
-        },
-        async logout(){
-            await cookie.remove('token')
-            await cookie.remove('photo')
-=======
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
             const payload = JSON.parse(atob(accessToken.split('.')[1]))
 

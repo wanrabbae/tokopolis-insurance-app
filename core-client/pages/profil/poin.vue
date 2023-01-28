@@ -7,39 +7,12 @@
             <div class="row no-gutters">
 
                 <div class="col-12 p-3 p-md-4 border-bottom">
-<<<<<<< HEAD
-                
-=======
 
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                     <div class="d-flex align-items-center mb-2">
 
                         <div class="d-flex align-items-center flex-grow-1 fs-5 fs-md-4 fw-bold">
 
                             <span class="mr-2">
-<<<<<<< HEAD
-                                
-                                <nuxt-img 
-                                    height="36"
-                                    preset="default"
-                                    src="/svg/coins.svg" 
-                                />
-                                
-                            </span>
-                            
-                            Poin
-                            
-                            <small 
-                                v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Poin di sini'" 
-                                class="ml-1 pr-2 align-top text-primary opacity-75"
-                            >
-                                <fa icon="circle-info"/>
-                            </small>
-                        
-                        </div>
-
-                        <BaseButton @click="onWithdraw">Penarikan</BaseButton>
-=======
 
                                 <nuxt-img height="36" preset="default" src="/svg/coins.svg" />
 
@@ -60,7 +33,6 @@
                         <div v-else v-b-tooltip.hover.top.v-dark="'Data Rekening Bank belum diverifikasi'">
                             <BaseButton disabled>Penarikan</BaseButton>
                         </div>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                     </div>
 
@@ -69,32 +41,6 @@
                         <span class="fs-4 fs-md-2 fw-bold">{{ points }}</span>
 
                     </div>
-<<<<<<< HEAD
-            
-                </div>
-
-                <div class="col-12 p-3 p-md-4">
-                    
-                    <div class="d-flex align-items-center fs-5 fs-md-4 fw-bold mb-2">
-                        
-                        <span class="mr-2">
-
-                            <nuxt-img 
-                                height="36"
-                                preset="default"
-                                src="/img/shield-checkmark.png" 
-                            />
-                            
-                        </span>
-
-                        Polis Terjual
-                        
-                        <small 
-                            v-b-tooltip.hover.right.v-dark="'Masukkan deskripsi Polis Terjual di sini'" 
-                            class="ml-1 pr-2 align-top text-primary opacity-75"
-                        >
-                            <fa icon="circle-info"/>
-=======
 
                 </div>
 
@@ -113,7 +59,6 @@
                         <small v-b-tooltip.hover.right.v-dark="'Akumulasi Transaksi Polis yang terbayar'"
                             class="ml-1 pr-2 align-top text-primary opacity-75">
                             <fa icon="circle-info" />
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
                         </small>
 
                     </div>
@@ -152,11 +97,7 @@
 
             </b-tr>
 
-<<<<<<< HEAD
-            <b-tr v-if="!history" class="border-bottom" style="background-color: #efedfa">
-=======
             <b-tr v-if="history.length == 0" class="border-bottom" style="background-color: #efedfa">
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                 <b-td class="col-12 text-center align-middle" colspan="4">
 
@@ -166,27 +107,6 @@
 
             </b-tr>
 
-<<<<<<< HEAD
-            <b-tr v-for="(historyItem, i) in history" v-else :key="i" class="border-bottom" style="background-color: #efedfa">
-
-                <b-td class="col-2 text-center align-middle">{{ $dayjs(historyItem.date).format('DD-MM-YYYY') }}</b-td>
-
-                <b-td class="col-6 text-center align-middle">
-
-                    <div class="d-flex align-items-center">
-
-                        <span
-                            class="d-inline-flex justify-content-center align-items-center rounded-circle mr-3 p-2"
-                            style="flex: 0 0 36px; width:36px; height:36px"
-                            :style="{ backgroundColor: type[historyItem.type].iconBgColor }"
-                        >
-
-                            <nuxt-img 
-                                preset="default"
-                                :src="type[historyItem.type].icon"
-                                sizes="lg:32px"
-                            />
-=======
             <b-tr v-for="(historyItem, i) in history" v-else :key="i" class="border-bottom"
                 style="background-color: #efedfa">
 
@@ -201,7 +121,6 @@
                             :style="{ backgroundColor: type[historyItem.type].iconBgColor }">
 
                             <nuxt-img preset="default" :src="type[historyItem.type].icon" sizes="lg:32px" />
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
                         </span>
 
@@ -213,33 +132,19 @@
 
                 <b-td class="col-2 text-center align-middle">{{ historyItem.value }} poin</b-td>
 
-<<<<<<< HEAD
-                <b-td class="col-2 text-center align-middle"><span :class="'text-' + status[historyItem.status].color">{{ status[historyItem.status].text }}</span></b-td>
-=======
                 <b-td class="col-2 text-center align-middle"><span
                         :class="'text-' + status[historyItem.status].color">{{
                             status[historyItem.status].text
                         }}</span></b-td>
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
             </b-tr>
 
         </b-table-simple>
 
-<<<<<<< HEAD
-        <b-pagination v-if="history.length" v-model="currentPage"
-            class="mt-4"
-            v-bind="paginationOptions"
-            @page-click="onPageClick"
-        />
-
-        <PenarikanPoinModal id="modal-penarikan-poin"/>
-=======
         <b-pagination v-if="history.length" v-model="currentPage" class="mt-4" v-bind="paginationOptions"
             @page-click="onPageClick" />
 
         <PenarikanPoinModal id="modal-penarikan-poin" :fields="pointData" @submit="onSubmit" />
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
 
     </div>
 
@@ -258,20 +163,6 @@ export default {
             points: 0,
             productSold: 0,
             history: [
-<<<<<<< HEAD
-                {
-                    date: '2022-07-31 04:23:56',
-                    type: 'withdraw',
-                    status: 'pending',
-                    value: 102
-                },
-                {
-                    date: '2022-07-31 04:23:56',
-                    type: 'receive',
-                    status: 'success',
-                    value: 104
-                },
-=======
                 // {
                 //     date: '2022-07-31 04:23:56',
                 //     type: 'withdraw',
@@ -284,7 +175,6 @@ export default {
                 //     status: 'success',
                 //     value: 104
                 // },
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             ],
             type: {
                 withdraw: {
@@ -316,11 +206,7 @@ export default {
             dateRangeOptions: [
                 { value: 'last-30-days', text: '30 Hari Terakhir' },
                 { value: 'last-7-days', text: '7 Hari Terakhir' }
-<<<<<<< HEAD
-            ],            
-=======
             ],
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             currentPage: 1,
             paginationOptions: {
                 align: "center",
@@ -329,8 +215,6 @@ export default {
                 perPage: 6,
                 totalSearchResult: 10,
             },
-<<<<<<< HEAD
-=======
             bank: {
                 name: null,
                 accountNumber: null,
@@ -345,7 +229,6 @@ export default {
                 'btn': 'BTN',
                 'cmb': 'CIMB Niaga',
             }
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         }
     },
     head() {
@@ -353,8 +236,6 @@ export default {
             titleTemplate: `${this.title} | %s`,
         }
     },
-<<<<<<< HEAD
-=======
     computed: {
         pointData() {
             return {
@@ -371,14 +252,10 @@ export default {
         this.getHistory()
         this.getBank()
     },
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
     methods: {
         onWithdraw() {
             // put code here
             this.$bvModal.show("modal-penarikan-poin")
-<<<<<<< HEAD
-        },        
-=======
         },
         async getPoint() {
             await this.$axios.$get('api/point')
@@ -432,7 +309,6 @@ export default {
         onSubmit(data) {
             console.log(data)
         },
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         onPageClick(event, page) {
             this.loading = true
             this.getProductList(page)

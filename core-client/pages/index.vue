@@ -77,7 +77,7 @@ export default {
                 {
                     source: "/img/slider/slider3.jpg",
                     alt: "Promotion Banner 3"
-                },
+                }
             ],
             partnerImages: [
                 {

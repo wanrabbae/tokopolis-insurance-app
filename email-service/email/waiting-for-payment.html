@@ -1,0 +1,116 @@
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <h3>Informasi Pembayaran</h3>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>Hai <strong class="text-primary">{{.Body.name}}</strong>,</p>
+            <br />
+            <p>Kami menunggu pembayaranmu menggunakan {{.Body.payment_method}} sebelum {{.Body.payment_deadline}}. Mohon lakukan pembayaran sebelum batas waktu tersebut agar Polis tidak dibatalkan.</p>
+            <br />
+            <table style="font-size: 10pt">
+                  <tr>
+                      <td colspan="3"><h4><u>Informasi Pembayaran</u></h4></td>
+                </tr>
+                <tr>
+                    <td><strong>Pembayar</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.pembayar}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Metode Pembayaran</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.payment_method}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Nomor Virtual Account</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.nomor_va}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Nama Virtual Account</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.nama_va}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Pembayaran Gross</strong></td>
+                    <td>:</td>
+                    <td><strong class="text-primary">{{.Body.nominal_bayar}}</strong></td>
+                </tr>
+            </table>
+            <br />
+            <p style="font-size: 8pt; font-style: italic; background: #edebeb; padding: 10px">Jangan membagikan detail email ini ke pihak manapun kecuali tim Tokopolis. Apabila kamu ingin membagikan invoice pembelian ini ke customer, kamu bisa klik tombol <strong>Lihat Invoice</strong> untuk mengunduh file lampiran yang berisikan Invoice, Detail Pesanan, dan Cara Membayar.</p>
+            <br />
+            <p>Berikut detail invoice dari pembelianmu :</p>
+            <br />
+            <table style="font-size: 10pt">
+                  <tr>
+                      <td colspan="3"><h4><u>Ringkasan Pembayaran</u></h4></td>
+                </tr>
+                <tr>
+                    <td><strong>Harga Premi</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.harga_premi}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Perluasan Jaminan</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.perluasan_jaminan}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Biaya Admin</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.biaya_admin}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Dibayar</strong></td>
+                    <td>:</td>
+                    <td><strong class="text-primary">{{.Body.total}}</strong></td>
+                </tr>
+            </table>
+            <br />
+            <table style="font-size: 10pt">
+                  <tr>
+                      <td colspan="3"><h4><u>Detail Pesanan</u></h4></td>
+                </tr>
+                <tr>
+                    <td><strong>No. Invoice</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.no_invoice}}</td>
+                </tr>
+                <tr>
+                    <td><strong>No. Penawaran</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.no_penawaran}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Tipe Asuransi</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.tipe_asuransi}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Nama Produk</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.nama_produk}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Nama Pemegang Polis</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.pemegang_polis}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Periode Asuransi</strong></td>
+                    <td>:</td>
+                    <td>{{.Body.periode_asuransi}}</td>
+                </tr>
+            </table>
+            <br />
+            <p>Terima Kasih</p>
+        </td>
+    </tr>
+</table>

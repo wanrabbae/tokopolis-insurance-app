@@ -191,7 +191,7 @@
 
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <button class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</button>
+                                <a target="_blank" class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</a>
                             </div>
                         </div>
 
@@ -455,7 +455,6 @@ export default {
                 })
                 .then ((response) => {
                     this.totalRows = response.data.pagination.total
-
                     return response.data.list
                 })
                 .catch ([])

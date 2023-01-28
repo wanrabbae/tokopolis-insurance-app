@@ -231,14 +231,10 @@ export default class AccountService {
         const data = await this.repository.checkResetTokenWithId(account_id);
 
         if (data != null) {
-<<<<<<< HEAD
-            return await data.update({ token: token });
-=======
             return await data.update({
                 token: token,
                 updated_at: new Date()
             });
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         }
 
         return this.repository.createResetToken(account_id, token);
@@ -259,14 +255,10 @@ export default class AccountService {
         const data = await this.repository.checkEmailTokenWithId(account_id);
 
         if (data != null) {
-<<<<<<< HEAD
-            return await data.update({ token: token });
-=======
             return await data.update({
                 token: token,
                 updated_at: new Date()
             });
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
         }
 
         return this.repository.createEmailToken(account_id, token);
@@ -298,6 +290,34 @@ export default class AccountService {
 
     createUpgradeRequest(payload) {
         return this.repository.createUpgradeRequest(payload)
+    }
+
+    getDealerAll() {
+        return this.repository.getDealerAll()
+    }
+
+    getDealerAllWithFilter(query, limit, offset) {
+        return this.repository.getDealerAllWithFilter(query, limit, offset)
+    }
+
+    async getDealerCountByQuery(query) {
+        return this.repository.getDealerCountByQuery(query);
+    }
+
+    getDealer(id) {
+        return this.repository.getDealer(id)
+    }
+
+    createDealer(payload) {
+        return this.repository.createDealer(payload)
+    }
+
+    updateDealer(id, payload) {
+        return this.repository.updateDealer(id, payload)
+    }
+
+    deleteDealer(id) {
+        return this.repository.deleteDealer(id);
     }
 
     sendEmailRegister(payload) {

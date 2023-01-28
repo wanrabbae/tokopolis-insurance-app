@@ -23,6 +23,7 @@ const adminAccount = require("./routes/admin/account.routes");
 const adminProduct = require("./routes/admin/product.routes");
 const adminVehicle = require("./routes/admin/vehicle.routes");
 const adminRole = require("./routes/admin/role.routes");
+const adminDealer = require("./routes/admin/dealer.routes");
 const adminClaim = require("./routes/admin/claim.routes");
 const adminEndpoint = require("./routes/admin/endpoint.routes");
 const adminTransaction = require("./routes/admin/transaction.routes");
@@ -59,6 +60,7 @@ app.use(
     adminVehicle,
     adminEndpoint,
     adminRole,
+    adminDealer,
     adminTransaction,
     adminClaim
 );

@@ -155,10 +155,7 @@ const id_ID_strings = {
             "compare.product": "Komparasi Produk tidak valid",
             transaction: "Transaksi Tidak Tersedia",
             "transaction.create": "Transaksi Gagal Dibuat",
-<<<<<<< HEAD
-=======
             "transaction.quotation": "File Quotation tidak ditemukan",
->>>>>>> 33aa20203ba527eae1a39cc4d087b92b78ebf8c3
             "route.exist": "Route sudah ada",
             "role.exist": "Role sudah tersedia",
             "endpoint.notfound": "Data endpoint tidak ditemukan.",
