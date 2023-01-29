@@ -52,7 +52,9 @@ const en_US_strings = {
             region_id: "Region ID",
             province_id: "Province ID",
             city_id: "City ID",
+            role: "Role",
             role_id: "Role ID",
+            dealer_id: "Dealer ID",
 
             "address.village": "Village Address",
             "address.detail": "Address Detail",

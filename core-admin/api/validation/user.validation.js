@@ -7,23 +7,25 @@ const create = (req) => {
     const schema = Joi.object({
         dealer_id: Joi.string()
             .required()
-            .label(req.polyglot.t("field.dealer")),
+            .label(req.polyglot.t("field.dealer_id")),
         role: Joi.string()
             .required()
             .label(req.polyglot.t("field.role")),
-        leader_id: Joi.string()
-            .label(req.polyglot.t("field.leader")),
-        data: Joi.object({
-            fullname: Joi.string()
-                .required()
-                .label(req.polyglot.t("field.fullname")),
-            email: Joi.string()
-                .required()
-                .label(req.polyglot.t("field.email")),
-            password: Joi.string()
-                .required()
-                .label(req.polyglot.t("field.password")),
-            })
+        leader_id: Joi.number()
+            .label(req.polyglot.t("field.leader_id")),
+        data: Joi.array().items(
+            Joi.object({
+                fullname: Joi.string()
+                    .required()
+                    .label(req.polyglot.t("field.fullname")),
+                email: Joi.string()
+                    .required()
+                    .label(req.polyglot.t("field.email")),
+                password: Joi.string()
+                    .required()
+                    .label(req.polyglot.t("field.password")),
+                })
+            )
             .required()
     });
 
