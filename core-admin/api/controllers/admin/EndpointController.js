@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
   const validate = validation.create(req)
   if (validate.error) return res.errorValidation(validate.details)
 
-  const routeExist = await service.getRouteName(req.body)
+  const routeExist = await service.getRoutesName(req.body)
   if (routeExist) return res.errorBadRequest(req.polyglot.t('error.route.exist'))
 
   const endpoint = await service.createEndpoint(req.body)

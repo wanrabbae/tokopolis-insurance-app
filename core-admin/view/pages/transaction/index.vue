@@ -383,6 +383,8 @@ export default {
         async vehicleBrands() {
             return await this.$axios.$get('api/admin/vehicle/item/brands')
                 .then ((response) => {
+                    if (!response) return
+
                     const list = response.data.map(item =>
                         item = { value: item.brand, text: item.brand })
 
@@ -396,6 +398,8 @@ export default {
         async vehicleTypes() {
             return await this.$axios.$get('api/admin/vehicle/item/types')
                 .then ((response) => {
+                    if (!response) return
+
                     const list = response.data.map(item =>
                         item = { value: item.vehicle_type, text: item.vehicle_type })
 
@@ -409,6 +413,8 @@ export default {
         async productNames() {
             return await this.$axios.$get('api/admin/product/item/names')
                 .then ((response) => {
+                    if (!response) return
+
                     const list = response.data.map(item =>
                         item = { value: item.name, text: item.name })
 
