@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
 
         item.password = hashedPassword
         item.role_id = roleID[req.body.role]
-        item.parent_id = req.account._id
+        item.parent_id = leadAccount ? leadAccount.id : null
 
         item.unique_id = `${newUniqueID}-${uniqueId.other_id}`
         item.other_id = uniqueId.other_id

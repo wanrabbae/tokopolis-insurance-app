@@ -470,6 +470,13 @@ export default {
         },
         showCreate() {
             this.form = Object.assign({}, this.backup['form'])
+            this.formList = [{
+                id: 1,
+                fullname: null,
+                email: null,
+                password: this.randomPassword(),
+            }]
+
             this.$refs['form-create'].show()
         },
         showEdit(item) {
