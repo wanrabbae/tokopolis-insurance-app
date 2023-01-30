@@ -271,24 +271,29 @@
 
                                 <template #cell(role)="data">
                                     <h5 v-if="data.item.roles != null">
-                                        <b-badge class="badge bg-success">{{ data.item.roles?.name }}</b-badge>
+                                        <span v-if="data.item.roles.name == 'Superadmin'">
+                                            <b-badge class="badge bg-primary">{{ data.item.roles?.name }}</b-badge>
+                                        </span>
+                                        <span v-else>
+                                            <b-badge class="badge bg-success">{{ data.item.roles?.name }}</b-badge>
+                                        </span>
                                     </h5>
                                     <h5 v-else>
                                         <b-badge class="badge bg-danger">Tanpa Role</b-badge>
                                     </h5>
                                 </template>
 
-                                <template #cell(action)="data">
+                                <!-- <template #cell(action)="data">
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
                                         title="Edit Data">
                                         <i class="uil uil-edit"/>
                                     </b-button>
 
-                                    <!-- <b-button type="button" variant="danger" v-b-tooltip.hover
+                                    <b-button type="button" variant="danger" v-b-tooltip.hover
                                         title="Hapus Data" v-on:click="deleteData(data.item.id)">
                                         <i class="uil uil-trash"/>
-                                    </b-button> -->
-                                </template>
+                                    </b-button>
+                                </template> -->
 
                             </b-table>
                         </div>
@@ -311,7 +316,6 @@
 
 <script>
 import Swal from "sweetalert2"
-import { required } from "vuelidate/lib/validators"
 
 export default {
     layout: 'admin',
@@ -332,7 +336,7 @@ export default {
                 { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
                 { key: "role", label: 'Role', tdClass: 'align-middle' },
-                { key: "action", label: 'Aksi', tdClass: 'align-middle' },
+                // { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
             isCreate: true,
             data: {

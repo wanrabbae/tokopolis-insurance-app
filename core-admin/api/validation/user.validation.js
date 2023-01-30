@@ -12,6 +12,7 @@ const create = (req) => {
             .required()
             .label(req.polyglot.t("field.role")),
         leader_id: Joi.number()
+            .allow(null)
             .label(req.polyglot.t("field.leader_id")),
         data: Joi.array().items(
             Joi.object({
