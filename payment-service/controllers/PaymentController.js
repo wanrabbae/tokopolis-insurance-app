@@ -113,3 +113,46 @@ exports.createPayment = async (req, res) => {
         data: paymentResult.data
     })
 }
+
+exports.cancelPayment = async (req, res) => {
+    const transaction_id = req.body.transaction_id;
+
+    const cancelPayment = async (platform) => {
+        switch (platform) {
+            case 'bca':
+            case 'bni':
+            case 'bri':
+            case 'bsi':
+            case 'bjb':
+            case 'mandiri':
+            case 'permata':
+                return await xenditService.bankCancel({
+                    transaction_id: transaction_id,
+                    expiration: moment().add(-1, "days"),
+                })
+
+            case 'ovo':
+            case 'dana':
+            case 'shopeepay':
+            case 'linkaja':
+                return await xenditService.eWalletCancel({
+                    transaction_id: transaction_id,
+                })
+
+            case 'qris':
+                return {
+                    status: false,
+                    message: "Ups something went wrong!"
+                }
+
+            case 'gopay':
+                return await midtransService.gopayCancel(transaction_id)
+        }
+    }
+
+    const cancelResult = await cancelPayment(req.body.platform)
+
+    if (!cancelResult.status) return res.status(400).send(cancelResult)
+
+    return res.status(200).send(cancelResult)
+}

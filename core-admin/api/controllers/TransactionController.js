@@ -827,7 +827,7 @@ exports.doPayment = async (req, res) => {
         delete data["transaction_id"];
         delete data["status"];
 
-        data["due"] = getMoment().add(1, "d").format("YYYY-MM-DD HH:mm:ss");
+        data["due"] = getMoment().add(3, "d").format("YYYY-MM-DD HH:mm:ss");
 
         await service.setPaymentData(transaction.id, {
             fee_pg: paymentFee,
@@ -926,6 +926,16 @@ exports.webhookXendit = async (req, res) => {
 
     const transaction_id = req.body.data.id;
     const status = () => {
+       // CONFIRM VA TERBAYARKAN
+       if (req.body.callback_virtual_account_id) {
+        return "paid"
+    }
+    // CONFIRM VA CANCELED
+    else if (req.body.bank_code && req.body.status == "INACTIVE") {
+        return "canceled"
+    }
+    // CONFIRM PG LAINYA
+    else {
         switch (req.body.data.status) {
             case "SUCCEEDED":
                 return "paid";
@@ -936,6 +946,7 @@ exports.webhookXendit = async (req, res) => {
             case "VOIDED":
                 return "canceled";
         }
+    }
     };
 
     const transaction = await service.getTransactionByPaymentId(transaction_id);

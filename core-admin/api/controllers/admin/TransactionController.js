@@ -370,6 +370,6 @@ exports.getXlsxAllTransaction = async (req, res) => {
     workbook.write(`view/static/doc/transaction_${req.query.start_period}-${req.query.end_period}.xlsx`);
 
     return res.jsonData({
-        download_link: `${process.env.REDIRECT_ADMIN}/doc/transaction_${req.query.start_period}-${req.query.end_period}.xlsx`
+        download_link: `${process.env.REDIRECT_ADMIN}/doc/transaction_${req.body.start_period}-${req.body.end_period}.xlsx`
     })
 }
