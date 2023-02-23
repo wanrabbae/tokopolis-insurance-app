@@ -2,6 +2,7 @@ const moment = require('moment')
 
 const { XenditService } = require('../services/XenditService')
 const { MidtransService } = require('../services/MidtransService')
+const axios = require('axios');
 
 let xenditService = new XenditService()
 let midtransService = new MidtransService()
@@ -155,4 +156,28 @@ exports.cancelPayment = async (req, res) => {
     if (!cancelResult.status) return res.status(400).send(cancelResult)
 
     return res.status(200).send(cancelResult)
+
+}
+
+exports.simulateVaPay = async (req, res) => {
+    const transaction_id = req.body.transaction_id;
+    const amount = req.body.amount;
+
+    const simulate = await axios.post(`https://api.xendit.co/callback_virtual_accounts/external_id=${transaction_id}/simulate_payment`, {
+        amount: amount,
+    }, {
+        auth: {
+            username: process.env.XENDIT_SECRET_KEY,
+            password: ""
+        }
+    });
+
+    if (simulate) {
+        return res.status(200).json(simulate.data)
+    }
+
+    return res.status(500).json({
+        status: 'ERROR',
+    })
+
 }

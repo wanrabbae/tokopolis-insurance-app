@@ -15,7 +15,7 @@ const {
 } = require("../models");
 
 export default class TransactionRepository {
-    constructor() {}
+    constructor() { }
 
     async getTransactionAll(filter, limit, offset) {
         const dateFilter = `AND trans.start_date >= '${filter.start_period}' ` +
@@ -77,6 +77,11 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getTransactionDetailWithVA(VA_number) {
+        return await sequelize.query(`SELECT id, pg_data FROM transactions`,
+            { type: QueryTypes.SELECT })
+    }
+
     async getTransactionForXlsx(data) {
         const dateFilter = `trans.start_date >= '${data.start_period}' ` +
             `AND trans.start_date <= '${data.end_period}' `
@@ -104,7 +109,6 @@ export default class TransactionRepository {
             `ORDER BY trans.created_at ASC `,
             { type: QueryTypes.SELECT })
     }
-
 
     // async getTransactionAll(limit, offset) {
     //     return await Transaction.findAll({
