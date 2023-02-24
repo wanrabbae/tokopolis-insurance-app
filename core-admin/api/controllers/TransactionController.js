@@ -939,7 +939,7 @@ exports.webhookXendit = async (req, res) => {
             switch (req.body.data.status) {
                 case "SUCCEEDED":
                     return "paid";
-                
+
                 case "FAILED":
                     return "denied";
 
@@ -948,7 +948,6 @@ exports.webhookXendit = async (req, res) => {
             }
         }
     }
-    };
 
     const transaction = await service.getTransactionByPaymentId(transaction_id);
     if (transaction == null)
