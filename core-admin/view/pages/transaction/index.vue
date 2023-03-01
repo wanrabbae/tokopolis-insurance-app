@@ -73,6 +73,26 @@
                     </div>
                 </b-modal>
 
+                <b-modal size="sm" scrollable ref="filter-download-modal" title="Download Report" ok-title="Proses" cancel-title="Batal" @ok.prevent="downloadReport()">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <label class="col-form-label">Range Tanggal</label>
+                            <div>
+                                <date-picker
+                                    placeholder="Filter Tanggal"
+                                    v-model="downloadRangeDate"
+                                    valueType="YYYY-MM-DD"
+                                    titleFormat="DD MMMM"
+                                    range
+                                    append-to-body
+                                    lang="en"
+                                    confirm
+                                ></date-picker>
+                            </div>
+                        </div>
+                    </div>
+                </b-modal>
+
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
@@ -191,7 +211,7 @@
 
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                <a target="_blank" class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</a>
+                                <button @click="showDownloadFilter()" class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</button>
                             </div>
                         </div>
 
@@ -307,6 +327,7 @@ export default {
             currentPage: 1,
             perPage: 5,
             pageOptions: [5, 10, 25, 50],
+            downloadLink: '',
             filterList: {
                 brands: [],
                 types: [],
@@ -321,6 +342,7 @@ export default {
                 product: null,
                 daterange: "",
             },
+            downloadRangeDate: "",
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
@@ -339,6 +361,10 @@ export default {
                 name: null,
                 route: null,
             },
+            formDownload: {
+                start_period: "",
+                end_period: ""
+            }
         }
     },
     head() {
@@ -455,6 +481,7 @@ export default {
                 })
                 .then ((response) => {
                     this.totalRows = response.data.pagination.total
+                    this.downloadLink = response.data.download_link
                     return response.data.list
                 })
                 .catch ([])
@@ -521,6 +548,25 @@ export default {
                         .then(() => window.location.reload())
                 }
             })
+        },
+        showDownloadFilter() {
+            this.$refs["filter-download-modal"].show();
+        },
+        downloadReport() {
+            const start_period = this.downloadRangeDate[0];
+            const end_period = this.downloadRangeDate[1];
+
+            this.formDownload.start_period = start_period;
+            this.formDownload.end_period = end_period;
+
+            this.$axios.$post(`/api/admin/transaction/generate?start_period=${start_period}&end_period=${end_period}`, this.formDownload).then(response => {
+                
+                window.open(`${response.data.download_link}`, '_blank');
+
+                self.$router.push('/transaction')
+
+                this.$refs["filter-download-modal"].hide();
+            }) 
         }
     }
 }
