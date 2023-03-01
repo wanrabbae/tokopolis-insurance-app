@@ -1013,24 +1013,22 @@ exports.getPointHistory = async (req, res) => {
 };
 
 exports.simulatePay = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    const data = await service.getTransactionDetailWithVA(req.body.va_number)
+    if (!data) return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
     try {
-        const data = await service.getTransactionDetailWithVA(req.body.va_number)
-        data.map(async (dt) => {
-            if (dt.pg_data && dt.pg_data.virtual_number == req.body.va_number) {
-                const sendSimulate = await axios.post('http://localhost:5123/payment/simulate-va', {
-                    transaction_id: dt.id,
-                    amount: dt.pg_data.amount
-                })
-            }
+        const result = await paymentService.simulateVA({
+            transaction_id: data.id,
+            amount: data.pg_data.amount
         })
-        return res.status(200).json({
-            status: 'success',
-            message: 'success pay'
-        })
+
+        console.log(result.data)
+
+        return res.jsonSuccess(req.polyglot.t("success.transaction.payment"))
     } catch (error) {
-        return res.status(500).json({
-            status: 'failed',
-            message: 'something went wrong!'
-        })
+        console.log(error)
+        return res.errorBadRequest(req.polyglot.t("error.transaction.payment"))
     }
 }

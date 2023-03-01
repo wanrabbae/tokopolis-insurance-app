@@ -163,21 +163,22 @@ exports.simulateVaPay = async (req, res) => {
     const transaction_id = req.body.transaction_id;
     const amount = req.body.amount;
 
-    const simulate = await axios.post(`https://api.xendit.co/callback_virtual_accounts/external_id=${transaction_id}/simulate_payment`, {
-        amount: amount,
-    }, {
-        auth: {
-            username: process.env.XENDIT_SECRET_KEY,
-            password: ""
+    console.log(`[DEBUG]: simulateVaPay {transaction_id: ${transaction_id}, amount: ${amount}}`)
+
+    try {
+        const simulate = await axios.post(`https://api.xendit.co/callback_virtual_accounts/external_id=${transaction_id}/simulate_payment`, {
+            amount: amount,
+        }, {
+            auth: {
+                username: process.env.XENDIT_SECRET_KEY,
+                password: ""
+            }
+        });
+
+        if (simulate) {
+            return res.status(200).json(simulate.data)
         }
-    });
-
-    if (simulate) {
-        return res.status(200).json(simulate.data)
+    } catch (error) {
+        return res.status(400).json(error.response.data)
     }
-
-    return res.status(500).json({
-        status: 'ERROR',
-    })
-
 }

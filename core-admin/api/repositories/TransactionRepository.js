@@ -78,8 +78,12 @@ export default class TransactionRepository {
     }
 
     async getTransactionDetailWithVA(VA_number) {
-        return await sequelize.query(`SELECT id, pg_data FROM transactions`,
-            { type: QueryTypes.SELECT })
+        return await sequelize.query(`SELECT id, pg_data FROM transactions ` +
+            `WHERE pg_data IS NOT NULL ` +
+            `AND pg_data->"$.virtual_number" = '${VA_number}' ` +
+            `AND status = 'waiting' ` +
+            `LIMIT 1`,
+            { type: QueryTypes.SELECT, plain: true })
     }
 
     async getTransactionForXlsx(data) {
