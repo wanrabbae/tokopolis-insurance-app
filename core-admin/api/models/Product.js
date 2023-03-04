@@ -24,7 +24,7 @@ module.exports = (sequelize, Sequelize) => {
                 allowNull: false,
             },
             email: {
-                type: Sequelize.STRING,
+                type: Sequelize.TEXT,
                 allowNull: false,
             },
             commission: {
