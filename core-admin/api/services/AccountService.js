@@ -62,6 +62,18 @@ export default class AccountService {
         return this.repository.createBulkAccount(payloads)
     }
 
+    async createAccountAdmin(data) {
+        const payload = data.body
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(payload.password, salt)
+
+        payload.password = hashedPassword
+        payload.role_id = data.account.role == 5 ? 0 : data.account.role + 1
+        payload.parent_id = data.account._id
+
+        return this.repository.createAccountAdmin(payload)
+    }
+
     async createAccountDealer(data) {
         const payload = data.body;
 
