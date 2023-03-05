@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 const { Account, ClaimProduct, Product } = require("../models");
 
 export default class ClaimProductRepository {
-    constructor() {}
+    constructor() { }
 
     async getAll() {
         return await ClaimProduct.findAll({
@@ -51,6 +51,26 @@ export default class ClaimProductRepository {
                     model: Product,
                     as: "product",
                     attributes: ["id", "name", "type", "image"],
+                },
+            ],
+        });
+    }
+
+    async getDetailDataWithTransactionId(id) {
+        return await ClaimProduct.findOne({
+            where: {
+                transaction_id: id,
+            },
+            include: [
+                {
+                    model: Account,
+                    as: "account",
+                    attributes: ["id", "fullname", "email"],
+                },
+                {
+                    model: Product,
+                    as: "product",
+                    attributes: ["id", "name", "type", "image", "email"],
                 },
             ],
         });
