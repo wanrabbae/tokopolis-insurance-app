@@ -3,9 +3,15 @@ const Midtrans = require('midtrans-client')
 exports.MidtransService = class {
     constructor() {
         this.midtransApi = new Midtrans.CoreApi({
-            isProduction : false,
-            serverKey : process.env.MIDTRANS_SERVER_KEY,
-            clientKey : process.env.MIDTRANS_CLIENT_KEY
+            isProduction: false,
+            serverKey: process.env.MIDTRANS_SERVER_KEY,
+            clientKey: process.env.MIDTRANS_CLIENT_KEY
+        })
+
+        this.midtransApiSnap = new Midtrans.Snap({
+            isProduction: false,
+            serverKey: process.env.MIDTRANS_SERVER_KEY,
+            clientKey: process.env.MIDTRANS_CLIENT_KEY
         })
 
         this.midtransGopaySuccess = (platform, result) => {
@@ -23,12 +29,25 @@ exports.MidtransService = class {
             }
         }
 
+        this.paymentCancel = () => {
+            return {
+                status: true,
+                message: "success cancel the payment"
+            }
+        }
+
         this.midtransError = (error) => {
             return {
                 status: false,
-                message: error.ApiResponse.status_message
+                message: error.ApiResponse.status_message.includes('conflict') ? "failed duplicate transaction!" : error.ApiResponse.status_message
             }
         }
+    }
+
+    async gopayCancel(transaction_id) {
+        return await this.midtransApiSnap.transaction.cancel(transaction_id)
+            .then(result => this.paymentCancel())
+            .catch(this.midtransError)
     }
 
     async gopayRequest(payload) {

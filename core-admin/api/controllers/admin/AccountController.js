@@ -1,5 +1,6 @@
+const bcrypt = require("bcrypt")
+
 import AccountService from "../../services/AccountService";
-import { generateIdRoleManagement } from "../../utilities/generateId.js";
 
 const validation = require("../../validation/user.validation");
 const { randomString } = require("../../utilities/functions");
@@ -8,21 +9,57 @@ const { generateIdRoleManagementWithUniqueId } = require("../../utilities/genera
 const service = new AccountService();
 
 exports.create = async (req, res) => {
-    const validate = validation.create(req);
-    if (validate.error) return res.errorValidation(validate.details);
+    const validate = validation.create(req)
+    if (validate.error) return res.errorValidation(validate.details)
 
-    const emailExist = await service.getAccountFromEmail(req.body.email);
-    if (emailExist != null)
-        return res.errorBadRequest(req.polyglot.t("error.email.exist"));
+    const emailCount = await service.getCountFromEmails(req.body.data.map((item) => item.email))
+    if (emailCount > 0) return res.errorBadRequest(req.polyglot.t("error.email.exist"))
 
+    const roleID = {
+        'manager': 2,
+        'branch': 3,
+        'supervisor': 4,
+        'agent': 5,
+    }
 
-  const account = await service.createAccountAdmin(req)
+    const leadAccount = await service.getAccount(req.body.leader_id)
+    if (leadAccount && roleID[req.body.role] != leadAccount.role_id + 1)
+        return res.errorBadRequest("Code not valid!")
 
-    return res.jsonData(account);
-};
+    const salt = await bcrypt.genSalt(10)
+
+    var uniqueId = await generateIdRoleManagementWithUniqueId({
+        role_id: roleID[req.body.role],
+        unique_id: leadAccount ? leadAccount.unique_id : req.body.dealer_id,
+    })
+
+    const newUniqueID = uniqueId.unique_id.split('-').slice(0, -1).join('-')
+
+    const payloads = req.body.data.map((item) => {
+        const hashedPassword = bcrypt.hashSync(item.password, salt)
+
+        item.password = hashedPassword
+        item.role_id = roleID[req.body.role]
+        item.parent_id = leadAccount ? leadAccount.id : null
+
+        item.unique_id = `${newUniqueID}-${uniqueId.other_id}`
+        item.other_id = uniqueId.other_id
+
+        // manual incrementing other_id
+        uniqueId.other_id = (parseInt(uniqueId.other_id) + 1)
+            .toString()
+            .padStart(uniqueId.other_id.length, "0")
+
+        return item
+    })
+
+    const account = await service.createBulkAccount(payloads)
+
+    return res.jsonData(account)
+}
 
 exports.list = async (req, res, next) => {
-    const query = req.query.query || null;
+    const query = req.query.query || '';
 
     const current = Number(req.query.current) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -149,7 +186,7 @@ exports.verifyUpgrade = async (req, res) => {
 
     const uniqueId = await generateIdRoleManagementWithUniqueId({
         role_id: leadAccount.role_id + 1,
-        unique_id: leadAccount.unique_id.split("-")[0],
+        unique_id: leadAccount.unique_id,
     })
 
     if (req.body.status == "approve") {
@@ -167,3 +204,19 @@ exports.verifyUpgrade = async (req, res) => {
 
     return res.jsonSuccess("Upgrade success")
 }
+
+exports.leadersByDealerAndRole = async (req, res, next) => {
+    if (req.account.role_id < req.query.role) return res.errorBadRequest("Role not valid!")
+
+    const leaderID = {
+        'branch': 2,
+        'supervisor': 3,
+        'agent': 4,
+    }
+
+    if (!leaderID[req.query.role]) return res.jsonData([])
+
+    const list = await service.getAccountDataWithDealerAndRoleId(req.query.dealer_id, leaderID[req.query.role])
+
+    return res.jsonData(list)
+};

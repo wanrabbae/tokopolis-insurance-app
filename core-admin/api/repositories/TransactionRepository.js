@@ -77,6 +77,15 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getTransactionDetailWithVA(VA_number) {
+        return await sequelize.query(`SELECT id, pg_data FROM transactions ` +
+            `WHERE pg_data IS NOT NULL ` +
+            `AND pg_data->"$.virtual_number" = '${VA_number}' ` +
+            `AND status = 'waiting' ` +
+            `LIMIT 1`,
+            { type: QueryTypes.SELECT, plain: true })
+    }
+
     async getTransactionForXlsx(data) {
         const dateFilter = `trans.start_date >= '${data.start_period}' ` +
             `AND trans.start_date <= '${data.end_period}' `
@@ -104,7 +113,6 @@ export default class TransactionRepository {
             `ORDER BY trans.created_at ASC `,
             { type: QueryTypes.SELECT })
     }
-
 
     // async getTransactionAll(limit, offset) {
     //     return await Transaction.findAll({

@@ -43,4 +43,22 @@ export default class PaymentService {
             return response.body
         })
     }
+
+    async simulateVA(payload) {
+        var clientServerOptions = {
+            uri: `${this.url}/payment/simulate-va`,
+            body: payload,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            json: true
+        }
+
+        return await request(clientServerOptions, function (error, response) {
+            if (error != null) return error
+
+            return response.body
+        })
+    }
 }

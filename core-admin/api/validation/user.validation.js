@@ -5,22 +5,29 @@ const { extensionHelper } = require("../utilities/functions");
 
 const create = (req) => {
     const schema = Joi.object({
-        fullname: Joi.string()
+        dealer_id: Joi.string()
             .required()
-            .label(req.polyglot.t("field.fullname")),
-        email: Joi.string()
-            .min(6)
-            .email()
+            .label(req.polyglot.t("field.dealer_id")),
+        role: Joi.string()
             .required()
-            .label(req.polyglot.t("field.email")),
-        password: Joi.string()
-            .min(6)
+            .label(req.polyglot.t("field.role")),
+        leader_id: Joi.number()
+            .allow(null)
+            .label(req.polyglot.t("field.leader_id")),
+        data: Joi.array().items(
+            Joi.object({
+                fullname: Joi.string()
+                    .required()
+                    .label(req.polyglot.t("field.fullname")),
+                email: Joi.string()
+                    .required()
+                    .label(req.polyglot.t("field.email")),
+                password: Joi.string()
+                    .required()
+                    .label(req.polyglot.t("field.password")),
+                })
+            )
             .required()
-            .label(req.polyglot.t("field.password")),
-        role_id: Joi.string().label(req.polyglot.t("field.role_id")),
-        region_id: Joi.string().label(req.polyglot.t("field.region_id")),
-        province_id: Joi.string().label(req.polyglot.t("field.province_id")),
-        city_id: Joi.string().label(req.polyglot.t("field.city_id")),
     });
 
     return joiResponse(

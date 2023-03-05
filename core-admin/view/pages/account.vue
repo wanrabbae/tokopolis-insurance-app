@@ -16,7 +16,8 @@
                                         <div>
                                             <select
                                                 class="form-select"
-                                                v-model="form.dealer"
+                                                v-model="form.dealer_id"
+                                                @change="getLeaders"
                                                 required>
                                                 <option v-for="option in data.dealer" v-bind:value="option.value"
                                                     v-bind:key="option.text">{{ option.text }}</option>
@@ -33,6 +34,7 @@
                                             <select
                                                 class="form-select"
                                                 v-model="form.role"
+                                                @change="getLeaders"
                                                 required>
                                                 <option v-for="option in data.role" v-bind:value="option.value"
                                                     v-bind:key="option.text">{{ option.text }}</option>
@@ -41,7 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="form.dealer != null && form.role != null && form.role != 1" class="row mt-2">
+                            <div v-if="form.dealer_id != null && form.role != null && form.role != 'manager'" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
                                         <label class="col-form-label">Atasan
@@ -50,7 +52,7 @@
                                         <div>
                                             <select
                                                 class="form-select"
-                                                v-model="form.leader"
+                                                v-model="form.leader_id"
                                                 required>
                                                 <option v-for="option in data.leader" v-bind:value="option.value"
                                                     v-bind:key="option.text">{{ option.text }}</option>
@@ -60,7 +62,7 @@
                                 </div>
                             </div>
 
-                            <div v-if="form.dealer != null && form.role != null">
+                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 'manager' || (form.role != 'manager' && form.leader_id != null))">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
                                 </p>
@@ -74,7 +76,7 @@
                                             <div>
                                                 <input
                                                     type="text"
-                                                    v-model="item.name"
+                                                    v-model="item.fullname"
                                                     class="form-control"
                                                     placeholder="Masukkan Nama Pengguna"
                                                     required>
@@ -134,6 +136,45 @@
                             <button ref="create-data" class="d-none"></button>
 
                         </form>
+                    </div>
+                </b-modal>
+
+                <b-modal size="lg" scrollable ref="detail-modal" title="Detail Penambahan"
+                ok-only ok-title="Tutup">
+                    <div class="card-body">
+                        <div class="text-muted">
+                            <h5 class="font-size-16">Daftar Pengguna</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nama</th>
+                                            <th>Email</th>
+                                            <th>Password</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, i) of formList" :key="i">
+                                            <th scope="row">{{ i + 1 }}</th>
+                                            <td>{{ item.fullname }}</td>
+                                            <td>{{ item.email }}</td>
+                                            <td>{{ item.password }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- <div v-if="feature.short_description" class="text-muted mb-3">
+                            <h5 class="font-size-16">Deskripsi Singkat</h5>
+                            <p v-html="feature.short_description"></p>
+                        </div>
+
+                        <div class="text-muted">
+                            <h5 class="font-size-16">Deskripsi</h5>
+                            <p v-html="getDescription()"></p>
+                        </div> -->
                     </div>
                 </b-modal>
 
@@ -228,9 +269,23 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
-                                <template #cell(action)="data">
+                                <template #cell(role)="data">
+                                    <h5 v-if="data.item.roles != null">
+                                        <span v-if="data.item.roles.name == 'Superadmin'">
+                                            <b-badge class="badge bg-primary">{{ data.item.roles?.name }}</b-badge>
+                                        </span>
+                                        <span v-else>
+                                            <b-badge class="badge bg-success">{{ data.item.roles?.name }}</b-badge>
+                                        </span>
+                                    </h5>
+                                    <h5 v-else>
+                                        <b-badge class="badge bg-danger">Tanpa Role</b-badge>
+                                    </h5>
+                                </template>
+
+                                <!-- <template #cell(action)="data">
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
-                                        title="Edit Data" v-on:click="showEdit(data.item)">
+                                        title="Edit Data">
                                         <i class="uil uil-edit"/>
                                     </b-button>
 
@@ -238,7 +293,7 @@
                                         title="Hapus Data" v-on:click="deleteData(data.item.id)">
                                         <i class="uil uil-trash"/>
                                     </b-button>
-                                </template>
+                                </template> -->
 
                             </b-table>
                         </div>
@@ -261,7 +316,6 @@
 
 <script>
 import Swal from "sweetalert2"
-import { required } from "vuelidate/lib/validators"
 
 export default {
     layout: 'admin',
@@ -278,41 +332,38 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
-                { key: "name", label: 'Nama Pengguna', tdClass: 'align-middle' },
+                // { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
+                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
                 { key: "role", label: 'Role', tdClass: 'align-middle' },
-                { key: "action", label: 'Aksi', tdClass: 'align-middle' },
+                // { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
             isCreate: true,
             data: {
                 dealer: [],
                 role: [
                     { value: null, text: 'Pilih Role Pengguna' },
-                    { value: 1, text: 'Operation Manager' },
-                    { value: 2, text: 'Kepala Cabang' },
-                    { value: 3, text: 'Supervisor' },
-                    { value: 4, text: 'Mitra' },
+                    { value: 'manager', text: 'Operation Manager' },
+                    { value: 'branch', text: 'Kepala Cabang' },
+                    { value: 'supervisor', text: 'Supervisor' },
+                    { value: 'agent', text: 'Mitra' },
                 ],
                 leader: [
                     { value: null, text: 'Pilih Atasan' },
-                    { value: 1, text: 'Pengguna 1' },
-                    { value: 2, text: 'Pengguna 2' },
-                    { value: 3, text: 'Pengguna 3' },
                 ],
             },
             backup: {},
             formList: [{
                 id: 1,
-                name: null,
+                fullname: null,
                 email: null,
-                password: null,
+                password: this.randomPassword(),
             }],
             form: {
-                dealer: null,
+                dealer_id: null,
                 role: null,
-                leader: null,
-            }
+                leader_id: null,
+            },
         }
     },
     head() {
@@ -335,13 +386,6 @@ export default {
 
         this.data.dealer = await this.getDealers()
     },
-    validations: {
-        form: {
-            name: { required },
-            route: { required },
-            method: { required },
-        },
-    },
     methods: {
         /**
          * Search the table data with search input
@@ -351,26 +395,31 @@ export default {
             this.totalRows = filteredItems.length
             this.currentPage = 1
         },
+        randomPassword() {
+            return this.randomString(8)
+        },
         async getData() {
-            // this.tableData = await this.$axios.$get('api/admin/endpoint/list', {
-            //         params: {
-            //             current: this.currentPage,
-            //             limit: this.perPage,
-            //             query: this.filter
-            //         }
-            //     })
-            //     .then ((response) => {
-            //         this.totalRows = response.data.pagination.total
+            this.tableData = await this.$axios.$get('/api/admin/account/all', {
+                    params: {
+                        current: this.currentPage,
+                        limit: this.perPage,
+                        query: this.filter
+                    }
+                })
+                .then ((response) => {
+                    this.totalRows = response.data.pagination.total
 
-            //         return response.data.list
-            //     })
-            //     .catch ([])
+                    return response.data.list
+                })
+                .catch ([])
 
             return this.tableData
         },
         async getDealers() {
             return await this.$axios.$get('api/admin/dealer/all')
                 .then ((response) => {
+                    if (!response) return
+
                     const list = response.data.map(item =>
                         item = { value: item.id, text: item.name })
 
@@ -381,11 +430,35 @@ export default {
                 })
                 .catch ([])
         },
+        async getLeaders() {
+            if (this.form.dealer_id == null || this.form.role == null) return
+
+            this.form.leader_id = null
+
+            return await this.$axios.$get('api/admin/account/item/leaders', {
+                params: {
+                    dealer_id: this.form.dealer_id,
+                    role: this.form.role
+                }
+            })
+            .then ((response) => {
+                if (!response) return
+
+                const list = response.data.map(item =>
+                    item = { value: item.id, text: item.fullname })
+
+                this.data.leader = [
+                    { value: null, text: 'Pilih Atasan' },
+                    ...list
+                ]
+            })
+            .catch ([])
+        },
         addContent() {
             this.formList.push({
-                name: null,
-                route: null,
-                method: null,
+                fullname: null,
+                email: null,
+                password: this.randomPassword(),
             })
         },
         /**
@@ -397,6 +470,13 @@ export default {
         },
         showCreate() {
             this.form = Object.assign({}, this.backup['form'])
+            this.formList = [{
+                id: 1,
+                fullname: null,
+                email: null,
+                password: this.randomPassword(),
+            }]
+
             this.$refs['form-create'].show()
         },
         showEdit(item) {
@@ -419,13 +499,23 @@ export default {
                 return data
             })
 
-            return await this.$axios.$post('api/admin/endpoint', finalForm)
-                .then(response => {
-                    this.$refs['form-create'].hide()
+            return await this.$axios.$post('api/admin/account', {
+                dealer_id: this.form.dealer_id,
+                role: this.form.role,
+                leader_id: this.form.leader_id,
+                data: finalForm
+            })
+            .then(response => {
+                this.$refs['form-create'].hide()
+                this.$refs['detail-modal'].show()
 
-                    Swal.fire("Berhasil", "Berhasil Menambah Data", "success")
-                    window.location.reload()
+                this.$notify({
+                    group: 'notif',
+                    type: 'success vue-notif-custom',
+                    title: 'Berhasil',
+                    text: 'Berhasil Menambah Pengguna',
                 })
+            })
         },
         async doUpdateData(e) {
             e.preventDefault()

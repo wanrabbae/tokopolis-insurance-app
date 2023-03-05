@@ -177,9 +177,8 @@ const generateQuotation = async (payload) => {
                         expansion.value
                     )} (${expansion.count} orang)`,
                     price: moneyFormatNonSymbol(expansion.value),
-                    percentage: `${toPercent(expansion.rate)}% x ${
-                        expansion.count
-                    }`,
+                    percentage: `${toPercent(expansion.rate)}% x ${expansion.count
+                        }`,
                     total: moneyFormatNonSymbol(expansion.price),
                 });
             } else {
@@ -470,7 +469,7 @@ const setTransactionBonus = async (payload) => {
     var comissionValue = 0
 
     if (payload.discount_format == "percent") {
-        comissionValue = totalPriceForComission * (Math.abs(payload.discount_value -  discountMaxPercent) / 100)
+        comissionValue = totalPriceForComission * (Math.abs(payload.discount_value - discountMaxPercent) / 100)
     } else {
         comissionValue = totalPriceForComission * (25 / 100) - payload.discount_value
     }
@@ -924,19 +923,31 @@ exports.webhookXendit = async (req, res) => {
     const validate = validation.xendit(req);
     if (validate.error) return res.errorValidation(validate.details);
 
-    const transaction_id = req.body.data.id;
+    const transaction_id = req.body.callback_virtual_account_id || req.body.status ? req.body.id : req.body.data.id;
+
     const status = () => {
-        switch (req.body.data.status) {
-            case "SUCCEEDED":
-                return "paid";
-
-            case "FAILED":
-                return "denied";
-
-            case "VOIDED":
-                return "canceled";
+        // CONFIRM VA TERBAYARKAN
+        if (req.body.callback_virtual_account_id) {
+            return "paid"
         }
-    };
+        // CONFIRM VA CANCELED
+        else if (req.body.bank_code && req.body.status == "INACTIVE") {
+            return "canceled"
+        }
+        // CONFIRM PG LAINYA
+        else {
+            switch (req.body.data.status) {
+                case "SUCCEEDED":
+                    return "paid";
+
+                case "FAILED":
+                    return "denied";
+
+                case "VOIDED":
+                    return "canceled";
+            }
+        }
+    }
 
     const transaction = await service.getTransactionByPaymentId(transaction_id);
     if (transaction == null)
@@ -1000,3 +1011,24 @@ exports.getPointHistory = async (req, res) => {
 
     res.jsonData(point);
 };
+
+exports.simulatePay = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    const data = await service.getTransactionDetailWithVA(req.body.va_number)
+    if (!data) return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const result = await paymentService.simulateVA({
+            transaction_id: data.id,
+            amount: data.pg_data.amount
+        })
+
+        console.log(result.data)
+
+        return res.jsonSuccess(req.polyglot.t("success.transaction.payment"))
+    } catch (error) {
+        console.log(error)
+        return res.errorBadRequest(req.polyglot.t("error.transaction.payment"))
+    }
+}

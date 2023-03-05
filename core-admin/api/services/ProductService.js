@@ -47,10 +47,14 @@ export default class VehicleService {
             item.price = product_price
             item.feature = {}
 
-            types.forEach(it => item.feature[it] = { status: false,
-                description: null })
-            item.features.forEach(el => item.feature[el.type] = { status: true,
-                description: el.short_description })
+            types.forEach(it => item.feature[it] = {
+                status: false,
+                description: null
+            })
+            item.features.forEach(el => item.feature[el.type] = {
+                status: true,
+                description: el.short_description
+            })
 
             delete item.features
 
@@ -66,6 +70,12 @@ export default class VehicleService {
 
     async getCountByQuery(filter) {
         return this.repository.getCountByQuery(filter)
+    }
+
+    async getProduct(id) {
+        const data = await this.repository.getProduct(id)
+        data.dataValues.email = JSON.parse(data.dataValues.email)
+        return data
     }
 
     getProduct(id) {
@@ -113,7 +123,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 100; value+=5) {
+                    for (let value = 5; value <= 100; value += 5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: tplRate(toMillion(value), vehicle.use),
@@ -130,7 +140,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 50; value+=5) {
+                    for (let value = 5; value <= 50; value += 5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: paDriver(toMillion(value)),
@@ -147,7 +157,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 50; value+=5) {
+                    for (let value = 5; value <= 50; value += 5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: paPassenger(toMillion(value)),

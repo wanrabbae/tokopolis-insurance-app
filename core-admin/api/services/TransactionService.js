@@ -20,6 +20,10 @@ export default class TransactionService {
         return this.repository.getTransactionDetailForClient(id);
     }
 
+    getTransactionDetailWithVA(VA_number) {
+        return this.repository.getTransactionDetailWithVA(VA_number)
+    }
+
     getTransactionForXlsx(data) {
         return this.repository.getTransactionForXlsx(data);
     }

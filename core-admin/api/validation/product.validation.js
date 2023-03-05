@@ -59,7 +59,6 @@ const create = (req) => {
         email: Joi.string()
             .min(6)
             .required()
-            .email()
             .label(req.polyglot.t("field.email")),
         commission: Joi.number().label(
             req.polyglot.t("field.product.commission")
@@ -127,7 +126,6 @@ const update = (req) => {
         email: Joi.string()
             .min(6)
             .required()
-            .email()
             .label(req.polyglot.t("field.email")),
         commission: Joi.number().label(
             req.polyglot.t("field.product.commission")
