@@ -2,10 +2,10 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 
 const { Account, Profile, Identity, Bank,
-    AccountToken, Role, RoleUpgrade, Dealer } = require("../models");
+    AccountToken, Role, RoleUpgrade, Dealer, User } = require("../models");
 
 export default class AccountRepository {
-    constructor() {}
+    constructor() { }
 
     async getAccountAll(limit, offset) {
         return await Account.findAll({
@@ -404,6 +404,77 @@ export default class AccountRepository {
 
     async deleteDealer(id) {
         return await Dealer.destroy({
+            where: { id: id },
+        });
+    }
+
+    async getUserAll() {
+        return await User.findAll({
+            include: [
+                {
+                    model: Role,
+                    as: "role"
+                },
+                {
+                    model: Dealer,
+                    as: "dealer"
+                }
+            ]
+        })
+    }
+
+    async getUserAllWithFilter(query, limit, offset) {
+        return await User.findAll({
+            include: [
+                {
+                    model: Role,
+                    as: "role"
+                },
+                {
+                    model: Dealer,
+                    as: "dealer"
+                }
+            ],
+            limit: limit,
+            offset: offset,
+        })
+    }
+
+    async getUserCountByQuery(query) {
+        return await User.count({
+        });
+    }
+
+    async getUser(id) {
+        return await User.findByPk(id, {
+            include: [
+                {
+                    model: Role,
+                    as: "role"
+                },
+                {
+                    model: Dealer,
+                    as: "dealer"
+                }
+            ]
+        })
+    }
+
+    async createUser(payload) {
+        return await User.create({
+            dealer_id: payload.dealer_id,
+            role_id: payload.role_id,
+        })
+    }
+
+    async updateUser(id, payload) {
+        return await User.update(payload, {
+            where: { id: id },
+        });
+    }
+
+    async deleteUser(id) {
+        return await User.destroy({
             where: { id: id },
         });
     }
