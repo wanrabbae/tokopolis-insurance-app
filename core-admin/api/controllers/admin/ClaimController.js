@@ -117,6 +117,7 @@ const generateXls = (claimData, destination) => {
         'Registration Date': moment(claimData.created_at).format("DD/MMM/YYYY"),
         'Processed Time': "-",
         'ID Transaksi Tokopolis': claimData.transaction_id,
+        'ID Claim No': claimData.id,
         'Nama Pelapor': claimData.reporter_fullname,
         'Nama Pemegang Polis': claimData.holder_fullname,
         'Nomor Plat Kendaraan': claimData.plate_number,
