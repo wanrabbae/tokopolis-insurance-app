@@ -5,7 +5,7 @@ const { Account, Profile, Identity, Bank,
     AccountToken, Role, RoleUpgrade, Dealer, User } = require("../models");
 
 export default class AccountRepository {
-    constructor() { }
+    constructor() {}
 
     async getAccountAll(limit, offset) {
         return await Account.findAll({
