@@ -56,8 +56,7 @@ const create = (req) => {
             .required()
             .regex(RegExp(imageExt.regex))
             .label(req.polyglot.t("field.image")),
-        email: Joi.string()
-            .min(6)
+            email: Joi.array().items(Joi.string().min(6).required().email())
             .required()
             .label(req.polyglot.t("field.email")),
         commission: Joi.number().label(
@@ -123,8 +122,7 @@ const update = (req) => {
         image: Joi.string()
             .regex(RegExp(imageExt.regex))
             .label(req.polyglot.t("field.image")),
-        email: Joi.string()
-            .min(6)
+        email: Joi.array().items(Joi.string().min(6).required().email())
             .required()
             .label(req.polyglot.t("field.email")),
         commission: Joi.number().label(
