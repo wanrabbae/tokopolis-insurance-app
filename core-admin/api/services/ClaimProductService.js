@@ -25,6 +25,10 @@ export default class ClaimProductService {
         return this.repository.getDetailData(id);
     }
 
+    getDetailDataWithTrxId(id) {
+        return this.repository.getDetailDataWithTransactionId(id);
+    }
+
     createClaimProduct(payload, files) {
         payload.documents = {};
 
@@ -50,4 +54,17 @@ export default class ClaimProductService {
         });
         mailer.send();
     }
+
+    sendEmailClaimFile(payload) {
+        let mailer = new Mailer(payload.host);
+        mailer.setType("claim-file-sent");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            product: payload.data.product,
+            url: payload.data.url,
+        });
+        mailer.send();
+    }
+    
 }

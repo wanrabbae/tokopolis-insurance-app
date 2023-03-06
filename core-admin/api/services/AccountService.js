@@ -335,6 +335,34 @@ export default class AccountService {
         return this.repository.deleteDealer(id);
     }
 
+    getUserAll() {
+        return this.repository.getUserAll()
+    }
+
+    getUserAllWithFilter(query, limit, offset) {
+        return this.repository.getUserAllWithFilter(query, limit, offset)
+    }
+
+    async getUserCountByQuery(query) {
+        return this.repository.getUserCountByQuery(query);
+    }
+
+    getUser(id) {
+        return this.repository.getUser(id)
+    }
+
+    createUser(payload) {
+        return this.repository.createUser(payload)
+    }
+
+    updateUser(id, payload) {
+        return this.repository.updateUser(id, payload)
+    }
+
+    deleteUser(id) {
+        return this.repository.deleteUser(id);
+    }
+
     sendEmailRegister(payload) {
         let mailer = new Mailer(payload.host);
         mailer.setUrl("/confirm-email");
