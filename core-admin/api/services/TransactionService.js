@@ -12,6 +12,10 @@ export default class TransactionService {
         return this.repository.getTransactionAll(filter, limit, offset);
     }
 
+    getTransactionStatusAll(status, limit, offset) {
+        return this.repository.getTransactionStatusAll(status, limit, offset);
+    }
+
     getTransactionDetail(id) {
         return this.repository.getTransactionDetail(id);
     }
@@ -50,6 +54,10 @@ export default class TransactionService {
 
     getTransactionCount(filter) {
         return this.repository.getTransactionCount(filter);
+    }
+
+    getTransactionStatusCount(filter) {
+        return this.repository.getTransactionStatusCount(filter);
     }
 
     getTransactionTotal(account_id) {
