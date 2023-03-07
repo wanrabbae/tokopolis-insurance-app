@@ -130,6 +130,7 @@ const id_ID_strings = {
         success: {
             default: "Aksi Berhasil",
             "transaction.payment": "Pembayaran Berhasil",
+            "transaction.withdraw": "Penarikan Berhasil",
             "webhook.midtrans": "Webhook Midtrans Berhasil",
             "webhook.xendit": "Webhook Xendit Berhasil",
         },
@@ -160,6 +161,7 @@ const id_ID_strings = {
             "transaction.create": "Transaksi Gagal Dibuat",
             "transaction.quotation": "File Quotation tidak ditemukan",
             "transaction.payment": "Pembayaran gagal",
+            "transaction.withdraw": "Penarikan Gagal",
             "route.exist": "Route sudah ada",
             "role.exist": "Role sudah tersedia",
             "endpoint.notfound": "Data endpoint tidak ditemukan.",

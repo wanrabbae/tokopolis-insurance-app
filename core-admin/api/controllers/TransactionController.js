@@ -989,7 +989,6 @@ exports.getTransactionTotal = async (req, res) => {
 exports.getComission = async (req, res) => {
     const comission = await service.getComission(req.account._id);
     if (comission.length <= 0) return res.jsonData({ total: 0 })
-
     return res.jsonData({ total: comission[0].value })
 };
 
@@ -997,6 +996,30 @@ exports.getComissionHistory = async (req, res) => {
     const comission = await service.getComissionHistory(req.account._id);
 
     res.jsonData(comission);
+};
+
+exports.comissionWithdraw = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const result = await paymentService.comissionWithdraw({
+            external_id: "TES001",
+            amount: req.body.amount,
+            bankCode: req.body.bankCode,
+            accountHolderName: req.body.accountHolderName,
+            accountNumber: req.body.accountNumber,
+        })
+        console.log(result);
+        return res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
+    } catch (error) {
+        console.log(error)
+        return res.errorBadRequest(req.polyglot.t("error.transaction.withdraw"))
+    }
+
+    // const comission = await service.getComission(req.account._id);
+    // if (comission.length <= 0) return res.jsonData({ total: 0 })
+
+    // return res.jsonData({ total: comission[0].value })
 };
 
 exports.getPoint = async (req, res) => {
@@ -1010,6 +1033,30 @@ exports.getPointHistory = async (req, res) => {
     const point = await service.getPointHistory(req.account._id);
 
     res.jsonData(point);
+};
+
+exports.pointWithdraw = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const result = await paymentService.pointWithdraw({
+            external_id: "TES002",
+            amount: req.body.amount,
+            bankCode: req.body.bankCode,
+            accountHolderName: req.body.accountHolderName,
+            accountNumber: req.body.accountNumber,
+        })
+        console.log(result);
+        return res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
+    } catch (error) {
+        console.log(error)
+        return res.errorBadRequest(req.polyglot.t("error.transaction.withdraw"))
+    }
+
+    // const point = await service.getPoint(req.account._id);
+    // if (point.length <= 0) return res.jsonData({ total: 0 })
+
+    // return res.jsonData({ total: point[0].value })
 };
 
 exports.simulatePay = async (req, res) => {
