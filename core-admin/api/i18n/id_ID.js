@@ -162,6 +162,7 @@ const id_ID_strings = {
             "transaction.quotation": "File Quotation tidak ditemukan",
             "transaction.payment": "Pembayaran gagal",
             "transaction.withdraw": "Penarikan Gagal",
+            "transaction.balance": "Saldo tidak mencukupi!",
             "route.exist": "Route sudah ada",
             "role.exist": "Role sudah tersedia",
             "endpoint.notfound": "Data endpoint tidak ditemukan.",

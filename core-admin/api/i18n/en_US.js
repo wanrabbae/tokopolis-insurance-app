@@ -161,6 +161,7 @@ const en_US_strings = {
             "transaction.create": "Transaction Failed",
             "transaction.quotation": "Quotation File not found",
             "transaction.withdraw": "Withdraw Failed",
+            "transaction.balance": "Not enough balance!",
             "route.exist": "Route already exists",
             "role.exist": "Role already exists",
             "endpoint.notfound": "Endpoint data not found.",
