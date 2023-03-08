@@ -130,6 +130,7 @@ const en_US_strings = {
         success: {
             default: "Action Success",
             "transaction.payment": "Payment Success",
+            "transaction.withdraw": "Withdraw Success",
             "webhook.midtrans": "Midtrans Webhook Success",
             "webhook.xendit": "Xendit Webhook Success",
         },
@@ -159,7 +160,7 @@ const en_US_strings = {
             transaction: "Transaction not exists",
             "transaction.create": "Transaction Failed",
             "transaction.quotation": "Quotation File not found",
-            "transaction.payment": "Payment failed",
+            "transaction.withdraw": "Withdraw Failed",
             "route.exist": "Route already exists",
             "role.exist": "Role already exists",
             "endpoint.notfound": "Endpoint data not found.",

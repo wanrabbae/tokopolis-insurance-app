@@ -334,6 +334,7 @@ export default class TransactionRepository {
                 "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
+            group: ["id"],
             where: {
                 account_id: account_id,
             },
@@ -362,6 +363,7 @@ export default class TransactionRepository {
                 "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
+            group: ['id'],
             where: {
                 account_id: account_id,
             },
