@@ -14,6 +14,7 @@ const {
     moneyFormatNonSymbol,
     phoneFormat,
     randomNumber,
+    randomString,
     titleCase,
     percentToDecimal,
 } = require("../utilities/functions");
@@ -490,6 +491,7 @@ const setTransactionBonus = async (payload) => {
             account_id: payload.account_id,
             transaction_id: payload.transaction_id,
             value: pointValue,
+            description: "pemasukan"
         });
 
         const findUniqueId = await accountService.getAccountData(payload.account_id);
@@ -505,6 +507,7 @@ const setTransactionBonus = async (payload) => {
                 account_id: findAccountSpv.id,
                 transaction_id: payload.transaction_id,
                 value: leaderPointValue,
+                description: "pemasukan"
             });
         }
 
@@ -517,6 +520,7 @@ const setTransactionBonus = async (payload) => {
                 account_id: findAccountBH.id,
                 transaction_id: payload.transaction_id,
                 value: leaderPointValue,
+                description: "pemasukan"
             });
         }
     }
@@ -1006,7 +1010,7 @@ exports.comissionWithdraw = async (req, res) => {
         if (parseInt(comission[0].value) <= parseInt(req.body.amount)) throw new Error(req.polyglot.t("error.transaction.balance"))
 
         const result = await paymentService.comissionWithdraw({
-            external_id: "TES001",
+            external_id: randomString(4) + `${randomNumber(1, 1000)}`,
             amount: req.body.amount,
             bankCode: req.body.bankCode,
             accountHolderName: req.body.accountHolderName,
@@ -1016,7 +1020,11 @@ exports.comissionWithdraw = async (req, res) => {
         if (result.status == false) {
             throw new Error(req.polyglot.t("error.transaction.withdraw"))
         }
-
+        await service.createComission({
+            account_id: req.account._id,
+            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            value: `-${req.body.amount}`,
+        })
         return res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
     } catch (error) {
         return res.errorBadRequest(error.message)
@@ -1033,7 +1041,7 @@ exports.getPoint = async (req, res) => {
 exports.getPointHistory = async (req, res) => {
     const point = await service.getPointHistory(req.account._id);
 
-    res.jsonData(point);
+    return res.jsonData(point);
 };
 
 exports.pointWithdraw = async (req, res) => {
@@ -1046,7 +1054,7 @@ exports.pointWithdraw = async (req, res) => {
         if (balancePoint <= amount) throw new Error(req.polyglot.t("error.transaction.balance"))
 
         const result = await paymentService.pointWithdraw({
-            external_id: "TES001",
+            external_id: randomString(4) + `${randomNumber(1, 1000)}`,
             amount: req.body.amount,
             bankCode: req.body.bankCode,
             accountHolderName: req.body.accountHolderName,
@@ -1056,7 +1064,12 @@ exports.pointWithdraw = async (req, res) => {
         if (result.status == false) {
             throw new Error(req.polyglot.t("error.transaction.withdraw"))
         }
-
+        await service.createPoint({
+            account_id: req.account._id,
+            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            value: `-${req.body.amount}`,
+            description: "penarikan"
+        });
         return res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
     } catch (error) {
         return res.errorBadRequest(error.message)

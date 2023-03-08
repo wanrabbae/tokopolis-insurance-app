@@ -358,10 +358,8 @@ export default class TransactionRepository {
     async getComission(account_id) {
         return await Comission.findAll({
             attributes: [
-                "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
-            group: ['id'],
             where: {
                 account_id: account_id,
             },
@@ -387,10 +385,8 @@ export default class TransactionRepository {
     async getPoint(account_id) {
         return await Point.findAll({
             attributes: [
-                "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
-            group: ["id"],
             where: {
                 account_id: account_id,
             },
