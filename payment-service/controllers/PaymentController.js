@@ -159,6 +159,30 @@ exports.cancelPayment = async (req, res) => {
 
 }
 
+exports.comissionWithdraw = async (req, res) => {
+    try {
+        const withdrawReq = await xenditService.disbursmentComission(req.body)
+        return res.status(200).json(withdrawReq)
+    } catch (error) {
+        return res.status(400).json({
+            status: false,
+            message: error.toString()
+        })
+    }
+}
+
+exports.pointWithdraw = async (req, res) => {
+    try {
+        const withdrawReq = await xenditService.disbursmentPoint(req.body)
+        return res.status(200).json(withdrawReq)
+    } catch (error) {
+        return res.status(400).json({
+            status: false,
+            message: error.toString()
+        })
+    }
+}
+
 exports.simulateVaPay = async (req, res) => {
     const transaction_id = req.body.transaction_id;
     const amount = req.body.amount;

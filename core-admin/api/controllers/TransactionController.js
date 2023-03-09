@@ -14,6 +14,7 @@ const {
     moneyFormatNonSymbol,
     phoneFormat,
     randomNumber,
+    randomString,
     titleCase,
     percentToDecimal,
 } = require("../utilities/functions");
@@ -490,6 +491,7 @@ const setTransactionBonus = async (payload) => {
             account_id: payload.account_id,
             transaction_id: payload.transaction_id,
             value: pointValue,
+            description: "pemasukan"
         });
 
         const findUniqueId = await accountService.getAccountData(payload.account_id);
@@ -505,6 +507,7 @@ const setTransactionBonus = async (payload) => {
                 account_id: findAccountSpv.id,
                 transaction_id: payload.transaction_id,
                 value: leaderPointValue,
+                description: "pemasukan"
             });
         }
 
@@ -517,6 +520,7 @@ const setTransactionBonus = async (payload) => {
                 account_id: findAccountBH.id,
                 transaction_id: payload.transaction_id,
                 value: leaderPointValue,
+                description: "pemasukan"
             });
         }
     }
@@ -999,6 +1003,74 @@ exports.getComissionHistory = async (req, res) => {
     res.jsonData(comission);
 };
 
+exports.comissionWithdraw = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const comission = await service.getComission(req.account._id);
+        if (parseInt(comission[0].value) <= parseInt(req.body.amount)) throw new Error(req.polyglot.t("error.transaction.balance"))
+
+        const result = await paymentService.comissionWithdraw({
+            external_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            amount: req.body.amount,
+            bankCode: req.body.bankCode,
+            accountHolderName: req.body.accountHolderName,
+            accountNumber: req.body.accountNumber,
+        })
+        if (result.status == false) {
+            throw new Error(req.polyglot.t("error.transaction.withdraw"))
+        }
+        await service.createComission({
+            account_id: req.account._id,
+            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            value: `-${req.body.amount}`,
+        })
+        res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
+    } catch (error) {
+        return res.errorBadRequest(error.message)
+    }
+
+    // const comission = await service.getComission(req.account._id);
+    // if (comission.length <= 0) return res.jsonData({ total: 0 })
+
+    // return res.jsonData({ total: comission[0].value })
+};
+
+exports.pointWithdraw = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const point = await service.getPoint(req.account._id);
+        const amount = parseInt(req.body.amount) * 1000
+        const balancePoint = parseInt(point[0].value) * 1000
+        if (balancePoint <= amount) throw new Error(req.polyglot.t("error.transaction.balance"))
+        const result = await paymentService.pointWithdraw({
+            external_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            amount: req.body.amount,
+            bankCode: req.body.bankCode,
+            accountHolderName: req.body.accountHolderName,
+            accountNumber: req.body.accountNumber,
+        })
+        if (result.status == false) {
+            throw new Error(req.polyglot.t("error.transaction.withdraw"))
+        }
+        await service.createPoint({
+            account_id: req.account._id,
+            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            value: `-${req.body.amount}`,
+            description: "penarikan"
+        });
+        res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
+    } catch (error) {
+        return res.errorBadRequest(error.message)
+    }
+
+    // const point = await service.getPoint(req.account._id);
+    // if (point.length <= 0) return res.jsonData({ total: 0 })
+
+    // return res.jsonData({ total: point[0].value })
+};
+
 exports.getPoint = async (req, res) => {
     const point = await service.getPoint(req.account._id);
     if (point.length <= 0) return res.jsonData({ total: 0 })
@@ -1009,7 +1081,7 @@ exports.getPoint = async (req, res) => {
 exports.getPointHistory = async (req, res) => {
     const point = await service.getPointHistory(req.account._id);
 
-    res.jsonData(point);
+    return res.jsonData(point);
 };
 
 exports.simulatePay = async (req, res) => {
