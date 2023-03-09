@@ -172,4 +172,16 @@ export default class TransactionService {
         });
         mailer.send();
     }
+
+    sendEmailFeedBackAgent(payload) {
+        let mailer = new Mailer(payload.host);
+        mailer.setType("feedback-agent-sent");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            message: payload.data.message,
+            product: payload.data.product,
+        });
+        mailer.send();
+    }
 }

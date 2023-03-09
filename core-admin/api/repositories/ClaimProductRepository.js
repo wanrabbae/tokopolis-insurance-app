@@ -56,6 +56,26 @@ export default class ClaimProductRepository {
         });
     }
 
+    async getDetailDataWithTransactionId(id) {
+        return await ClaimProduct.findOne({
+            where: {
+                transaction_id: id,
+            },
+            include: [
+                {
+                    model: Account,
+                    as: "account",
+                    attributes: ["id", "fullname", "email"],
+                },
+                {
+                    model: Product,
+                    as: "product",
+                    attributes: ["id", "name", "type", "image", "email"],
+                },
+            ],
+        });
+    }
+
     async createClaimProductData(payload) {
         return await ClaimProduct.create(payload);
     }

@@ -62,6 +62,18 @@ export default class AccountService {
         return this.repository.createBulkAccount(payloads)
     }
 
+    async createAccountAdmin(data) {
+        const payload = data.body
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(payload.password, salt)
+
+        payload.password = hashedPassword
+        payload.role_id = data.account.role == 5 ? 0 : data.account.role + 1
+        payload.parent_id = data.account._id
+
+        return this.repository.createAccountAdmin(payload)
+    }
+
     async createAccountDealer(data) {
         const payload = data.body;
 
@@ -321,6 +333,34 @@ export default class AccountService {
 
     deleteDealer(id) {
         return this.repository.deleteDealer(id);
+    }
+
+    getUserAll() {
+        return this.repository.getUserAll()
+    }
+
+    getUserAllWithFilter(query, limit, offset) {
+        return this.repository.getUserAllWithFilter(query, limit, offset)
+    }
+
+    async getUserCountByQuery(query) {
+        return this.repository.getUserCountByQuery(query);
+    }
+
+    getUser(id) {
+        return this.repository.getUser(id)
+    }
+
+    createUser(payload) {
+        return this.repository.createUser(payload)
+    }
+
+    updateUser(id, payload) {
+        return this.repository.updateUser(id, payload)
+    }
+
+    deleteUser(id) {
+        return this.repository.deleteUser(id);
     }
 
     sendEmailRegister(payload) {
