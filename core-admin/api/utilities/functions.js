@@ -71,13 +71,17 @@ function uploadHandler(filePath, newPath)
 }
 
 function phoneFormat(value, code = '+62') {
-    if (value == null)
-        return null
+    number = number.replace(/\D/g, '');
 
-    if (value[0] == '+' || value[0] == '6')
-        return value
+    if (number.substring(0, 3) == '628') {
+        number = '+62' + number.substring(3);
+    }
 
-    return code + value.substr(1, value.length)
+    if (number.substring(0, 2) == '08') {
+        number = '+62' + number.substring(1);
+    }
+
+    return number.replace(/(\d{4})(?=\d)/g, '$1 ');
 }
 
 const moneyFormat = (price) => {

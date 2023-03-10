@@ -803,18 +803,22 @@ exports.doPayment = async (req, res) => {
         transaction.total
     );
 
+    if (typeof transaction.client_data == "string") {
+        transaction.client_data = JSON.parse(transaction.client_data)
+    }
+
     const payload = {
         order_id: transaction.id,
         customer: {
             fullname: transaction.client_data.fullname,
             email:
-                transaction.client_data.email != "null"
+            transaction.client_data.email != undefined
                     ? transaction.client_data.email
                     : account.email,
             phone:
-                transaction.client_data.phone != "null"
+            transaction.client_data.email != undefined
                     ? phoneFormat(transaction.client_data.phone)
-                    : phoneFormat(account.profile?.phone),
+                    : phoneFormat(account.profile.phone),
         },
         platform: req.body.platform,
         // Send total without payment fee
