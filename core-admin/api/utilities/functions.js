@@ -29,7 +29,7 @@ function randomString(length = 16) {
     var result = ''
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     var charactersLength = characters.length
-    for ( var i = 0; i < length; i++ ) {
+    for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() *
             charactersLength))
     }
@@ -44,8 +44,7 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-function uploadHandler(filePath, newPath)
-{
+function uploadHandler(filePath, newPath) {
     const nuxtFolder = process.env.NUXT_STATIC_DIR
     const tempPath = process.env.NUXT_TEMP_DIR
     const uploadFolder = process.env.NUXT_UPLOAD_DIR
@@ -70,15 +69,20 @@ function uploadHandler(filePath, newPath)
     }
 }
 
-function phoneFormat(value, code = '+62') {
-    if (value == null)
-        return null
+function phoneFormat(number) {
+    number = number.replace(/\D/g, '');
 
-    if (value[0] == '+' || value[0] == '6')
-        return value
+    if (number.substring(0, 3) == '628') {
+        number = '+62' + number.substring(3);
+    }
 
-    return code + value.substr(1, value.length)
+    if (number.substring(0, 2) == '08') {
+        number = '+62' + number.substring(1);
+    }
+
+    return number.replace(/(\d{4})(?=\d)/g, '$1 ');
 }
+
 
 const moneyFormat = (price) => {
     const formatter = new Intl.NumberFormat('id-ID', {
