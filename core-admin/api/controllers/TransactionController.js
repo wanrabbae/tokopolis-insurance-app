@@ -14,6 +14,7 @@ const {
     moneyFormatNonSymbol,
     phoneFormat,
     randomNumber,
+    randomString,
     titleCase,
     percentToDecimal,
 } = require("../utilities/functions");
@@ -177,9 +178,8 @@ const generateQuotation = async (payload) => {
                         expansion.value
                     )} (${expansion.count} orang)`,
                     price: moneyFormatNonSymbol(expansion.value),
-                    percentage: `${toPercent(expansion.rate)}% x ${
-                        expansion.count
-                    }`,
+                    percentage: `${toPercent(expansion.rate)}% x ${expansion.count
+                        }`,
                     total: moneyFormatNonSymbol(expansion.price),
                 });
             } else {
@@ -470,7 +470,7 @@ const setTransactionBonus = async (payload) => {
     var comissionValue = 0
 
     if (payload.discount_format == "percent") {
-        comissionValue = totalPriceForComission * (Math.abs(payload.discount_value -  discountMaxPercent) / 100)
+        comissionValue = totalPriceForComission * (Math.abs(payload.discount_value - discountMaxPercent) / 100)
     } else {
         comissionValue = totalPriceForComission * (25 / 100) - payload.discount_value
     }
@@ -491,6 +491,7 @@ const setTransactionBonus = async (payload) => {
             account_id: payload.account_id,
             transaction_id: payload.transaction_id,
             value: pointValue,
+            description: "pemasukan"
         });
 
         const findUniqueId = await accountService.getAccountData(payload.account_id);
@@ -506,6 +507,7 @@ const setTransactionBonus = async (payload) => {
                 account_id: findAccountSpv.id,
                 transaction_id: payload.transaction_id,
                 value: leaderPointValue,
+                description: "pemasukan"
             });
         }
 
@@ -518,6 +520,7 @@ const setTransactionBonus = async (payload) => {
                 account_id: findAccountBH.id,
                 transaction_id: payload.transaction_id,
                 value: leaderPointValue,
+                description: "pemasukan"
             });
         }
     }
@@ -800,18 +803,22 @@ exports.doPayment = async (req, res) => {
         transaction.total
     );
 
+    if (typeof transaction.client_data == "string") {
+        transaction.client_data = JSON.parse(transaction.client_data)
+    }
+
     const payload = {
         order_id: transaction.id,
         customer: {
             fullname: transaction.client_data.fullname,
             email:
-                transaction.client_data.email != "null"
+            transaction.client_data.email != undefined
                     ? transaction.client_data.email
                     : account.email,
             phone:
-                transaction.client_data.phone != "null"
+            transaction.client_data.email != undefined
                     ? phoneFormat(transaction.client_data.phone)
-                    : phoneFormat(account.profile?.phone),
+                    : phoneFormat(account.profile.phone),
         },
         platform: req.body.platform,
         // Send total without payment fee
@@ -924,19 +931,31 @@ exports.webhookXendit = async (req, res) => {
     const validate = validation.xendit(req);
     if (validate.error) return res.errorValidation(validate.details);
 
-    const transaction_id = req.body.data.id;
+    const transaction_id = req.body.callback_virtual_account_id || req.body.status ? req.body.id : req.body.data.id;
+
     const status = () => {
-        switch (req.body.data.status) {
-            case "SUCCEEDED":
-                return "paid";
-
-            case "FAILED":
-                return "denied";
-
-            case "VOIDED":
-                return "canceled";
+        // CONFIRM VA TERBAYARKAN
+        if (req.body.callback_virtual_account_id) {
+            return "paid"
         }
-    };
+        // CONFIRM VA CANCELED
+        else if (req.body.bank_code && req.body.status == "INACTIVE") {
+            return "canceled"
+        }
+        // CONFIRM PG LAINYA
+        else {
+            switch (req.body.data.status) {
+                case "SUCCEEDED":
+                    return "paid";
+
+                case "FAILED":
+                    return "denied";
+
+                case "VOIDED":
+                    return "canceled";
+            }
+        }
+    }
 
     const transaction = await service.getTransactionByPaymentId(transaction_id);
     if (transaction == null)
@@ -988,6 +1007,74 @@ exports.getComissionHistory = async (req, res) => {
     res.jsonData(comission);
 };
 
+exports.comissionWithdraw = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const comission = await service.getComission(req.account._id);
+        if (parseInt(comission[0].value) <= parseInt(req.body.amount)) throw new Error(req.polyglot.t("error.transaction.balance"))
+
+        const result = await paymentService.comissionWithdraw({
+            external_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            amount: req.body.amount,
+            bankCode: req.body.bankCode,
+            accountHolderName: req.body.accountHolderName,
+            accountNumber: req.body.accountNumber,
+        })
+        if (result.status == false) {
+            throw new Error(req.polyglot.t("error.transaction.withdraw"))
+        }
+        await service.createComission({
+            account_id: req.account._id,
+            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            value: `-${req.body.amount}`,
+        })
+        res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
+    } catch (error) {
+        return res.errorBadRequest(error.message)
+    }
+
+    // const comission = await service.getComission(req.account._id);
+    // if (comission.length <= 0) return res.jsonData({ total: 0 })
+
+    // return res.jsonData({ total: comission[0].value })
+};
+
+exports.pointWithdraw = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const point = await service.getPoint(req.account._id);
+        const amount = parseInt(req.body.amount) * 1000
+        const balancePoint = parseInt(point[0].value) * 1000
+        if (balancePoint <= amount) throw new Error(req.polyglot.t("error.transaction.balance"))
+        const result = await paymentService.pointWithdraw({
+            external_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            amount: req.body.amount,
+            bankCode: req.body.bankCode,
+            accountHolderName: req.body.accountHolderName,
+            accountNumber: req.body.accountNumber,
+        })
+        if (result.status == false) {
+            throw new Error(req.polyglot.t("error.transaction.withdraw"))
+        }
+        await service.createPoint({
+            account_id: req.account._id,
+            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            value: `-${req.body.amount}`,
+            description: "penarikan"
+        });
+        res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
+    } catch (error) {
+        return res.errorBadRequest(error.message)
+    }
+
+    // const point = await service.getPoint(req.account._id);
+    // if (point.length <= 0) return res.jsonData({ total: 0 })
+
+    // return res.jsonData({ total: point[0].value })
+};
+
 exports.getPoint = async (req, res) => {
     const point = await service.getPoint(req.account._id);
     if (point.length <= 0) return res.jsonData({ total: 0 })
@@ -998,5 +1085,26 @@ exports.getPoint = async (req, res) => {
 exports.getPointHistory = async (req, res) => {
     const point = await service.getPointHistory(req.account._id);
 
-    res.jsonData(point);
+    return res.jsonData(point);
 };
+
+exports.simulatePay = async (req, res) => {
+    if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    const data = await service.getTransactionDetailWithVA(req.body.va_number)
+    if (!data) return res.errorBadRequest(req.polyglot.t("error.transaction"))
+
+    try {
+        const result = await paymentService.simulateVA({
+            transaction_id: data.id,
+            amount: data.pg_data.amount
+        })
+
+        console.log(result.data)
+
+        return res.jsonSuccess(req.polyglot.t("success.transaction.payment"))
+    } catch (error) {
+        console.log(error)
+        return res.errorBadRequest(req.polyglot.t("error.transaction.payment"))
+    }
+}

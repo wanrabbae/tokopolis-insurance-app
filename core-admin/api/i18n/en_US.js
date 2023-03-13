@@ -52,7 +52,9 @@ const en_US_strings = {
             region_id: "Region ID",
             province_id: "Province ID",
             city_id: "City ID",
+            role: "Role",
             role_id: "Role ID",
+            dealer_id: "Dealer ID",
 
             "address.village": "Village Address",
             "address.detail": "Address Detail",
@@ -127,6 +129,8 @@ const en_US_strings = {
         },
         success: {
             default: "Action Success",
+            "transaction.payment": "Payment Success",
+            "transaction.withdraw": "Withdraw Success",
             "webhook.midtrans": "Midtrans Webhook Success",
             "webhook.xendit": "Xendit Webhook Success",
         },
@@ -156,6 +160,8 @@ const en_US_strings = {
             transaction: "Transaction not exists",
             "transaction.create": "Transaction Failed",
             "transaction.quotation": "Quotation File not found",
+            "transaction.withdraw": "Withdraw Failed",
+            "transaction.balance": "Not enough balance!",
             "route.exist": "Route already exists",
             "role.exist": "Role already exists",
             "endpoint.notfound": "Endpoint data not found.",

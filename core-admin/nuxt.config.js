@@ -53,6 +53,7 @@ export default {
     { mode: 'client', src: '~/plugins/vue-switches.js' },
     { mode: 'client', src: '~/plugins/vue-number-input-spinner.js' },
     { mode: 'client', src: '~/plugins/vue-mask.js' },
+    { mode: 'client', src: '~/plugins/vue-notification.js' },
     { mode: 'client', src: '~/plugins/vue2-dropzone.js' }
   ],
 

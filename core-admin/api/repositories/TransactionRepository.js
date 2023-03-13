@@ -15,7 +15,7 @@ const {
 } = require("../models");
 
 export default class TransactionRepository {
-    constructor() {}
+    constructor() { }
 
     async getTransactionAll(filter, limit, offset) {
         const dateFilter = `AND trans.start_date >= '${filter.start_period}' ` +
@@ -44,7 +44,7 @@ export default class TransactionRepository {
     }
 
     async getTransactionDetail(id) {
-        return await sequelize.query(`SELECT trans.id, trans.client_data, trans.address_detail, ` +
+        return await sequelize.query(`SELECT trans.id, trans.agent_id, trans.client_data, trans.address_detail, ` +
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
@@ -77,6 +77,15 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getTransactionDetailWithVA(VA_number) {
+        return await sequelize.query(`SELECT id, pg_data FROM transactions ` +
+            `WHERE pg_data IS NOT NULL ` +
+            `AND pg_data->"$.virtual_number" = '${VA_number}' ` +
+            `AND status = 'waiting' ` +
+            `LIMIT 1`,
+            { type: QueryTypes.SELECT, plain: true })
+    }
+
     async getTransactionForXlsx(data) {
         const dateFilter = `trans.start_date >= '${data.start_period}' ` +
             `AND trans.start_date <= '${data.end_period}' `
@@ -104,7 +113,6 @@ export default class TransactionRepository {
             `ORDER BY trans.created_at ASC `,
             { type: QueryTypes.SELECT })
     }
-
 
     // async getTransactionAll(limit, offset) {
     //     return await Transaction.findAll({

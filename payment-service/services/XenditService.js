@@ -50,10 +50,24 @@ exports.XenditService = class {
             }
         }
 
+        this.paymentCancel = () => {
+            return {
+                status: true,
+                message: "success cancel the payment"
+            }
+        }
+
         this.xenditError = (error) => {
             return {
                 status: false,
                 message: error
+            }
+        }
+
+        this.xenditDisbursmentSuccess = (result) => {
+            return {
+                status: true,
+                data: result
             }
         }
     }
@@ -66,6 +80,7 @@ exports.XenditService = class {
             externalID: payload.order_id,
             bankCode: payload.platform.toUpperCase(),
             name: payload.customer.fullname,
+            virtualAccNumber: payload.customer.phone.split("+62")[1],
             isClosed: true,
             isSingleUse: true,
             expectedAmt: payload.amount,
@@ -73,6 +88,55 @@ exports.XenditService = class {
 
         return await va.createFixedVA(parameters)
             .then(result => this.xenditBankSuccess(payload.platform, result))
+            .catch(this.xenditError)
+    }
+
+    async disbursmentComission(payload) {
+        const { Disbursement } = this.xenditApi
+        const disburs = new Disbursement({})
+        const parameters = {
+            externalID: payload.external_id,
+            bankCode: payload.bankCode,
+            accountHolderName: payload.accountHolderName,
+            accountNumber: payload.accountNumber,
+            amount: payload.amount,
+            description: "test"
+        }
+
+        return await disburs.create(parameters)
+            .then(result => this.xenditDisbursmentSuccess(result))
+            .catch(this.xenditError)
+    }
+
+    async disbursmentPoint(payload) {
+        const { Disbursement } = this.xenditApi
+        const disburs = new Disbursement({})
+        const parameters = {
+            externalID: payload.external_id,
+            bankCode: payload.bankCode,
+            accountHolderName: payload.accountHolderName,
+            accountNumber: payload.accountNumber,
+            amount: payload.amount,
+            description: "test"
+        }
+
+        return await disburs.create(parameters)
+            .then(result => this.xenditDisbursmentSuccess(result))
+            .catch(this.xenditError)
+    }
+
+    async bankCancel(payload) {
+        const { VirtualAcc } = this.xenditApi
+        const va = new VirtualAcc({})
+
+        const parameters = {
+            id: payload.transaction_id,
+            expirationDate: payload.expiration,
+            expectedAmt: 20000,
+        }
+
+        return await va.updateFixedVA(parameters)
+            .then(result => this.paymentCancel())
             .catch(this.xenditError)
     }
 
@@ -104,6 +168,19 @@ exports.XenditService = class {
 
         return await wallet.createEWalletCharge(parameters)
             .then(result => this.xenditEWalletSuccess(payload.platform, result))
+            .catch(this.xenditError)
+    }
+
+    async eWalletCancel(payload) { // OVO,DANA,ShopeePay,LinkAja,Sakuku
+        const { EWallet } = this.xenditApi
+        const wallet = new EWallet({})
+
+        const parameters = {
+            chargeID: payload.transaction_id
+        }
+
+        return await wallet.voidEWalletCharge(parameters)
+            .then(result => this.paymentCancel())
             .catch(this.xenditError)
     }
 

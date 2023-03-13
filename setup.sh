@@ -32,6 +32,9 @@ ln -sf /etc/nginx/sites-available/tokopolis-admin.conf /etc/nginx/sites-enabled/
 cp nginx-client.conf /etc/nginx/sites-available/tokopolis-client.conf
 ln -sf /etc/nginx/sites-available/tokopolis-client.conf /etc/nginx/sites-enabled/tokopolis-client.conf
 
+cp nginx-payment-test.conf /etc/nginx/sites-available/tokopolis-payment-test.conf
+ln -sf /etc/nginx/sites-available/tokopolis-payment-test.conf /etc/nginx/sites-enabled/tokopolis-payment-test.conf
+
 nginx -t
 systemctl restart nginx
 
@@ -70,6 +73,10 @@ pm2 start npm --name "tokopolis-client" -- start
 cd ../payment-service/
 npm run packaging
 pm2 start npm --name "tokopolis-payment" -- run dev
+
+cd ../payment-test/
+npm run packaging
+pm2 start npm --name "tokopolis-payment-test" -- run dev
 
 # Config Email
 cd ../email-service/

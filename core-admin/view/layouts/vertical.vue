@@ -16,6 +16,9 @@
       <Footer />
     </div>
     <!-- end main content-->
+    <notifications
+        group="notif"
+        position="top right" />
   </div>
   <!-- END layout-wrapper -->
 </template>
