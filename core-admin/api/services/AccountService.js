@@ -50,6 +50,14 @@ export default class AccountService {
         return this.repository.getAccountUniqueId(id);
     }
 
+    getCountFromEmails(emails) {
+        return this.repository.getCountFromEmails(emails);
+    }
+
+    createBulkAccount(payloads) {
+        return this.repository.createBulkAccount(payloads);
+    }
+
     async createAccountAdmin(data) {
         const payload = data.body
 
@@ -298,6 +306,10 @@ export default class AccountService {
 
     getDealerAllWithFilter(query, limit, offset) {
         return this.repository.getDealerAllWithFilter(query, limit, offset)
+    }
+
+    getAccountDataWithDealerAndRoleId(dealer_id, role_id) {
+        return this.repository.getAccountDataWithDealerAndRoleId(dealer_id, role_id);
     }
 
     async getDealerCountByQuery(query) {

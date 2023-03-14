@@ -16,7 +16,7 @@
                                         <div>
                                             <select
                                                 class="form-select"
-                                                v-model="form.dealer"
+                                                v-model="form.dealer_id"
                                                 required>
                                                 <option v-for="option in data.dealer" v-bind:value="option.value"
                                                     v-bind:key="option.text">{{ option.text }}</option>
@@ -33,6 +33,7 @@
                                             <select
                                                 class="form-select"
                                                 v-model="form.role"
+                                                v-on:change="getAtasan"
                                                 required>
                                                 <option v-for="option in data.role" v-bind:value="option.value"
                                                     v-bind:key="option.text">{{ option.text }}</option>
@@ -41,7 +42,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="form.dealer != null && form.role != null && form.role != 1" class="row mt-2">
+                            <div v-if="form.dealer_id != null && form.role != null && form.role != 1" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
                                         <label class="col-form-label">Atasan
@@ -50,17 +51,17 @@
                                         <div>
                                             <select
                                                 class="form-select"
-                                                v-model="form.leader"
+                                                v-model="form.leader_id"
                                                 required>
-                                                <option v-for="option in data.leader" v-bind:value="option.value"
-                                                    v-bind:key="option.text">{{ option.text }}</option>
+                                                <option v-for="option in data.leader" v-bind:value="option.id"
+                                                    v-bind:key="option.fullname">{{ option.fullname }}</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div v-if="form.dealer != null && form.role != null">
+                            <div v-if="form.dealer_id != null && form.role != null">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
                                 </p>
@@ -74,7 +75,7 @@
                                             <div>
                                                 <input
                                                     type="text"
-                                                    v-model="item.name"
+                                                    v-model="item.fullname"
                                                     class="form-control"
                                                     placeholder="Masukkan Nama Pengguna"
                                                     required>
@@ -278,10 +279,10 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
-                { key: "name", label: 'Nama Pengguna', tdClass: 'align-middle' },
+                { key: "dealers.name", label: 'Dealer', tdClass: 'align-middle' },
+                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
-                { key: "role", label: 'Role', tdClass: 'align-middle' },
+                { key: "roles.name", label: 'Role', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
             isCreate: true,
@@ -294,24 +295,19 @@ export default {
                     { value: 3, text: 'Supervisor' },
                     { value: 4, text: 'Mitra' },
                 ],
-                leader: [
-                    { value: null, text: 'Pilih Atasan' },
-                    { value: 1, text: 'Pengguna 1' },
-                    { value: 2, text: 'Pengguna 2' },
-                    { value: 3, text: 'Pengguna 3' },
-                ],
+                leader: [],
             },
             backup: {},
             formList: [{
                 id: 1,
-                name: null,
+                fullname: null,
                 email: null,
                 password: null,
             }],
             form: {
-                dealer: null,
+                dealer_id: null,
                 role: null,
-                leader: null,
+                leader_id: null,
             }
         }
     },
@@ -352,19 +348,19 @@ export default {
             this.currentPage = 1
         },
         async getData() {
-            // this.tableData = await this.$axios.$get('api/admin/endpoint/list', {
-            //         params: {
-            //             current: this.currentPage,
-            //             limit: this.perPage,
-            //             query: this.filter
-            //         }
-            //     })
-            //     .then ((response) => {
-            //         this.totalRows = response.data.pagination.total
+            this.tableData = await this.$axios.$get('api/admin/account/all', {
+                    params: {
+                        current: this.currentPage,
+                        limit: this.perPage,
+                        query: this.filter
+                    }
+                })
+                .then ((response) => {
+                    this.totalRows = response.data.pagination.total
 
-            //         return response.data.list
-            //     })
-            //     .catch ([])
+                    return response.data.list
+                })
+                .catch ([])
 
             return this.tableData
         },
@@ -380,6 +376,20 @@ export default {
                     ]
                 })
                 .catch ([])
+        },
+        async getAtasan() {
+            if (this.form.dealer_id !== null && this.form.role !== null && this.form.role !== 1) {
+                this.data.leader = await this.$axios.$get('api/admin/account/item/leaders', {
+                    params: {
+                        role: this.form.role,
+                        dealer_id: this.form.dealer_id
+                    }
+                })
+                .then(response => {return response.data})
+                .catch([])
+
+                return this.data.leader;
+            }
         },
         addContent() {
             this.formList.push({
@@ -412,14 +422,20 @@ export default {
         async doCreateData(e) {
             e.preventDefault()
 
-            const finalForm = this.formList.map(item => {
+            const finalForm = this.form;
+
+            const finalFormList = this.formList.map(item => {
                 const data = item
                 delete data.id
 
                 return data
             })
+            finalForm.data = finalFormList;
 
-            return await this.$axios.$post('api/admin/endpoint', finalForm)
+            console.log(finalForm);
+            console.log(finalFormList);
+
+            return await this.$axios.$post('api/admin/account', finalForm)
                 .then(response => {
                     this.$refs['form-create'].hide()
 
@@ -457,7 +473,7 @@ export default {
                 cancelButtonText: "Batalkan"
             }).then(result => {
                 if (result.value) {
-                    return context.$axios.delete(`/api/admin/endpoint/${id}`)
+                    return context.$axios.delete(`/api/admin/account/${id}`)
                         .then(() => window.location.reload())
                 }
             })

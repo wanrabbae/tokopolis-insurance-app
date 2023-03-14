@@ -90,6 +90,7 @@ export default class RoleRepository {
     }
 
     async getAllEndpointExist(role_id, endpoint, method) {
+        console.log(endpoint);
         return await sequelize.query(
             `SELECT roles.id, endpoints.route, endpoints.method FROM roles ` +
                 `JOIN role_endpoints ON role_endpoints.role_id = roles.id ` +
