@@ -23,9 +23,8 @@
                     <div class="mb-4">
 
                         <p>
-                            Graha Atika Lt. 5 Jl. Warung Jati Barat No. 7, RT.2 RW.5<br/>
-                            Kalibata, Pancoran, Kota Jakarta Selatan<br/>
-                            Provinsi DKI Jakarta, 12710
+                            Graha Al-Badegel Lt. 3 Jl. Hj. Tutty Alawiyah No.7
+                            Kota Jakarta Selatan 12740
                         </p>
 
                     </div>
