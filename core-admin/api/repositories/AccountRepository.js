@@ -44,7 +44,7 @@ export default class AccountRepository {
     }
 
     async getAccount(id) {
-        return await Account.scope("withoutPass").findByPk(id);
+        return await Account.findByPk(id);
     }
 
     async getAccountUniqueId(id) {

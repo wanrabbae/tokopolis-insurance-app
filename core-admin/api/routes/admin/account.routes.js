@@ -29,7 +29,7 @@ router.delete('/admin/account/:id', AuthRoleMiddleware, destroy)
 // Staff
 router.get('/admin/account', AuthRoleMiddleware, account)
 router.put('/admin/account', AuthRoleMiddleware, updateData)
-router.put('/admin/account/password', AuthRoleMiddleware, updatePassword)
+router.put('/admin/account/password/update', AuthRoleMiddleware, updatePassword)
 
 router.get("/admin/account/upgrade/list", AuthRoleMiddleware, upgradeList);
 router.put("/admin/account/:id/upgrade", AuthRoleMiddleware, verifyUpgrade);

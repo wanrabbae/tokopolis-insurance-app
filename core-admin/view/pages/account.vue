@@ -191,6 +191,55 @@
                     </div>
                 </b-modal>
 
+                <b-modal size="lg" scrollable ref="form-update-password" title="Update Password"
+                ok-title="Submit" @ok.prevent="triggerUpdatePassword" cancel-title="Batal">
+                    <div class="d-block text-justify">
+                        <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="doUpdatePassword">
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-3 col-lg-3 col-form-label">Password Lama
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-9 col-lg-9">
+                                    <input
+                                        type="password"
+                                        v-model="formUpdatePass.password"
+                                        class="form-control"
+                                        placeholder="Masukkan Password Lama"
+                                        required>
+                                </div>
+                            </div>
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-3 col-lg-3 col-form-label">Password Baru
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-9 col-lg-9">
+                                    <input
+                                        type="password"
+                                        v-model="formUpdatePass.password_new"
+                                        class="form-control"
+                                        placeholder="Masukkan Password Baru"
+                                        required>
+                                </div>
+                            </div>
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-3 col-lg-3 col-form-label">Password Baru
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-9 col-lg-9">
+                                    <input
+                                        type="password"
+                                        v-model="formUpdatePass.password_confirmation"
+                                        class="form-control"
+                                        placeholder="Konfirmasi Password Baru"
+                                        required>
+                                </div>
+                            </div>
+
+                            <button ref="update-data-password" class="d-none"></button>
+                        </form>
+                    </div>
+                </b-modal>
+
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
@@ -230,6 +279,11 @@
                                 </template>
 
                                 <template #cell(action)="data">
+                                    <b-button type="button" variant="warning" v-b-tooltip.hover
+                                        title="Update Password" v-on:click="showEditPassword(data.item)">
+                                        <i class="uil uil-key-skeleton-alt"/>
+                                    </b-button>
+
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
                                         title="Edit Data" v-on:click="showEdit(data.item)">
                                         <i class="uil uil-edit"/>
@@ -308,6 +362,11 @@ export default {
                 dealer_id: null,
                 role: null,
                 leader_id: null,
+            },
+            formUpdatePass: {
+                password: null,
+                password_new: null,
+                password_confirmation: null
             }
         }
     },
@@ -413,12 +472,19 @@ export default {
             this.form = Object.assign({}, item)
             this.$refs['form-update'].show()
         },
+        showEditPassword(item) {
+            this.form = Object.assign({}, item)
+            this.$refs['form-update-password'].show()
+        },
         triggerCreate() {
             this.$refs['create-data'].click()
         },
         triggerUpdate() {
             this.$refs['update-data'].click()
         },
+        triggerUpdatePassword() {
+            this.$refs['update-data-password'].click();
+        },  
         async doCreateData(e) {
             e.preventDefault()
 
@@ -431,9 +497,6 @@ export default {
                 return data
             })
             finalForm.data = finalFormList;
-
-            console.log(finalForm);
-            console.log(finalFormList);
 
             return await this.$axios.$post('api/admin/account', finalForm)
                 .then(response => {
@@ -459,6 +522,17 @@ export default {
                     window.location.reload()
                 })
         },
+        async doUpdatePassword(e) {
+            e.preventDefault();
+
+            return await this.$axios.$put(`api/admin/account/password/update`, this.formUpdatePass)
+                .then(response => {
+                    this.$refs['form-update-password'].hide()
+
+                    Swal.fire("Berhasil", "Berhasil Mengubah Password", "success")
+                    window.location.reload()
+                })
+        },  
         async deleteData(id) {
             let context = this
 
