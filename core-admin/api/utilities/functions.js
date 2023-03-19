@@ -69,7 +69,7 @@ function uploadHandler(filePath, newPath) {
     }
 }
 
-function phoneFormat(number) {
+function phoneFormat(value, code = '+62') {
     number = number.replace(/\D/g, '');
 
     if (number.substring(0, 3) == '628') {

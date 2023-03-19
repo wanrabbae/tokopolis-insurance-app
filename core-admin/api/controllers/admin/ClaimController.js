@@ -47,7 +47,6 @@ exports.updateStatusClaim = async (req, res) => {
     }
 };
 
-
 exports.generateSend = async (req, res, next) => {
     const claimData = await service.getDetailDataWithTrxId(req.params.transaction_id)
     if (claimData.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))

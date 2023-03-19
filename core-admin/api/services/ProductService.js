@@ -123,7 +123,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 100; value += 5) {
+                    for (let value = 5; value <= 100; value+=5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: tplRate(toMillion(value), vehicle.use),
@@ -140,7 +140,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 50; value += 5) {
+                    for (let value = 5; value <= 50; value+=5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: paDriver(toMillion(value)),
@@ -157,7 +157,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 50; value += 5) {
+                    for (let value = 5; value <= 50; value+=5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: paPassenger(toMillion(value)),

@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const verify = require("../../middlewares/verifyToken");
-const verifyToken = require('../../middlewares/verifyRole')
+const verifyToken = require('../../middlewares/verifyRole');
 const { uploadFile } = require("../../middlewares/uploadFile");
 
 const {
@@ -13,6 +13,11 @@ const {
 const router = Router();
 const auth = verify();
 const AuthRoleMiddleware = verifyToken('auth:role')
+
+router.get("/admin/claim/all", AuthRoleMiddleware, getAllClaimData);
+router.get("/admin/claim/:id", AuthRoleMiddleware, getDetailClaimProduct);
+router.put('/admin/claim/:transaction_id/generate-send', AuthRoleMiddleware, generateSend)
+router.put("/admin/claim/:id/update-staging", AuthRoleMiddleware, updateStatusClaim);
 
 router.get("/admin/claim/all", AuthRoleMiddleware, getAllClaimData);
 router.get("/admin/claim/:id", AuthRoleMiddleware, getDetailClaimProduct);

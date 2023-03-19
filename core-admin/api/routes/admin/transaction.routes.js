@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const verifyToken = require('../../middlewares/verifyRole')
 
-const { list, detail, addReview, history,
+const { list, detail, addReview,
     getTransactionQuotation, getTransactionFile, getXlsxAllTransaction, feedbackAgent } = require('../../controllers/admin/TransactionController')
 
 const router = Router()
