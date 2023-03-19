@@ -95,6 +95,9 @@
       },
       "transaction": {
         "text": "Daftar Transaksi"
+      },
+      "claim": {
+        "text": "Daftar Klaim"
       }
     }
   }

@@ -86,6 +86,12 @@ export const menuItems = [
         label: "menuitems.transaction.text",
         icon: "uil-car",
         link: "/transaction"
+    },
+    {
+        id: 11,
+        label: "menuitems.claim.text",
+        icon: "uil-money-withdrawal",
+        link: "/claim"
     }
 ];
 
