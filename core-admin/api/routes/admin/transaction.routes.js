@@ -6,7 +6,6 @@ const { list, detail, addReview,
 
 const router = Router()
 const AuthRoleMiddleware = verifyToken('auth:role')
-
 router.get('/admin/transaction/list', AuthRoleMiddleware, list)
 router.get('/admin/transaction/history', AuthRoleMiddleware, history)
 router.get('/admin/transaction/:id/detail', AuthRoleMiddleware, detail)
@@ -15,5 +14,4 @@ router.get('/admin/transaction/:id/quotation', getTransactionQuotation)
 router.get('/admin/transaction/:id/file', getTransactionFile)
 router.post('/admin/transaction/:id/feedback', feedbackAgent)
 router.post('/admin/transaction/generate', getXlsxAllTransaction)
-
 module.exports = router
