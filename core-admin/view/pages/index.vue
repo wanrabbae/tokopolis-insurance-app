@@ -4,7 +4,7 @@
 
         <!-- <Stat /> -->
 
-        <div class="row">
+        <div class="row" v-if="eccount.role_id !== 1">
             <div class="col-3">
                 <div class="card card-summary card-point">
                     <div class="card-header">
@@ -113,6 +113,7 @@ export default {
                     active: true,
                 },
             ],
+            eccount: [],
             totalPoint: 0,
             totalCommission: 0,
         };
@@ -129,9 +130,9 @@ export default {
     },
     methods: {
         async getAccount() {
-            await this.$axios.$get('api/admin/account')
+            this.eccount = await this.$axios.$get('api/admin/account')
                 .then ((response) => {
-
+                    return response.data;
                 })
         },
         async getTotalPoint() {
