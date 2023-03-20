@@ -16,6 +16,11 @@ export default class TransactionService {
         return this.repository.getTransactionDetail(id);
     }
 
+    
+    getTransactionStatusAll(status, limit, offset) {
+        return this.repository.getTransactionStatusAll(status, limit, offset);
+    }
+
     getTransactionDetailForClient(id) {
         return this.repository.getTransactionDetailForClient(id);
     }

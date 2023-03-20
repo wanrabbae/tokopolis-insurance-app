@@ -42,6 +42,26 @@ exports.list = async (req, res, next) => {
     })
 }
 
+exports.history = async (req, res, next) => {
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 10
+    const offset = (current - 1) * limit
+
+    const count = await service.getTransactionStatusAll(req.query.status)
+    const list = await service.getTransactionStatusAll(req.query.status, limit, offset)
+
+    if (count.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+    return res.jsonData({
+        pagination: {
+            total: count[0].total,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count[0].total / limit),
+        },
+        list: list
+    })
+}
+
 exports.detail = async (req, res, next) => {
     const data = await service.getTransactionDetail(req.params.id)
     if (data.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
