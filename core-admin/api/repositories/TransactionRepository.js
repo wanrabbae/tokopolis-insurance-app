@@ -43,6 +43,21 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getTransactionStatusAll(status, limit, offset) {
+
+        return await sequelize.query(`SELECT trans.id, trans.start_date, trans.status, ` +
+            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+            `vehicle.brand, vehicle.sub_model, product.name as product_name ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
+            `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
+            `JOIN products as product ON trans.product_id = product.id ` +
+            `WHERE trans.status = '${status}' `,
+            (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
+            { type: QueryTypes.SELECT })
+    }
+
     async getTransactionDetail(id) {
         return await sequelize.query(`SELECT trans.id, trans.agent_id, trans.client_data, trans.address_detail, ` +
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
