@@ -17,6 +17,7 @@
                                             <select
                                                 class="form-select"
                                                 v-model="form.dealer_id"
+                                                @change="getLeaders"
                                                 required>
                                                 <option v-for="option in data.dealer" v-bind:value="option.value"
                                                     v-bind:key="option.text">{{ option.text }}</option>
@@ -34,6 +35,7 @@
                                                 class="form-select"
                                                 v-model="form.role"
                                                 v-on:change="getAtasan"
+                                                @change="getLeaders"
                                                 required>
                                                 <option v-for="option in data.role" v-bind:value="option.value"
                                                     v-bind:key="option.text">{{ option.text }}</option>
@@ -43,6 +45,7 @@
                                 </div>
                             </div>
                             <div v-if="form.dealer_id != null && form.role != null && form.role != 1" class="row mt-2">
+                            <div v-if="form.dealer_id != null && form.role != null && form.role != 'manager'" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
                                         <label class="col-form-label">Atasan
@@ -62,6 +65,7 @@
                             </div>
 
                             <div v-if="form.dealer_id != null && form.role != null">
+                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 'manager' || (form.role != 'manager' && form.leader_id != null))">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
                                 </p>
@@ -135,6 +139,45 @@
                             <button ref="create-data" class="d-none"></button>
 
                         </form>
+                    </div>
+                </b-modal>
+
+                <b-modal size="lg" scrollable ref="detail-modal" title="Detail Penambahan"
+                ok-only ok-title="Tutup">
+                    <div class="card-body">
+                        <div class="text-muted">
+                            <h5 class="font-size-16">Daftar Pengguna</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nama</th>
+                                            <th>Email</th>
+                                            <th>Password</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, i) of formList" :key="i">
+                                            <th scope="row">{{ i + 1 }}</th>
+                                            <td>{{ item.fullname }}</td>
+                                            <td>{{ item.email }}</td>
+                                            <td>{{ item.password }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- <div v-if="feature.short_description" class="text-muted mb-3">
+                            <h5 class="font-size-16">Deskripsi Singkat</h5>
+                            <p v-html="feature.short_description"></p>
+                        </div>
+
+                        <div class="text-muted">
+                            <h5 class="font-size-16">Deskripsi</h5>
+                            <p v-html="getDescription()"></p>
+                        </div> -->
                     </div>
                 </b-modal>
 
@@ -286,6 +329,23 @@
 
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
                                         title="Edit Data" v-on:click="showEdit(data.item)">
+                                <template #cell(role)="data">
+                                    <h5 v-if="data.item.roles != null">
+                                        <span v-if="data.item.roles.name == 'Superadmin'">
+                                            <b-badge class="badge bg-primary">{{ data.item.roles?.name }}</b-badge>
+                                        </span>
+                                        <span v-else>
+                                            <b-badge class="badge bg-success">{{ data.item.roles?.name }}</b-badge>
+                                        </span>
+                                    </h5>
+                                    <h5 v-else>
+                                        <b-badge class="badge bg-danger">Tanpa Role</b-badge>
+                                    </h5>
+                                </template>
+
+                                <!-- <template #cell(action)="data">
+                                    <b-button type="button" variant="primary" v-b-tooltip.hover
+                                        title="Edit Data">
                                         <i class="uil uil-edit"/>
                                     </b-button>
 
@@ -294,6 +354,7 @@
                                         <i class="uil uil-trash"/>
                                     </b-button>
                                 </template>
+                                </template> -->
 
                             </b-table>
                         </div>
@@ -338,6 +399,11 @@ export default {
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
                 { key: "roles.name", label: 'Role', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
+                // { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
+                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
+                { key: "email", label: 'Email', tdClass: 'align-middle' },
+                { key: "role", label: 'Role', tdClass: 'align-middle' },
+                // { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
             isCreate: true,
             data: {
@@ -350,6 +416,14 @@ export default {
                     { value: 4, text: 'Mitra' },
                 ],
                 leader: [],
+                    { value: 'manager', text: 'Operation Manager' },
+                    { value: 'branch', text: 'Kepala Cabang' },
+                    { value: 'supervisor', text: 'Supervisor' },
+                    { value: 'agent', text: 'Mitra' },
+                ],
+                leader: [
+                    { value: null, text: 'Pilih Atasan' },
+                ],
             },
             backup: {},
             formList: [{
@@ -408,6 +482,11 @@ export default {
         },
         async getData() {
             this.tableData = await this.$axios.$get('api/admin/account/all', {
+        randomPassword() {
+            return this.randomString(8)
+        },
+        async getData() {
+            this.tableData = await this.$axios.$get('/api/admin/account/all', {
                     params: {
                         current: this.currentPage,
                         limit: this.perPage,
@@ -426,6 +505,8 @@ export default {
         async getDealers() {
             return await this.$axios.$get('api/admin/dealer/all')
                 .then ((response) => {
+                    if (!response) return
+
                     const list = response.data.map(item =>
                         item = { value: item.id, text: item.name })
 
@@ -455,6 +536,35 @@ export default {
                 name: null,
                 route: null,
                 method: null,
+        async getLeaders() {
+            if (this.form.dealer_id == null || this.form.role == null) return
+
+            this.form.leader_id = null
+
+            return await this.$axios.$get('api/admin/account/item/leaders', {
+                params: {
+                    dealer_id: this.form.dealer_id,
+                    role: this.form.role
+                }
+            })
+            .then ((response) => {
+                if (!response) return
+
+                const list = response.data.map(item =>
+                    item = { value: item.id, text: item.fullname })
+
+                this.data.leader = [
+                    { value: null, text: 'Pilih Atasan' },
+                    ...list
+                ]
+            })
+            .catch ([])
+        },
+        addContent() {
+            this.formList.push({
+                fullname: null,
+                email: null,
+                password: this.randomPassword(),
             })
         },
         /**
@@ -466,6 +576,13 @@ export default {
         },
         showCreate() {
             this.form = Object.assign({}, this.backup['form'])
+            this.formList = [{
+                id: 1,
+                fullname: null,
+                email: null,
+                password: this.randomPassword(),
+            }]
+
             this.$refs['form-create'].show()
         },
         showEdit(item) {
@@ -505,6 +622,23 @@ export default {
                     Swal.fire("Berhasil", "Berhasil Menambah Data", "success")
                     window.location.reload()
                 })
+            return await this.$axios.$post('api/admin/account', {
+                dealer_id: this.form.dealer_id,
+                role: this.form.role,
+                leader_id: this.form.leader_id,
+                data: finalForm
+            })
+            .then(response => {
+                this.$refs['form-create'].hide()
+                this.$refs['detail-modal'].show()
+
+                this.$notify({
+                    group: 'notif',
+                    type: 'success vue-notif-custom',
+                    title: 'Berhasil',
+                    text: 'Berhasil Menambah Pengguna',
+                })
+            })
         },
         async doUpdateData(e) {
             e.preventDefault()

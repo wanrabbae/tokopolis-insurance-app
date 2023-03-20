@@ -806,17 +806,16 @@ exports.doPayment = async (req, res) => {
     if (typeof transaction.client_data == "string") {
         transaction.client_data = JSON.parse(transaction.client_data)
     }
-
     const payload = {
         order_id: transaction.id,
         customer: {
             fullname: transaction.client_data.fullname,
             email:
-            transaction.client_data.email != undefined
+                transaction.client_data.email != undefined
                     ? transaction.client_data.email
                     : account.email,
             phone:
-            transaction.client_data.email != undefined
+                transaction.client_data.email != undefined
                     ? phoneFormat(transaction.client_data.phone)
                     : phoneFormat(account.profile.phone),
         },
@@ -825,8 +824,8 @@ exports.doPayment = async (req, res) => {
         // Even so, the return value of the api is the same as the total.payload + paymentFee
         total: transaction.total,
     };
-
     const paymentRequest = await paymentService.createRequest(payload);
+    console.log(paymentRequest);
 
     if (paymentRequest.data) {
         const data = Object.assign({}, paymentRequest.data);
@@ -997,7 +996,6 @@ exports.getTransactionTotal = async (req, res) => {
 exports.getComission = async (req, res) => {
     const comission = await service.getComission(req.account._id);
     if (comission.length <= 0) return res.jsonData({ total: 0 })
-
     return res.jsonData({ total: comission[0].value })
 };
 
