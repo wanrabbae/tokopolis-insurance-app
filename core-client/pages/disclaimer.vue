@@ -10,7 +10,7 @@
 
             <h2>Tautan ke Situs Lainnya</h2>
             <p class="mb-5">
-                Jika Anda mengakses tautan ke situs pihak ketiga, termasuk pada iklan, Anda akan meninggalkan situs Tokopolis yang sedang Anda kunjungi dan beralih ke situs yang Anda pilih. Karena itu kami tidak dapat mengontrol kegiatan pihak ketiga, sehingga kami tidak bertanggung jawab atas penggunaan Data Pribadi Anda oleh pihak ketiga tersebut, dan tidak dapat menjamin bahwa pihak ketiga akan mematuhi kebijakan privasi yang sama seperti PT Tokopolis Handal Nusantara.
+                Jika Anda mengakses tautan ke situs pihak ketiga, termasuk pada iklan, Anda akan meninggalkan situs Tokopolis yang sedang Anda kunjungi dan beralih ke situs yang Anda pilih. Karena itu kami tidak dapat mengontrol kegiatan pihak ketiga, sehingga kami tidak bertanggung jawab atas penggunaan Data Pribadi Anda oleh pihak ketiga tersebut, dan tidak dapat menjamin bahwa pihak ketiga akan mematuhi kebijakan privasi yang sama seperti PT Istpro Inti Nusa.
             </p>
             <p class="mb-5">
                 Kami menyarankan Anda untuk selalu membaca kebijakan privasi setiap situs web pihak ketiga yang Anda kunjungi. Jika Anda mengunjungi situs web pihak ketiga yang terhubung ke situs Tokopolis, pastikan untuk membaca kebijakan privasi situs web tersebut sebelum memberikan data pribadi Anda.

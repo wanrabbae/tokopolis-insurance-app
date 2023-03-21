@@ -26,13 +26,13 @@
             Dengan ini saya menyatakan bahwa: <br />
             <br />
             <ul>
-                <li>Saya bersedia mengisi informasi yang di sediakan oleh PT Tokopolis Handal Nusantara</li>
+                <li>Saya bersedia mengisi informasi yang di sediakan oleh PT Istpro Inti Nusa</li>
                 <li>Saya menyatakan bahwa semua informasi yang diinformasikan benar dan akurat sesuai data pengguna</li>
-                <li>Saya mengetahui dan menyetujui syarat dan ketentuan aplikasi milik PT Tokopolis Handal Nusantara</li>
-                <li>Saya bersedia data informasi yang disampaikan digunakan untuk keperluan PT Tokopolis Handal Nusantara sesuai perundang-undangan yang berlaku</li>
+                <li>Saya mengetahui dan menyetujui syarat dan ketentuan aplikasi milik PT Istpro Inti Nusa</li>
+                <li>Saya bersedia data informasi yang disampaikan digunakan untuk keperluan PT Istpro Inti Nusa sesuai perundang-undangan yang berlaku</li>
             </ul>
             <br />
-            Informasi-informasi yang tidak lengkap atau palsu dapat dijadikan alasan bagi PT Tokopolis Handal Nusantara untuk menolak pengajuan verifikasi dan penghapusan akun secara sepihak.
+            Informasi-informasi yang tidak lengkap atau palsu dapat dijadikan alasan bagi PT Istpro Inti Nusa untuk menolak pengajuan verifikasi dan penghapusan akun secara sepihak.
         </div>
 
         <br />

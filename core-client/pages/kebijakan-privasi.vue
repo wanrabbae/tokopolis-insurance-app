@@ -4,9 +4,9 @@
             <h1 class="text-center my-4">Kebijakan Privasi</h1>
 
             <p class="mb-4">
-                Sebelum mengakses web application ini, disarankan agar Anda membaca dan memahami syarat dan ketentuan yang berlaku, 
-                serta Kebijakan Privasi terkait dengan data dan informasi pribadi milik Anda. Kebijakan Privasi ini memberikan informasi 
-                mengenai perlindungan data pribadi Anda, serta menjelaskan bagaimana kami mengumpulkan, menggunakan, membagikan, serta 
+                Sebelum mengakses web application ini, disarankan agar Anda membaca dan memahami syarat dan ketentuan yang berlaku,
+                serta Kebijakan Privasi terkait dengan data dan informasi pribadi milik Anda. Kebijakan Privasi ini memberikan informasi
+                mengenai perlindungan data pribadi Anda, serta menjelaskan bagaimana kami mengumpulkan, menggunakan, membagikan, serta
                 tindakan yang kami ambil untuk menjaga keamanan dan kerahasiaan data Anda.
             </p>
 
@@ -15,12 +15,12 @@
                     <b>Definisi</b>
 
                     <p class="mb-4">
-                        Dalam Kebijakan Privasi ini, setiap kata atau istilah yang digunakan memiliki arti seperti yang tercantum di bawah ini, 
+                        Dalam Kebijakan Privasi ini, setiap kata atau istilah yang digunakan memiliki arti seperti yang tercantum di bawah ini,
                         kecuali jika kata atau istilah tersebut didefinisikan secara tegas dengan cara lain dalam penggunaannya.
                     </p>
 
                     <ol class="point mb-4">
-                        <li>"Kami", berarti PT Tokopolis Handal Nusantara selaku pemilik dan pengelola web application www.tokopolis.id.</li>
+                        <li>"Kami", berarti PT Istpro Inti Nusa selaku pemilik dan pengelola web application www.tokopolis.id.</li>
                         <li>"Anda", berarti tiap orang yang mengakses dan menggunakan layanan dan jasa yang disediakan oleh Kami.</li>
                         <li>"Layanan", berarti tiap dan keseluruhan jasa serta informasi yang ada pada web application www.tokopolis.id, dan tidak terbatas pada informasi yang disediakan, layanan aplikasi dan fitur, dukungan data, serta aplikasi mobile yang Kami sediakan.</li>
                         <li>"Pengguna", berarti tiap orang yang mengakses dan menggunakan layanan dan jasa yang disediakan oleh Kami, termasuk diantaranya Pengguna Belum Terdaftar dan Pengguna Terdaftar.</li>
@@ -44,7 +44,7 @@
 
                     <p class="mb-4">
                         Dengan menggunakan layanan kami, baik sebagai pengguna terdaftar maupun belum terdaftar, kami akan mengumpulkan beberapa informasi pribadi sebagai identifikasi diri Anda. Informasi tersebut mungkin akan kami bagikan kepada pihak ketiga untuk memproses kegiatan yang terkait dengan permintaan Anda atas produk atau layanan tertentu. Dengan memberikan informasi pribadi Anda, Anda mengerti dan menyetujui bahwa permintaan tersebut dilakukan atas diri Anda sendiri, tanpa paksaan atau tekanan dari pihak manapun, dan hanya akan digunakan untuk keperluan yang telah disebutkan di atas.
-	                    Selain hal tersebut diatas, Kami juga menggunakan Informasi Pribadi dalam kapasitas Kami sebagai pemberi layanan kepada Anda untuk hal sebagai berikut :    
+	                    Selain hal tersebut diatas, Kami juga menggunakan Informasi Pribadi dalam kapasitas Kami sebagai pemberi layanan kepada Anda untuk hal sebagai berikut :
                     </p>
 
                     <ol class="point mb-4">
@@ -60,7 +60,7 @@
                     <b>KEAMANAN INFORMASI PRIBADI</b>
 
                     <p class="mb-4">
-                        Kami akan melindungi informasi pribadi Anda dengan sebaik-baiknya dan hanya akan memberikannya kepada pihak yang terpercaya dan terkait dengan tujuan yang jelas.    
+                        Kami akan melindungi informasi pribadi Anda dengan sebaik-baiknya dan hanya akan memberikannya kepada pihak yang terpercaya dan terkait dengan tujuan yang jelas.
                     </p>
 
                     <ol class="point mb-4">
@@ -72,7 +72,7 @@
                         Dalam situasi yang luar biasa, Kami mungkin diwajibkan untuk mengungkapkan informasi pribadi Anda sesuai dengan hukum yang berlaku atau perintah pengadilan, atau dalam menanggapi permintaan yang sah dari pemerintah atau penegak hukum. Kami juga akan mengungkapkan informasi tersebut jika dianggap perlu demi melindungi hak atau properti Kami, atau untuk mengidentifikasi dan mengambil tindakan hukum terhadap pihak yang dapat menyebabkan kerusakan atau gangguan terhadap hak atau properti Kami (baik sengaja atau tidak), atau jika orang lain lainnya dapat dirugikan oleh kegiatan tersebut.
                     </p>
                     <p class="mb-4">
-                        Data pribadi Anda akan kami simpan selama minimal 5 tahun setelah Anda berakhir menjadi pengguna situs kami, atau sesuai dengan persyaratan peraturan perundang-undangan yang berlaku. Jika Anda ingin agar data pribadi Anda dihapus sebelum batas waktu tersebut, Anda dapat mengirimkan permohonan kepada team cs@tokopolis.id.     
+                        Data pribadi Anda akan kami simpan selama minimal 5 tahun setelah Anda berakhir menjadi pengguna situs kami, atau sesuai dengan persyaratan peraturan perundang-undangan yang berlaku. Jika Anda ingin agar data pribadi Anda dihapus sebelum batas waktu tersebut, Anda dapat mengirimkan permohonan kepada team cs@tokopolis.id.
                     </p>
                     <p class="mb-4">Kami juga menggunakan data cookies untuk menyediakan layanan terbaik bagi Anda. Ketika Anda mengunjungi situs kami, server kami akan mengingat informasi yang dikirimkan oleh browser Anda, termasuk alamat IP, jenis browser, website atau halaman yang dikunjungi sebelumnya sebelum Anda datang ke situs kami, preferensi Anda, dan waktu yang Anda habiskan untuk mengakses dan menggunakan situs kami.</p>
                     <p class="mb-4">Cookies kami dapat digunakan untuk beberapa tujuan, seperti memberikan pengalaman yang lebih personal kepada Anda di situs kami dengan mengingat preferensi Anda ketika Anda mengunjungi situs ini. Cookies juga membantu kami memahami kebiasaan atau tren penggunaan akses di situs ini, sehingga kami dapat menawarkan solusi dan layanan yang lebih sesuai dengan kebutuhan Anda. Cookies juga membantu kami memperoleh informasi tentang jumlah pengunjung ke situs ini dan halaman-halaman mana yang paling sering dikunjungi oleh pengguna.</p>

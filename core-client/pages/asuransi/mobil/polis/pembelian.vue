@@ -108,7 +108,7 @@
                             <div class="p-0 p-md-3 rounded border-0 border-md mb-4">
 
                                 <BaseTextarea v-model="model.fullAddress" name="Alamat Lengkap" label="Alamat Lengkap"
-                                    placeholder="Jl. TB Simatupang Banjarsari I no. 8C" rules="required" rows="2"
+                                    placeholder="Jl. Hj. Tutty Alawiyah No.7" rules="required" rows="2"
                                     required asterix />
 
                                 <BaseSelect v-model="model.province" name="Provinsi" label="Provinsi" rules="required"
