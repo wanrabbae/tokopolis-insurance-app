@@ -371,6 +371,7 @@ export default {
                 type: null,
                 product: null,
                 daterange: "",
+                status: "waiting"
             },
             downloadRangeDate: "",
             sortDesc: false,

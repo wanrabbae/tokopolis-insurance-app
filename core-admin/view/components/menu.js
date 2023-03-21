@@ -88,10 +88,22 @@ export const menuItems = [
         link: "/transaction"
     },
     {
+        id: 9,
+        label: "menuitems.transactionHistory.text",
+        icon: "uil-car",
+        link: "/transaction-history"
+    },
+    {
         id: 11,
         label: "menuitems.claim.text",
         icon: "uil-money-withdrawal",
         link: "/claim"
-    }
+    },
+    {
+        id: 12,
+        label: "menuitems.pointandcommission.text",
+        icon: "uil-dollar-alt",
+        link: "/point-and-commission"
+    },
 ];
 

@@ -44,7 +44,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="form.dealer_id != null && form.role != null && form.role != 1" class="row mt-2">
                             <div v-if="form.dealer_id != null && form.role != null && form.role != 'manager'" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
@@ -64,7 +63,6 @@
                                 </div>
                             </div>
 
-                            <div v-if="form.dealer_id != null && form.role != null">
                             <div v-if="form.dealer_id != null && form.role != null && (form.role == 'manager' || (form.role != 'manager' && form.leader_id != null))">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
@@ -283,11 +281,27 @@
                     </div>
                 </b-modal>
 
+                <b-modal ref="modal-hirarki" size="lg" scrollable title="Role Hirarki" ok-title="Close" ok-only>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive mb-0">
+                                <b-table ref="table" :items="getDataHirarki" :fields="fieldsHirarki" responsive="sm" :filter-included-fields="filterOn"
+                                    @filtered="onFiltered" show-empty>
+                                </b-table>
+                            </div>
+                        </div>
+                    </div>
+                </b-modal>
+
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
                         <b-button class="mt-1" variant="primary" @click="showCreate">
                             <i class="uil uil-plus"/> Tambah
+                        </b-button>
+
+                        <b-button v-b-tooltip.hover class="mt-1" type="button" variant="success" title="View Hirarki" @click="viewHirarki()">
+                            <i class="uil uil-eye"/> View Role Hirarki
                         </b-button>
 
                         <div class="row mt-4">
@@ -321,14 +335,7 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
-                                <template #cell(action)="data">
-                                    <b-button type="button" variant="warning" v-b-tooltip.hover
-                                        title="Update Password" v-on:click="showEditPassword(data.item)">
-                                        <i class="uil uil-key-skeleton-alt"/>
-                                    </b-button>
-
-                                    <b-button type="button" variant="primary" v-b-tooltip.hover
-                                        title="Edit Data" v-on:click="showEdit(data.item)">
+                                
                                 <template #cell(role)="data">
                                     <h5 v-if="data.item.roles != null">
                                         <span v-if="data.item.roles.name == 'Superadmin'">
@@ -342,6 +349,19 @@
                                         <b-badge class="badge bg-danger">Tanpa Role</b-badge>
                                     </h5>
                                 </template>
+
+                                <template #cell(action)="data">
+                                    <b-button type="button" variant="warning" v-b-tooltip.hover
+                                        title="Update Password" v-on:click="showEditPassword(data.item)">
+                                        <i class="uil uil-key-skeleton-alt"/>
+                                    </b-button>
+
+                                    <b-button type="button" variant="primary" v-b-tooltip.hover
+                                        title="Edit Data" v-on:click="showEdit(data.item)">
+                                        
+                                        <i class="uil uil-edit-alt"/>
+                                    </b-button>
+                                    </template>
 
                                 <!-- <template #cell(action)="data">
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
@@ -397,13 +417,16 @@ export default {
                 { key: "dealers.name", label: 'Dealer', tdClass: 'align-middle' },
                 { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
-                { key: "roles.name", label: 'Role', tdClass: 'align-middle' },
+                { key: "role", label: 'Role', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
                 // { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
                 { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
-                { key: "role", label: 'Role', tdClass: 'align-middle' },
                 // { key: "action", label: 'Aksi', tdClass: 'align-middle' },
+            ],
+            fieldsHirarki: [
+                { key: 'fullname', label: 'Name' },
+                { key: 'email', label: 'Email' },
             ],
             isCreate: true,
             data: {
@@ -415,7 +438,7 @@ export default {
                     { value: 3, text: 'Supervisor' },
                     { value: 4, text: 'Mitra' },
                 ],
-                leader: [],
+                leader: [,
                     { value: 'manager', text: 'Operation Manager' },
                     { value: 'branch', text: 'Kepala Cabang' },
                     { value: 'supervisor', text: 'Supervisor' },
@@ -472,16 +495,13 @@ export default {
         },
     },
     methods: {
-        /**
-         * Search the table data with search input
-         */
         onFiltered(filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering
             this.totalRows = filteredItems.length
             this.currentPage = 1
         },
         async getData() {
-            this.tableData = await this.$axios.$get('api/admin/account/all', {
+            this.tableData = await this.$axios.$get('api/admin/account/all', {})},
         randomPassword() {
             return this.randomString(8)
         },
@@ -535,7 +555,7 @@ export default {
             this.formList.push({
                 name: null,
                 route: null,
-                method: null,
+                method: null,})},
         async getLeaders() {
             if (this.form.dealer_id == null || this.form.role == null) return
 
@@ -685,6 +705,17 @@ export default {
                         .then(() => window.location.reload())
                 }
             })
+        },
+        viewHirarki() {
+            this.$refs['modal-hirarki'].show();
+        },
+        async getDataHirarki() {
+            let data = [];
+            data = await this.$axios.$get('/api/admin/role/tree').then((resp) => {
+                return resp.data[0].accounts;
+            });
+
+            return data;
         }
     }
 }

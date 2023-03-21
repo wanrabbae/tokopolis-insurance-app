@@ -78,7 +78,7 @@
 												type="text"
 												class="form-control"
 												v-model="form.email"
-												placeholder="Masukkan Email"
+												placeholder="Masukkan Email (Pisahkan dengan ; untuk lebih dari 1 email)"
 												required>
 										</div>
 									</div>
@@ -363,15 +363,23 @@ export default {
 		async submitData(e) {
 			e.preventDefault()
 
-			if (this.$v.$touch() || this.$v.form.$anyError) return
+			// if (this.$v.$touch() || this.$v.form.$anyError) return
 
 			let formData = new FormData()
 
             this.form.supported_brands = this.form.supported_brands.map(item => item = item.value)
+			this.form.email = this.form.email.split(';')
 
 			for (var key of Object.keys(this.form)) {
 				if (this.form[key] != null)
-					formData.append(key, this.form[key])
+
+					if (key === 'email') {
+						for (let i = 0; i < this.form[key].length; i++) {
+							formData.append('email[]', this.form[key][i].trim());
+						}
+					} else {
+						formData.append(key, this.form[key])
+					}
 			}
 
 			this.$axios.$post('api/admin/product', formData, {
