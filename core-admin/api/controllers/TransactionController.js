@@ -1091,7 +1091,7 @@ exports.getPointBalanceAgents = async (req, res) => {
     const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
     accountsUnder.forEach(au => account_ids.push(au.id))
 
-    const point = await service.getPointAgents(account_ids)
+    const point = await service.getPointAgents(account_ids, req)
     return res.jsonData(point)
 };
 

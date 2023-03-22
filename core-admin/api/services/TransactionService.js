@@ -142,8 +142,8 @@ export default class TransactionService {
         return this.repository.createPoint(payload);
     }
 
-    getPointAgents(account_ids) {
-        return this.repository.getPointAgents(account_ids);
+    getPointAgents(account_ids, req) {
+        return this.repository.getPointAgents(account_ids, req);
     }
 
     sendEmailPayment(payload) {

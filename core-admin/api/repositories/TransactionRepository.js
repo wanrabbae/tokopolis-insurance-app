@@ -423,14 +423,14 @@ export default class TransactionRepository {
         return await Point.create(payload);
     }
 
-    async getPointAgents(account_ids) {
+    async getPointAgents(account_ids, req) {
         return await Point.findAll({
             attributes: [
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
             group: ["account_id"],
             where: {
-                account_id: account_ids,
+                account_id: req.account.role_id == 1 ? '' : account_ids,
             },
             include: {
                 model: Account,
