@@ -12,11 +12,18 @@ export default class TransactionService {
         return this.repository.getTransactionAll(filter, limit, offset);
     }
 
+    getTransactionAllWithAgent(filter, limit, offset, agent_ids) {
+        return this.repository.getTransactionAllWithAgent(filter, limit, offset, agent_ids);
+    }
+
+    getTransactionStatusAll(status, limit, offset) {
+        return this.repository.getTransactionStatusAll(status, limit, offset);
+    }
+
     getTransactionDetail(id) {
         return this.repository.getTransactionDetail(id);
     }
 
-    
     getTransactionStatusAll(status, limit, offset) {
         return this.repository.getTransactionStatusAll(status, limit, offset);
     }
@@ -55,6 +62,10 @@ export default class TransactionService {
 
     getTransactionCount(filter) {
         return this.repository.getTransactionCount(filter);
+    }
+
+    getTransactionStatusCount(filter) {
+        return this.repository.getTransactionStatusCount(filter);
     }
 
     getTransactionTotal(account_id) {
@@ -131,6 +142,10 @@ export default class TransactionService {
         return this.repository.createPoint(payload);
     }
 
+    getPointAgents(account_ids, req) {
+        return this.repository.getPointAgents(account_ids, req);
+    }
+
     sendEmailPayment(payload) {
         let mailer = new Mailer(payload.host);
         // mailer.setUrl('/path')
@@ -177,7 +192,6 @@ export default class TransactionService {
         });
         mailer.send();
     }
-
     sendEmailFeedBackAgent(payload) {
         let mailer = new Mailer(payload.host);
         mailer.setType("feedback-agent-sent");

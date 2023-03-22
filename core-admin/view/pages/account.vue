@@ -34,6 +34,7 @@
                                             <select
                                                 class="form-select"
                                                 v-model="form.role"
+                                                v-on:change="getAtasan"
                                                 @change="getLeaders"
                                                 required>
                                                 <option v-for="option in data.role" v-bind:value="option.value"
@@ -54,8 +55,8 @@
                                                 class="form-select"
                                                 v-model="form.leader_id"
                                                 required>
-                                                <option v-for="option in data.leader" v-bind:value="option.value"
-                                                    v-bind:key="option.text">{{ option.text }}</option>
+                                                <option v-for="option in data.leader" v-bind:value="option.id"
+                                                    v-bind:key="option.fullname">{{ option.fullname }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -231,11 +232,76 @@
                     </div>
                 </b-modal>
 
+                <b-modal size="lg" scrollable ref="form-update-password" title="Update Password"
+                ok-title="Submit" @ok.prevent="triggerUpdatePassword" cancel-title="Batal">
+                    <div class="d-block text-justify">
+                        <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="doUpdatePassword">
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-3 col-lg-3 col-form-label">Password Lama
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-9 col-lg-9">
+                                    <input
+                                        type="password"
+                                        v-model="formUpdatePass.password"
+                                        class="form-control"
+                                        placeholder="Masukkan Password Lama"
+                                        required>
+                                </div>
+                            </div>
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-3 col-lg-3 col-form-label">Password Baru
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-9 col-lg-9">
+                                    <input
+                                        type="password"
+                                        v-model="formUpdatePass.password_new"
+                                        class="form-control"
+                                        placeholder="Masukkan Password Baru"
+                                        required>
+                                </div>
+                            </div>
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-3 col-lg-3 col-form-label">Password Baru
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-9 col-lg-9">
+                                    <input
+                                        type="password"
+                                        v-model="formUpdatePass.password_confirmation"
+                                        class="form-control"
+                                        placeholder="Konfirmasi Password Baru"
+                                        required>
+                                </div>
+                            </div>
+
+                            <button ref="update-data-password" class="d-none"></button>
+                        </form>
+                    </div>
+                </b-modal>
+
+                <b-modal ref="modal-hirarki" size="lg" scrollable title="Role Hirarki" ok-title="Close" ok-only>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive mb-0">
+                                <b-table ref="table" :items="getDataHirarki" :fields="fieldsHirarki" responsive="sm" :filter-included-fields="filterOn"
+                                    @filtered="onFiltered" show-empty>
+                                </b-table>
+                            </div>
+                        </div>
+                    </div>
+                </b-modal>
+
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
                         <b-button class="mt-1" variant="primary" @click="showCreate">
                             <i class="uil uil-plus"/> Tambah
+                        </b-button>
+
+                        <b-button v-b-tooltip.hover class="mt-1" type="button" variant="success" title="View Hirarki" @click="viewHirarki()">
+                            <i class="uil uil-eye"/> View Role Hirarki
                         </b-button>
 
                         <div class="row mt-4">
@@ -269,6 +335,7 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
+                                
                                 <template #cell(role)="data">
                                     <h5 v-if="data.item.roles != null">
                                         <span v-if="data.item.roles.name == 'Superadmin'">
@@ -283,6 +350,19 @@
                                     </h5>
                                 </template>
 
+                                <template #cell(action)="data">
+                                    <b-button type="button" variant="warning" v-b-tooltip.hover
+                                        title="Update Password" v-on:click="showEditPassword(data.item)">
+                                        <i class="uil uil-key-skeleton-alt"/>
+                                    </b-button>
+
+                                    <b-button type="button" variant="primary" v-b-tooltip.hover
+                                        title="Edit Data" v-on:click="showEdit(data.item)">
+                                        
+                                        <i class="uil uil-edit-alt"/>
+                                    </b-button>
+                                    </template>
+
                                 <!-- <template #cell(action)="data">
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
                                         title="Edit Data">
@@ -293,6 +373,7 @@
                                         title="Hapus Data" v-on:click="deleteData(data.item.id)">
                                         <i class="uil uil-trash"/>
                                     </b-button>
+                                </template>
                                 </template> -->
 
                             </b-table>
@@ -316,6 +397,7 @@
 
 <script>
 import Swal from "sweetalert2"
+import { required } from "vuelidate/lib/validators"
 
 export default {
     layout: 'admin',
@@ -332,17 +414,31 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                // { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
+                { key: "dealers.name", label: 'Dealer', tdClass: 'align-middle' },
                 { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
                 { key: "role", label: 'Role', tdClass: 'align-middle' },
+                { key: "action", label: 'Aksi', tdClass: 'align-middle' },
+                // { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
+                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
+                { key: "email", label: 'Email', tdClass: 'align-middle' },
                 // { key: "action", label: 'Aksi', tdClass: 'align-middle' },
+            ],
+            fieldsHirarki: [
+                { key: 'fullname', label: 'Name' },
+                { key: 'email', label: 'Email' },
             ],
             isCreate: true,
             data: {
                 dealer: [],
                 role: [
                     { value: null, text: 'Pilih Role Pengguna' },
+                    { value: 1, text: 'Operation Manager' },
+                    { value: 2, text: 'Kepala Cabang' },
+                    { value: 3, text: 'Supervisor' },
+                    { value: 4, text: 'Mitra' },
+                ],
+                leader: [,
                     { value: 'manager', text: 'Operation Manager' },
                     { value: 'branch', text: 'Kepala Cabang' },
                     { value: 'supervisor', text: 'Supervisor' },
@@ -357,13 +453,18 @@ export default {
                 id: 1,
                 fullname: null,
                 email: null,
-                password: this.randomPassword(),
+                password: null,
             }],
             form: {
                 dealer_id: null,
                 role: null,
                 leader_id: null,
             },
+            formUpdatePass: {
+                password: null,
+                password_new: null,
+                password_confirmation: null
+            }
         }
     },
     head() {
@@ -386,15 +487,21 @@ export default {
 
         this.data.dealer = await this.getDealers()
     },
+    validations: {
+        form: {
+            name: { required },
+            route: { required },
+            method: { required },
+        },
+    },
     methods: {
-        /**
-         * Search the table data with search input
-         */
         onFiltered(filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering
             this.totalRows = filteredItems.length
             this.currentPage = 1
         },
+        async getData() {
+            this.tableData = await this.$axios.$get('api/admin/account/all', {})},
         randomPassword() {
             return this.randomString(8)
         },
@@ -430,6 +537,25 @@ export default {
                 })
                 .catch ([])
         },
+        async getAtasan() {
+            if (this.form.dealer_id !== null && this.form.role !== null && this.form.role !== 1) {
+                this.data.leader = await this.$axios.$get('api/admin/account/item/leaders', {
+                    params: {
+                        role: this.form.role,
+                        dealer_id: this.form.dealer_id
+                    }
+                })
+                .then(response => {return response.data})
+                .catch([])
+
+                return this.data.leader;
+            }
+        },
+        addContent() {
+            this.formList.push({
+                name: null,
+                route: null,
+                method: null,})},
         async getLeaders() {
             if (this.form.dealer_id == null || this.form.role == null) return
 
@@ -483,22 +609,39 @@ export default {
             this.form = Object.assign({}, item)
             this.$refs['form-update'].show()
         },
+        showEditPassword(item) {
+            this.form = Object.assign({}, item)
+            this.$refs['form-update-password'].show()
+        },
         triggerCreate() {
             this.$refs['create-data'].click()
         },
         triggerUpdate() {
             this.$refs['update-data'].click()
         },
+        triggerUpdatePassword() {
+            this.$refs['update-data-password'].click();
+        },  
         async doCreateData(e) {
             e.preventDefault()
 
-            const finalForm = this.formList.map(item => {
+            const finalForm = this.form;
+
+            const finalFormList = this.formList.map(item => {
                 const data = item
                 delete data.id
 
                 return data
             })
+            finalForm.data = finalFormList;
 
+            return await this.$axios.$post('api/admin/account', finalForm)
+                .then(response => {
+                    this.$refs['form-create'].hide()
+
+                    Swal.fire("Berhasil", "Berhasil Menambah Data", "success")
+                    window.location.reload()
+                })
             return await this.$axios.$post('api/admin/account', {
                 dealer_id: this.form.dealer_id,
                 role: this.form.role,
@@ -533,6 +676,17 @@ export default {
                     window.location.reload()
                 })
         },
+        async doUpdatePassword(e) {
+            e.preventDefault();
+
+            return await this.$axios.$put(`api/admin/account/password/update`, this.formUpdatePass)
+                .then(response => {
+                    this.$refs['form-update-password'].hide()
+
+                    Swal.fire("Berhasil", "Berhasil Mengubah Password", "success")
+                    window.location.reload()
+                })
+        },  
         async deleteData(id) {
             let context = this
 
@@ -547,12 +701,22 @@ export default {
                 cancelButtonText: "Batalkan"
             }).then(result => {
                 if (result.value) {
-                    return context.$axios.delete(`/api/admin/endpoint/${id}`)
+                    return context.$axios.delete(`/api/admin/account/${id}`)
                         .then(() => window.location.reload())
                 }
             })
+        },
+        viewHirarki() {
+            this.$refs['modal-hirarki'].show();
+        },
+        async getDataHirarki() {
+            let data = [];
+            data = await this.$axios.$get('/api/admin/role/tree').then((resp) => {
+                return resp.data[0].accounts;
+            });
+
+            return data;
         }
     }
 }
 </script>
-

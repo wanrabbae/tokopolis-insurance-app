@@ -5,7 +5,7 @@ const { Account, Profile, Identity, Bank,
     AccountToken, Role, RoleUpgrade, Dealer, User } = require("../models");
 
 export default class AccountRepository {
-    constructor() {}
+    constructor() { }
 
     async getAccountAll(limit, offset) {
         return await Account.findAll({
@@ -46,6 +46,20 @@ export default class AccountRepository {
             where: {
                 unique_id: id,
             },
+        });
+    }
+
+    async getAllAccountFromPrefixID(unique_id) {
+        return await Account.findAll({
+            where: {
+                unique_id: { [Op.like]: `${unique_id}-%` },
+            },
+            order: [
+                ['id', 'DESC']
+            ],
+            attributes: ["id", "role_id", "other_id", "unique_id"],
+            raw: true,
+            nest: true,
         });
     }
 
@@ -113,7 +127,7 @@ export default class AccountRepository {
 
     async getAccountSimple(id) {
         return await Account.findByPk(id, {
-            attributes: ['fullname', 'email']
+            attributes: ['fullname', 'email', 'unique_id']
         });
     }
 

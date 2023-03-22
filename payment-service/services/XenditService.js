@@ -199,4 +199,38 @@ exports.XenditService = class {
             .then(result => this.xenditQRSuccess(payload.platform, result))
             .catch(this.xenditError)
     }
+
+    async disbursmentComission(payload) {
+        const { Disbursement } = this.xenditApi
+        const disburs = new Disbursement({})
+        const parameters = {
+            externalID: payload.external_id,
+            bankCode: payload.bankCode,
+            accountHolderName: payload.accountHolderName,
+            accountNumber: payload.accountNumber,
+            amount: payload.amount,
+            description: "test"
+        }
+
+        return await disburs.create(parameters)
+            .then(result => this.xenditDisbursmentSuccess(result))
+            .catch(this.xenditError)
+    }
+
+    async disbursmentPoint(payload) {
+        const { Disbursement } = this.xenditApi
+        const disburs = new Disbursement({})
+        const parameters = {
+            externalID: payload.external_id,
+            bankCode: payload.bankCode,
+            accountHolderName: payload.accountHolderName,
+            accountNumber: payload.accountNumber,
+            amount: payload.amount,
+            description: "test"
+        }
+
+        return await disburs.create(parameters)
+            .then(result => this.xenditDisbursmentSuccess(result))
+            .catch(this.xenditError)
+    }
 }

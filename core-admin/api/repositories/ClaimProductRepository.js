@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 const { Account, ClaimProduct, Product } = require("../models");
 
 export default class ClaimProductRepository {
-    constructor() {}
+    constructor() { }
 
     async getAll() {
         return await ClaimProduct.findAll({

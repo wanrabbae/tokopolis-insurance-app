@@ -43,6 +43,32 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getTransactionAllWithAgent(filter, limit, offset, agent_ids) {
+        const dateFilter = `AND trans.start_date >= '${filter.start_period}' ` +
+            `AND trans.start_date <= '${filter.end_period}' `
+
+        return await sequelize.query(`SELECT trans.id, trans.start_date, trans.status, ` +
+            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+            `vehicle.brand, vehicle.sub_model, product.name as product_name ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
+            `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
+            `JOIN products as product ON trans.product_id = product.id ` +
+            `WHERE trans.agent_id IN (${agent_ids}) AND trans.id LIKE '%${filter.id}%' ` +
+            `AND (client_transactions.fullname LIKE '%${filter.name}%' ` +
+            `OR agent_transactions.fullname LIKE '%${filter.name}%') ` +
+            `AND vehicle.brand LIKE '%${filter.vehicle_brand}%' ` +
+            `AND vehicle.sub_model LIKE '%${filter.vehicle_sub_model}%' ` +
+            `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
+            `AND product.name LIKE '%${filter.product_name}%' ` +
+            (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
+            `AND trans.status IN ('waiting', 'paid') ` +
+            `ORDER BY trans.created_at ASC ` +
+            (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
+            { type: QueryTypes.SELECT })
+    }
+
     async getTransactionStatusAll(status, limit, offset) {
 
         return await sequelize.query(`SELECT trans.id, trans.start_date, trans.status, ` +
@@ -284,6 +310,18 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
+    async getTransactionStatusCount(status) {
+
+        return await sequelize.query(`SELECT COUNT(*) as total ` +
+            `FROM transactions as trans ` +
+            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
+            `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
+            `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
+            `JOIN products as product ON trans.product_id = product.id ` +
+            `WHERE trans.status = '${status}' `,
+            { type: QueryTypes.SELECT })
+    }
+
     async getTransactionTotal(account_id) {
         return await Transaction.count({
             where: {
@@ -346,7 +384,6 @@ export default class TransactionRepository {
     async getComission(account_id) {
         return await Comission.findAll({
             attributes: [
-                "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
             where: {
@@ -374,7 +411,6 @@ export default class TransactionRepository {
     async getPoint(account_id) {
         return await Point.findAll({
             attributes: [
-                "id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
             where: {
@@ -385,5 +421,26 @@ export default class TransactionRepository {
 
     async createPoint(payload) {
         return await Point.create(payload);
+    }
+
+    async getPointAgents(account_ids, req) {
+        return await Point.findAll({
+            attributes: [
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            group: ["account_id"],
+            where: {
+                account_id: req.account.role_id == 1 ? '' : account_ids,
+            },
+            include: {
+                model: Account,
+                as: "account",
+                attributes: {
+                    exclude: ["password"]
+                }
+            },
+            raw: true,
+            nest: true,
+        })
     }
 }

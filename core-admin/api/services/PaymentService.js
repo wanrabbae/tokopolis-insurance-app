@@ -1,7 +1,7 @@
 const request = require('request-promise')
 
 export default class PaymentService {
-    constructor () {
+    constructor() {
         const host = process.env.PAYMENT_SERVICE_HOST
         const port = process.env.PAYMENT_SERVICE_PORT
 
@@ -62,7 +62,6 @@ export default class PaymentService {
         })
     }
 
-
     async comissionWithdraw(payload) {
         var clientServerOptions = {
             uri: `${this.url}/payment/comission/withdraw`,
@@ -98,5 +97,4 @@ export default class PaymentService {
             return response.body
         })
     }
-
 }

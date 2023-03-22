@@ -66,5 +66,5 @@ export default class ClaimProductService {
         });
         mailer.send();
     }
-    
+
 }
