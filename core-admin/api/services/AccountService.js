@@ -46,6 +46,11 @@ export default class AccountService {
         return this.repository.getLastAccountFromPrefixID(unique_id)
     }
 
+    async getAllAccountFromPrefixID(account_id) {
+        const findAccount = await this.repository.getAccountSimple(account_id);
+        return this.repository.getAllAccountFromPrefixID(findAccount.unique_id)
+    }
+
     getAllAccountWithRoleId(role_id) {
         return this.repository.getAccountDataWithRoleId(role_id);
     }
