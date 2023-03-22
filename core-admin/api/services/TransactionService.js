@@ -142,6 +142,10 @@ export default class TransactionService {
         return this.repository.createPoint(payload);
     }
 
+    getPointAgents(account_ids) {
+        return this.repository.getPointAgents(account_ids);
+    }
+
     sendEmailPayment(payload) {
         let mailer = new Mailer(payload.host);
         // mailer.setUrl('/path')

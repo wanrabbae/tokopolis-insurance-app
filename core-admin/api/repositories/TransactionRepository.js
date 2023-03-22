@@ -422,4 +422,25 @@ export default class TransactionRepository {
     async createPoint(payload) {
         return await Point.create(payload);
     }
+
+    async getPointAgents(account_ids) {
+        return await Point.findAll({
+            attributes: [
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            group: ["account_id"],
+            where: {
+                account_id: account_ids,
+            },
+            include: {
+                model: Account,
+                as: "account",
+                attributes: {
+                    exclude: ["password"]
+                }
+            },
+            raw: true,
+            nest: true,
+        })
+    }
 }
