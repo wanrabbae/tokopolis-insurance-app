@@ -91,6 +91,45 @@ exports.feedbackAgent = async (req, res, next) => {
     })
 }
 
+exports.listUnder = async (req, res, next) => {
+
+    const filter = {
+        id: req.query.id || '',
+        name: req.query.name || '',
+        vehicle_brand: req.query.vehicle_brand || '',
+        vehicle_sub_model: req.query.vehicle_sub_model || '',
+        vehicle_type: req.query.vehicle_type || '',
+        product_name: req.query.product_name || '',
+        start_period: req.query.start_period || null,
+        end_period: req.query.end_period || null,
+    }
+
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 10
+    const offset = (current - 1) * limit
+
+    const account_ids = [1];
+    const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
+
+    accountsUnder.forEach(au => account_ids.push(au.id))
+
+    const agent_ids = account_ids.join(", ").replace(/\[|\]/g, "(") // 2, 3, 4
+
+    const count = await service.getTransactionCount(filter)
+    const list = await service.getTransactionAllWithAgent(filter, limit, offset, agent_ids)
+
+    if (count.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+    return res.jsonData({
+        pagination: {
+            total: count[0].total,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count[0].total / limit),
+        },
+        list: list
+    })
+}
+
 const generateXls = (review, transaction, destination) => {
     var workbook = new excel.Workbook()
     var worksheet = workbook.addWorksheet('Sheet1')

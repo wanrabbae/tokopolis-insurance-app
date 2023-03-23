@@ -199,7 +199,10 @@ export default {
                 name: null,
                 type: null,
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d3bc817b2ddc9b30e8f83722d07353c87c413e8
             this.getData()
             this.$refs.table.refresh()
         },
@@ -214,7 +217,10 @@ export default {
                 })
                 .then (response => {
                     this.totalRows = /* response.data.pagination.total || */ response.data.length;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d3bc817b2ddc9b30e8f83722d07353c87c413e8
                     return response.data;
                 })
                 .catch ([])
@@ -225,7 +231,10 @@ export default {
         },
         showUpdateStatus(id) {
             const selectedClaim = this.tableData.find((item) => item.id === id);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d3bc817b2ddc9b30e8f83722d07353c87c413e8
             this.$refs['form-update-status'].title = "Update Status Claim " + selectedClaim.transaction_id;
             this.updateStatus.newStatus = selectedClaim.status;
             this.updateStatus.selectedId = id;
@@ -236,11 +245,9 @@ export default {
         },
         async doUpdateStatus(e) {
             e.preventDefault();
-
             return await this.$axios.$put(`api/admin/claim/${this.updateStatus.selectedId}/update-staging`, {status: this.updateStatus.newStatus})
                 .then(response => {
                     this.$refs['form-update-status'].hide()
-
                     Swal.fire("Berhasil", "Berhasil Mengubah Status", "success")
                     window.location.reload()
                 })
@@ -251,7 +258,10 @@ export default {
         async sendEmail(id) {
             const selectedClaim = this.tableData.find((item) => item.id === id);
             const trx_id = selectedClaim.transaction_id;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1d3bc817b2ddc9b30e8f83722d07353c87c413e8
             return await this.$axios.$put(`api/admin/claim/${trx_id}/generate-send`)
                 .then(response => {
                     Swal.fire("Berhasil", "Berhasil Mengirim Email", "success")
@@ -260,5 +270,9 @@ export default {
         }
     }
 }
+<<<<<<< HEAD
 </script>
 
+=======
+</script>
+>>>>>>> 1d3bc817b2ddc9b30e8f83722d07353c87c413e8

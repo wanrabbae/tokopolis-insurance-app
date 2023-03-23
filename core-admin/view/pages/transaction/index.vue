@@ -399,8 +399,7 @@ export default {
             sendFeedbackParam: {
                 trx_id: null,
                 message: null
-            },
-            account: []
+            }
         }
     },
     head() {

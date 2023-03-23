@@ -1086,6 +1086,15 @@ exports.getPointHistory = async (req, res) => {
     return res.jsonData(point);
 };
 
+exports.getPointBalanceAgents = async (req, res) => {
+    const account_ids = [1]
+    const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
+    accountsUnder.forEach(au => account_ids.push(au.id))
+
+    const point = await service.getPointAgents(account_ids, req)
+    return res.jsonData(point)
+};
+
 exports.simulatePay = async (req, res) => {
     if (process.env.PAYMENT_SERVICE_DEBUG_MODE !== 'true') return res.errorBadRequest(req.polyglot.t("error.transaction"))
 

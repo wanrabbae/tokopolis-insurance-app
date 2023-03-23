@@ -98,7 +98,7 @@ export const menuItems = [
         label: "menuitems.claim.text",
         icon: "uil-money-withdrawal",
         link: "/claim"
-    },
+    },  
     {
         id: 12,
         label: "menuitems.pointandcommission.text",
