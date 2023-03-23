@@ -399,7 +399,8 @@ export default {
             sendFeedbackParam: {
                 trx_id: null,
                 message: null
-            }
+            },
+            account: []
         }
     },
     head() {
@@ -417,6 +418,7 @@ export default {
     },
     async mounted() {
         // Set the initial number of items
+        this.account = this.getAccount()
         this.totalRows = this.tableData.length
         this.backup['form'] = Object.assign({}, this.form)
 
@@ -498,8 +500,21 @@ export default {
             this.getData()
             this.$refs.table.refresh()
         },
+        async getAccount() {
+            this.account = await this.$axios.$get('api/admin/account')
+                .then ((response) => {
+                    return response.data;
+                })
+
+            return this.account;
+        },
         async getData() {
-            this.tableData = await this.$axios.$get('api/admin/transaction/list', {
+
+            this.account = await this.getAccount();
+
+            const endpoint = this.account.role_id !== 1 ? '/api/admin/transaction/list-under' : 'api/admin/transaction/list';
+
+            this.tableData = await this.$axios.$get(endpoint, {
                     params: {
                         id: this.filterForm.id,
                         name: this.filterForm.name,
