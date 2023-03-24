@@ -198,6 +198,10 @@ const fileOld = (req) => {
         condition: Joi.valid('new', 'old')
             .required()
             .label(req.polyglot.t('field.transaction.condition')),
+        identity_card: Joi.string()
+            .required()
+            .regex(RegExp(extensions.regex))
+            .label(req.polyglot.t('field.transaction.identity')),
         stnk: Joi.string()
             .required()
             .regex(RegExp(extensions.regex))
