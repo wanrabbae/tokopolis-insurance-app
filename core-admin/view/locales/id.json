@@ -95,6 +95,15 @@
       },
       "transaction": {
         "text": "Daftar Transaksi"
+      },
+      "transactionHistory": {
+        "text": "History Transaksi"
+      },
+      "claim": {
+        "text": "Daftar Klaim"
+      },
+      "pointandcommission": {
+        "text": "Point and Commission"
       }
     }
   }
