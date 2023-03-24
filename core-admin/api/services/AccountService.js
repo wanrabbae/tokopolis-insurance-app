@@ -18,6 +18,10 @@ export default class AccountService {
         return this.repository.getAccount(id);
     }
 
+    getAccount2(id) {
+        return this.repository.getAccount2(id);
+    }
+
     getAccountData(id) {
         return this.repository.getAccountData(id);
     }
