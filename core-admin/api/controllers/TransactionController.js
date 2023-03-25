@@ -815,7 +815,7 @@ exports.doPayment = async (req, res) => {
                     ? transaction.client_data.email
                     : account.email,
             phone:
-                transaction.client_data.email != undefined
+                transaction.client_data.phone != undefined
                     ? phoneFormat(transaction.client_data.phone)
                     : phoneFormat(account.profile.phone),
         },

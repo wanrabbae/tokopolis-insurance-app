@@ -67,35 +67,6 @@
     </div>
 </template>
 
-<style>
-    .card-summary > .card-header {
-        font-size: 12pt;
-        font-weight: bold;
-    }
-
-    .card-summary > .card-body {
-        font-size: 36pt;
-        font-weight: bold;
-        text-align: right;
-    }
-
-    .card-point > .card-header {
-        background-color: rgb(250, 250, 142);
-    }
-
-    .card-point > .card-body {
-        background-color: rgb(217, 217, 2);
-    }
-
-    .card-commission > .card-header {
-        background-color: rgb(138, 255, 148);
-    }
-
-    .card-commission > .card-body {
-        background-color: rgb(102, 215, 111);
-    }
-</style>
-
 <script>
 /**
  * Dashboard component
@@ -134,12 +105,11 @@ export default {
                 .then ((response) => {
                     return response.data;
                 })
-                return this.eccount;
         },
         async getTotalPoint() {
-            this.totalPoint = await this.$axios.$get('/api/point/under-agents')
+            this.totalPoint = await this.$axios.$get('api/points')
                 .then((response) => {
-                    return response.data.value;
+                    return response.total
                 })
         },
         async getTotalCommission() {
@@ -150,7 +120,6 @@ export default {
         }
     }
 };
-
 </script>
 
 <style>
@@ -158,20 +127,25 @@ export default {
         font-size: 12pt;
         font-weight: bold;
     }
+
     .card-summary > .card-body {
         font-size: 36pt;
         font-weight: bold;
         text-align: right;
     }
+
     .card-point > .card-header {
         background-color: rgb(250, 250, 142);
     }
+
     .card-point > .card-body {
         background-color: rgb(217, 217, 2);
     }
+
     .card-commission > .card-header {
         background-color: rgb(138, 255, 148);
     }
+
     .card-commission > .card-body {
         background-color: rgb(102, 215, 111);
     }

@@ -21,7 +21,11 @@ module.exports = (sequelize, Sequelize) => {
 	})
 
 	Dealer.associate = function(models) {
-
+		Dealer.hasMany(models.Account, {
+            as: "accounts",
+            sourceKey: "id",
+            foreignKey: "dealer_id",
+        });
 	}
 
 	return Dealer

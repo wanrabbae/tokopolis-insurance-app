@@ -215,8 +215,6 @@ export default {
                     this.totalRows = /* response.data.pagination.total || */ response.data.length;
                     return response.data;
                 })
-                .catch ([])
-            return this.tableData
         },
         showDetail(id) {
             this.$router.push({ path: `/products/${id}` })

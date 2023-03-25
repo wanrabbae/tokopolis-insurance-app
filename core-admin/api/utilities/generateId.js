@@ -26,48 +26,176 @@ export const generateDealerID = async (location_id) => {
     return { unique_id, other_id };
 };
 
+export const generateIdRoleManagement = async (payload) => {
+    const role_id = payload.role_id;
+    let unique_id =
+        payload.region_id.toString() +
+        payload.province_id.toString() +
+        payload.city_id.toString();
+    let other_id;
+
+    const findRole = await roleService.getRoleById(role_id);
+    const accounts = await service.getAllAccountWithRoleId(findRole.id);
+
+    if (findRole.name == "Operator Manager") {
+        // PULUHAN
+        unique_id += "-01-01";
+        other_id = "01";
+
+        if (accounts.length > 0) {
+            const arrayOfOtherId = [];
+            accounts.map((account) => arrayOfOtherId.push(account.other_id));
+
+            const arrayOfNumbers = arrayOfOtherId.map(Number);
+            const largest = Math.max.apply(0, arrayOfNumbers);
+            other_id = (largest + 1).toString().padStart(2, "0");
+        }
+
+        unique_id += `-${other_id}`;
+    } else if (findRole.name == "Branch Head") {
+        // RATUSAN
+        unique_id += "-01-01-01";
+        other_id = "001";
+
+        if (accounts.length > 0) {
+            const arrayOfOtherId = [];
+            accounts.map((account) => arrayOfOtherId.push(account.other_id));
+
+            const arrayOfNumbers = arrayOfOtherId.map(Number);
+            const largest = Math.max.apply(0, arrayOfNumbers);
+            other_id = (largest + 1).toString().padStart(3, "0");
+        }
+
+        unique_id += `-${other_id}`;
+    } else if (findRole.name == "Supervisor") {
+        // RATUSAN
+        unique_id += "-01-01-01-001";
+        other_id = "001";
+
+        if (accounts.length > 0) {
+            const arrayOfOtherId = [];
+            accounts.map((account) => arrayOfOtherId.push(account.other_id));
+
+            const arrayOfNumbers = arrayOfOtherId.map(Number);
+            const largest = Math.max.apply(0, arrayOfNumbers);
+            other_id = (largest + 1).toString().padStart(3, "0");
+        }
+
+        unique_id += `-${other_id}`;
+    } else {
+        // RIBUAN
+        unique_id += "-01-01-01-001-001";
+        other_id = "0001";
+
+        if (accounts.length > 0) {
+            const arrayOfOtherId = [];
+            accounts.map((account) => arrayOfOtherId.push(account.other_id));
+
+            const arrayOfNumbers = arrayOfOtherId.map(Number);
+            const largest = Math.max.apply(0, arrayOfNumbers);
+            other_id = (largest + 1).toString().padStart(4, "0");
+        }
+
+        unique_id += `-${other_id}`;
+    }
+
+    return { unique_id, other_id };
+};
+
 export const generateIdRoleManagementWithUniqueId = async (payload) => {
-    const role_id = payload.role_id
+    const role_id = payload.role_id;
+    let unique_id = payload.unique_id; // already has a unique_id
+    let other_id;
 
-    let unique_id = payload.unique_id
-    let other_id
-
-    const findRole = await roleService.getRoleById(role_id)
-    if (!findRole) return { unique_id: null, other_id: null }
-
-    const accounts = await service.getLastAccountFromPrefixID(unique_id)
-
+    const findRole = await roleService.getRoleById(role_id);
+    const accounts = await service.getAllAccountWithRoleId(role_id);
+    console.log("ACCOUNTS", accounts);
     if (findRole) {
-        switch (findRole.name) {
-            case "Operation Manager":
-                unique_id += "-01"; // Auto 01
-                other_id = "01";
-                break;
+        if (findRole.name == "Operator Manager") {
+            // PULUHAN
+            unique_id += "-01-01";
+            other_id = "01";
 
-            case "Kepala Cabang":
-                other_id = "001";
-                break;
+            if (accounts.length > 0) {
+                const arrayOfOtherId = [];
+                accounts.map((account) =>
+                    arrayOfOtherId.push(account.other_id)
+                );
 
-            case "Supervisor":
-                other_id = "001";
-                break;
+                const arrayOfNumbers = arrayOfOtherId.map(Number);
+                const largest = Math.max.apply(0, arrayOfNumbers);
+                other_id = (largest + 1).toString().padStart(2, "0");
+            }
 
-            default:
-                other_id = "0001";
-                break;
+            unique_id += `-${other_id}`;
+        } else if (findRole.name == "Branch Head") {
+            // RATUSAN
+            unique_id += "-01-01-01";
+            other_id = "001";
+
+            if (accounts.length > 0) {
+                const arrayOfOtherId = [];
+                accounts.map((account) =>
+                    arrayOfOtherId.push(account.other_id)
+                );
+
+                const arrayOfNumbers = arrayOfOtherId.map(Number);
+                const largest = Math.max.apply(0, arrayOfNumbers);
+                other_id = (largest + 1).toString().padStart(3, "0");
+            }
+
+            unique_id += `-${other_id}`;
+        } else if (findRole.name == "Supervisor") {
+            // RATUSAN
+            unique_id += "-01-01-01-001";
+            other_id = "001";
+
+            if (accounts.length > 0) {
+                const arrayOfOtherId = [];
+                accounts.map((account) =>
+                    arrayOfOtherId.push(account.other_id)
+                );
+
+                const arrayOfNumbers = arrayOfOtherId.map(Number);
+                const largest = Math.max.apply(0, arrayOfNumbers);
+                other_id = (largest + 1).toString().padStart(3, "0");
+            }
+
+            unique_id += `-${other_id}`;
+        } else {
+            // RIBUAN
+            unique_id += "-01-01-01-001-001";
+            other_id = "0001";
+
+            if (accounts.length > 0) {
+                const arrayOfOtherId = [];
+                accounts.map((account) =>
+                    arrayOfOtherId.push(account.other_id)
+                );
+
+                const arrayOfNumbers = arrayOfOtherId.map(Number);
+                const largest = Math.max.apply(0, arrayOfNumbers);
+                other_id = (largest + 1).toString().padStart(4, "0");
+            }
+
+            unique_id += `-${other_id}`;
+        }
+    } else {
+        // RIBUAN
+        unique_id += "-01-01-01-001-001";
+        other_id = "0001";
+
+        if (accounts.length > 0) {
+            const arrayOfOtherId = [];
+            accounts.map((account) => arrayOfOtherId.push(account.other_id));
+
+            const arrayOfNumbers = arrayOfOtherId.map(Number);
+            const largest = Math.max.apply(0, arrayOfNumbers);
+            other_id = (largest + 1).toString().padStart(4, "0");
         }
 
-        if (accounts) {
-            other_id = (parseInt(accounts.other_id) + 1)
-                .toString()
-                .padStart(accounts.other_id.length, "0")
-        }
-
-        unique_id += `-${other_id}`
+        unique_id += `-${other_id}`;
     }
 
-    return {
-        unique_id: unique_id,
-        other_id: other_id
-    }
-}
+    return { unique_id, other_id };
+};

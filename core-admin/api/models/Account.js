@@ -49,6 +49,10 @@ module.exports = (sequelize, Sequelize) => {
                 type: Sequelize.INTEGER,
                 allowNull: true,
             },
+            dealer_id: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
             parent_id: {
                 type: Sequelize.INTEGER,
                 allowNull: true,
@@ -144,6 +148,12 @@ module.exports = (sequelize, Sequelize) => {
             sourceKey: "id",
             foreignKey: "role_id",
         });
+
+        Account.belongsTo(models.Dealer, {
+            as: "dealers",
+            sourceKey: "id",
+            foreignKey: "dealer_id"
+        })
     };
 
     return Account;

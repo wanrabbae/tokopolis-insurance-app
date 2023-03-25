@@ -23,13 +23,13 @@ exports.create = async (req, res) => {
     }
 
     const leadAccount = await service.getAccount(req.body.leader_id)
-    if (leadAccount && roleID[req.body.role] != leadAccount.role_id + 1)
+    if (leadAccount && req.body.role != leadAccount.role_id + 1)
         return res.errorBadRequest("Code not valid!")
 
     const salt = await bcrypt.genSalt(10)
 
     var uniqueId = await generateIdRoleManagementWithUniqueId({
-        role_id: roleID[req.body.role],
+        role_id: req.body.role,
         unique_id: leadAccount ? leadAccount.unique_id : req.body.dealer_id,
     })
 
@@ -39,8 +39,9 @@ exports.create = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(item.password, salt)
 
         item.password = hashedPassword
-        item.role_id = roleID[req.body.role]
+        item.role_id = req.body.role
         item.parent_id = leadAccount ? leadAccount.id : null
+        item.dealer_id = req.body.dealer_id
 
         item.unique_id = `${newUniqueID}-${uniqueId.other_id}`
         item.other_id = uniqueId.other_id
@@ -208,15 +209,15 @@ exports.verifyUpgrade = async (req, res) => {
 exports.leadersByDealerAndRole = async (req, res, next) => {
     if (req.account.role_id < req.query.role) return res.errorBadRequest("Role not valid!")
 
-    const leaderID = {
+    const leaderID = [{
         'branch': 2,
         'supervisor': 3,
         'agent': 4,
-    }
+    }]
 
-    if (!leaderID[req.query.role]) return res.jsonData([])
+    if (req.query.role < 2 && req.query.role > 4) return res.jsonData([])
 
-    const list = await service.getAccountDataWithDealerAndRoleId(req.query.dealer_id, leaderID[req.query.role])
+    const list = await service.getAccountDataWithDealerAndRoleId(req.query.dealer_id, req.query.role)
 
     return res.jsonData(list)
 };

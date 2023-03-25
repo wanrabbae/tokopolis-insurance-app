@@ -8,7 +8,7 @@ const create = (req) => {
         dealer_id: Joi.string()
             .required()
             .label(req.polyglot.t("field.dealer_id")),
-        role: Joi.string()
+        role: Joi.number()
             .required()
             .label(req.polyglot.t("field.role")),
         leader_id: Joi.number()
