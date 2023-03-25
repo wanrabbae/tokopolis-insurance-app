@@ -176,6 +176,7 @@ export default class AccountRepository {
             fullname: payload.fullname,
             email: payload.email,
             password: payload.password,
+            role_id: payload.role_id
         });
 
         await Profile.create({

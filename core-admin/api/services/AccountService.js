@@ -99,6 +99,7 @@ export default class AccountService {
         const hashedPassword = await bcrypt.hash(payload.password, salt);
 
         payload.password = hashedPassword;
+        payload.role_id = 0;
 
         return this.repository.createAccount(payload);
     }
