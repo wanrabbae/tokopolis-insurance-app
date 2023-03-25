@@ -72,15 +72,16 @@ exports.detail = async (req, res, next) => {
 exports.feedbackAgent = async (req, res, next) => {
     const data = await service.getTransactionDetail(req.params.id)
     if (data.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
+    const client_data = JSON.parse(data[0].client_data);
 
     const findAccount = await accountService.getAccount(data[0].agent_id)
 
     service.sendEmailFeedBackAgent({
         host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: findAccount.email,
-        title: "Feedback to Agent",
+        title: "Penutupan Asuransi Mobil - " + client_data.fullname + " - " + req.params.id,
         data: {
-            name: data.client_data.fullname,
+            name: client_data.fullname != undefined ? client_data.fullname : "",
             message: req.body.message,
             product: data.product_name,
         },
