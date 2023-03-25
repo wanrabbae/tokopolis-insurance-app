@@ -9,10 +9,13 @@ export default class AccountRepository {
 
     async getAccountAll(limit, offset) {
         return await Account.findAll({
-            include: {
+            include: [{
                 model: Role,
                 as: "roles",
-            },
+            }, {
+                model: Dealer,
+                as: "dealers",
+            }],
             limit: limit,
             offset: offset,
         });
@@ -30,7 +33,10 @@ export default class AccountRepository {
                 {
                     model: Role,
                     as: "roles",
-                },
+                }, {
+                    model: Dealer,
+                    as: "dealers",
+                }
             ],
             limit: limit,
             offset: offset,
@@ -38,7 +44,7 @@ export default class AccountRepository {
     }
 
     async getAccount(id) {
-        return await Account.scope("withoutPass").findByPk(id);
+        return await Account.findByPk(id);
     }
 
     async getAccount2(id) {
@@ -109,10 +115,8 @@ export default class AccountRepository {
     async getAccountDataWithDealerAndRoleId(dealer_id, role_id) {
         return await Account.findAll({
             where: {
-                unique_id: {
-                    [Op.like]: `${dealer_id}-%`,
-                },
-                role_id: role_id,
+                dealer_id: dealer_id,
+                role_id: role_id - 1,
             },
             attributes: ["id", "fullname"],
         });

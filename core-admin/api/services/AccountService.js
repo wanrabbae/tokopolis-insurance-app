@@ -59,25 +59,26 @@ export default class AccountService {
         return this.repository.getAccountDataWithRoleId(role_id);
     }
 
-    getAccountDataWithDealerAndRoleId(dealer_id, role_id) {
-        return this.repository.getAccountDataWithDealerAndRoleId(dealer_id, role_id)
-    }
-
     getAccountWithUniqueId(id) {
         return this.repository.getAccountUniqueId(id);
     }
 
+    getCountFromEmails(emails) {
+        return this.repository.getCountFromEmails(emails);
+    }
+
     createBulkAccount(payloads) {
-        return this.repository.createBulkAccount(payloads)
+        return this.repository.createBulkAccount(payloads);
     }
 
     async createAccountAdmin(data) {
         const payload = data.body
+
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(payload.password, salt)
 
         payload.password = hashedPassword
-        payload.role_id = data.account.role == 5 ? 0 : data.account.role + 1
+        payload.role_id = data.account.role + 1
         payload.parent_id = data.account._id
 
         return this.repository.createAccountAdmin(payload)
@@ -106,10 +107,6 @@ export default class AccountService {
 
     updateAccount(id, payload) {
         return this.repository.updateAccount(id, payload);
-    }
-
-    getCountFromEmails(emails) {
-        return this.repository.getCountFromEmails(emails)
     }
 
     async adminUpdate(id, payload) {
@@ -323,6 +320,10 @@ export default class AccountService {
 
     getDealerAllWithFilter(query, limit, offset) {
         return this.repository.getDealerAllWithFilter(query, limit, offset)
+    }
+
+    getAccountDataWithDealerAndRoleId(dealer_id, role_id) {
+        return this.repository.getAccountDataWithDealerAndRoleId(dealer_id, role_id);
     }
 
     async getDealerCountByQuery(query) {
