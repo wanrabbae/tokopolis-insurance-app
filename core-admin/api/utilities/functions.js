@@ -70,7 +70,7 @@ function uploadHandler(filePath, newPath) {
 }
 
 function phoneFormat(value, code = '+62') {
-    number = number.replace(/\D/g, '');
+    let number = value.replace(/\D/g, '');
 
     if (number.substring(0, 3) == '628') {
         number = '+62' + number.substring(3);
@@ -80,7 +80,7 @@ function phoneFormat(value, code = '+62') {
         number = '+62' + number.substring(1);
     }
 
-    return number.replace(/(\d{4})(?=\d)/g, '$1 ');
+    return number.replace(/(\d{4})(?=\d)/g, '$1');
 }
 
 

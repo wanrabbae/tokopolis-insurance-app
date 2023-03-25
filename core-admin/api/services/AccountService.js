@@ -18,6 +18,10 @@ export default class AccountService {
         return this.repository.getAccount(id);
     }
 
+    getAccount2(id) {
+        return this.repository.getAccount2(id);
+    }
+
     getAccountData(id) {
         return this.repository.getAccountData(id);
     }
@@ -40,6 +44,15 @@ export default class AccountService {
 
     getAccountPhoto(account_id) {
         return this.repository.getAccountPhoto(account_id)
+    }
+
+    getLastAccountFromPrefixID(unique_id) {
+        return this.repository.getLastAccountFromPrefixID(unique_id)
+    }
+
+    async getAllAccountFromPrefixID(account_id) {
+        const findAccount = await this.repository.getAccountSimple(account_id);
+        return this.repository.getAllAccountFromPrefixID(findAccount.unique_id)
     }
 
     getAllAccountWithRoleId(role_id) {
@@ -87,6 +100,7 @@ export default class AccountService {
         const hashedPassword = await bcrypt.hash(payload.password, salt);
 
         payload.password = hashedPassword;
+        payload.role_id = 0;
 
         return this.repository.createAccount(payload);
     }

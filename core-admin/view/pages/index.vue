@@ -105,12 +105,11 @@ export default {
                 .then ((response) => {
                     return response.data;
                 })
-            return this.eccount;
         },
         async getTotalPoint() {
-            this.totalPoint = await this.$axios.$get('/api/point/under-agents')
+            this.totalPoint = await this.$axios.$get('api/points')
                 .then((response) => {
-                    return response.data.value;
+                    return response.total
                 })
         },
         async getTotalCommission() {

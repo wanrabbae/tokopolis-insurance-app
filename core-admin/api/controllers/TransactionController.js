@@ -815,7 +815,7 @@ exports.doPayment = async (req, res) => {
                     ? transaction.client_data.email
                     : account.email,
             phone:
-                transaction.client_data.email != undefined
+                transaction.client_data.phone != undefined
                     ? phoneFormat(transaction.client_data.phone)
                     : phoneFormat(account.profile.phone),
         },
@@ -1084,6 +1084,15 @@ exports.getPointHistory = async (req, res) => {
     const point = await service.getPointHistory(req.account._id);
 
     return res.jsonData(point);
+};
+
+exports.getPointBalanceAgents = async (req, res) => {
+    const account_ids = [1]
+    const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
+    accountsUnder.forEach(au => account_ids.push(au.id))
+
+    const point = await service.getPointAgents(account_ids, req)
+    return res.jsonData(point)
 };
 
 exports.simulatePay = async (req, res) => {

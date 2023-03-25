@@ -720,4 +720,3 @@ export default {
     }
 }
 </script>
-

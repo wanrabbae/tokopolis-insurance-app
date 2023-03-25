@@ -77,7 +77,7 @@ exports.updatePassword = async (req, res) => {
     const validate = validation.updatePassword(req);
     if (validate.error) return res.errorValidation(validate.details);
 
-    const account = await service.getAccount(req.account._id);
+    const account = await service.getAccount2(req.account._id);
 
     const validPass = await bcrypt.compare(req.body.password, account.password);
     if (!validPass)

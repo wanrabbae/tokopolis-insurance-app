@@ -12,6 +12,10 @@ export default class TransactionService {
         return this.repository.getTransactionAll(filter, limit, offset);
     }
 
+    getTransactionAllWithAgent(filter, limit, offset, agent_ids) {
+        return this.repository.getTransactionAllWithAgent(filter, limit, offset, agent_ids);
+    }
+
     getTransactionStatusAll(status, limit, offset) {
         return this.repository.getTransactionStatusAll(status, limit, offset);
     }
@@ -20,7 +24,6 @@ export default class TransactionService {
         return this.repository.getTransactionDetail(id);
     }
 
-    
     getTransactionStatusAll(status, limit, offset) {
         return this.repository.getTransactionStatusAll(status, limit, offset);
     }
@@ -137,6 +140,10 @@ export default class TransactionService {
 
     createPoint(payload) {
         return this.repository.createPoint(payload);
+    }
+
+    getPointAgents(account_ids, req) {
+        return this.repository.getPointAgents(account_ids, req);
     }
 
     sendEmailPayment(payload) {

@@ -47,11 +47,29 @@ export default class AccountRepository {
         return await Account.findByPk(id);
     }
 
+    async getAccount2(id) {
+        return await Account.findByPk(id);
+    }
+
     async getAccountUniqueId(id) {
         return await Account.findOne({
             where: {
                 unique_id: id,
             },
+        });
+    }
+
+    async getAllAccountFromPrefixID(unique_id) {
+        return await Account.findAll({
+            where: {
+                unique_id: { [Op.like]: `${unique_id}-%` },
+            },
+            order: [
+                ['id', 'DESC']
+            ],
+            attributes: ["id", "role_id", "other_id", "unique_id"],
+            raw: true,
+            nest: true,
         });
     }
 
@@ -117,7 +135,7 @@ export default class AccountRepository {
 
     async getAccountSimple(id) {
         return await Account.findByPk(id, {
-            attributes: ['fullname', 'email']
+            attributes: ['fullname', 'email', 'unique_id']
         });
     }
 
@@ -162,6 +180,7 @@ export default class AccountRepository {
             fullname: payload.fullname,
             email: payload.email,
             password: payload.password,
+            role_id: payload.role_id
         });
 
         await Profile.create({

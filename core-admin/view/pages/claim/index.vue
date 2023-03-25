@@ -199,7 +199,6 @@ export default {
                 name: null,
                 type: null,
             }
-
             this.getData()
             this.$refs.table.refresh()
         },
@@ -214,18 +213,13 @@ export default {
                 })
                 .then (response => {
                     this.totalRows = /* response.data.pagination.total || */ response.data.length;
-
-                    return response.data;
                 })
-                .catch ([])
-            return this.tableData
         },
         showDetail(id) {
             this.$router.push({ path: `/products/${id}` })
         },
         showUpdateStatus(id) {
             const selectedClaim = this.tableData.find((item) => item.id === id);
-
             this.$refs['form-update-status'].title = "Update Status Claim " + selectedClaim.transaction_id;
             this.updateStatus.newStatus = selectedClaim.status;
             this.updateStatus.selectedId = id;
@@ -236,11 +230,9 @@ export default {
         },
         async doUpdateStatus(e) {
             e.preventDefault();
-
             return await this.$axios.$put(`api/admin/claim/${this.updateStatus.selectedId}/update-staging`, {status: this.updateStatus.newStatus})
                 .then(response => {
                     this.$refs['form-update-status'].hide()
-
                     Swal.fire("Berhasil", "Berhasil Mengubah Status", "success")
                     window.location.reload()
                 })
@@ -251,7 +243,6 @@ export default {
         async sendEmail(id) {
             const selectedClaim = this.tableData.find((item) => item.id === id);
             const trx_id = selectedClaim.transaction_id;
-
             return await this.$axios.$put(`api/admin/claim/${trx_id}/generate-send`)
                 .then(response => {
                     Swal.fire("Berhasil", "Berhasil Mengirim Email", "success")
@@ -261,4 +252,3 @@ export default {
     }
 }
 </script>
-
