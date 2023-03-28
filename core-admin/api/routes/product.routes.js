@@ -2,9 +2,7 @@ const { Router } = require('express')
 const verify = require('../middlewares/verifyToken')
 const verifyGuest = require('../middlewares/verifyGuest')
 
-const { productCalculation, getProductData,
-    getProductDetail, compareProduct,
-    riskExpansion } = require('../controllers/ProductController.js')
+const { productCalculation, getProductData, getProductDetail, compareProduct, riskExpansion } = require('../controllers/ProductController.js')
 
 const router = Router()
 const auth = verify()
