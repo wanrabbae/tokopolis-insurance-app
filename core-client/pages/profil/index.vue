@@ -138,10 +138,11 @@
 
                         <BaseInput
                             v-model="user.phone"
+                            prefix-text="62"
                             type="number"
                             name="Nomor Telepon"
                             label="Nomor Telepon"
-                            placeholder="081XXXXXXXXX"
+                            placeholder="81XXXXXXXXX"
                             input-classes="custom-number"
                             onkeypress="if(value.length==14) return false;"
                         />
@@ -415,7 +416,7 @@ export default {
                             this.user.birthyear =  birthdate.get('year')
                         }
 
-                        this.user.phone = response.data.profile.phone
+                        this.user.phone = response.data.profile.phone.replace('+62', '')
                         this.user.city = response.data.profile.city
                         this.user.province = response.data.profile.province
                         this.user.address = response.data.profile.address
@@ -445,6 +446,8 @@ export default {
         },
         submitFile() {
             this.formData = new FormData()
+
+            this.user.phone  = "+62"+this.user.phone;
 
             this.checkFieldValue('email', this.user.email)
             this.checkFieldValue('fullname', this.user.fullname)

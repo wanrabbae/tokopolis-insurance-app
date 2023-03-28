@@ -51,10 +51,6 @@ export default class AccountRepository {
         return await Account.findByPk(id);
     }
 
-    async getAccount2(id) {
-        return await Account.findByPk(id);
-    }
-
     async getAccountUniqueId(id) {
         return await Account.findOne({
             where: {
