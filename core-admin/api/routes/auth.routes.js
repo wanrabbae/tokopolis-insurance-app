@@ -17,6 +17,6 @@ router.post("/login", login);
 router.post("/forget-password", forgetPassword);
 router.get("/forget-password/:token", validateForgetToken);
 router.post("/change-forget", changeForgetPassword);
-router.post("/confirm-email", confirmEmail);
+router.get("/confirm-email/:token", confirmEmail);
 
 module.exports = router;

@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
         title: req.polyglot.t('mail.register'),
         data: {
             name: account.firstname,
-            token: confirmToken.token
+            token: btoa(confirmToken.token)
         }
     })
 
@@ -44,10 +44,10 @@ exports.login = async (req, res) => {
     if (validate.error) return res.errorValidation(validate.details)
 
     const account = await service.getAccountDataFromEmail(req.body.email)
-    if(!account || account.role == 'admin') return res.errorBadRequest(req.polyglot.t('error.auth'))
+    if (!account || account.role == 'admin') return res.errorBadRequest(req.polyglot.t('error.auth'))
 
     const validPass = await bcrypt.compare(req.body.password, account.password)
-    if(!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
+    if (!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
 
     service.sendEmailLogin({
         host: process.env.REDIRECT_CLIENT || req.fullhost,
@@ -112,10 +112,9 @@ exports.changeForgetPassword = async (req, res) => {
 }
 
 exports.confirmEmail = async (req, res) => {
-    const validate = validation.confirmEmail(req)
-    if (validate.error) return res.errorValidation(validate.details)
+    if (req.params.token != undefined || req.params.token != null) return res.errorBadRequest(req.polyglot.t('error.token'))
 
-    const confirmData = await service.checkEmailToken(req.body.token)
+    const confirmData = await service.checkEmailToken(req.params.token)
     if (confirmData == null) return res.errorBadRequest(req.polyglot.t('error.token'))
 
     await service.confirmEmail(confirmData.account_id)
