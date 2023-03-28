@@ -368,7 +368,9 @@
 			  let formData = new FormData()
   
 			  this.form.supported_brands = this.form.supported_brands.map(item => item = item.value)
-			  this.form.email = this.form.email.split(';')
+			  if (this.form.email !== "" && this.form.email !== null && this.form.email !== undefined) {
+				this.form.email = this.form.email.split(';')
+			  }
   
 			  for (var key of Object.keys(this.form)) {
 				  if (this.form[key] != null)
