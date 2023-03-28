@@ -37,6 +37,7 @@ export default {
   router: {
     middleware: 'routing'
   },
+
   /*
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins

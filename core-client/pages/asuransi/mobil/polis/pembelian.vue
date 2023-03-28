@@ -246,6 +246,11 @@ export default {
             ],
             usedVehicledocumentFields: [
                 {
+                    key: "identityCard",
+                    label: "Kartu Identitas (KTP/NPWP/PASPOR/SIM)",
+                    required: true
+                },
+                {
                     key: "stnk",
                     label: "Foto STNK",
                     required: true
