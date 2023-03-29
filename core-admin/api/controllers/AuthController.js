@@ -112,9 +112,11 @@ exports.changeForgetPassword = async (req, res) => {
 }
 
 exports.confirmEmail = async (req, res) => {
-    if (req.params.token != undefined || req.params.token != null) return res.errorBadRequest(req.polyglot.t('error.token'))
 
-    const confirmData = await service.checkEmailToken(req.params.token)
+    if (req.params.token === undefined && req.params.token === null) return res.errorBadRequest(req.polyglot.t('error.token'))
+    
+    const confirmData = await service.checkEmailToken(req.params.token);
+
     if (confirmData == null) return res.errorBadRequest(req.polyglot.t('error.token'))
 
     await service.confirmEmail(confirmData.account_id)
