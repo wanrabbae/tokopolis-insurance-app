@@ -56,11 +56,35 @@
                 </div>
             </b-modal>
 
+            <b-modal size="lg" scrollable ref="revert-modal" title="Revert to Agent"
+                ok-title="Proses" @ok.prevent="triggerRevert" cancel-title="Batal">
+                <div class="d-block text-justify">
+                    <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="processRevert">
+
+                        <div class="form-group">
+                            <label class="col-form-label">Catatan
+                                <label class="text-danger">*</label>
+                            </label>
+
+                            <textarea v-model="formRevert.message" class="form-control" style="height: 300px"></textarea>
+                        </div>
+
+                        <button ref="create-revert" class="d-none"></button>
+
+                    </form>
+                </div>
+            </b-modal>
+
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
                         <div>
                             <div>
+                                <b-button v-if="data.assessment == null" class="float-end ms-2" variant="danger"
+                                    :disabled="data.documents == null"
+                                    @click="showRevert()">
+                                    <i class="uil uil-outline-feedback me-1"></i> Revert to Agent
+                                </b-button>
                                 <b-button v-if="data.assessment == null" class="float-end" variant="success"
                                     :disabled="data.documents == null"
                                     @click="showReview()">
@@ -202,13 +226,14 @@
     </template>
 
     <script>
+    import { required } from "vuelidate/lib/validators"
+    import Swal from "sweetalert2"
+
     let ClassicEditor
 
     if (process.client) {
         ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
     }
-
-    import { required } from "vuelidate/lib/validators"
 
     /**
      * Profile component
@@ -294,6 +319,9 @@
                 data: {},
                 assessment: {},
                 assessment_note: null,
+                formRevert: {
+                    message: ''
+                }
             };
         },
         computed: {
@@ -371,6 +399,23 @@
                 .then(response => {
                     window.location.reload()
                 })
+            },
+            showRevert() {
+                this.$refs['revert-modal'].show();
+            },
+            triggerRevert() {
+                this.$refs['create-revert'].click();
+            },
+            async processRevert(e) {
+                e.preventDefault();
+
+                await this.$axios.$post(`/api/admin/transaction/${this.id}/feedback`, this.formRevert)
+                    .then((resp) => {
+                        this.$refs['revert-modal'].hide()
+
+                        Swal.fire("Berhasil", "Berhasil Mengirimkan Feedback ke Agent", "success")
+                        window.location.reload()
+                    })
             }
         },
     };
