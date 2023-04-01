@@ -416,7 +416,7 @@ export default {
                             this.user.birthyear =  birthdate.get('year')
                         }
 
-                        this.user.phone = response.data.profile.phone.replace('+62', '')
+                        this.user.phone = response.data.profile.phone?.replace('+62', '')
                         this.user.city = response.data.profile.city
                         this.user.province = response.data.profile.province
                         this.user.address = response.data.profile.address

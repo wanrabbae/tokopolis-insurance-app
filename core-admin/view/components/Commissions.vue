@@ -108,7 +108,7 @@ export default {
     methods: {
         getData() {
             let data = [];
-            data = this.$axios.$get('/api/commissions/history').then((resp) => {
+            data = this.$axios.$get('/api/comissions/history').then((resp) => {
                 return resp.data;
             })
 

@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="form.dealer_id != null && form.role != null && form.role != 'manager'" class="row mt-2">
+                            <div v-if="form.dealer_id != null && form.role != null && form.role != 2" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
                                         <label class="col-form-label">Atasan
@@ -52,18 +52,18 @@
                                         </label>
                                         <div>
                                             <select
-                                                class="form-select"
                                                 v-model="form.leader_id"
+                                                class="form-select"
                                                 required>
-                                                <option v-for="option in data.leader" v-bind:value="option.id"
-                                                    v-bind:key="option.fullname">{{ option.fullname }}</option>
+                                                <option v-for="option in data.leader" :key="option.value"
+                                                    :value="option.value">{{ option.text }}</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 'manager' || (form.role != 'manager' && form.leader_id != null))">
+                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 2 || (form.role != 2 && form.leader_id != null))">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
                                 </p>
@@ -433,10 +433,10 @@ export default {
                 dealer: [],
                 role: [
                     { value: null, text: 'Pilih Role Pengguna' },
-                    { value: 1, text: 'Operation Manager' },
-                    { value: 2, text: 'Kepala Cabang' },
-                    { value: 3, text: 'Supervisor' },
-                    { value: 4, text: 'Mitra' },
+                    { value: 2, text: 'Operation Manager' },
+                    { value: 3, text: 'Kepala Cabang' },
+                    { value: 4, text: 'Supervisor' },
+                    { value: 5, text: 'Mitra' },
                 ],
                 leader: [,
                     { value: 'manager', text: 'Operation Manager' },
@@ -538,7 +538,7 @@ export default {
                 .catch ([])
         },
         async getAtasan() {
-            if (this.form.dealer_id !== null && this.form.role !== null && this.form.role !== 1) {
+            if (this.form.dealer_id !== null && this.form.role !== null && this.form.role !== "manager") {
                 this.data.leader = await this.$axios.$get('api/admin/account/item/leaders', {
                     params: {
                         role: this.form.role,
