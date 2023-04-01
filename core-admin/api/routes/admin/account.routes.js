@@ -21,7 +21,8 @@ const router = Router()
 const AuthRoleMiddleware = verifyToken('auth:role')
 
 // Administrator
-router.get('/admin/account/all', AuthRoleMiddleware,list)
+router.get('/admin/account/all', AuthRoleMiddleware, list)
+router.get('/admin/account/list', AuthRoleMiddleware, list)
 router.post('/admin/account', AuthRoleMiddleware, create)
 router.put('/admin/account/:id', AuthRoleMiddleware, adminUpdate)
 router.delete('/admin/account/:id', AuthRoleMiddleware, destroy)

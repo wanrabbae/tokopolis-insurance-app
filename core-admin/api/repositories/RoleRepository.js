@@ -3,7 +3,7 @@ const { QueryTypes, Op } = require("sequelize");
 const { sequelize, Role, RoleEndpoint, Endpoint, Account } = require("../models");
 
 export default class RoleRepository {
-    constructor() {}
+    constructor() { }
 
     async getRoleName(name) {
         return await Role.findOne({ where: { name: name } });
@@ -93,11 +93,11 @@ export default class RoleRepository {
         console.log(endpoint);
         return await sequelize.query(
             `SELECT roles.id, endpoints.route, endpoints.method FROM roles ` +
-                `JOIN role_endpoints ON role_endpoints.role_id = roles.id ` +
-                `JOIN endpoints ON endpoints.id = role_endpoints.endpoint_id ` +
-                `WHERE roles.id = '${role_id}' ` +
-                `AND endpoints.route = '${endpoint}' ` +
-                `AND endpoints.method = '${method}' `,
+            `JOIN role_endpoints ON role_endpoints.role_id = roles.id ` +
+            `JOIN endpoints ON endpoints.id = role_endpoints.endpoint_id ` +
+            `WHERE roles.id = '${role_id}' ` +
+            `AND endpoints.route = '${endpoint}' ` +
+            `AND endpoints.method = '${method}' `,
             { type: QueryTypes.SELECT }
         );
     }

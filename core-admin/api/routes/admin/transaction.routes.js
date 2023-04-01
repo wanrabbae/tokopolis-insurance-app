@@ -7,7 +7,7 @@ const { list, detail, addReview,
 const router = Router()
 const AuthRoleMiddleware = verifyToken('auth:role')
 router.get('/admin/transaction/list', AuthRoleMiddleware, list)
-router.get('/admin/transaction/list-under', AuthRoleMiddleware, listUnder)
+router.get('/admin/transaction/listUnder', AuthRoleMiddleware, listUnder)
 router.get('/admin/transaction/history', AuthRoleMiddleware, history)
 router.get('/admin/transaction/:id/detail', AuthRoleMiddleware, detail)
 router.put('/admin/transaction/:id/review', AuthRoleMiddleware, addReview)
