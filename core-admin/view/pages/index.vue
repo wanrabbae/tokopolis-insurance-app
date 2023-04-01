@@ -11,7 +11,7 @@
                         Total Points
                     </div>
                     <div class="card-body">
-                        {{ totalPoint }}
+                        {{ Intl.NumberFormat().format(totalPoint) }}
                     </div>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                         Total Commission
                     </div>
                     <div class="card-body">
-                        {{ totalCommission }}
+                        {{ Intl.NumberFormat().format(totalCommission) }}
                     </div>
                 </div>
             </div>
@@ -107,15 +107,15 @@ export default {
                 })
         },
         async getTotalPoint() {
-            this.totalPoint = await this.$axios.$get('api/points')
+            this.totalPoint = await this.$axios.$get('api/point')
                 .then((response) => {
-                    return response.total
+                    return response.data.total === null ? 0 : response.data.total
                 })
         },
         async getTotalCommission() {
-            this.totalCommission = await this.$axios.$get('api/commissions')
+            this.totalCommission = await this.$axios.$get('api/comissions')
                 .then((response) => {
-                    return response.total
+                    return response.data.total === null ? 0 : response.data.total
                 })
         }
     }
