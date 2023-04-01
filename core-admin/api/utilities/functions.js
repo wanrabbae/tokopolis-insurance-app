@@ -73,7 +73,7 @@ function phoneFormat(value, code = '+62') {
     let number = value.replace(/\D/g, '');
 
     if (number.substring(0, 3) == '628') {
-        number = '+62' + number.substring(3);
+        number = '+628' + number.substring(3);
     }
 
     if (number.substring(0, 2) == '08') {

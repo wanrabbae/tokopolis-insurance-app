@@ -376,9 +376,10 @@
 				  if (this.form[key] != null)
   
 					  if (key === 'email') {
-						  for (let i = 0; i < this.form[key].length; i++) {
-							  formData.append('email[]', this.form[key][i].trim());
-						  }
+						let emails = [];
+						for (let i = 0; i < this.form[key].length; i++) {
+							formData.append('email[]', this.form[key][i].trim());
+						}
 					  } else {
 						  formData.append(key, this.form[key])
 					  }
@@ -390,6 +391,9 @@
 			  .then(response => {
 				  this.$router.push({ name: 'products' })
 			  })
+			  	for (let pair of formData.entries()) {
+					console.log(pair[0]+ ', ' + pair[1]); 
+				}
 		  }
 	  }
   };
