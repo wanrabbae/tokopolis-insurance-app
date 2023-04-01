@@ -259,6 +259,8 @@ export default class VehicleService {
             payload[key] = image.clearPath
         })
 
+        payload.email = JSON.stringify(payload.email);
+
         return this.repository.createProduct(payload)
     }
 

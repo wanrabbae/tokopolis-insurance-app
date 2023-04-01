@@ -108,7 +108,7 @@ export default {
     methods: {
         getData() {
             let data = [];
-            data = this.$axios.$get('/api/points/history').then((resp) => {
+            data = this.$axios.$get('/api/point/history').then((resp) => {
                 return resp.data;
             })
 
