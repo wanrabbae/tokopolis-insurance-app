@@ -72,7 +72,7 @@ exports.detail = async (req, res, next) => {
 exports.feedbackAgent = async (req, res, next) => {
     const data = await service.getTransactionDetail(req.params.id)
     if (data.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
-    const client_data = JSON.parse(data[0].client_data);
+    const client_data = JSON.parse(data[0].client_data)
 
     const findAccount = await accountService.getAccount(data[0].agent_id)
 
@@ -291,18 +291,25 @@ exports.addReview = async (req, res, next) => {
     generateZip(transaction, destination)
     generateXls(req.body, transaction, destination)
 
-    service.sendEmailTransactionFile({
-        host: process.env.REDIRECT_CLIENT || req.fullhost,
-        target: transaction.product_email,
-        title: `Penutupan Asuransi | ${transaction.id} - ${transaction.client_data.fullname}`,
-        data: {
-            name: transaction.client_data.fullname,
-            product: transaction.product_name,
-            url: `${process.env.REDIRECT_CLIENT}/dokumen/${transaction.id}`,
-        },
-    })
+    const client_data = JSON.parse(transaction.client_data)
+    const emails = JSON.parse(transaction.product_email)
 
-    return res.jsonData(data)
+    for (let i = 0; i < emails.length; i++) {
+        const element = emails[i];
+
+        service.sendEmailTransactionFile({
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+            target: element,
+            title: `Penutupan Asuransi Mobil | ${transaction.id} - ${client_data.fullname}`,
+            data: {
+                name: client_data.fullname,
+                product: transaction.product_name,
+                url: `${process.env.REDIRECT_CLIENT}/dokumen/${transaction.id}`,
+            },
+        })
+    }
+
+    return res.jsonData({ success: true })
 }
 
 exports.getTransactionQuotation = async (req, res, next) => {

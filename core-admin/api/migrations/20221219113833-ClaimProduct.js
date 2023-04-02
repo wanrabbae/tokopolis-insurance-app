@@ -11,8 +11,7 @@ module.exports = {
 
         await queryInterface.createTable("claim_products", {
             id: {
-                type: Sequelize.INTEGER,
-                autoIncrement: true,
+                type: Sequelize.STRING,
                 primaryKey: true,
             },
             account_id: {
