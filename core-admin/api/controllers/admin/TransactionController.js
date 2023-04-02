@@ -346,7 +346,7 @@ exports.getXlsxAllTransaction = async (req, res) => {
 
     for (let index = 0; index < list.length; index++) {
         const data2 = list[index]
-        const isNew = data2.documents.bastk != undefined
+        const isNew = data2.documents != null ? data2.documents.bastk != null ? true : false : false;
 
         const accessoriesPriceTotal = data2.vehicle_data.accessories.reduce((a, b) => a + b.price, 0)
         const expansionPriceTotal = data2.expansions.reduce((a, b) => a + b.price, 0)

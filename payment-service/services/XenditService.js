@@ -80,7 +80,7 @@ exports.XenditService = class {
             externalID: payload.order_id,
             bankCode: payload.platform.toUpperCase(),
             name: payload.customer.fullname,
-            virtualAccNumber: payload.customer.phone.split("+62")[1],
+            // virtualAccNumber: payload.customer.phone.split("+62")[1],
             isClosed: true,
             isSingleUse: true,
             expectedAmt: payload.amount,
