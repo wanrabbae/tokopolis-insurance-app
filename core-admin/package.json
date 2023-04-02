@@ -44,7 +44,7 @@
     "excel4node": "^1.8.0",
     "express": "latest",
     "express-locale": "^2.0.0",
-    "express-session": "^1.17.2",
+    "express-session": "^1.17.3",
     "express-useragent": "^1.0.15",
     "firebase": "^8.2.1",
     "helmet": "^4.6.0",

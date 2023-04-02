@@ -511,9 +511,7 @@ export default {
         async getData() {
 
             this.account = await this.getAccount();
-
-            const endpoint = this.account.role_id !== 1 ? '/api/admin/transaction/list-under' : 'api/admin/transaction/list';
-
+            const endpoint = this.account.role_id !== 1 ? '/api/admin/transaction/listUnder' : 'api/admin/transaction/list';
             this.tableData = await this.$axios.$get(endpoint, {
                     params: {
                         id: this.filterForm.id,
