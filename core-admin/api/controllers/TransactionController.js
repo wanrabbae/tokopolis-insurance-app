@@ -927,8 +927,8 @@ exports.webhookMidtrans = async (req, res) => {
 };
 
 exports.webhookXendit = async (req, res) => {
-    const validate = validation.xendit(req);
-    if (validate.error) return res.errorValidation(validate.details);
+    // const validate = validation.xendit(req);
+    // if (validate.error) return res.errorValidation(validate.details);
 
     const transaction_id = req.body.callback_virtual_account_id || req.body.status ? req.body.id : req.body.data.id;
 

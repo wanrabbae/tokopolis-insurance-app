@@ -79,7 +79,7 @@ exports.feedbackAgent = async (req, res, next) => {
     service.sendEmailFeedBackAgent({
         host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: findAccount.email,
-        title: "Penutupan Asuransi Mobil - " + client_data.fullname + " - " + req.params.id,
+        title: "Revert to Agent | " + client_data.fullname + " - " + req.params.id,
         data: {
             name: client_data.fullname != undefined ? client_data.fullname : "",
             message: req.body.message,
@@ -294,7 +294,7 @@ exports.addReview = async (req, res, next) => {
     service.sendEmailTransactionFile({
         host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: transaction.product_email,
-        title: req.polyglot.t("mail.transaction.file"),
+        title: `Penutupan Asuransi | ${transaction.id} - ${transaction.client_data.fullname}`,
         data: {
             name: transaction.client_data.fullname,
             product: transaction.product_name,
