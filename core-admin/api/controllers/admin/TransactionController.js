@@ -6,6 +6,7 @@ const archiver = require('archiver')
 import { string } from 'joi'
 import TransactionService from '../../services/TransactionService'
 import AccountService from '../../services/AccountService'
+import { safelyParseJSON } from '../../utilities/functions'
 
 const service = new TransactionService()
 const accountService = new AccountService();
@@ -72,7 +73,7 @@ exports.detail = async (req, res, next) => {
 exports.feedbackAgent = async (req, res, next) => {
     const data = await service.getTransactionDetail(req.params.id)
     if (data.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
-    const client_data = JSON.parse(data[0].client_data)
+    const client_data = safelyParseJSON(data[0].client_data)
 
     const findAccount = await accountService.getAccount(data[0].agent_id)
 
@@ -81,7 +82,7 @@ exports.feedbackAgent = async (req, res, next) => {
         target: findAccount.email,
         title: "Revert to Agent | " + client_data.fullname + " - " + req.params.id,
         data: {
-            name: client_data.fullname != undefined ? client_data.fullname : "",
+            name: client_data.fullname != undefined ? client_data.fullname : "Customer",
             message: req.body.message,
             product: data.product_name,
         },

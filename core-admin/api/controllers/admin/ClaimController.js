@@ -11,8 +11,23 @@ const service = new ClaimProductService();
 
 exports.getAllClaimData = async (req, res) => {
     try {
-        const data = await service.getAllData();
-        return res.jsonData(data);
+        const filter = {}
+        const current = Number(req.query.current) || 1
+        const limit = Number(req.query.limit) || 10
+        const offset = (current - 1) * limit
+
+        const count = await service.getClaimCount(filter)
+        const list = await service.getAllData(filter, limit, offset)
+
+        return res.jsonData({
+            pagination: {
+                total: count[0].total,
+                per_page: limit,
+                current_page: current,
+                last_page: Math.ceil(count[0].total / limit),
+            },
+            list: list
+        })
     } catch (error) {
         return res.jsonData({
             message: "Something went wrong!",

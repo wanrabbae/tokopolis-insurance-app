@@ -116,9 +116,20 @@ const titleCase = (value) => {
 
 const percentToDecimal = (number) => number / parseFloat(100)
 
+function safelyParseJSON(json) {
+    var parsed
+    try {
+        parsed = JSON.parse(json)
+    } catch (e) {
+        parsed = {}
+    }
+
+    return parsed
+}
+
 module.exports = {
     getMoment, extensionHelper,
     randomString, randomNumber, uploadHandler,
     phoneFormat, moneyFormat, moneyFormatNonSymbol,
-    stringTag, titleCase, percentToDecimal
+    stringTag, titleCase, percentToDecimal, safelyParseJSON
 }
