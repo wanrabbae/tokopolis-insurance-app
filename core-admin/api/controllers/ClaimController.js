@@ -81,7 +81,9 @@ exports.claimProduct = async (req, res) => {
             title: req.polyglot.t("mail.request_claim"),
             data: {
                 name: transaction.client_data.fullname,
-                date: new Date().toDateString(),
+                reporter_fullname: req.body.reporter_fullname,
+                holder_fullname: req.body.holder_fullname,
+                incident_time: req.body.incident_time
             },
         });
 
