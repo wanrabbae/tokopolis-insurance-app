@@ -25,7 +25,8 @@
             <BaseInput
               v-model="model.phone"
               name="Phone"
-              placeholder="+62812345678"
+              placeholder="812345678"
+              prefix-text="+62"
             />
             <BaseInput
               v-model="model.email"
@@ -67,6 +68,7 @@ export default {
   methods: {
     okHandler(bvModalEvt){
       bvModalEvt.preventDefault()
+      this.model.phone = `+62${this.model.phone}`;
       this.$emit('submit',this.model)
     }
   }
