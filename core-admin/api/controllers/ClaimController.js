@@ -1,13 +1,22 @@
 import ClaimProductService from "../services/ClaimProductService.js";
 import TransactionService from "../services/TransactionService.js";
 import ProductService from "../services/ProductService.js";
+import { randomNumber } from "../utilities/functions";
 
 const validation = require("../validation/claim.validation");
-const { randomString } = require("../utilities/functions");
+const { randomString, getMoment } = require("../utilities/functions");
 
 const service = new ClaimProductService();
 const transactionService = new TransactionService();
 const productService = new ProductService();
+
+const getClaimID = () => {
+    const now = getMoment().format("yyyyMMDD");
+    const nowHour = getMoment().format("HHmmss");
+    const postfix = randomNumber(1111, 9999);
+
+    return `CLM-${now}-${nowHour}-${postfix}`;
+};
 
 exports.getClaimProduct = async (req, res) => {
     try {
@@ -54,6 +63,7 @@ exports.claimProduct = async (req, res) => {
         if (!checkProduct) return res.errorBadRequest(req.polyglot.t("error.product"))
 
         await service.createClaimProduct({
+            id: getClaimID(),
             account_id: req.account._id,
             transaction_id: req.body.transaction_id,
             product_id: checkTransaction[0].product_id,
@@ -71,7 +81,9 @@ exports.claimProduct = async (req, res) => {
             title: req.polyglot.t("mail.request_claim"),
             data: {
                 name: transaction.client_data.fullname,
-                date: new Date().toDateString(),
+                reporter_fullname: req.body.reporter_fullname,
+                holder_fullname: req.body.holder_fullname,
+                incident_time: req.body.incident_time
             },
         });
 

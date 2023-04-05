@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-	const Transaction = sequelize.define('transactions', {
-		id: {
+    const Transaction = sequelize.define('transactions', {
+        id: {
             type: Sequelize.STRING,
             primaryKey: true,
         },
@@ -77,6 +77,12 @@ module.exports = (sequelize, Sequelize) => {
         expansions: {
             type: Sequelize.JSON,
         },
+        extra_point: {
+            type: Sequelize.INTEGER,
+        },
+        expansion_price: {
+            type: Sequelize.INTEGER
+        },
         pg_transaction_id: {
             type: Sequelize.STRING,
         },
@@ -102,25 +108,25 @@ module.exports = (sequelize, Sequelize) => {
         },
         created_at: Sequelize.DATE,
         updated_at: Sequelize.DATE,
-	}, {
-		defaultScope: {
-			attributes: {
-				exclude: ['pg_transaction_id']
-			}
-		},
-		freezeTableName: true,
-		createdAt: 'created_at',
-		updatedAt: 'updated_at',
-		deletedAt: false,
-	})
+    }, {
+        defaultScope: {
+            attributes: {
+                exclude: ['pg_transaction_id']
+            }
+        },
+        freezeTableName: true,
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+        deletedAt: false,
+    })
 
-	Transaction.associate = function(models) {
+    Transaction.associate = function (models) {
         Transaction.belongsTo(models.AddressVillage, { foreignKey: 'address_village_id', as: 'village' })
         Transaction.belongsTo(models.Account, { foreignKey: 'client_id', as: 'client_transactions' })
         Transaction.belongsTo(models.Account, { foreignKey: 'agent_id', as: 'agent_transactions' })
         Transaction.belongsTo(models.Vehicle, { foreignKey: 'vehicle_id' })
         Transaction.belongsTo(models.Product, { foreignKey: 'product_id' })
-	}
+    }
 
-	return Transaction
+    return Transaction
 }

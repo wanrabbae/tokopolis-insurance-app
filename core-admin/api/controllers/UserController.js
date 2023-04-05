@@ -188,7 +188,7 @@ exports.requestUpgrade = async (req, res) => {
     if (!leadAccount || (leadAccount && leadAccount.role_id == 5))
         return res.errorNotFound("Code not valid!")
 
-    if (req.account.role != null) return res.errorBadRequest("You already have role")
+    if (req.account.role != 0) return res.errorBadRequest("You already have role")
 
     // let data = {
     //     host: process.env.REDIRECT_CLIENT || req.fullhost,
