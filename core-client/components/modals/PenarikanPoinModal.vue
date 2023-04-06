@@ -93,14 +93,25 @@ export default {
     data () {
         return {
             model: {
-                amount: null
+              bankCode: this.fields.bank,
+              accountHolderName: this.fields.accountName,
+              accountNumber: this.fields.accountNumber,
+              amount: null
             }
         }
     },
     methods: {
-        okHandler(bvModalEvt){
+        async okHandler(bvModalEvt){
             bvModalEvt.preventDefault()
-            this.$emit('submit', this.model)
+
+            this.model.bankCode = this.fields.bank;
+            this.model.accountHolderName = this.fields.accountName;
+            this.model.accountNumber = this.fields.accountNumber;
+            
+            await this.$axios.$post('/api/point/withdraw', this.model)
+              .then((response) => {
+                window.location.reload();
+              })
         }
     }
 }

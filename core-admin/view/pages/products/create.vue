@@ -56,7 +56,7 @@
 									  </div>
   
 									  <div role="group" class="row form-group mb-3">
-										  <label class="col-sm-2 col-lg-2 col-form-label">Gambar
+										  <label class="col-sm-2 col-lg-2 col-form-label">Gambar  <i>(Format .jpg)</i>
 											  <label class="text-danger">*</label>
 										  </label>
 										  <div class="col-sm-10 col-lg-10">
@@ -157,7 +157,7 @@
 											  <label class="text-danger">*</label>
 										  </label>
 										  <div class="col-sm-10 col-lg-10">
-											  <multiselect
+											  <Multiselect
 											  v-model="form.supported_brands"
 											  :options="brandList"
 											  track-by="value"
@@ -165,7 +165,7 @@
 											  placeholder="Pilih Brand yang Didukung"
 											  :multiple="true">
 												  <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.text }}</strong> is written in<strong>  {{ option.value }}</strong></template>
-											  </multiselect>
+											  </Multiselect>
 										  </div>
 									  </div>
   
@@ -208,7 +208,7 @@
 									  </div>
   
 									  <div role="group" class="row form-group mb-3">
-										  <label class="col-sm-2 col-lg-2 col-form-label">File Brosur</label>
+										  <label class="col-sm-2 col-lg-2 col-form-label">File Brosur <i>(Format PDF)</i></label>
 										  <div class="col-sm-10 col-lg-10">
 											  <input
 												  type="file"
@@ -219,7 +219,7 @@
 									  </div>
   
 									  <div role="group" class="row form-group mb-3">
-										  <label class="col-sm-2 col-lg-2 col-form-label">File Bengkel</label>
+										  <label class="col-sm-2 col-lg-2 col-form-label">File Bengkel <i>(Format PDF)</i></label>
 										  <div class="col-sm-10 col-lg-10">
 											  <input
 												  type="file"
@@ -258,11 +258,6 @@
   </template>
   
   <script>
-  let ClassicEditor
-  
-  if (process.client) {
-	  ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
-  }
   
   import {
 	  required,
@@ -274,6 +269,12 @@
   import Multiselect from "vue-multiselect"
   
   import "vue-multiselect/dist/vue-multiselect.min.css"
+
+  let ClassicEditor
+  
+  if (process.client) {
+	  ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
+  }
   
   /**
    * Elements component
@@ -341,7 +342,6 @@
 		  },
 		  onFileChange(e) {
 			  var files = e.target.files || e.dataTransfer.files
-  
 			  if (!files.length)
 				  return
   
@@ -364,22 +364,24 @@
 			  e.preventDefault()
   
 			  // if (this.$v.$touch() || this.$v.form.$anyError) return
-  
+			
 			  let formData = new FormData()
   
-			  this.form.supported_brands = this.form.supported_brands.map(item => item = item.value)
+			  let supportedBrands = this.form.supported_brands.map(item => item = item.value)
+			  let arrEmail = [];
 			  if (this.form.email !== "" && this.form.email !== null && this.form.email !== undefined) {
-				this.form.email = this.form.email.split(';')
+				arrEmail = this.form.email.split(';')
 			  }
   
 			  for (var key of Object.keys(this.form)) {
 				  if (this.form[key] != null)
   
 					  if (key === 'email') {
-						let emails = [];
-						for (let i = 0; i < this.form[key].length; i++) {
-							formData.append('email[]', this.form[key][i].trim());
+						for (let i = 0; i < arrEmail.length; i++) {
+							formData.append('email[]', arrEmail[i].trim());
 						}
+					  } else if (key === 'supported_brands') {
+						formData.append(key, supportedBrands)
 					  } else {
 						  formData.append(key, this.form[key])
 					  }
@@ -391,9 +393,6 @@
 			  .then(response => {
 				  this.$router.push({ name: 'products' })
 			  })
-			  	for (let pair of formData.entries()) {
-					console.log(pair[0]+ ', ' + pair[1]); 
-				}
 		  }
 	  }
   };

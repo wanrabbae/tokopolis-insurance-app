@@ -138,7 +138,7 @@
 
                         <BaseInput
                             v-model="user.phone"
-                            prefix-text="62"
+                            prefix-text="+62"
                             type="number"
                             name="Nomor Telepon"
                             label="Nomor Telepon"

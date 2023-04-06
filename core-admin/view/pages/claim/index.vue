@@ -34,9 +34,9 @@
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
 
-                        <b-button class="mt-3" href="products/create" variant="primary">
+                        <!-- <b-button class="mt-3" href="products/create" variant="primary">
                             <i class="uil uil-plus"/> Tambah
-                        </b-button>
+                        </b-button> -->
 
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-6">
@@ -215,6 +215,7 @@ export default {
                     this.totalRows = /* response.data.pagination.total || */ response.data.length;
                     return response.data;
                 })
+            return this.tableData;
         },
         showDetail(id) {
             this.$router.push({ path: `/products/${id}` })

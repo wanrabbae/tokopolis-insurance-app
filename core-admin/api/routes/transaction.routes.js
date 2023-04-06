@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const verify = require("../middlewares/verifyToken");
+const verifyToken = require('../middlewares/verifyRole')
 const { uploadFile } = require("../middlewares/uploadFile");
 
 const { getAll, transaction, detail, postTransaction, postOffer,
@@ -12,6 +13,7 @@ const { getAll, transaction, detail, postTransaction, postOffer,
 
 const router = Router();
 const auth = verify();
+const AuthRoleMiddleware = verifyToken('auth:role')
 
 router.get("/transaction/all", auth, getAll);
 router.get("/transaction", auth, transaction);
@@ -39,9 +41,9 @@ router.post('/transaction/xendit', webhookXendit)
 
 router.get('/transaction/total', auth, getTransactionTotal)
 
-router.get('/comissions', auth, getComission)
-router.get('/comissions/history', auth, getComissionHistory)
-router.post('/comissions/withdraw', auth, comissionWithdraw)
+router.get('/comissions', AuthRoleMiddleware, getComission)
+router.get('/comissions/history', AuthRoleMiddleware, getComissionHistory)
+router.post('/comissions/withdraw', AuthRoleMiddleware, comissionWithdraw)
 
 router.get('/point', auth, getPoint)
 router.get('/point/under-agents', auth, getPointBalanceAgents)

@@ -7,18 +7,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div role="group" class="form-group">
-                                <label class="col-form-label">Amount
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div>
-                                    <input
-                                        v-model="wdpoint.amount"
-                                        class="form-control"
-                                        type="number"
-                                        required />
-                                </div>
-                            </div>
-                            <div role="group" class="form-group">
                                 <label class="col-form-label">Nama Bank
                                     <label class="text-danger">*</label>
                                 </label>
@@ -27,7 +15,8 @@
                                         v-model="wdpoint.bankCode"
                                         class="form-control"
                                         type="text"
-                                        required />
+                                        required 
+                                        readonly/>
                                 </div>
                             </div>
                             <div role="group" class="form-group">
@@ -39,7 +28,8 @@
                                         v-model="wdpoint.accountHolderName"
                                         class="form-control"
                                         type="text"
-                                        required />
+                                        required 
+                                        readonly/>
                                 </div>
                             </div>
                             <div role="group" class="form-group">
@@ -51,6 +41,32 @@
                                         v-model="wdpoint.accountNumber"
                                         class="form-control"
                                         type="text"
+                                        required 
+                                        readonly/>
+                                </div>
+                            </div>
+                            <div role="group" class="form-group">
+                                <label class="col-form-label">Poin yang bisa ditarik
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div>
+                                    <input
+                                        v-model="totalPoint"
+                                        class="form-control"
+                                        type="text"
+                                        required 
+                                        readonly/>
+                                </div>
+                            </div>
+                            <div role="group" class="form-group">
+                                <label class="col-form-label">Amount
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div>
+                                    <input
+                                        v-model="wdpoint.amount"
+                                        class="form-control"
+                                        type="number"
                                         required />
                                 </div>
                             </div>
@@ -77,6 +93,15 @@
                         <template #cell(index)="data">
                             {{ (currentPage - 1) * perPage + data.index + 1 }}
                         </template>
+
+                        <template #cell(created_at)="data">
+                            {{ moment(data.item.created_at).format('D MMM yyyy') }}
+                        </template>
+
+                        <template #cell(description)="data">
+                            <span v-if="data.item.description === 'pemasukan'">Point Diterima</span>
+                            <span v-if="data.item.description === 'penarikan'">Penarikan Poin</span>
+                        </template>
                     </b-table>
                 </div>
             </div>
@@ -85,6 +110,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
     data() {
         return {
@@ -92,20 +118,23 @@ export default {
             perPage: 5,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: 'type', label: 'Type' },
-                { key: 'value', label: 'Value' },
-                { key: 'description', label: 'Description' },
-                { key: 'created_at', label: 'Created At' },
+                { key: 'created_at', label: 'Tanggal' },
+                { key: 'description', label: 'Keterangan' },
+                { key: 'value', label: 'Point' },
             ],
+            totalPoint: 0,
             wdpoint: {
                 amount: null,
                 bankCode: null,
                 accountHolderName: null,
                 accountNumber: null
-            }
+            },
         }
     },
     methods: {
+        moment(date) {
+            return moment(date)
+        },
         getData() {
             let data = [];
             data = this.$axios.$get('/api/point/history').then((resp) => {
@@ -115,6 +144,8 @@ export default {
             return data;
         },
         showModalWdPoint() {
+            this.getBank();
+            this.getPoint();
             this.$refs['form-withdraw-point'].show();
         },
         triggerWithdraw() {
@@ -134,7 +165,29 @@ export default {
                         text: 'Proses Penarikan Point Berhasil',
                     })
                 })
-        }
+        },
+        async getPoint() {
+            await this.$axios.$get('api/point')
+                .then((response) => {
+                    this.totalPoint = response.data.total || 0
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+        async getBank() {
+            await this.$axios.$get('api/user/bank')
+                .then((response) => {
+                    if (response.data != null) {
+                        this.wdpoint = {
+                            bankCode: response.data.type?.toUpperCase(),
+                            accountNumber: response.data.account_number,
+                            accountHolderName: response.data.fullname,
+                            verified: response.data.is_verified,
+                        }
+                    }
+                })
+        },
     }
 }
 </script>

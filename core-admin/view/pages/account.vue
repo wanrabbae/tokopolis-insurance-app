@@ -642,6 +642,23 @@ export default {
                     Swal.fire("Berhasil", "Berhasil Menambah Data", "success")
                     window.location.reload()
                 })
+            return await this.$axios.$post('api/admin/account', {
+                dealer_id: this.form.dealer_id,
+                role: this.form.role,
+                leader_id: this.form.leader_id,
+                data: finalForm
+            })
+            .then(response => {
+                this.$refs['form-create'].hide()
+                this.$refs['detail-modal'].show()
+
+                this.$notify({
+                    group: 'notif',
+                    type: 'success vue-notif-custom',
+                    title: 'Berhasil',
+                    text: 'Berhasil Menambah Pengguna',
+                })
+            })
         },
         async doUpdateData(e) {
             e.preventDefault()
