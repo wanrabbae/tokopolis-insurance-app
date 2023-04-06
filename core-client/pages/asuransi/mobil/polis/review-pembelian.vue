@@ -730,11 +730,6 @@ export default {
             },
             emoneyOptions: [
                 {
-                    img: '/img/logo-gopay.png',
-                    text: 'Gopay',
-                    value: 'gopay'
-                },
-                {
                     img: '/img/logo-ovo.png',
                     text: 'OVO',
                     value: 'ovo'
@@ -775,16 +770,6 @@ export default {
                     img: '/img/logo-bri.png',
                     text: 'BRI Virtual Account',
                     value: 'bri'
-                },
-                {
-                    img: '/img/logo-bsi.png',
-                    text: 'BSI Virtual Account',
-                    value: 'bsi'
-                },
-                {
-                    img: '/img/logo-bjb.png',
-                    text: 'BJB Virtual Account',
-                    value: 'bjb'
                 },
                 {
                     img: '/img/logo-payment-others.png',

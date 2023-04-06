@@ -7,18 +7,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div role="group" class="form-group">
-                                <label class="col-form-label">Amount
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div>
-                                    <input
-                                        v-model="cmpoint.amount"
-                                        class="form-control"
-                                        type="number"
-                                        required />
-                                </div>
-                            </div>
-                            <div role="group" class="form-group">
                                 <label class="col-form-label">Nama Bank
                                     <label class="text-danger">*</label>
                                 </label>
@@ -27,7 +15,8 @@
                                         v-model="cmpoint.bankCode"
                                         class="form-control"
                                         type="text"
-                                        required />
+                                        required 
+                                        readonly/>
                                 </div>
                             </div>
                             <div role="group" class="form-group">
@@ -39,7 +28,8 @@
                                         v-model="cmpoint.accountHolderName"
                                         class="form-control"
                                         type="text"
-                                        required />
+                                        required 
+                                        readonly/>
                                 </div>
                             </div>
                             <div role="group" class="form-group">
@@ -51,6 +41,32 @@
                                         v-model="cmpoint.accountNumber"
                                         class="form-control"
                                         type="text"
+                                        required 
+                                        readonly/>
+                                </div>
+                            </div>
+                            <div role="group" class="form-group">
+                                <label class="col-form-label">Komisi yang bisa ditarik
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div>
+                                    <input
+                                        v-model="totalComissionFormatted"
+                                        class="form-control"
+                                        type="text"
+                                        required 
+                                        readonly/>
+                                </div>
+                            </div>
+                            <div role="group" class="form-group">
+                                <label class="col-form-label">Amount
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div>
+                                    <input
+                                        v-model="cmpoint.amount"
+                                        class="form-control"
+                                        type="number"
                                         required />
                                 </div>
                             </div>
@@ -77,6 +93,19 @@
                         <template #cell(index)="data">
                             {{ (currentPage - 1) * perPage + data.index + 1 }}
                         </template>
+
+                        <template #cell(created_at)="data">
+                            {{ moment(data.item.created_at).format('D MMM yyyy') }}
+                        </template>
+
+                        <template #cell(description)="data">
+                            <span v-if="data.item.description === 'pemasukan'">Komisi Diterima</span>
+                            <span v-if="data.item.description === 'penarikan'">Penarikan Komisi</span>
+                        </template>
+
+                        <template #cell(value)="data">
+                            Rp. {{ Intl.NumberFormat().format(data.item.value) }}
+                        </template>
                     </b-table>
                 </div>
             </div>
@@ -85,18 +114,20 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
     data() {
         return {
             currentPage: 1,
             perPage: 5,
             fields: [
-                { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: 'type', label: 'Type' },
-                { key: 'value', label: 'Value' },
-                { key: 'description', label: 'Description' },
-                { key: 'created_at', label: 'Created At' },
+            { key: "index", label: '#', tdClass: 'align-middle' },
+                { key: 'created_at', label: 'Tanggal' },
+                { key: 'description', label: 'Keterangan' },
+                { key: 'value', label: 'Komisi' },
             ],
+            totalComission: 0,
+            totalComissionFormatted: 0,
             cmpoint: {
                 amount: null,
                 bankCode: null,
@@ -106,6 +137,9 @@ export default {
         }
     },
     methods: {
+        moment(date) {
+            return moment(date)
+        },
         getData() {
             let data = [];
             data = this.$axios.$get('/api/comissions/history').then((resp) => {
@@ -115,6 +149,8 @@ export default {
             return data;
         },
         showModalWdCommission() {
+            this.getComission();
+            this.getBank();
             this.$refs['form-withdraw-commission'].show();
         },
         triggerWithdrawCommission() {
@@ -122,8 +158,9 @@ export default {
         },
         async doWithdrawCommission(e) {
             e.preventDefault();
+            
 
-            return await this.$axios.$post('/api/commissions/withdraw', this.cmpoint)
+            return await this.$axios.$post('/api/comissions/withdraw', this.cmpoint)
                 .then(resp => {
                     this.$refs['form-withdraw-commission'].hide()
 
@@ -134,7 +171,30 @@ export default {
                         text: 'Proses Penarikan Komisi Berhasil',
                     })
                 })
-        }
+        },
+        async getComission() {
+            await this.$axios.$get('api/comissions')
+                .then((response) => {
+                    this.totalComission = response.data.total || 0
+                    this.totalComissionFormatted = `Rp. ${Intl.NumberFormat().format(response.data.total)}` || 0
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
+        async getBank() {
+            await this.$axios.$get('api/user/bank')
+                .then((response) => {
+                    if (response.data != null) {
+                        this.cmpoint = {
+                            bankCode: response.data.type?.toUpperCase(),
+                            accountNumber: response.data.account_number,
+                            accountHolderName: response.data.fullname,
+                            verified: response.data.is_verified,
+                        }
+                    }
+                })
+        },
     }
 }
 </script>

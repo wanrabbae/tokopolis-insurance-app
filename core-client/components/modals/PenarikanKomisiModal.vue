@@ -4,6 +4,7 @@
 
     <b-modal
       v-bind="$attrs"
+      ref="modal-penarikan-komisi"
       hide-header
       centered
       body-class="p-4"
@@ -18,10 +19,11 @@
         <b-form >
 
             <BaseInput
+              ref="bankCode"
               name="Nama Bank"
               label="Nama Bank"
               placeholder="Nama Bank"
-              :value="fields.bank"
+              :value="fields.type"
               readonly
             />
             <BaseInput
@@ -35,7 +37,7 @@
               name="Nama di Rekening"
               label="Nama di Rekening"
               placeholder="Nama di Rekening"
-              :value="fields.accountName"
+              :value="fields.accountHolderName"
               readonly
             />
             <BaseInputPrice
@@ -46,7 +48,7 @@
               :value="fields.value"
               readonly
             />
-            <BaseInputPrice
+            <BaseInput
               v-model="model.amount"
               label="Jumlah Penarikan"
               name="Jumlah Penarikan"
@@ -86,24 +88,35 @@ export default {
         fields: {
             type: Object,
             default: () => ({
-                value:'0',
-                bank:'',
+                amount:'0',
+                bankCode:'',
                 accountNumber: '',
-                accountName: ''
+                accountHolderName: ''
             })
         }
     },
     data () {
         return {
             model: {
-                amount: null
+              bankCode: this.fields.type,
+              accountHolderName: this.fields.accountHolderName,
+              accountNumber: this.fields.accountNumber,
+              amount: null
             }
         }
     },
     methods: {
-        okHandler(bvModalEvt){
+        async okHandler(bvModalEvt){
             bvModalEvt.preventDefault()
-            this.$emit('submit', this.model)
+
+            this.model.bankCode = this.fields.type;
+            this.model.accountHolderName = this.fields.accountHolderName;
+            this.model.accountNumber = this.fields.accountNumber;
+            
+            await this.$axios.$post('/api/comissions/withdraw', this.model)
+              .then((response) => {
+                window.location.reload();
+              })
         }
     }
 }
