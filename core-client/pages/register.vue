@@ -46,7 +46,7 @@
                     name="Nomor Telepon"
                     placeholder="Nomor Telepon"
                     rules="required"
-                    prefix-text="62"
+                    prefix-text="+62"
                 />
 
                 <BaseInput

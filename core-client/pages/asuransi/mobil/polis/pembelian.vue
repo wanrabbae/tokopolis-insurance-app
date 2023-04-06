@@ -93,8 +93,8 @@
                                     placeholder="Josua Jostar" rules="required" required asterix />
 
                                 <BaseInput v-model="model.client.phone" type="number" name="Nomor Telepon"
-                                    label="Nomor Telepon" placeholder="+62812345678" input-classes="custom-number"
-                                    onkeypress="if(this.value.length==14) return false;" />
+                                    label="Nomor Telepon" placeholder="812345678" input-classes="custom-number"
+                                    onkeypress="if(this.value.length==14) return false;" prefix-text="+62"/>
 
                                 <BaseInput v-model="model.client.email" name="Email" label="Email"
                                     placeholder="user@email.com" rules="email" />
@@ -240,14 +240,14 @@ export default {
                 },
                 {
                     key: "identityCard",
-                    label: "Kartu Identitas (KTP/NPWP/PASPOR/SIM)",
+                    label: "Kartu Identitas (KTP/NPWP)",
                     required: true
                 }
             ],
             usedVehicledocumentFields: [
                 {
                     key: "identityCard",
-                    label: "Kartu Identitas (KTP/NPWP/PASPOR/SIM)",
+                    label: "Kartu Identitas (KTP/NPWP)",
                     required: true
                 },
                 {
@@ -377,7 +377,7 @@ export default {
 
             this.formData.append('fullname', this.model.client.fullname)
             this.formData.append('email', this.model.client.email)
-            this.formData.append('phone', this.model.client.phone)
+            this.formData.append('phone', `+62${this.model.client.phone}`)
 
             this.formData.append('address_village_id', this.model.urban)
             this.formData.append('address_detail', this.model.fullAddress + " " + this.model.postalCode)

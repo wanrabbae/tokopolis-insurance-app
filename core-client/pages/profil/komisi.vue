@@ -250,9 +250,9 @@ export default {
                 { value: 'last-7-days', text: '7 Hari Terakhir' }
             ],
             bank: {
-                name: null,
+                type: null,
                 accountNumber: null,
-                accountName: null,
+                accountHolderName: null,
                 verified: false
             },
             bankAlias: {
@@ -274,9 +274,9 @@ export default {
         commissionData() {
             return {
                 value: this.commission,
-                bank: this.bankAlias[this.bank.name],
+                type: this.bankAlias[this.bank.type],
                 accountNumber: this.bank.accountNumber,
-                accountName: this.bank.accountName
+                accountHolderName: this.bank.accountHolderName
             }
         }
     },
@@ -332,9 +332,9 @@ export default {
                 .then((response) => {
                     if (response.data != null) {
                         this.bank = {
-                            name: response.data.type,
+                            type: response.data.type,
                             accountNumber: response.data.account_number,
-                            accountName: response.data.fullname,
+                            accountHolderName: response.data.fullname,
                             verified: response.data.is_verified,
                         }
                     }
