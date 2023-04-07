@@ -274,6 +274,8 @@ export default class VehicleService {
             payload[key] = image.clearPath
         })
 
+        payload.email = JSON.stringify(payload.email);
+
         for (const item of photos) {
             if (fs.existsSync(item)) {
                 fs.unlinkSync(item, { recursive: true })
