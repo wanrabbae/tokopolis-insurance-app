@@ -15,8 +15,8 @@ const router = Router();
 const auth = verify();
 const AuthRoleMiddleware = verifyToken('auth:role')
 
-router.get("/admin/claim/all", getAllClaimData);
-router.post("/admin/claim/download", getClaimFileXlsx);
+router.get("/admin/claim/all", AuthRoleMiddleware, getAllClaimData);
+router.post("/admin/claim/download", AuthRoleMiddleware, getClaimFileXlsx);
 router.get("/admin/claim/:id", AuthRoleMiddleware, getDetailClaimProduct);
 router.put('/admin/claim/:transaction_id/generate-send', AuthRoleMiddleware, generateSend)
 router.put("/admin/claim/:id/update-staging", AuthRoleMiddleware, updateStatusClaim);
