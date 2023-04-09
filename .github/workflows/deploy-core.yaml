@@ -54,6 +54,10 @@ jobs:
     - name: Show Variable
       uses: appleboy/ssh-action@master
       with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
         script: |
           echo ${{ github.event.pull_request.changed_files }}
           echo "Berhasil print variabel"
