@@ -13,8 +13,12 @@ export default class ClaimProductService {
         this.repository = new ClaimProductRepository();
     }
 
-    getAllData() {
-        return this.repository.getAll();
+    getAllData(filter, limit, offset) {
+        return this.repository.getAll(filter, limit, offset);
+    }
+
+    getClaimCount(filter) {
+        return this.repository.getClaimCount(filter);
     }
 
     getClaimCount(filter) {
@@ -27,6 +31,10 @@ export default class ClaimProductService {
 
     getDetailData(id) {
         return this.repository.getDetailData(id);
+    }
+
+    getClaimForXlsx() {
+        return this.repository.getClaimForXlsx();
     }
 
     getDetailDataWithTrxId(id) {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <embed v-if="status" :src="filename" width="100%" style="height: 100vh; display: block;" />
+        <embed :src="filename" width="100%" class="display-embed" />
     </div>
 </template>
 
@@ -40,3 +40,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .display-embed {
+        height: 100vh;
+        display: block;
+    }
+</style>
