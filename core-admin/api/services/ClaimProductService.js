@@ -21,6 +21,10 @@ export default class ClaimProductService {
         return this.repository.getClaimCount(filter);
     }
 
+    getClaimCount(filter) {
+        return this.repository.getClaimCount(filter);
+    }
+
     getClaimProducts(req) {
         return this.repository.getClaimProductsData(req);
     }
