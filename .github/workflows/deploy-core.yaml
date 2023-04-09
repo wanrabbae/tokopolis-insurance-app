@@ -53,6 +53,7 @@ jobs:
 
     steps:
     - name: Show Variable
+      uses: appleboy/ssh-action@master
       with:
         script: |
           echo ${{ github.event.pull_request.changed_files }}
