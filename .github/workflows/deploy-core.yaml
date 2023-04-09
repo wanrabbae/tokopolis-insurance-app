@@ -1,0 +1,81 @@
+name: Deploy Core Admin
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    paths:
+      - 'core-admin/**'
+      - 'core-client/**'
+
+env:
+  folderPath: /var/www/html/tokopolis
+  folderNameAdmin: core-admin
+  folderNameClient: core-client
+  pmNameAdmin: tokopolis-admin
+  pmNameClient: tokopolis-client
+
+jobs:
+  build-admin:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.changed_files, 'core-admin/')
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Copy Repository Contents via SCP
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "${{ env.folderNameAdmin }}/*"
+        target: "${{ env.folderPath }}"
+
+    - name: Executing Remote Command
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}/${{ env.folderNameAdmin }}
+          npm run packaging
+          npm run build
+          pm2 delete ${{ env.pmNameAdmin }}
+          pm2 start npm --name "${{ env.pmNameAdmin }}" -- start
+
+  build-client:
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.changed_files, 'core-client/')
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Copy Repository Contents via SCP
+      uses: appleboy/scp-action@master
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+      with:
+        source: "${{ env.folderNameClient }}/*"
+        target: "${{ env.folderPath }}"
+
+    - name: Executing Remote Command
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}/${{ env.folderNameClient }}
+          npm run packaging
+          npm run build
+          pm2 delete ${{ env.pmNameClient }}
+          pm2 start npm --name "${{ env.pmNameClient }}" -- start
