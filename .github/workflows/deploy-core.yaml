@@ -18,7 +18,6 @@ env:
 jobs:
   build-admin:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.changed_files, 'core-admin/')
 
     steps:
     - uses: actions/checkout@v1
@@ -50,7 +49,6 @@ jobs:
 
   build-client:
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.changed_files, 'core-client/')
 
     steps:
     - uses: actions/checkout@v1
