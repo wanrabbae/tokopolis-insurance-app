@@ -74,12 +74,18 @@
 											  <label class="text-danger">*</label>
 										  </label>
 										  <div class="col-sm-10 col-lg-10">
-											  <input
+											  <!-- <input
 												  type="text"
 												  class="form-control"
 												  v-model="form.email"
 												  placeholder="Masukkan Email (Pisahkan dengan ; untuk lebih dari 1 email)"
-												  required>
+												  required> -->
+												  <VueTagsInput
+													v-model="tag"
+													:tags="form.email"
+													@tags-changed="newTags => form.email = newTags"
+													placeholder="Input an email, click enter for multiple emails"
+													/>
 										  </div>
 									  </div>
   
@@ -266,23 +272,29 @@
 	  maxValue,
 	  numeric,
   } from "vuelidate/lib/validators"
-  import Multiselect from "vue-multiselect"
-  
+  import VueTagsInput from '@johmun/vue-tags-input';
+  import Multiselect from 'vue-multiselect'
   import "vue-multiselect/dist/vue-multiselect.min.css"
 
   let ClassicEditor
   
   if (process.client) {
-	  ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
+		ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
   }
   
   /**
    * Elements component
    */
   export default {
+	components: {
+		VueTagsInput,
+		Multiselect
+	},
 	  layout: 'admin',
 	  data() {
 		  return {
+				tag: '',
+      	tags: [],
 			  title: "Tambah Produk",
 			  editor: ClassicEditor,
 			  typeList: [
@@ -296,7 +308,7 @@
 				  type: null,
 				  description: null,
 				  image: null,
-				  email: null,
+				  email: this.tags,
 				  commission: 0,
 				  extra_point: 0,
 				  admin_fee: 0,
@@ -316,9 +328,6 @@
 			  title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`
 		  };
 	  },
-	  components: {
-		  Multiselect
-	  },
 	  async mounted() {
 		  this.brandList = await this.vehicleBrands()
 	  },
@@ -336,6 +345,9 @@
 		  },
 	  },
 	  methods: {
+		getEmailInputs(inputs) {
+			this.form.email = inputs
+		},
 		  validateState(name) {
 			  const { $dirty, $error } = this.$v.form[name]
 			  return $dirty ? !$error : null
@@ -368,20 +380,20 @@
 			  let formData = new FormData()
   
 			  let supportedBrands = this.form.supported_brands.map(item => item = item.value)
-			  let arrEmail = [];
+			  /* let arrEmail = [];
 			  if (this.form.email !== "" && this.form.email !== null && this.form.email !== undefined) {
-				arrEmail = this.form.email.split(';')
-			  }
+				arrEmail = this.form.email.split(';') */
+			  // }
   
 			  for (var key of Object.keys(this.form)) {
 				  if (this.form[key] != null)
   
 					  if (key === 'email') {
-						for (let i = 0; i < arrEmail.length; i++) {
-							formData.append('email[]', arrEmail[i].trim());
-						}
+							for (let i = 0; i < this.form[key].length; i++) {
+								formData.append('email[]', this.form[key][i].text);
+							}
 					  } else if (key === 'supported_brands') {
-						formData.append(key, supportedBrands)
+							formData.append(key, supportedBrands)
 					  } else {
 						  formData.append(key, this.form[key])
 					  }
@@ -397,3 +409,9 @@
 	  }
   };
   </script>
+	<style>
+		.vue-tags-input {
+			width: 100% !important;
+			max-width: 100% !important;
+		}
+	</style>

@@ -258,13 +258,35 @@ export default {
             this.$bvModal.show("modal-penarikan-poin")
         },
         async getPoint() {
-            await this.$axios.$get('api/point')
+
+            let urlApi = 'api/point';
+
+            if (!this.isAgent()) {
+                urlApi = '/api/point/under-agents';
+            }
+
+            await this.$axios.$get(urlApi)
                 .then((response) => {
                     this.points = response.data.total || 0
+
+                    if (!this.isAgent()) {
+                        this.points = 0;
+                        response.data.forEach((item) => {
+                            this.points += parseInt(item.value);
+                        })
+                    }
                 })
                 .catch(error => {
                     console.log(error)
                 })
+        },
+        isAgent() {
+            const accessToken = this.$store.state.token
+            if (!accessToken) return false
+
+            const payload = JSON.parse(atob(accessToken.split('.')[1]))
+
+            return payload.role === 5
         },
         async getTotal() {
             await this.$axios.$get('api/transaction/total')

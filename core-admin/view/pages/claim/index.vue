@@ -34,6 +34,69 @@
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
 
+                        <div class="row">
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">No Quotation / Transaksi</label>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            v-model="filterForm.id"
+                                            class="form-control"
+                                            placeholder="Masukkan Nomor Quotation"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">No Klaim</label>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            v-model="filterForm.id_claim"
+                                            class="form-control"
+                                            placeholder="Masukkan Nomor Klaim"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Nama Pemegang Polis</label>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            v-model="filterForm.holder_name"
+                                            class="form-control"
+                                            placeholder="Masukkan Nama Pemegang Polis"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Aksi</label>
+                                    <div>
+                                        <b-button type="button" variant="primary" @click="doFilter()">
+                                            <i class="uil uil-filter me-1"></i> Filter
+                                        </b-button>
+                                        <b-button type="button" variant="danger" @click="doResetFilter()"
+                                            v-b-tooltip.hover
+                                            title="Hapus Filter">
+                                            <i class="uil uil-multiply"></i>
+                                        </b-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <button @click="donwloadReport()" class="btn btn-primary float-end"><i class="uil uil-download-alt me-1"></i> Download</button>
+                            </div>
+                        </div>
+
                         <!-- <b-button class="mt-3" href="products/create" variant="primary">
                             <i class="uil uil-plus"/> Tambah
                         </b-button> -->
@@ -86,11 +149,11 @@
                                         <i class="uil uil-check-circle" ></i>
                                     </b-button>
 
-                                    <b-button v-b-tooltip.hover
+                                    <!-- <b-button v-b-tooltip.hover
                                         title="Download File"  type="button" variant="success"
                                         @click="downloadFile(data.item.id)">
                                         <i class="uil uil-download-alt" ></i>
-                                    </b-button>
+                                    </b-button> -->
 
                                     <b-button v-b-tooltip.hover
                                         title="Send File to Insurance"  type="button" variant="warning"
@@ -139,8 +202,9 @@ export default {
                 ]
             },
             filterForm: {
-                name: null,
-                type: null,
+                id: null,
+                id_klaim: null,
+                holder_name: null,
             },
             filter: null,
             filterOn: [],
@@ -207,13 +271,14 @@ export default {
                     params: {
                         current: this.currentPage,
                         limit: this.perPage,
-                        name: this.filterForm.name,
-                        type: this.filterForm.type,
+                        id: this.filterForm.id,
+                        id_klaim: this.filterForm.id_klaim,
+                        holder_name: this.filterForm.holder_name,
                     }
                 })
                 .then (response => {
                     this.totalRows = /* response.data.pagination.total || */ response.data.length;
-                    return response.data;
+                    return response.data.list;
                 })
             return this.tableData;
         },
@@ -249,6 +314,16 @@ export default {
                 .then(response => {
                     Swal.fire("Berhasil", "Berhasil Mengirim Email", "success")
                     window.location.reload();
+                })
+        },
+        async donwloadReport() {
+            await this.$axios.$post('/api/admin/claim/download')
+                .then(response => {
+                    if (response.data) {
+                        window.open(`${response.data.download_link}`, '_blank');
+
+                        window.location.reload();
+                    }
                 })
         }
     }
