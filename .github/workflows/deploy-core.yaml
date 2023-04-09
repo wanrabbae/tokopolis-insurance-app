@@ -47,6 +47,17 @@ jobs:
   #         pm2 delete ${{ env.pmNameAdmin }}
   #         pm2 start npm --name "${{ env.pmNameAdmin }}" -- start
 
+  debugging:
+    build-client:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Show Variable
+      with:
+        script: |
+          echo ${{ github.event.pull_request.changed_files }}
+          echo "Berhasil print variabel"
+
   build-client:
     runs-on: ubuntu-latest
 
@@ -73,7 +84,6 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           cd ${{ env.folderPath }}/${{ env.folderNameClient }}
-          echo ${{ github.event.pull_request.changed_files }}
           npm run packaging
           npm run build
           pm2 delete ${{ env.pmNameClient }}
