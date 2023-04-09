@@ -1,4 +1,4 @@
-name: Deploy Core Admin
+name: Deploy Core System
 
 on:
   pull_request:
