@@ -136,6 +136,13 @@ const generateXls = (review, transaction, destination) => {
     var workbook = new excel.Workbook()
     var worksheet = workbook.addWorksheet('Sheet1')
 
+    var style = workbook.createStyle({
+        fill: {
+            type: 'gradient',
+            bgColor: '#FF0800',
+        },
+    });
+
     const isNew = transaction.documents.bastk != undefined
 
     const accessoriesPriceTotal = transaction.vehicle_data.accessories.reduce((a, b) => a + b.price, 0)
@@ -232,7 +239,7 @@ const generateXls = (review, transaction, destination) => {
     for (let index = 0; index < Object.keys(values).length; index++) {
         const key = Object.keys(values)[index]
 
-        worksheet.cell(1, index + 1).string(key)
+        worksheet.cell(1, index + 1).string(key).style(style)
 
         if (typeof values[key] == 'number')
             worksheet.cell(2, index + 1).number(values[key])
@@ -352,6 +359,13 @@ exports.getXlsxAllTransaction = async (req, res) => {
 
     const list = await service.getTransactionForXlsx(req.body)
 
+    var style = workbook.createStyle({
+        fill: {
+            type: 'gradient',
+            bgColor: '#FF0800',
+        },
+    });
+
     for (let index = 0; index < list.length; index++) {
         const data2 = list[index]
         const isNew = data2.documents != null ? data2.documents.bastk != null ? true : false : false;
@@ -362,46 +376,46 @@ exports.getXlsxAllTransaction = async (req, res) => {
         var addressDetail = data2.address_detail.split(' ')
         var postalCode = addressDetail.pop()
 
-        worksheet.cell(1, 1).string("Registration Date")
-        worksheet.cell(1, 2).string("Quotation No.")
-        worksheet.cell(1, 3).string("Insurance Name")
-        worksheet.cell(1, 4).string("Tokopolis Policy Number")
-        worksheet.cell(1, 5).string("Period Of Insured")
-        worksheet.cell(1, 6).string("Nomor Rangka")
-        worksheet.cell(1, 7).string("Nomor Mesin")
-        worksheet.cell(1, 8).string("Warna")
-        worksheet.cell(1, 9).string("Foto STNK")
-        worksheet.cell(1, 10).string("Identitas Customer")
-        worksheet.cell(1, 11).string("Foto BSTK")
-        worksheet.cell(1, 12).string("Tampak Depan")
-        worksheet.cell(1, 13).string("Tampak Belakang")
-        worksheet.cell(1, 14).string("Tampak Kanan")
-        worksheet.cell(1, 15).string("Tampak Kiri")
-        worksheet.cell(1, 16).string("Tampak Mesin")
-        worksheet.cell(1, 17).string("Tampak 3D")
-        worksheet.cell(1, 18).string("Tampak Dashboard")
-        worksheet.cell(1, 19).string("Tahun Kendaraan")
-        worksheet.cell(1, 20).string("Pemakaian")
-        worksheet.cell(1, 21).string("Kondisi")
-        worksheet.cell(1, 22).string("Merek Kendaraan")
-        worksheet.cell(1, 23).string("Tipe Kendaraan")
-        worksheet.cell(1, 24).string("Seri Kendaraan")
-        worksheet.cell(1, 25).string("Nomor Polisi")
-        worksheet.cell(1, 26).string("Coverage")
-        worksheet.cell(1, 27).string("TSI")
-        worksheet.cell(1, 28).string("Premi Jaminan Utama")
-        worksheet.cell(1, 29).string("Harga Aksesoris")
-        worksheet.cell(1, 30).string("Detail Aksesoris")
-        worksheet.cell(1, 31).string("GWP")
-        worksheet.cell(1, 32).string("Diskon")
-        worksheet.cell(1, 33).string("Persenan Diskon")
-        worksheet.cell(1, 34).string("Biaya Admin")
-        worksheet.cell(1, 35).string("NWP")
-        worksheet.cell(1, 36).string("Nama Tertanggung")
-        worksheet.cell(1, 37).string("Tipe Identitas Tertanggung")
-        worksheet.cell(1, 38).string("Alamat Tertanggung")
-        worksheet.cell(1, 39).string("Insurance Notes")
-        worksheet.cell(1, 40).string("Quotation Status")
+        worksheet.cell(1, 1).string("Registration Date").style(style)
+        worksheet.cell(1, 2).string("Quotation No.").style(style)
+        worksheet.cell(1, 3).string("Insurance Name").style(style)
+        worksheet.cell(1, 4).string("Tokopolis Policy Number").style(style)
+        worksheet.cell(1, 5).string("Period Of Insured").style(style)
+        worksheet.cell(1, 6).string("Nomor Rangka").style(style)
+        worksheet.cell(1, 7).string("Nomor Mesin").style(style)
+        worksheet.cell(1, 8).string("Warna").style(style)
+        worksheet.cell(1, 9).string("Foto STNK").style(style)
+        worksheet.cell(1, 10).string("Identitas Customer").style(style)
+        worksheet.cell(1, 11).string("Foto BSTK").style(style)
+        worksheet.cell(1, 12).string("Tampak Depan").style(style)
+        worksheet.cell(1, 13).string("Tampak Belakang").style(style)
+        worksheet.cell(1, 14).string("Tampak Kanan").style(style)
+        worksheet.cell(1, 15).string("Tampak Kiri").style(style)
+        worksheet.cell(1, 16).string("Tampak Mesin").style(style)
+        worksheet.cell(1, 17).string("Tampak 3D").style(style)
+        worksheet.cell(1, 18).string("Tampak Dashboard").style(style)
+        worksheet.cell(1, 19).string("Tahun Kendaraan").style(style)
+        worksheet.cell(1, 20).string("Pemakaian").style(style)
+        worksheet.cell(1, 21).string("Kondisi").style(style)
+        worksheet.cell(1, 22).string("Merek Kendaraan").style(style)
+        worksheet.cell(1, 23).string("Tipe Kendaraan").style(style)
+        worksheet.cell(1, 24).string("Seri Kendaraan").style(style)
+        worksheet.cell(1, 25).string("Nomor Polisi").style(style)
+        worksheet.cell(1, 26).string("Coverage").style(style)
+        worksheet.cell(1, 27).string("TSI").style(style)
+        worksheet.cell(1, 28).string("Premi Jaminan Utama").style(style)
+        worksheet.cell(1, 29).string("Harga Aksesoris").style(style)
+        worksheet.cell(1, 30).string("Detail Aksesoris").style(style)
+        worksheet.cell(1, 31).string("GWP").style(style)
+        worksheet.cell(1, 32).string("Diskon").style(style)
+        worksheet.cell(1, 33).string("Persenan Diskon").style(style)
+        worksheet.cell(1, 34).string("Biaya Admin").style(style)
+        worksheet.cell(1, 35).string("NWP").style(style)
+        worksheet.cell(1, 36).string("Nama Tertanggung").style(style)
+        worksheet.cell(1, 37).string("Tipe Identitas Tertanggung").style(style)
+        worksheet.cell(1, 38).string("Alamat Tertanggung").style(style)
+        worksheet.cell(1, 39).string("Insurance Notes").style(style)
+        worksheet.cell(1, 40).string("Quotation Status").style(style)
 
         worksheet.cell(index + 1, 1).string(`${moment(data2.created_at).format("DD/MMM/YYYY")}`)
         worksheet.cell(index + 1, 2).string(`${data2.id}`)

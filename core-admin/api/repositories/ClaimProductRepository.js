@@ -8,13 +8,20 @@ export default class ClaimProductRepository {
 
     async getAll(filter, limit, offset) {
         return await sequelize.query(`
-            SELECT * FROM claim_products LEFT JOIN accounts as account ON account.id = claim_products.account_id ORDER BY claim_products.created_at ASC ` +
+            SELECT claim_products.id, claim_products.transaction_id, claim_products.plate_number, claim_products.reporter_fullname, claim_products.holder_fullname, claim_products.incident_time, claim_products.location, claim_products.status, account.fullname as account_name FROM claim_products LEFT JOIN accounts as account ON account.id = claim_products.account_id JOIN products as product ON product.id = claim_products.product_id 
+            WHERE claim_products.transaction_id LIKE '%${filter.id}%' 
+            AND claim_products.id LIKE '%${filter.id_claim}%' 
+            AND claim_products.holder_fullname LIKE '%${filter.holder_name}%' 
+            ORDER BY claim_products.created_at ASC ` +
             (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT });
     }
 
-    async getClaimCount() {
-        return await sequelize.query("SELECT COUNT(*) FROM claim_products");
+    async getClaimCount(filter) {
+        return await sequelize.query(`SELECT COUNT(*) as total FROM claim_products LEFT JOIN accounts as account ON account.id = claim_products.account_id JOIN products as product ON product.id = claim_products.product_id 
+        WHERE claim_products.transaction_id LIKE '%${filter.id}%' 
+        AND claim_products.id LIKE '%${filter.id_claim}%' 
+        AND claim_products.holder_fullname LIKE '%${filter.holder_name}%'`);
     }
 
     async getClaimProductsData(req) {
@@ -55,6 +62,10 @@ export default class ClaimProductRepository {
                 },
             ],
         });
+    }
+
+    async getClaimForXlsx() {
+        return await ClaimProduct.findAll({});
     }
 
     async getDetailDataWithTransactionId(id) {
