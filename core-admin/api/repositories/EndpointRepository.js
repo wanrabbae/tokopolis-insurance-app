@@ -2,7 +2,7 @@ const { Op } = require('sequelize')
 const { Endpoint } = require('../models')
 
 export default class EndpointRepository {
-    constructor() {}
+    constructor() { }
 
     async getRouteName(name) {
         return await Endpoint.findOne({ where: { name: name } })
@@ -59,7 +59,7 @@ export default class EndpointRepository {
         return await Endpoint.findByPk(id)
     }
 
-    async updateEndpoint(id,payload) {
+    async updateEndpoint(id, payload) {
         return await Endpoint.update(payload, {
             where: { id: id }
         })

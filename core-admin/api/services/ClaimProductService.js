@@ -17,6 +17,10 @@ export default class ClaimProductService {
         return this.repository.getAll();
     }
 
+    getClaimCount(filter) {
+        return this.repository.getClaimCount(filter);
+    }
+
     getClaimProducts(req) {
         return this.repository.getClaimProductsData(req);
     }
@@ -66,5 +70,5 @@ export default class ClaimProductService {
         });
         mailer.send();
     }
-    
+
 }

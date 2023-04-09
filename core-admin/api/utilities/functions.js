@@ -29,7 +29,7 @@ function randomString(length = 16) {
     var result = ''
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     var charactersLength = characters.length
-    for ( var i = 0; i < length; i++ ) {
+    for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() *
             charactersLength))
     }
@@ -44,8 +44,7 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-function uploadHandler(filePath, newPath)
-{
+function uploadHandler(filePath, newPath) {
     const nuxtFolder = process.env.NUXT_STATIC_DIR
     const tempPath = process.env.NUXT_TEMP_DIR
     const uploadFolder = process.env.NUXT_UPLOAD_DIR
@@ -71,18 +70,19 @@ function uploadHandler(filePath, newPath)
 }
 
 function phoneFormat(value, code = '+62') {
-    number = number.replace(/\D/g, '');
+    let number = value.replace(/\D/g, '');
 
     if (number.substring(0, 3) == '628') {
-        number = '+62' + number.substring(3);
+        number = '+628' + number.substring(3);
     }
 
     if (number.substring(0, 2) == '08') {
         number = '+62' + number.substring(1);
     }
 
-    return number.replace(/(\d{4})(?=\d)/g, '$1 ');
+    return number.replace(/(\d{4})(?=\d)/g, '$1');
 }
+
 
 const moneyFormat = (price) => {
     const formatter = new Intl.NumberFormat('id-ID', {
@@ -116,9 +116,20 @@ const titleCase = (value) => {
 
 const percentToDecimal = (number) => number / parseFloat(100)
 
+function safelyParseJSON(json) {
+    var parsed
+    try {
+        parsed = JSON.parse(json)
+    } catch (e) {
+        parsed = {}
+    }
+
+    return parsed
+}
+
 module.exports = {
     getMoment, extensionHelper,
     randomString, randomNumber, uploadHandler,
     phoneFormat, moneyFormat, moneyFormatNonSymbol,
-    stringTag, titleCase, percentToDecimal
+    stringTag, titleCase, percentToDecimal, safelyParseJSON
 }

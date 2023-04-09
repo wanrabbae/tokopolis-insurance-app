@@ -46,7 +46,7 @@
 
                         <div class="card-body">
 
-                            <div v-if="!loading">
+                            <div v-if="!loading && product.feature.length > 0">
 
                                 <div class="fw-bold mb-1">{{ product.feature[0].name }}</div>
 
@@ -399,7 +399,7 @@ export default {
             })
         },
         async getProduct(){
-            const self = this
+            // const self = this
             await this.$axios.$get(`api/product/detail?id=${this.id}`)
             .then ((response) => {
                 this.product.name = response.data.name
@@ -527,7 +527,7 @@ export default {
             })
             .then(function(response) {
                 setTimeout(() => {
-                    window.open(`/quotation/${response.data.transaction_id}`, '_blank')
+                    window.open(`/quotation/${response.data.transaction_id}.pdf`, '_blank')
                 }, 500)
 
                 self.$router.push({

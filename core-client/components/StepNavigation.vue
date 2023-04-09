@@ -18,9 +18,9 @@
             <div class="step-caption mb-1">
                 {{ step.caption }}
             </div>
-            <div v-if="id <= currentStep" class="step-date-complete">
+            <!-- <div v-if="id <= currentStep" class="step-date-complete">
                 {{ step.dateComplete }}
-            </div>
+            </div> -->
         </li>
     </ul>
 </template>
@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         navClickHandler(id) {
-            this.$emit('nav-click', id);
+            // this.$emit('nav-click', id);
         }
     }
 }

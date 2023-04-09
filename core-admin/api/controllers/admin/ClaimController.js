@@ -11,8 +11,23 @@ const service = new ClaimProductService();
 
 exports.getAllClaimData = async (req, res) => {
     try {
-        const data = await service.getAllData();
-        return res.jsonData(data);
+        const filter = {}
+        const current = Number(req.query.current) || 1
+        const limit = Number(req.query.limit) || 10
+        const offset = (current - 1) * limit
+
+        const count = await service.getClaimCount(filter)
+        const list = await service.getAllData(filter, limit, offset)
+
+        return res.jsonData({
+            pagination: {
+                total: count[0].total,
+                per_page: limit,
+                current_page: current,
+                last_page: Math.ceil(count[0].total / limit),
+            },
+            list: list
+        })
     } catch (error) {
         return res.jsonData({
             message: "Something went wrong!",
@@ -57,16 +72,22 @@ exports.generateSend = async (req, res, next) => {
     generateZip(claimData, destination)
     generateXls(claimData, destination)
 
-    service.sendEmailClaimFile({
-        host: process.env.REDIRECT_CLIENT || req.fullhost,
-        target: JSON.parse(claimData.product.email)[0],
-        title: "Claim Product Tokopolis",
-        data: {
-            name: claimData.account.fullname,
-            product: claimData.product.name,
-            url: `${process.env.REDIRECT_CLIENT}/dokumen/${claimData.id}`,
-        },
-    })
+    const emails = JSON.parse(claimData.product.email)
+
+    for (let i = 0; i < emails.length; i++) {
+        const element = emails[i];
+
+        service.sendEmailClaimFile({
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+            target: element,
+            title: `Claim Register | ${claimData.id} - ${claimData.account.fullname}`,
+            data: {
+                name: claimData.account.fullname,
+                product: claimData.product.name,
+                url: `${process.env.REDIRECT_CLIENT}/dokumen/${claimData.id}`,
+            },
+        })
+    }
 
     return res.jsonData(claimData)
 }
@@ -122,7 +143,7 @@ const generateXls = (claimData, destination) => {
         'Nomor Plat Kendaraan': claimData.plate_number,
         'Waktu Kejadian': moment(claimData.incident_time).format("DD/MMM/YYYY"),
         'Lokasi Lengkap Kejadian': claimData.location,
-        'Foto KTP': claimData.documents.identity_card ? 'Terlampir' : 'N/A',
+        'Identitas Customer': claimData.documents.identity_card ? 'Terlampir' : 'N/A',
         'Foto SIM': claimData.documents.driver_license ? 'Terlampir' : 'N/A',
         'Foto STNK': claimData.documents.stnk ? 'Terlampir' : 'N/A',
         'Dokumen Lain (Opsional)': 'N/A',

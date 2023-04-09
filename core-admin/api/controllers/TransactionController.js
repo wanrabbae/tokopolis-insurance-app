@@ -601,17 +601,17 @@ exports.postTransaction = async (req, res) => {
                 req.polyglot.t("error.transaction.create")
             );
 
-        if (req.account != null && req.account.role == 5) {
-            await setTransactionBonus({
-                account_id: req.account._id,
-                transaction_id: transaction.id,
-                discount_format: transaction.discount_format,
-                discount_value: transaction.discount_value,
-                extra_point: transaction.product.extra_point,
-                price: transaction.price,
-                expansion_price: transaction.expansions.reduce((a, b) => a + b.price, 0),
-            })
-        }
+        // if (req.account != null && req.account.role == 5) {
+        //     await setTransactionBonus({
+        //         account_id: req.account._id,
+        //         transaction_id: transaction.id,
+        //         discount_format: transaction.discount_format,
+        //         discount_value: transaction.discount_value,
+        //         extra_point: transaction.product.extra_point,
+        //         price: transaction.price,
+        //         expansion_price: transaction.expansions.reduce((a, b) => a + b.price, 0),
+        //     })
+        // }
 
         return res.jsonData({
             transaction_id: transaction.id,
@@ -652,6 +652,8 @@ exports.postTransaction = async (req, res) => {
             discount_total: req.session.product.discount_total,
             loading_rate: req.session.product.loading_rate,
             expansions: req.session.product.expansion,
+            extra_point: req.session.product.extra_point,
+            expansion_price: req.session.product.expansion_price,
             fee_admin: req.session.product.admin_fee,
             fee_stamp: req.session.product.stamp_fee,
             total:
@@ -667,17 +669,17 @@ exports.postTransaction = async (req, res) => {
     if (!newTransaction)
         return res.errorBadRequest(req.polyglot.t("error.transaction.create"));
 
-    if (req.account != null && req.account.role == 5) {
-        await setTransactionBonus({
-            account_id: req.account._id,
-            transaction_id: newTransaction.id,
-            discount_format: req.session.product.discount_format,
-            discount_value: req.session.product.discount_value,
-            extra_point: req.session.product.extra_point,
-            price: req.session.product.price,
-            expansion_price: req.session.product.expansion_price,
-        })
-    }
+    // if (req.account != null && req.account.role == 5) {
+    //     await setTransactionBonus({
+    //         account_id: req.account._id,
+    //         transaction_id: newTransaction.id,
+    //         discount_format: req.session.product.discount_format,
+    //         discount_value: req.session.product.discount_value,
+    //         extra_point: req.session.product.extra_point,
+    //         price: req.session.product.price,
+    //         expansion_price: req.session.product.expansion_price,
+    //     })
+    // }
 
     return res.jsonData({
         transaction_id: newTransaction.id,
@@ -806,17 +808,16 @@ exports.doPayment = async (req, res) => {
     if (typeof transaction.client_data == "string") {
         transaction.client_data = JSON.parse(transaction.client_data)
     }
-
     const payload = {
         order_id: transaction.id,
         customer: {
             fullname: transaction.client_data.fullname,
             email:
-            transaction.client_data.email != undefined
+                transaction.client_data.email != undefined
                     ? transaction.client_data.email
                     : account.email,
             phone:
-            transaction.client_data.email != undefined
+                transaction.client_data.phone != undefined
                     ? phoneFormat(transaction.client_data.phone)
                     : phoneFormat(account.profile.phone),
         },
@@ -825,8 +826,8 @@ exports.doPayment = async (req, res) => {
         // Even so, the return value of the api is the same as the total.payload + paymentFee
         total: transaction.total,
     };
-
     const paymentRequest = await paymentService.createRequest(payload);
+    console.log(paymentRequest);
 
     if (paymentRequest.data) {
         const data = Object.assign({}, paymentRequest.data);
@@ -910,6 +911,18 @@ exports.webhookMidtrans = async (req, res) => {
         status: result,
     });
 
+    if (transaction.agent_id != null) {
+        await setTransactionBonus({
+            account_id: transaction.agent_id,
+            transaction_id: transaction.id,
+            discount_format: transaction.discount_format,
+            discount_value: transaction.discount_value,
+            extra_point: transaction.extra_point,
+            price: transaction.price,
+            expansion_price: transaction.expansion_price,
+        })
+    }
+
     if (result == "paid") {
         service.sendEmailPaymentSuccess({
             host: process.env.REDIRECT_CLIENT || req.fullhost,
@@ -928,8 +941,8 @@ exports.webhookMidtrans = async (req, res) => {
 };
 
 exports.webhookXendit = async (req, res) => {
-    const validate = validation.xendit(req);
-    if (validate.error) return res.errorValidation(validate.details);
+    // const validate = validation.xendit(req);
+    // if (validate.error) return res.errorValidation(validate.details);
 
     const transaction_id = req.body.callback_virtual_account_id || req.body.status ? req.body.id : req.body.data.id;
 
@@ -971,6 +984,18 @@ exports.webhookXendit = async (req, res) => {
         status: result,
     });
 
+    if (transaction.agent_id != null) {
+        await setTransactionBonus({
+            account_id: transaction.agent_id,
+            transaction_id: transaction.id,
+            discount_format: transaction.discount_format,
+            discount_value: transaction.discount_value,
+            extra_point: transaction.extra_point,
+            price: transaction.price,
+            expansion_price: transaction.expansion_price,
+        })
+    }
+
     if (result == "paid") {
         service.sendEmailPaymentSuccess({
             host: process.env.REDIRECT_CLIENT || req.fullhost,
@@ -997,7 +1022,6 @@ exports.getTransactionTotal = async (req, res) => {
 exports.getComission = async (req, res) => {
     const comission = await service.getComission(req.account._id);
     if (comission.length <= 0) return res.jsonData({ total: 0 })
-
     return res.jsonData({ total: comission[0].value })
 };
 
@@ -1086,6 +1110,15 @@ exports.getPointHistory = async (req, res) => {
     const point = await service.getPointHistory(req.account._id);
 
     return res.jsonData(point);
+};
+
+exports.getPointBalanceAgents = async (req, res) => {
+    const account_ids = [1]
+    const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
+    accountsUnder.forEach(au => account_ids.push(au.id))
+
+    const point = await service.getPointAgents(account_ids, req)
+    return res.jsonData(point)
 };
 
 exports.simulatePay = async (req, res) => {

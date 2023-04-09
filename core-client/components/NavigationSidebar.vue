@@ -54,6 +54,12 @@
 
                 </b-list-group-item> -->
 
+                <b-list-group-item v-if="!isAgent()" href="/profil/poin">
+
+                    <fa icon="award" class="mr-3"/><span>Poin Reward</span>
+
+                </b-list-group-item>
+
                 <b-list-group-item href="/profil/ganti-password">
 
                     <fa icon="lock" class="mr-3"/><span>Ganti Password</span>

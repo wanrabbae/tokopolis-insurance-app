@@ -4,7 +4,7 @@ exports.simulateVaPay = async (req, res) => {
     const vaNumber = req.body.va_number
 
     try {
-        const sendRequest = await axios.post(process.env.API_SERVER_URL, {
+        const sendRequest = await axios.post(process.env.API_SERVER_URL + "/api/simulate/pay", {
             va_number: vaNumber,
         }, {})
 

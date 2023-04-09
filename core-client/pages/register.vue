@@ -46,6 +46,7 @@
                     name="Nomor Telepon"
                     placeholder="Nomor Telepon"
                     rules="required"
+                    prefix-text="+62"
                 />
 
                 <BaseInput
@@ -144,7 +145,7 @@ export default {
                 await this.$axios.post('api/register', {
                     fullname: this.model.fullname,
                     email: this.model.email,
-                    phone : this.model.phone,
+                    phone : "+62" + this.model.phone,
                     password: this.model.password,
                     password_confirmation : this.model.confirm_password
                 }).then((response) => {

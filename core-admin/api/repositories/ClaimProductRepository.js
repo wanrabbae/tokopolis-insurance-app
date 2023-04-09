@@ -1,19 +1,20 @@
+const { Op, QueryTypes } = require("sequelize");
 const moment = require("moment");
-const { Op } = require("sequelize");
 
-const { Account, ClaimProduct, Product } = require("../models");
+const { Account, ClaimProduct, Product, sequelize } = require("../models");
 
 export default class ClaimProductRepository {
-    constructor() {}
+    constructor() { }
 
-    async getAll() {
-        return await ClaimProduct.findAll({
-            include: {
-                model: Account,
-                as: "account",
-                attributes: ["id", "fullname", "email"],
-            },
-        });
+    async getAll(filter, limit, offset) {
+        return await sequelize.query(`
+            SELECT * FROM claim_products LEFT JOIN accounts as account ON account.id = claim_products.account_id ORDER BY claim_products.created_at ASC ` +
+            (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
+            { type: QueryTypes.SELECT });
+    }
+
+    async getClaimCount() {
+        return await sequelize.query("SELECT COUNT(*) FROM claim_products");
     }
 
     async getClaimProductsData(req) {

@@ -19,12 +19,17 @@ export default class VehicleService {
     }
 
     async getProductAll(filter, limit, offset) {
-        return await this.repository.getProductAll(filter, limit, offset)
+        const data = await this.repository.getProductAll(filter, limit, offset)
+        data.map(data => data.dataValues.email = JSON.parse(data.dataValues.email))
+        return data
     }
 
     async getProductList(payload, limit, offset, product_price) {
         const data = await this.repository.getProductList(payload, limit, offset)
-        data.map(data => data.dataValues.price = product_price)
+        data.map(data => {
+            data.dataValues.price = product_price
+            data.dataValues.email = JSON.parse(data.dataValues.email)
+        })
 
         return data
     }
@@ -123,7 +128,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 100; value+=5) {
+                    for (let value = 5; value <= 100; value += 5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: tplRate(toMillion(value), vehicle.use),
@@ -140,7 +145,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 50; value+=5) {
+                    for (let value = 5; value <= 50; value += 5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: paDriver(toMillion(value)),
@@ -157,7 +162,7 @@ export default class VehicleService {
                 premiums: (() => {
                     const premiums = []
 
-                    for (let value = 5; value <= 50; value+=5) {
+                    for (let value = 5; value <= 50; value += 5) {
                         premiums.push({
                             value: toMillion(value),
                             rate: paPassenger(toMillion(value)),
@@ -253,6 +258,8 @@ export default class VehicleService {
             const image = uploadHandler(files[key][0].path, 'product')
             payload[key] = image.clearPath
         })
+
+        payload.email = JSON.stringify(payload.email);
 
         return this.repository.createProduct(payload)
     }

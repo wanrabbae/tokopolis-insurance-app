@@ -41,6 +41,30 @@
                     </div>
                 </b-modal>
 
+                <b-modal size="lg" scrollable ref="form-modal-feedback" title="Kirim Feedback"
+                ok-title="Submit" @ok.prevent="triggerSubmitFeedback" cancel-title="Batal">
+                    <div class="d-block text-justify">
+                        <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="submitFeedback">
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-2 col-lg-2 col-form-label">Message
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <textarea
+                                        v-model="sendFeedbackParam.message"
+                                        class="form-control"
+                                        placeholder="Tulis pesan kepada agent..."
+                                        required>
+                                    </textarea>
+                                </div>
+                            </div>
+
+                            <button ref="submit-feedback" class="d-none"></button>
+
+                        </form>
+                    </div>
+                </b-modal>
+
                 <b-modal size="lg" scrollable ref="detail-modal" title="Detail Fitur"
                 ok-only ok-title="Tutup">
                     <div class="card-body">
@@ -281,6 +305,12 @@
                                         <i class="uil uil-eye"/>
                                     </b-button>
 
+                                    <b-button v-b-tooltip.hover type="button"
+                                        title="Send Feedback to Agent" variant="warning"
+                                        @click="sendFeedback(data.item.id)">
+                                        <i class="uil uil-fast-mail" ></i>
+                                    </b-button>
+
                                     <!-- <b-button type="button" variant="danger" v-b-tooltip.hover
                                         title="Hapus Data" v-on:click="deleteData(data.item.id)">
                                         <i class="uil uil-trash"/>
@@ -327,6 +357,7 @@ export default {
             currentPage: 1,
             perPage: 5,
             pageOptions: [5, 10, 25, 50],
+            downloadLink: '',
             filterList: {
                 brands: [],
                 types: [],
@@ -340,6 +371,7 @@ export default {
                 type: null,
                 product: null,
                 daterange: "",
+                status: "waiting"
             },
             downloadRangeDate: "",
             sortDesc: false,
@@ -363,7 +395,12 @@ export default {
             formDownload: {
                 start_period: "",
                 end_period: ""
-            }
+            },
+            sendFeedbackParam: {
+                trx_id: null,
+                message: null
+            },
+            account: []
         }
     },
     head() {
@@ -381,6 +418,7 @@ export default {
     },
     async mounted() {
         // Set the initial number of items
+        this.account = this.getAccount()
         this.totalRows = this.tableData.length
         this.backup['form'] = Object.assign({}, this.form)
 
@@ -408,8 +446,6 @@ export default {
         async vehicleBrands() {
             return await this.$axios.$get('api/admin/vehicle/item/brands')
                 .then ((response) => {
-                    if (!response) return
-
                     const list = response.data.map(item =>
                         item = { value: item.brand, text: item.brand })
 
@@ -423,8 +459,6 @@ export default {
         async vehicleTypes() {
             return await this.$axios.$get('api/admin/vehicle/item/types')
                 .then ((response) => {
-                    if (!response) return
-
                     const list = response.data.map(item =>
                         item = { value: item.vehicle_type, text: item.vehicle_type })
 
@@ -438,8 +472,6 @@ export default {
         async productNames() {
             return await this.$axios.$get('api/admin/product/item/names')
                 .then ((response) => {
-                    if (!response) return
-
                     const list = response.data.map(item =>
                         item = { value: item.name, text: item.name })
 
@@ -468,8 +500,21 @@ export default {
             this.getData()
             this.$refs.table.refresh()
         },
+        async getAccount() {
+            this.account = await this.$axios.$get('api/admin/account')
+                .then ((response) => {
+                    return response.data;
+                })
+
+            return this.account;
+        },
         async getData() {
-            this.tableData = await this.$axios.$get('api/admin/transaction/list', {
+
+            this.account = await this.getAccount();
+
+            const endpoint = this.account.role_id !== 1 ? '/api/admin/transaction/listUnder' : 'api/admin/transaction/list';
+
+            this.tableData = await this.$axios.$get(endpoint, {
                     params: {
                         id: this.filterForm.id,
                         name: this.filterForm.name,
@@ -486,6 +531,7 @@ export default {
                 })
                 .then ((response) => {
                     this.totalRows = response.data.pagination.total
+                    this.downloadLink = response.data.download_link
                     return response.data.list
                 })
                 .catch ([])
@@ -571,7 +617,27 @@ export default {
 
                 this.$refs["filter-download-modal"].hide();
             }) 
+        },
+        sendFeedback(id) {
+            this.sendFeedbackParam.trx_id = id;
+
+            this.showFormFeedback();
+        },
+        showFormFeedback() {
+            this.$refs['form-modal-feedback'].show();
+        },
+        triggerSubmitFeedback() {
+            this.$refs['submit-feedback'].click();
+        },
+        submitFeedback() {
+            this.$axios.$post(`/api/admin/transaction/${this.sendFeedbackParam.trx_id}/feedback`, this.sendFeedbackParam.message).then(resp => {
+                this.$refs['form-modal-feedback'].hide()
+
+                Swal.fire("Berhasil", "Berhasil Mengirim Feedback", "success")
+                window.location.reload()
+            })
         }
     }
 }
 </script>
+

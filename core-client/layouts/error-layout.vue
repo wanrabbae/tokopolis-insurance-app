@@ -8,8 +8,12 @@
 
         <div class="error-message w-50 w-md-75 mb-5">
 
-            <span>
+            <span v-if="error.statusCode === 404">
                 Halaman tidak dapat ditemukan
+            </span>
+
+            <span v-else>
+                {{ error.message }}
             </span>
 
         </div>

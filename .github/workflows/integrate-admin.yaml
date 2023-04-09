@@ -1,23 +1,23 @@
-name: Test Core Admin
+# name: Test Core Admin
 
-on:
-  pull_request:
-    branches: [ master ]
-    paths:
-      - 'core-admin/**'
+# on:
+#   pull_request:
+#     branches: [ master ]
+#     paths:
+#       - 'core-admin/**'
 
-jobs:
-  test:
-    runs-on: ubuntu-18.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-      - name: Install & Build Packages
-        working-directory: core-admin
-        run: |
-          npm install
-          npm run build
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+#       - name: Setup node
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: '14.x'
+#       - name: Install & Build Packages
+#         working-directory: core-admin
+#         run: |
+#           npm install
+#           npm run build

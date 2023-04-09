@@ -142,31 +142,43 @@ export default {
                 currentStep: 0,
                 steps: [
                     {
+                        key: "pending",
+                        index: 0,
                         icon: "ReportIcon",
                         caption: "Laporan Klaim",
                         dateComplete: ""
                     },
                     {
+                        key: "surveyed",
+                        index: 1,
                         icon: "SurveyIcon",
                         caption: "Survey Klaim",
                         dateComplete: "13 Februari 2020"
                     },
                     {
+                        key: "accepted",
+                        index: 2,
                         icon: "ApprovedIcon",
                         caption: "Klaim Diterima",
                         dateComplete: "14 Februari 2020"
                     },
                     {
+                        key: "fixed",
+                        index: 3,
                         icon: "VehicleUnderRepairIcon",
                         caption: "Perbaikan Kendaraan di Bengkel",
                         dateComplete: "15 Februari 2020"
                     },
                     {
+                        key: "ready",
+                        index: 4,
                         icon: "VehicleReadyIcon",
                         caption: "Kendaraan Siap Diambil",
                         dateComplete: "16 Februari 2020"
                     },
                     {
+                        key: "done",
+                        index: 5,
                         icon: "CheckedIcon",
                         caption: "Selesai",
                         dateComplete: "17 Februari 2020"
@@ -212,6 +224,11 @@ export default {
                     this.policyData.period = `Tanggal Pengajuan: ${start.format('D MMM yyyy')}`
                     this.policyData.status = response.data.status
                     this.policyData.steps[0].dateComplete = moment(response.data.created_at).format('D MMM yyyy')
+
+                    const currentStep = this.policyData.steps.find((item) => item.key === response.data.status);
+                    if (currentStep) {
+                        this.policyData.currentStep = currentStep.index;
+                    }
                 })
         },
     }

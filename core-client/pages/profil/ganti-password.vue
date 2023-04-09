@@ -6,6 +6,16 @@
 
             <h2>Ganti Password</h2>
 
+            <b-alert :show="showAlertError" variant="danger" class="mb-3">
+
+                <b-list-group class="alert text-white">
+
+                    <b-list-group-item v-for="notification in notifications" :key="notification.message" class="list-item-alert-danger">• {{notification.message}}</b-list-group-item>
+
+                </b-list-group>
+
+            </b-alert>
+
             <b-form
                 method="post"
                 class="w-100 w-md-75"
@@ -71,7 +81,10 @@ export default {
                 oldPassword: null,
                 newPassword: null,
                 confirmPassword: null
-            }
+            },            
+            showAlertSuccess:false,
+            showAlertError:false,            
+            notifications:[]
         }
     },
     head() {
@@ -81,13 +94,28 @@ export default {
     },
     methods: {
         async changePassword() {
-            await this.$axios.$post('api/user/change-password', {
-                password : this.model.oldPassword,
-                password_new : this.model.newPassword,
-                password_confirmation : this.model.confirmPassword
-            }).then ((response)=> {
-                window.location.reload(true)
-            })
+            try {
+                await this.$axios.$post('api/user/change-password', {
+                    password : this.model.oldPassword,
+                    password_new : this.model.newPassword,
+                    password_confirmation : this.model.confirmPassword
+                }).then ((response)=> {
+                    window.location.reload(true)
+                })
+            } catch (e) {
+
+                if(e.response.data.message == null){
+                    this.notifications = e.response.data.data
+                } else {
+                    this.notifications = []
+                    this.notifications.push({
+                        message: e.response.data.message
+                    })
+                }
+
+                this.showAlertError = true
+                this.showAlertSuccess = false
+            }
 
         }
     }

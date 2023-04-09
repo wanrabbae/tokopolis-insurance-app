@@ -8,7 +8,7 @@ const create = (req) => {
         dealer_id: Joi.string()
             .required()
             .label(req.polyglot.t("field.dealer_id")),
-        role: Joi.string()
+        role: Joi.number()
             .required()
             .label(req.polyglot.t("field.role")),
         leader_id: Joi.number()
@@ -136,7 +136,6 @@ const adminUpdate = (req) => {
 const updatePassword = (req) => {
     const schema = Joi.object({
         password: Joi.string()
-            .min(8)
             .required()
             .label(req.polyglot.t("field.password")),
         password_new: Joi.string()

@@ -5,14 +5,17 @@ const { Account, Profile, Identity, Bank,
     AccountToken, Role, RoleUpgrade, Dealer, User } = require("../models");
 
 export default class AccountRepository {
-    constructor() {}
+    constructor() { }
 
     async getAccountAll(limit, offset) {
         return await Account.findAll({
-            include: {
+            include: [{
                 model: Role,
                 as: "roles",
-            },
+            }, {
+                model: Dealer,
+                as: "dealers",
+            }],
             limit: limit,
             offset: offset,
         });
@@ -30,7 +33,10 @@ export default class AccountRepository {
                 {
                     model: Role,
                     as: "roles",
-                },
+                }, {
+                    model: Dealer,
+                    as: "dealers",
+                }
             ],
             limit: limit,
             offset: offset,
@@ -38,7 +44,11 @@ export default class AccountRepository {
     }
 
     async getAccount(id) {
-        return await Account.scope("withoutPass").findByPk(id);
+        return await Account.findByPk(id);
+    }
+
+    async getAccount2(id) {
+        return await Account.findByPk(id);
     }
 
     async getAccountUniqueId(id) {
@@ -46,6 +56,20 @@ export default class AccountRepository {
             where: {
                 unique_id: id,
             },
+        });
+    }
+
+    async getAllAccountFromPrefixID(unique_id) {
+        return await Account.findAll({
+            where: {
+                unique_id: { [Op.like]: `${unique_id}-%` },
+            },
+            order: [
+                ['id', 'DESC']
+            ],
+            attributes: ["id", "role_id", "other_id", "unique_id"],
+            raw: true,
+            nest: true,
         });
     }
 
@@ -91,10 +115,8 @@ export default class AccountRepository {
     async getAccountDataWithDealerAndRoleId(dealer_id, role_id) {
         return await Account.findAll({
             where: {
-                unique_id: {
-                    [Op.like]: `${dealer_id}-%`,
-                },
-                role_id: role_id,
+                dealer_id: dealer_id,
+                role_id: role_id - 1,
             },
             attributes: ["id", "fullname"],
         });
@@ -113,7 +135,7 @@ export default class AccountRepository {
 
     async getAccountSimple(id) {
         return await Account.findByPk(id, {
-            attributes: ['fullname', 'email']
+            attributes: ['fullname', 'email', 'unique_id']
         });
     }
 
@@ -158,6 +180,7 @@ export default class AccountRepository {
             fullname: payload.fullname,
             email: payload.email,
             password: payload.password,
+            role_id: payload.role_id
         });
 
         await Profile.create({
