@@ -71,11 +71,16 @@
 											  <label class="text-danger">*</label>
 										  </label>
 										  <div class="col-sm-10 col-lg-10">
+<<<<<<< HEAD
 											  <!-- <input
+=======
+											  <input
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 												  type="text"
 												  class="form-control"
 												  v-model="form.email"
 												  placeholder="Masukkan Email  (Pisahkan dengan ; untuk lebih dari 1 email)"
+<<<<<<< HEAD
 												  required> -->
 
 												  <VueTagsInput
@@ -84,6 +89,9 @@
 													@tags-changed="newTags => form.email = newTags"
 													placeholder="Input an email, click enter for multiple emails"
 													/>
+=======
+												  required>
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 										  </div>
 									  </div>
   
@@ -260,6 +268,7 @@
   </template>
   
   <script>
+<<<<<<< HEAD
   import {
     required,
     maxLength,
@@ -271,18 +280,34 @@
 
 	import "vue-multiselect/dist/vue-multiselect.min.css"
   import VueTagsInput from '@johmun/vue-tags-input';
+=======
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
   let ClassicEditor
   
   if (process.client) {
 	  ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
   }
   
+<<<<<<< HEAD
   
+=======
+  import {
+	  required,
+	  maxLength,
+	  minValue,
+	  maxValue,
+	  numeric,
+  } from "vuelidate/lib/validators"
+  import Multiselect from "vue-multiselect"
+  
+  import "vue-multiselect/dist/vue-multiselect.min.css"
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
   
   /**
    * Elements component
    */
   export default {
+<<<<<<< HEAD
 	  components: {
 		  Multiselect,
       VueTagsInput
@@ -292,6 +317,11 @@
 		  return {
         tag: '',
       	tags: [],
+=======
+	  layout: 'admin',
+	  data() {
+		  return {
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 			  id: this.$nuxt.$route.params.id,
 			  title: "Edit Produk",
 			  editor: ClassicEditor,
@@ -307,7 +337,11 @@
 				  type: null,
 				  description: null,
 				  image: null,
+<<<<<<< HEAD
 				  email: [],
+=======
+				  email: null,
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 				  commission: 0,
 				  extra_point: 0,
 				  admin_fee: 0,
@@ -327,6 +361,12 @@
 			  title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`
 		  };
 	  },
+<<<<<<< HEAD
+=======
+	  components: {
+		  Multiselect
+	  },
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 	  async mounted() {
 		  this.getData()
   
@@ -376,7 +416,10 @@
 					  response.data.supported_brands = response.data.supported_brands
 						  .split(',')
 						  .map(item => item = { value: item, text: item })
+<<<<<<< HEAD
             response.data.email = JSON.parse(response.data.email);
+=======
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
   
 					  this.form = response.data
 				  })
@@ -389,6 +432,7 @@
 			  let ctx = this
 			  let formData = new FormData()
   
+<<<<<<< HEAD
 			  let supportedBrands = this.form.supported_brands.map(item => item = item.value)
   
 			  for (var key of Object.keys(this.form)) {
@@ -401,6 +445,20 @@
 							formData.append(key, supportedBrands)
 					  } else {
 						  formData.append(key, this.form[key])
+=======
+			  this.form.supported_brands = this.form.supported_brands.map(item => item = item.value)
+			  this.form.email = this.form.email.split(';')
+  
+			  for (var key of Object.keys(this.form)) {
+				  if (!this.excludes.includes(key) && this.form[key] != null)
+					  if (key === 'email') {
+						  for (let i = 0; i < this.form[key].length; i++) {
+							  formData.append('email[]', this.form[key][i].trim());
+						  }
+					  } else {
+						  formData.append(key, this.form[key])
+  
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 					  }
 			  }
   
@@ -414,9 +472,12 @@
 	  }
   };
   </script>
+<<<<<<< HEAD
   <style>
   .vue-tags-input {
     width: 100% !important;
     max-width: 100% !important;
   }
 </style>
+=======
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6

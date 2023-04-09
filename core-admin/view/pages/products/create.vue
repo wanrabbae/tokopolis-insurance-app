@@ -74,11 +74,16 @@
 											  <label class="text-danger">*</label>
 										  </label>
 										  <div class="col-sm-10 col-lg-10">
+<<<<<<< HEAD
 											  <!-- <input
+=======
+											  <input
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 												  type="text"
 												  class="form-control"
 												  v-model="form.email"
 												  placeholder="Masukkan Email (Pisahkan dengan ; untuk lebih dari 1 email)"
+<<<<<<< HEAD
 												  required> -->
 												  <VueTagsInput
 													v-model="tag"
@@ -86,6 +91,9 @@
 													@tags-changed="newTags => form.email = newTags"
 													placeholder="Input an email, click enter for multiple emails"
 													/>
+=======
+												  required>
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 										  </div>
 									  </div>
   
@@ -272,20 +280,30 @@
 	  maxValue,
 	  numeric,
   } from "vuelidate/lib/validators"
+<<<<<<< HEAD
   import VueTagsInput from '@johmun/vue-tags-input';
   import Multiselect from 'vue-multiselect'
+=======
+  import Multiselect from "vue-multiselect"
+  
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
   import "vue-multiselect/dist/vue-multiselect.min.css"
 
   let ClassicEditor
   
   if (process.client) {
+<<<<<<< HEAD
 		ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
+=======
+	  ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
   }
   
   /**
    * Elements component
    */
   export default {
+<<<<<<< HEAD
 	components: {
 		VueTagsInput,
 		Multiselect
@@ -295,6 +313,11 @@
 		  return {
 				tag: '',
       	tags: [],
+=======
+	  layout: 'admin',
+	  data() {
+		  return {
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 			  title: "Tambah Produk",
 			  editor: ClassicEditor,
 			  typeList: [
@@ -308,7 +331,11 @@
 				  type: null,
 				  description: null,
 				  image: null,
+<<<<<<< HEAD
 				  email: this.tags,
+=======
+				  email: null,
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 				  commission: 0,
 				  extra_point: 0,
 				  admin_fee: 0,
@@ -328,6 +355,12 @@
 			  title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`
 		  };
 	  },
+<<<<<<< HEAD
+=======
+	  components: {
+		  Multiselect
+	  },
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 	  async mounted() {
 		  this.brandList = await this.vehicleBrands()
 	  },
@@ -345,9 +378,12 @@
 		  },
 	  },
 	  methods: {
+<<<<<<< HEAD
 		getEmailInputs(inputs) {
 			this.form.email = inputs
 		},
+=======
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 		  validateState(name) {
 			  const { $dirty, $error } = this.$v.form[name]
 			  return $dirty ? !$error : null
@@ -380,20 +416,35 @@
 			  let formData = new FormData()
   
 			  let supportedBrands = this.form.supported_brands.map(item => item = item.value)
+<<<<<<< HEAD
 			  /* let arrEmail = [];
 			  if (this.form.email !== "" && this.form.email !== null && this.form.email !== undefined) {
 				arrEmail = this.form.email.split(';') */
 			  // }
+=======
+			  let arrEmail = [];
+			  if (this.form.email !== "" && this.form.email !== null && this.form.email !== undefined) {
+				arrEmail = this.form.email.split(';')
+			  }
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
   
 			  for (var key of Object.keys(this.form)) {
 				  if (this.form[key] != null)
   
 					  if (key === 'email') {
+<<<<<<< HEAD
 							for (let i = 0; i < this.form[key].length; i++) {
 								formData.append('email[]', this.form[key][i].text);
 							}
 					  } else if (key === 'supported_brands') {
 							formData.append(key, supportedBrands)
+=======
+						for (let i = 0; i < arrEmail.length; i++) {
+							formData.append('email[]', arrEmail[i].trim());
+						}
+					  } else if (key === 'supported_brands') {
+						formData.append(key, supportedBrands)
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
 					  } else {
 						  formData.append(key, this.form[key])
 					  }
@@ -409,9 +460,12 @@
 	  }
   };
   </script>
+<<<<<<< HEAD
 	<style>
 		.vue-tags-input {
 			width: 100% !important;
 			max-width: 100% !important;
 		}
 	</style>
+=======
+>>>>>>> af4f2a0419116d69cde64c5867c071158ea8acf6
