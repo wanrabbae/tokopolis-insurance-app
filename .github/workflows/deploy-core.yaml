@@ -82,6 +82,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v14.6
+
     - name: Show Variable
       uses: appleboy/ssh-action@master
       with:
@@ -93,17 +97,6 @@ jobs:
           echo ${{ steps.files.outputs.all }}
           echo "Berhasil print variabel"
 
-  run-admin-only:
-    runs-on: ubuntu-latest
-    if: contains(steps.files.outputs.all, 'core-admin/')
-
-    steps:
-    - name: Show Variable
-      uses: appleboy/ssh-action@master
-      with:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        script: |
-          echo "Berhasil Run Admin"
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
