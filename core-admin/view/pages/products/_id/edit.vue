@@ -71,12 +71,19 @@
 											  <label class="text-danger">*</label>
 										  </label>
 										  <div class="col-sm-10 col-lg-10">
-											  <input
+											  <!-- <input
 												  type="text"
 												  class="form-control"
 												  v-model="form.email"
 												  placeholder="Masukkan Email  (Pisahkan dengan ; untuk lebih dari 1 email)"
-												  required>
+												  required> -->
+
+												  <VueTagsInput
+													v-model="tag"
+													:tags="form.email"
+													@tags-changed="newTags => form.email = newTags"
+													placeholder="Input an email, click enter for multiple emails"
+													/>
 										  </div>
 									  </div>
   
@@ -253,30 +260,38 @@
   </template>
   
   <script>
+  import {
+    required,
+    maxLength,
+    minValue,
+    maxValue,
+    numeric,
+  } from "vuelidate/lib/validators"
+  import Multiselect from "vue-multiselect"
+
+	import "vue-multiselect/dist/vue-multiselect.min.css"
+  import VueTagsInput from '@johmun/vue-tags-input';
   let ClassicEditor
   
   if (process.client) {
 	  ClassicEditor = require('@ckeditor/ckeditor5-build-classic');
   }
   
-  import {
-	  required,
-	  maxLength,
-	  minValue,
-	  maxValue,
-	  numeric,
-  } from "vuelidate/lib/validators"
-  import Multiselect from "vue-multiselect"
   
-  import "vue-multiselect/dist/vue-multiselect.min.css"
   
   /**
    * Elements component
    */
   export default {
+	  components: {
+		  Multiselect,
+      VueTagsInput
+	  },
 	  layout: 'admin',
 	  data() {
 		  return {
+        tag: '',
+      	tags: [],
 			  id: this.$nuxt.$route.params.id,
 			  title: "Edit Produk",
 			  editor: ClassicEditor,
@@ -292,7 +307,7 @@
 				  type: null,
 				  description: null,
 				  image: null,
-				  email: null,
+				  email: [],
 				  commission: 0,
 				  extra_point: 0,
 				  admin_fee: 0,
@@ -311,9 +326,6 @@
 		  return {
 			  title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`
 		  };
-	  },
-	  components: {
-		  Multiselect
 	  },
 	  async mounted() {
 		  this.getData()
@@ -364,6 +376,7 @@
 					  response.data.supported_brands = response.data.supported_brands
 						  .split(',')
 						  .map(item => item = { value: item, text: item })
+            response.data.email = JSON.parse(response.data.email);
   
 					  this.form = response.data
 				  })
@@ -376,18 +389,18 @@
 			  let ctx = this
 			  let formData = new FormData()
   
-			  this.form.supported_brands = this.form.supported_brands.map(item => item = item.value)
-			  this.form.email = this.form.email.split(';')
+			  let supportedBrands = this.form.supported_brands.map(item => item = item.value)
   
 			  for (var key of Object.keys(this.form)) {
 				  if (!this.excludes.includes(key) && this.form[key] != null)
-					  if (key === 'email') {
-						  for (let i = 0; i < this.form[key].length; i++) {
-							  formData.append('email[]', this.form[key][i].trim());
-						  }
+            if (key === 'email') {
+							for (let i = 0; i < this.form[key].length; i++) {
+								formData.append('email[]', this.form[key][i].text ===undefined ? this.form[key][i] : this.form[key][i].text);
+							}
+					  } else if (key === 'supported_brands') {
+							formData.append(key, supportedBrands)
 					  } else {
 						  formData.append(key, this.form[key])
-  
 					  }
 			  }
   
@@ -401,3 +414,9 @@
 	  }
   };
   </script>
+  <style>
+  .vue-tags-input {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+</style>

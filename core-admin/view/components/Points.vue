@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2"
 import moment from 'moment';
 export default {
     data() {
@@ -179,12 +180,22 @@ export default {
             await this.$axios.$get('api/user/bank')
                 .then((response) => {
                     if (response.data != null) {
+
+                        if (response.data.is_verified === false) {
+                            Swal.fire("Information", "Data rekening bank belum di verifikasi.", "error")
+                        }
+
                         this.wdpoint = {
                             bankCode: response.data.type?.toUpperCase(),
                             accountNumber: response.data.account_number,
                             accountHolderName: response.data.fullname,
                             verified: response.data.is_verified,
                         }
+                    }
+
+                    if (response.data == null) {
+                        Swal.fire("Information", "Data rekening bank belum ada.", "error")
+                        this.$refs['form-withdraw-point'].hide();
                     }
                 })
         },
