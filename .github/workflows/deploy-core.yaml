@@ -51,7 +51,7 @@ jobs:
           npm run packaging
 
   install-client:
-    needs: get-all-files
+    needs: build-admin
     runs-on: ubuntu-latest
 
     steps:
@@ -68,7 +68,7 @@ jobs:
           npm run packaging
 
   build-admin:
-    needs: [install-admin, install-client]
+    needs: install-admin
     runs-on: ubuntu-latest
 
     steps:
@@ -87,7 +87,7 @@ jobs:
           pm2 start npm --name "${{ env.adminVirtualName }}" -- start
 
   build-client:
-    needs: [install-admin, install-client]
+    needs: install-client
     runs-on: ubuntu-latest
 
     steps:
