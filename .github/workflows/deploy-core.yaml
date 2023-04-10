@@ -10,10 +10,10 @@ on:
 
 env:
   folderPath: /var/www/html/tokopolis
-  folderNameAdmin: core-admin
-  folderNameClient: core-client
-  pmNameAdmin: tokopolis-admin
-  pmNameClient: tokopolis-client
+  adminFolderName: core-admin
+  adminVirtualName: tokopolis-admin
+  clientFolderName: core-client
+  clientVirtualName: tokopolis-client
 
 jobs:
   get-all-files:
@@ -29,7 +29,7 @@ jobs:
           PORT: ${{ secrets.PORT }}
           KEY: ${{ secrets.SSHKEY }}
           with:
-        source: "*"
+        source: "${{ env.adminFolderName }}/*,${{ env.clientFolderName }}/*"
         target: "${{ env.folderPath }}"
 
   install-admin:
@@ -46,7 +46,7 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           export NODE_OPTIONS="--max_old_space_size=4096"
-          cd ${{ env.folderPath }}/${{ env.folderNameAdmin }}
+          cd ${{ env.folderPath }}/${{ env.adminFolderName }}
           npm run packaging
 
   install-client:
@@ -63,7 +63,7 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           export NODE_OPTIONS="--max_old_space_size=4096"
-          cd ${{ env.folderPath }}/${{ env.folderNameClient }}
+          cd ${{ env.folderPath }}/${{ env.clientFolderName }}
           npm run packaging
 
   build-admin:
@@ -80,10 +80,10 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           export NODE_OPTIONS="--max_old_space_size=4096"
-          cd ${{ env.folderPath }}/${{ env.folderNameAdmin }}
+          cd ${{ env.folderPath }}/${{ env.adminFolderName }}
           npm run build
-          pm2 delete ${{ env.pmNameAdmin }}
-          pm2 start npm --name "${{ env.pmNameAdmin }}" -- start
+          pm2 delete ${{ env.adminVirtualName }}
+          pm2 start npm --name "${{ env.adminVirtualName }}" -- start
 
   build-client:
     needs: [install-admin, install-client]
@@ -99,7 +99,7 @@ jobs:
         KEY: ${{ secrets.SSHKEY }}
         script: |
           export NODE_OPTIONS="--max_old_space_size=4096"
-          cd ${{ env.folderPath }}/${{ env.folderNameClient }}
+          cd ${{ env.folderPath }}/${{ env.clientFolderName }}
           npm run build
-          pm2 delete ${{ env.pmNameClient }}
-          pm2 start npm --name "${{ env.pmNameClient }}" -- start
+          pm2 delete ${{ env.clientVirtualName }}
+          pm2 start npm --name "${{ env.clientVirtualName }}" -- start
