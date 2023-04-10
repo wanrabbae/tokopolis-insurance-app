@@ -59,7 +59,7 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-          echo ${{ github.event.pull_request }}
+          echo ${{ github.event.head_commit.modified }}
           echo "Berhasil print variabel"
 
   build-client:
