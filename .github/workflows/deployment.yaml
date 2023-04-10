@@ -178,19 +178,16 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-          pm2 delete ${{ env.adminVirtualName }}
-          pm2 delete ${{ env.clientVirtualName }}
-          pm2 delete ${{ env.emailVirtualName }}
-          pm2 delete ${{ env.paymentVirtualName }}
+          pm2 delete ${{ env.adminVirtualName }} ${{ env.clientVirtualName }} ${{ env.emailVirtualName }} ${{ env.paymentVirtualName }}
 
-          cd ~${{ env.folderPath }}/${{ env.adminFolderName }}
+          cd ${{ env.folderPath }}/${{ env.adminFolderName }}
           pm2 start npm --name "${{ env.adminVirtualName }}" -- start
 
-          cd ~${{ env.folderPath }}/${{ env.clientFolderName }}
+          cd ../${{ env.clientFolderName }}
           pm2 start npm --name "${{ env.clientVirtualName }}" -- start
 
-          cd ~${{ env.folderPath }}/${{ env.emailFolderName }}
+          cd ../${{ env.emailFolderName }}
           pm2 start ./main --name "${{ env.emailVirtualName }}"
 
-          cd ~${{ env.folderPath }}/${{ env.paymentFolderName }}
+          cd ../${{ env.paymentFolderName }}
           pm2 start npm --name "${{ env.paymentVirtualName }}" -- run dev
