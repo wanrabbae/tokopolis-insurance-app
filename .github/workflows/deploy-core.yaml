@@ -84,14 +84,13 @@ jobs:
     steps:
     - name: Show Variable
       uses: appleboy/ssh-action@master
-      uses: jitterbit/get-changed-files@v1
       with:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-          echo $(steps.files.outputs.all)
+          echo ${{ steps.files.outputs.all }}
           echo "Berhasil print variabel"
 
   run-admin-only:
