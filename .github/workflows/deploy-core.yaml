@@ -48,7 +48,7 @@ jobs:
         script: |
           export NODE_OPTIONS="--max_old_space_size=4096"
           cd ${{ env.folderPath }}/${{ env.adminFolderName }}
-          npm run packaging
+          npm install
 
   install-client:
     needs: build-admin
@@ -65,7 +65,7 @@ jobs:
         script: |
           export NODE_OPTIONS="--max_old_space_size=4096"
           cd ${{ env.folderPath }}/${{ env.clientFolderName }}
-          npm run packaging
+          npm install
 
   build-admin:
     needs: install-admin
