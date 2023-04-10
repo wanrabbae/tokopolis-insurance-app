@@ -7,6 +7,8 @@ on:
     paths:
       - 'core-admin/**'
       - 'core-client/**'
+      - 'email-service/**'
+      - 'payment-service/**'
 
 env:
   folderPath: /var/www/html/tokopolis
@@ -14,6 +16,10 @@ env:
   adminVirtualName: tokopolis-admin
   clientFolderName: core-client
   clientVirtualName: tokopolis-client
+  emailFolderName: email-service
+  emailVirtualName: tokopolis-email
+  paymentFolderName: payment-service
+  paymentVirtualName: tokopolis-payment
 
 jobs:
   get-all-files:
@@ -67,8 +73,41 @@ jobs:
           cd ${{ env.folderPath }}/${{ env.clientFolderName }}
           npm install
 
+  install-email:
+    needs: get-all-files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install All Package for Email
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}/${{ env.emailFolderName }}
+          go mod tidy
+
+  install-payment:
+    needs: get-all-files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install All Package for Payment
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}/${{ env.paymentFolderName }}
+          npm install
+
   build-admin:
-    needs: [install-admin, install-client]
+    needs: [install-admin, install-client, install-email, install-payment]
     runs-on: ubuntu-latest
 
     steps:
@@ -101,8 +140,41 @@ jobs:
           cd ${{ env.folderPath }}/${{ env.clientFolderName }}
           npm run build
 
+  build-email:
+    needs: build-client
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build Email Service
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}/${{ env.emailFolderName }}
+          go build main.go
+
+  build-payment:
+    needs: build-email
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build Core Payment
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}/${{ env.paymentFolderName }}
+          npm run build
+
   deploy:
-    needs: [build-admin, build-client]
+    needs: [build-admin, build-client, build-email, build-payment]
     runs-on: ubuntu-latest
 
     steps:
@@ -116,9 +188,17 @@ jobs:
         script: |
           pm2 delete ${{ env.adminVirtualName }}
           pm2 delete ${{ env.clientVirtualName }}
+          pm2 delete ${{ env.emailVirtualName }}
+          pm2 delete ${{ env.paymentVirtualName }}
 
-          cd ~/${{ env.folderPath }}/${{ env.adminFolderName }}
+          cd ~${{ env.folderPath }}/${{ env.adminFolderName }}
           pm2 start npm --name "${{ env.adminVirtualName }}" -- start
 
-          cd ~/${{ env.folderPath }}/${{ env.clientFolderName }}
+          cd ~${{ env.folderPath }}/${{ env.clientFolderName }}
           pm2 start npm --name "${{ env.clientVirtualName }}" -- start
+
+          cd ~${{ env.folderPath }}/${{ env.emailFolderName }}
+          pm2 start ./main --name "${{ env.emailVirtualName }}"
+
+          cd ~${{ env.folderPath }}/${{ env.paymentFolderName }}
+          pm2 start npm --name "${{ env.paymentVirtualName }}" -- start
