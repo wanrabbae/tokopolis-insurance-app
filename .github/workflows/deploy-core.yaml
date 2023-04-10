@@ -97,6 +97,4 @@ jobs:
           echo ${{ steps.files.outputs.all }}
           echo "Berhasil print variabel"
 
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
+          gh pr view XXX --json files -q '.files[].path'
