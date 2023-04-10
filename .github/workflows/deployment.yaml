@@ -165,7 +165,7 @@ jobs:
           go build main.go
 
   deploy:
-    needs: [build-admin, build-client, build-email, build-payment]
+    needs: [build-admin, build-client, build-email]
     name: Deploy and Restart Virtual Server
     runs-on: ubuntu-latest
 
