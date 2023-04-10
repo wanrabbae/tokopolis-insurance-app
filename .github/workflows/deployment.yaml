@@ -23,6 +23,7 @@ env:
 
 jobs:
   get-all-files:
+    name: Copy All Files
     runs-on: ubuntu-latest
 
     steps:
@@ -41,10 +42,11 @@ jobs:
 
   install-admin:
     needs: get-all-files
+    name: Install All Admin Modules
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install All Package for Admin
+    - name: Run Install Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -58,10 +60,11 @@ jobs:
 
   install-client:
     needs: get-all-files
+    name: Install All Client Modules
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install All Package for Client
+    - name: Run Install Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -75,10 +78,11 @@ jobs:
 
   install-email:
     needs: get-all-files
+    name: Install All Email Modules
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install All Package for Email
+    - name: Run Install Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -91,10 +95,11 @@ jobs:
 
   install-payment:
     needs: get-all-files
+    name: Install All Payment Modules
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install All Package for Payment
+    - name: Run Install Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -108,10 +113,11 @@ jobs:
 
   build-admin:
     needs: [install-admin, install-client, install-email, install-payment]
+    name: Build Core Admin
     runs-on: ubuntu-latest
 
     steps:
-    - name: Build Core Admin
+    - name: Run Build Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -125,10 +131,11 @@ jobs:
 
   build-client:
     needs: build-admin
+    name: Build Core Client
     runs-on: ubuntu-latest
 
     steps:
-    - name: Build Core Client
+    - name: Run Build Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -142,10 +149,11 @@ jobs:
 
   build-email:
     needs: build-client
+    name: Build Email Service
     runs-on: ubuntu-latest
 
     steps:
-    - name: Build Email Service
+    - name: Run Build Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -156,29 +164,13 @@ jobs:
           cd ${{ env.folderPath }}/${{ env.emailFolderName }}
           go build main.go
 
-  build-payment:
-    needs: build-email
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Build Core Payment
-      uses: appleboy/ssh-action@master
-      with:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        KEY: ${{ secrets.SSHKEY }}
-        script: |
-          export NODE_OPTIONS="--max_old_space_size=4096"
-          cd ${{ env.folderPath }}/${{ env.paymentFolderName }}
-          npm run build
-
   deploy:
     needs: [build-admin, build-client, build-email, build-payment]
+    name: Deploy and Restart Virtual Server
     runs-on: ubuntu-latest
 
     steps:
-    - name: Deploy and Restart Virtual Server
+    - name: Run Deploy Script
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -201,4 +193,4 @@ jobs:
           pm2 start ./main --name "${{ env.emailVirtualName }}"
 
           cd ~${{ env.folderPath }}/${{ env.paymentFolderName }}
-          pm2 start npm --name "${{ env.paymentVirtualName }}" -- start
+          pm2 start npm --name "${{ env.paymentVirtualName }}" -- run dev
