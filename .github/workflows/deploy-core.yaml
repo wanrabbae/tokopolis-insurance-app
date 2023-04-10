@@ -51,7 +51,7 @@ jobs:
           npm install
 
   install-client:
-    needs: build-admin
+    needs: get-all-files
     runs-on: ubuntu-latest
 
     steps:
@@ -68,7 +68,7 @@ jobs:
           npm install
 
   build-admin:
-    needs: install-admin
+    needs: [install-admin, install-client]
     runs-on: ubuntu-latest
 
     steps:
@@ -83,11 +83,9 @@ jobs:
           export NODE_OPTIONS="--max_old_space_size=4096"
           cd ${{ env.folderPath }}/${{ env.adminFolderName }}
           npm run build
-          pm2 delete ${{ env.adminVirtualName }}
-          pm2 start npm --name "${{ env.adminVirtualName }}" -- start
 
   build-client:
-    needs: install-client
+    needs: [install-admin, install-client]
     runs-on: ubuntu-latest
 
     steps:
@@ -102,5 +100,25 @@ jobs:
           export NODE_OPTIONS="--max_old_space_size=4096"
           cd ${{ env.folderPath }}/${{ env.clientFolderName }}
           npm run build
+
+  deploy:
+    needs: [build-admin, build-client]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy and Restart Virtual Server
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          pm2 delete ${{ env.adminVirtualName }}
           pm2 delete ${{ env.clientVirtualName }}
+
+          cd ~/${{ env.folderPath }}/${{ env.adminFolderName }}
+          pm2 start npm --name "${{ env.adminVirtualName }}" -- start
+
+          cd ~/${{ env.folderPath }}/${{ env.clientFolderName }}
           pm2 start npm --name "${{ env.clientVirtualName }}" -- start
