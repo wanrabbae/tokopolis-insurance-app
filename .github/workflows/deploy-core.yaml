@@ -16,73 +16,28 @@ env:
   pmNameClient: tokopolis-client
 
 jobs:
-  # build-admin:
-  #   runs-on: ubuntu-latest
+  get-all-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
 
-  #   steps:
-  #   - uses: actions/checkout@v1
+      - name: Copy All Files to Destination
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.SSHKEY }}
+          with:
+        source: "*"
+        target: "${{ env.folderPath }}"
 
-  #   - name: Copy Repository Contents via SCP
-  #     uses: appleboy/scp-action@master
-  #     env:
-  #       HOST: ${{ secrets.HOST }}
-  #       USERNAME: ${{ secrets.USERNAME }}
-  #       PORT: ${{ secrets.PORT }}
-  #       KEY: ${{ secrets.SSHKEY }}
-  #     with:
-  #       source: "${{ env.folderNameAdmin }}/*"
-  #       target: "${{ env.folderPath }}"
-
-  #   - name: Executing Remote Command
-  #     uses: appleboy/ssh-action@master
-  #     with:
-  #       HOST: ${{ secrets.HOST }}
-  #       USERNAME: ${{ secrets.USERNAME }}
-  #       PORT: ${{ secrets.PORT }}
-  #       KEY: ${{ secrets.SSHKEY }}
-  #       script: |
-  #         cd ${{ env.folderPath }}/${{ env.folderNameAdmin }}
-  #         npm run packaging
-  #         npm run build
-  #         pm2 delete ${{ env.pmNameAdmin }}
-  #         pm2 start npm --name "${{ env.pmNameAdmin }}" -- start
-
-  # build-client:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #   - uses: actions/checkout@v1
-
-  #   - name: Copy Repository Contents via SCP
-  #     uses: appleboy/scp-action@master
-  #     env:
-  #       HOST: ${{ secrets.HOST }}
-  #       USERNAME: ${{ secrets.USERNAME }}
-  #       PORT: ${{ secrets.PORT }}
-  #       KEY: ${{ secrets.SSHKEY }}
-  #     with:
-  #       source: "${{ env.folderNameClient }}/*"
-  #       target: "${{ env.folderPath }}"
-
-  #   - name: Executing Remote Command
-  #     uses: appleboy/ssh-action@master
-  #     with:
-  #       HOST: ${{ secrets.HOST }}
-  #       USERNAME: ${{ secrets.USERNAME }}
-  #       PORT: ${{ secrets.PORT }}
-  #       KEY: ${{ secrets.SSHKEY }}
-  #       script: |
-  #         cd ${{ env.folderPath }}/${{ env.folderNameClient }}
-  #         npm run packaging
-  #         npm run build
-  #         pm2 delete ${{ env.pmNameClient }}
-  #         pm2 start npm --name "${{ env.pmNameClient }}" -- start
-
-  debugging:
+  install-admin:
+    needs: get-all-files
     runs-on: ubuntu-latest
 
     steps:
-    - name: Show Variable
+    - name: Install All Package for Admin
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -90,7 +45,61 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-          echo ${{ steps.files.outputs.all }}
-          echo "Berhasil print variabel"
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}/${{ env.folderNameAdmin }}
+          npm run packaging
 
-          gh pr view XXX --json files -q '.files[].path'
+  install-client:
+    needs: get-all-files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install All Package for Client
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}/${{ env.folderNameClient }}
+          npm run packaging
+
+  build-admin:
+    needs: [install-admin, install-client]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build Core Admin
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}/${{ env.folderNameAdmin }}
+          npm run build
+          pm2 delete ${{ env.pmNameAdmin }}
+          pm2 start npm --name "${{ env.pmNameAdmin }}" -- start
+
+  build-client:
+    needs: [install-admin, install-client]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build Core Client
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}/${{ env.folderNameClient }}
+          npm run build
+          pm2 delete ${{ env.pmNameClient }}
+          pm2 start npm --name "${{ env.pmNameClient }}" -- start
