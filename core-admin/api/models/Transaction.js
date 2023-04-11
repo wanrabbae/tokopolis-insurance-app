@@ -126,6 +126,7 @@ module.exports = (sequelize, Sequelize) => {
         Transaction.belongsTo(models.Account, { foreignKey: 'agent_id', as: 'agent_transactions' })
         Transaction.belongsTo(models.Vehicle, { foreignKey: 'vehicle_id' })
         Transaction.belongsTo(models.Product, { foreignKey: 'product_id' })
+        Transaction.hasMany(models.ClaimProduct, { foreignKey: 'transaction_id', as: 'transaction' })
     }
 
     return Transaction
