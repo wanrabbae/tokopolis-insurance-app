@@ -249,7 +249,7 @@ export default class TransactionRepository {
 
     async getTransactionByPaymentId(pg_transaction_id) {
         return await Transaction.findOne({
-            where: { pg_transaction_id: pg_transaction_id },
+            where: { id: pg_transaction_id },
             include: [{ model: Account, as: "account" }],
         });
     }
@@ -373,7 +373,7 @@ export default class TransactionRepository {
 
     async setPaymentStatus(pg_transaction_id, payload) {
         return await Transaction.update(payload, {
-            where: { pg_transaction_id: pg_transaction_id },
+            where: { id: pg_transaction_id },
         });
     }
 

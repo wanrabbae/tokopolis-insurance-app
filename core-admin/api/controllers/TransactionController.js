@@ -944,29 +944,23 @@ exports.webhookXendit = async (req, res) => {
     // const validate = validation.xendit(req);
     // if (validate.error) return res.errorValidation(validate.details);
 
-    const transaction_id = req.body.callback_virtual_account_id || req.body.status ? req.body.id : req.body.data.id;
+    let transaction_id = null;
+    let result = 'paid';
 
-    const status = () => {
-        // CONFIRM VA TERBAYARKAN
-        if (req.body.callback_virtual_account_id) {
-            return "paid"
-        }
-        // CONFIRM VA CANCELED
-        else if (req.body.bank_code && req.body.status == "INACTIVE") {
-            return "canceled"
-        }
-        // CONFIRM PG LAINYA
-        else {
-            switch (req.body.data.status) {
-                case "SUCCEEDED":
-                    return "paid";
-
-                case "FAILED":
-                    return "denied";
-
-                case "VOIDED":
-                    return "canceled";
-            }
+    // Virtual Account
+    if (req.body.callback_virtual_account_id) {
+        transaction_id = req.body.external_id
+        result = 'paid'
+    } else if (req.body.bank_code && req.body.status == "INACTIVE") {
+        transaction_id = req.body.external_id
+        result = 'canceled'
+    } else { // E-wallet / Qris
+        if (req.body.data && req.body.data.reference_id && req.body.data.status == 'SUCCEEDED') {
+            transaction_id = req.body.data.reference_id
+            result = 'paid'
+        } else {
+            transaction_id = req.body.data.reference_id
+            result = 'canceled'
         }
     }
 
@@ -974,7 +968,6 @@ exports.webhookXendit = async (req, res) => {
     if (transaction == null)
         return res.errorBadRequest(req.polyglot.t("error.transaction"));
 
-    const result = status();
     const platform = paymentService.getPlatformName(transaction.pg_data.name);
 
     transaction.pg_data["date"] = getMoment().format("YYYY-MM-DD HH:mm:ss");
