@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="filename !== null" style="height: 100vh;">
         <embed :src="filename" width="100%" class="display-embed" />
     </div>
 </template>
@@ -42,7 +42,7 @@ export default {
 </script>
 <style scoped>
     .display-embed {
-        height: 100vh;
+        height: 100%;
         display: block;
     }
 </style>
