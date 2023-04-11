@@ -1,7 +1,7 @@
 const { Op, QueryTypes } = require("sequelize");
 const moment = require("moment");
 
-const { Account, ClaimProduct, Product, sequelize } = require("../models");
+const { Account, ClaimProduct, Product, Transaction, Profile, Vehicle, sequelize } = require("../models");
 
 export default class ClaimProductRepository {
     constructor() { }
@@ -54,11 +54,23 @@ export default class ClaimProductRepository {
                     model: Account,
                     as: "account",
                     attributes: ["id", "fullname", "email"],
+                    include: {
+                        model: Profile,
+                        as: 'profile'
+                    }
                 },
                 {
                     model: Product,
                     as: "product",
                     attributes: ["id", "name", "type", "image"],
+                },
+                {
+                    model: Transaction,
+                    as: "transaction",
+                    attributes: ["id", "agent_id", "vehicle_data"],
+                    include: {
+                        model: Vehicle
+                    }
                 },
             ],
         });

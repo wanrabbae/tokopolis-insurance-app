@@ -44,6 +44,7 @@ exports.getAllClaimData = async (req, res) => {
 exports.getDetailClaimProduct = async (req, res) => {
     try {
         const data = await service.getDetailData(req.params.id);
+        data.documents = safelyParseJSON(data.documents);
         return res.jsonData(data);
     } catch (error) {
         return res.jsonData({
