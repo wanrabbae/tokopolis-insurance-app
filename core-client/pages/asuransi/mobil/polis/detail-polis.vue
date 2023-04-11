@@ -527,7 +527,7 @@ export default {
             })
             .then(function(response) {
                 setTimeout(() => {
-                    window.open(`/quotation/${response.data.transaction_id}.pdf`, '_blank')
+                    window.open(`/quotation/${response.data.transaction_id}`, '_blank')
                 }, 500)
 
                 self.$router.push({
