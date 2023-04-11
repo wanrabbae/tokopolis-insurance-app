@@ -143,6 +143,13 @@
                                 </template>
 
                                 <template #cell(action)="data">
+
+                                    <b-button 
+                                        v-b-tooltip.hover  title="View Detail" type="button" 
+                                        variant="success" @click="showDetailClaim(data.item.id)">
+                                        <i class="uil uil-eye"></i>
+                                    </b-button>
+
                                     <b-button v-b-tooltip.hover
                                         title="Update Status" type="button" variant="primary"
                                         @click="showUpdateStatus(data.item.id)">
@@ -284,6 +291,9 @@ export default {
         },
         showDetail(id) {
             this.$router.push({ path: `/products/${id}` })
+        },
+        showDetailClaim(id) {
+            this.$router.push({ path: `/claim/${id}` })
         },
         showUpdateStatus(id) {
             const selectedClaim = this.tableData.find((item) => item.id === id);
