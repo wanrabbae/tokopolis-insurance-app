@@ -77,6 +77,12 @@ module.exports = (sequelize, Sequelize) => {
             foreignKey: "product_id",
             timestamps: false,
         });
+        ClaimProduct.belongsTo(models.Transaction, {
+            as: "transaction",
+            sourceKey: "id",
+            foreignKey: "transaction_id",
+            timestamps: false,
+        });
     };
 
     return ClaimProduct;
