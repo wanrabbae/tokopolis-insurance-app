@@ -250,7 +250,7 @@ export default class TransactionRepository {
     async getTransactionByPaymentId(pg_transaction_id) {
         return await Transaction.findOne({
             where: { id: pg_transaction_id },
-            include: [{ model: Account, as: "account" }],
+            include: [{ model: Account, as: "agent_transactions" }, { model: Account, as: "client_transactions" }],
         });
     }
 
@@ -384,8 +384,10 @@ export default class TransactionRepository {
     async getComission(account_id) {
         return await Comission.findAll({
             attributes: [
+                "transaction_id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
+            group: ['transaction_id'],
             where: {
                 account_id: account_id,
             },
@@ -411,8 +413,10 @@ export default class TransactionRepository {
     async getPoint(account_id) {
         return await Point.findAll({
             attributes: [
+                "transaction_id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
+            group: ['transaction_id'],
             where: {
                 account_id: account_id,
             },
