@@ -73,14 +73,14 @@ exports.detail = async (req, res, next) => {
 exports.feedbackAgent = async (req, res, next) => {
     const data = await service.getTransactionDetail(req.params.id)
     if (data.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
-    const client_data = safelyParseJSON(data[0].client_data)
+    const client_data = data[0].client_data
 
     const findAccount = await accountService.getAccount(data[0].agent_id)
 
     service.sendEmailFeedBackAgent({
         host: process.env.REDIRECT_CLIENT || req.fullhost,
         target: findAccount.email,
-        title: "Revert to Agent | " + client_data.fullname + " - " + req.params.id,
+        title: "Revert to Agent | " + client_data.fullname != undefined ? client_data.fullname : "Customer" + " - " + req.params.id,
         data: {
             name: client_data.fullname != undefined ? client_data.fullname : "Customer",
             message: req.body.message,
@@ -299,7 +299,7 @@ exports.addReview = async (req, res, next) => {
     generateZip(transaction, destination)
     generateXls(req.body, transaction, destination)
 
-    const client_data = JSON.parse(transaction.client_data)
+    const client_data = transaction.client_data
     const emails = JSON.parse(transaction.product_email)
 
     for (let i = 0; i < emails.length; i++) {
