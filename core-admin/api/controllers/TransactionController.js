@@ -968,8 +968,6 @@ exports.webhookXendit = async (req, res) => {
     if (transaction == null)
         return res.errorBadRequest(req.polyglot.t("error.transaction"));
 
-    const platform = paymentService.getPlatformName(transaction.pg_data.name);
-
     transaction.pg_data["date"] = getMoment().format("YYYY-MM-DD HH:mm:ss");
 
     await service.setPaymentStatus(transaction_id, {
@@ -990,17 +988,31 @@ exports.webhookXendit = async (req, res) => {
     }
 
     if (result == "paid") {
-        service.sendEmailPaymentSuccess({
-            host: process.env.REDIRECT_CLIENT || req.fullhost,
-            target: transaction.account.email,
-            title: req.polyglot.t("mail.payment.success"),
-            data: {
-                name: transaction.account.firstname,
-                platform: platform,
-                total: moneyFormat(transaction.total),
-                date: getMoment().format("D MMMM YYYY h:mm:ss"),
-            },
-        });
+        if (transaction.agent_transactions != null) {
+            service.sendEmailPaymentSuccess({
+                host: process.env.REDIRECT_CLIENT || req.fullhost,
+                target: transaction.agent_transactions.email,
+                title: req.polyglot.t("mail.payment.success"),
+                data: {
+                    name: transaction.agent_transactions.firstname,
+                    platform: transaction.pg_data.name.toUpperCase(),
+                    total: moneyFormat(transaction.total),
+                    date: getMoment().format("D MMMM YYYY h:mm:ss"),
+                },
+            });
+        } else {
+            service.sendEmailPaymentSuccess({
+                host: process.env.REDIRECT_CLIENT || req.fullhost,
+                target: transaction.client_transactions.email,
+                title: req.polyglot.t("mail.payment.success"),
+                data: {
+                    name: transaction.client_transactions.firstname,
+                    platform: transaction.pg_data.name.toUpperCase(),
+                    total: moneyFormat(transaction.total),
+                    date: getMoment().format("D MMMM YYYY h:mm:ss"),
+                },
+            });
+        }
     }
 
     return res.jsonSuccess(req.polyglot.t("success.webhook.xendit"));
@@ -1029,7 +1041,7 @@ exports.comissionWithdraw = async (req, res) => {
 
     try {
         const comission = await service.getComission(req.account._id);
-        if (parseInt(comission[0].value) <= parseInt(req.body.amount)) throw new Error(req.polyglot.t("error.transaction.balance"))
+        if (parseInt(comission[0].value) < parseInt(req.body.amount)) throw new Error(req.polyglot.t("error.transaction.balance"))
 
         const result = await paymentService.comissionWithdraw({
             external_id: randomString(4) + `${randomNumber(1, 1000)}`,
@@ -1064,7 +1076,7 @@ exports.pointWithdraw = async (req, res) => {
         const point = await service.getPoint(req.account._id);
         const amount = parseInt(req.body.amount) * 1000
         const balancePoint = parseInt(point[0].value) * 1000
-        if (balancePoint <= amount) throw new Error(req.polyglot.t("error.transaction.balance"))
+        if (balancePoint < amount) throw new Error(req.polyglot.t("error.transaction.balance"))
         const result = await paymentService.pointWithdraw({
             external_id: randomString(4) + `${randomNumber(1, 1000)}`,
             amount: req.body.amount,

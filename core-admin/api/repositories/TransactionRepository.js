@@ -250,7 +250,7 @@ export default class TransactionRepository {
     async getTransactionByPaymentId(pg_transaction_id) {
         return await Transaction.findOne({
             where: { id: pg_transaction_id },
-            include: [{ model: Account, as: "account" }],
+            include: [{ model: Account, as: "agent_transactions" }, { model: Account, as: "client_transactions" }],
         });
     }
 
