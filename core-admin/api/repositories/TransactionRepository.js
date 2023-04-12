@@ -430,20 +430,17 @@ export default class TransactionRepository {
     }
 
     async getPointHistory(account_id, filter) {
-        return await Point.findAll({
-            where: {
-                [Op.or]: [
-                    {
-                        account_id: account_id,
-                    },
-                    // {
-                    //     account_id: account_id,
-                    //     created_at: {
-                    //         [Op.between]: [filter.start_period, filter.end_period]
-                    //     }
-                    // }
-                ]
+        let condition = filter.start_period != null && filter.end_period != null ? {
+            account_id: account_id,
+            created_at: {
+                [Op.between]: [filter.start_period, filter.end_period]
             }
+        } : {
+            account_id: account_id
+        }
+
+        return await Point.findAll({
+            where: condition
         })
     }
 

@@ -478,7 +478,7 @@ exports.getXlsxAllTransaction = async (req, res) => {
 
 exports.getComissionHistoryUnder = async (req, res) => {
     const filter = {
-        name: req.query.name || null,
+        name: req.query.name || '',
         start_period: req.query.start_period || null,
         end_period: req.query.end_period || null,
     }
