@@ -1125,7 +1125,11 @@ exports.getPoint = async (req, res) => {
 };
 
 exports.getPointHistory = async (req, res) => {
-    const point = await service.getPointHistory(req.account._id);
+    const filter = {
+        start_period: req.query.start_period || null,
+        end_period: req.query.end_period || null,
+    }
+    const point = await service.getPointHistory(req.account._id, filter);
 
     return res.jsonData(point);
 };

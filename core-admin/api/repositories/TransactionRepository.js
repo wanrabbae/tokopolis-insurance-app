@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const { Op, QueryTypes } = require("sequelize");
 
 const {
@@ -402,12 +404,71 @@ export default class TransactionRepository {
         });
     }
 
-    async getPointHistory(account_id) {
+    async getComissionHistoryUnder(account_ids, filter) {
+        let condition = filter.start_period != null && filter.end_period != null ? {
+            account_id: account_ids,
+            created_at: {
+                [Op.between]: [filter.start_period, filter.end_period]
+            }
+        } : {
+            account_id: account_ids
+        }
+
+        return await Comission.findAll({
+            where: condition,
+            include: {
+                model: Account,
+                as: 'account',
+                attributes: ['id', 'fullname'],
+                where: {
+                    fullname: {
+                        [Op.like]: `%${filter.name}%`
+                    }
+                }
+            }
+        });
+    }
+
+    async getPointHistory(account_id, filter) {
         return await Point.findAll({
             where: {
-                account_id: account_id,
-            },
-        });
+                [Op.or]: [
+                    {
+                        account_id: account_id,
+                    },
+                    // {
+                    //     account_id: account_id,
+                    //     created_at: {
+                    //         [Op.between]: [filter.start_period, filter.end_period]
+                    //     }
+                    // }
+                ]
+            }
+        })
+    }
+
+    async getPointHistoryUnder(account_ids, filter) {
+        let condition = filter.start_period != null && filter.end_period != null ? {
+            account_id: account_ids,
+            created_at: {
+                [Op.between]: [filter.start_period, filter.end_period]
+            }
+        } : {
+            account_id: account_ids
+        }
+        return await Point.findAll({
+            where: condition,
+            include: {
+                model: Account,
+                as: 'account',
+                attributes: ['id', 'fullname'],
+                where: {
+                    fullname: {
+                        [Op.like]: `%${filter.name}%`
+                    }
+                }
+            }
+        })
     }
 
     async getPoint(account_id) {
