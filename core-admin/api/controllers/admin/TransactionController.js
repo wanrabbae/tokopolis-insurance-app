@@ -260,13 +260,7 @@ const generateZip = (transaction, destination) => {
         const key = Object.keys(transaction.documents)[index]
         const value = Object.values(transaction.documents)[index]
 
-        fs.copyFileSync(`view/static${value}`, `${destination}/${key}.${value.split('.').pop()}`, function (err) {
-            if (err) {
-                console.log('create mock database failed.')
-            } else {
-                console.log('create mock database successfully.')
-            }
-        })
+        fs.copyFileSync(`view/static${value}`, `${destination}/${key}.${value.split('.').pop()}`)
     }
 
     // Generate Zip

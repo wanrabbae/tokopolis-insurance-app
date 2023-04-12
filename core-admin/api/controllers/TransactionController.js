@@ -1043,19 +1043,25 @@ exports.comissionWithdraw = async (req, res) => {
         const comission = await service.getComission(req.account._id);
         if (parseInt(comission[0].value) < parseInt(req.body.amount)) throw new Error(req.polyglot.t("error.transaction.balance"))
 
+        const checkBank = await accountService.getBank(req.account._id);
+
+        if (checkBank == null || checkBank.verified_at == null) {
+            throw new Error("Bank not verified yet!");
+        }
+
         const result = await paymentService.comissionWithdraw({
             external_id: randomString(4) + `${randomNumber(1, 1000)}`,
             amount: req.body.amount,
-            bankCode: req.body.bankCode,
-            accountHolderName: req.body.accountHolderName,
-            accountNumber: req.body.accountNumber,
+            bankCode: checkBank.type.toString().toUpperCase(),
+            accountHolderName: checkBank.fullname,
+            accountNumber: checkBank.account_number,
         })
         if (result.status == false) {
             throw new Error(req.polyglot.t("error.transaction.withdraw"))
         }
         await service.createComission({
             account_id: req.account._id,
-            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            transaction_id: comission[0].transaction_id,
             value: `-${req.body.amount}`,
         })
         res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
@@ -1077,19 +1083,26 @@ exports.pointWithdraw = async (req, res) => {
         const amount = parseInt(req.body.amount) * 1000
         const balancePoint = parseInt(point[0].value) * 1000
         if (balancePoint < amount) throw new Error(req.polyglot.t("error.transaction.balance"))
+
+        const checkBank = await accountService.getBank(req.account._id);
+
+        if (checkBank == null || checkBank.verified_at == null) {
+            throw new Error("Bank not verified yet!");
+        }
+
         const result = await paymentService.pointWithdraw({
             external_id: randomString(4) + `${randomNumber(1, 1000)}`,
             amount: req.body.amount,
-            bankCode: req.body.bankCode,
-            accountHolderName: req.body.accountHolderName,
-            accountNumber: req.body.accountNumber,
+            bankCode: checkBank.type.toString().toUpperCase(),
+            accountHolderName: checkBank.fullname,
+            accountNumber: checkBank.account_number,
         })
         if (result.status == false) {
             throw new Error(req.polyglot.t("error.transaction.withdraw"))
         }
         await service.createPoint({
             account_id: req.account._id,
-            transaction_id: randomString(4) + `${randomNumber(1, 1000)}`,
+            transaction_id: point[0].transaction_id,
             value: `-${req.body.amount}`,
             description: "penarikan"
         });
