@@ -475,3 +475,31 @@ exports.getXlsxAllTransaction = async (req, res) => {
         download_link: `${process.env.REDIRECT_ADMIN}/doc/transaction_${req.body.start_period}-${req.body.end_period}.xlsx`
     })
 }
+
+exports.getComissionHistoryUnder = async (req, res) => {
+    const filter = {
+        name: req.query.name || '',
+        start_period: req.query.start_period || null,
+        end_period: req.query.end_period || null,
+    }
+    const account_ids = []
+    const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
+    accountsUnder.forEach(au => account_ids.push(au.id))
+    const comission = await service.getComissionHistoryUnder(account_ids, filter);
+
+    res.jsonData(comission);
+}
+
+exports.getPointHistoryUnder = async (req, res) => {
+    const filter = {
+        name: req.query.name || '',
+        start_period: req.query.start_period || null,
+        end_period: req.query.end_period || null,
+    }
+    const account_ids = []
+    const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
+    accountsUnder.forEach(au => account_ids.push(au.id))
+    const points = await service.getPointHistoryUnder(account_ids, filter);
+
+    res.jsonData(points);
+}

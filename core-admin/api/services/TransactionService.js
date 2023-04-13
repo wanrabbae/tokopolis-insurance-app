@@ -130,12 +130,20 @@ export default class TransactionService {
         return this.repository.getComissionHistory(account_id);
     }
 
+    getComissionHistoryUnder(account_ids, filter) {
+        return this.repository.getComissionHistoryUnder(account_ids, filter);
+    }
+
     getPoint(account_id) {
         return this.repository.getPoint(account_id);
     }
 
-    getPointHistory(account_id) {
-        return this.repository.getPointHistory(account_id);
+    getPointHistory(account_id, filter) {
+        return this.repository.getPointHistory(account_id, filter);
+    }
+
+    getPointHistoryUnder(account_ids, filter) {
+        return this.repository.getPointHistoryUnder(account_ids, filter);
     }
 
     createPoint(payload) {
@@ -192,7 +200,7 @@ export default class TransactionService {
         });
         mailer.send();
     }
-    
+
     sendEmailFeedBackAgent(payload) {
         let mailer = new Mailer(payload.host);
         mailer.setType("feedback-agent-sent");
