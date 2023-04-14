@@ -44,7 +44,6 @@ exports.getAllClaimData = async (req, res) => {
 exports.getDetailClaimProduct = async (req, res) => {
     try {
         const data = await service.getDetailData(req.params.id);
-        data.documents = safelyParseJSON(data.documents);
         return res.jsonData(data);
     } catch (error) {
         return res.jsonData({
@@ -70,7 +69,6 @@ exports.getClaimFileXlsx = async (req, res) => {
 
         for (let index = 0; index < claimData.length; index++) {
             const element = claimData[index];
-            element.documents = safelyParseJSON(element.documents);
 
             worksheet.cell(1, 1).string("Registration Date").style(style)
             worksheet.cell(1, 2).string("Processed Time").style(style)
