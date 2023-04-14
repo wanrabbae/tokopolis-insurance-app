@@ -54,6 +54,15 @@
                                 <template #cell(index)="data">
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
+
+                                <template #cell(status)="data">
+                                    <span v-if="data.item.status === 'waiting'" class="badge badge-info">{{ data.item.status }}</span>
+                                    <span v-if="data.item.status === 'open'" class="badge badge-primary">{{ data.item.status }}</span>
+                                    <span v-if="data.item.status === 'paid'" class="badge badge-success">{{ data.item.status }}</span>
+                                    <span v-if="data.item.status === 'denied'" class="badge badge-danger">{{ data.item.status }}</span>
+                                    <span v-if="data.item.status === 'canceled'" class="badge badge-warning">{{ data.item.status }}</span>
+                                    <span v-if="data.item.status === 'failed'" class="badge badge-secondary">{{ data.item.status }}</span>
+                                </template>
                             </b-table>
                         </div>
 
@@ -94,8 +103,8 @@ export default {
                 { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: "id", label: 'No Quotation', tdClass: 'align-middle' },
                 { key: "start_date", label: 'Tanggal Pengajuan', tdClass: 'align-middle' },
-                { key: "client_name", label: 'Nama Client', tdClass: 'align-middle' },
-                { key: "agent_name", label: 'Nama Agent', tdClass: 'align-middle' },
+                { key: "client_name", label: 'Nama Tertanggung', tdClass: 'align-middle' },
+                { key: "agent_name", label: 'User', tdClass: 'align-middle' },
                 { key: "brand", label: 'Brand', tdClass: 'align-middle' },
                 { key: "sub_model", label: 'Sub Model', tdClass: 'align-middle' },
                 { key: "product_name", label: 'Nama Produk', tdClass: 'align-middle' },
@@ -125,4 +134,48 @@ export default {
     }
 }
 
-</script>   
+</script>  
+<style scoped>
+    .badge {
+        display: inline-block;
+        padding: 0.25em 0.4em;
+        font-size: 90%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    .badge-info {
+        color: #fff;
+        background-color: #17a2b8;
+    }
+
+    .badge-secondary {
+        color: #fff;
+        background-color: #6c757d;
+    }
+
+    .badge-success {
+        color: #fff;
+        background-color: #28a745;
+    }
+
+    .badge-danger {
+        color: #fff;
+        background-color: #dc3545;
+    }
+
+    .badge-warning {
+        color: #212529;
+        background-color: #ffc107;
+    }
+
+    .badge-info {
+        color: #fff;
+        background-color: #17a2b8;
+    }
+</style> 
