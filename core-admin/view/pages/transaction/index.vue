@@ -305,11 +305,11 @@
                                         <i class="uil uil-eye"/>
                                     </b-button>
 
-                                    <b-button v-b-tooltip.hover type="button"
+                                    <!-- <b-button v-b-tooltip.hover type="button"
                                         title="Send Feedback to Agent" variant="warning"
                                         @click="sendFeedback(data.item.id)">
                                         <i class="uil uil-fast-mail" ></i>
-                                    </b-button>
+                                    </b-button> -->
 
                                     <!-- <b-button type="button" variant="danger" v-b-tooltip.hover
                                         title="Hapus Data" v-on:click="deleteData(data.item.id)">

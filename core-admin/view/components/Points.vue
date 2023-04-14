@@ -79,6 +79,48 @@
         </b-modal>
 
         <div class="row">
+            <div class="col-md-3 mt-2">
+                <div role="group" class="form-group">
+                    <label class="col-form-label">Range Tanggal</label>
+                    <div>
+                        <DatePicker
+                            placeholder="Filter Tanggal"
+                            valueType="YYYY-MM-DD"
+                            titleFormat="DD MMMM"
+                            v-model="filter.date_period"
+                            range
+                            append-to-body
+                            lang="en"
+                            confirm
+                        ></DatePicker>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-2">
+                <div role="group" class="form-group">
+                    <label class="col-form-label">Nama User</label>
+                    <div>
+                        <input type="text" class="form-control" v-model="filter.name" placeholder="Input nama user">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-2">
+                <div role="group" class="form-group">
+                    <label class="col-form-label">Aksi</label>
+                    <div>
+                        <b-button type="button" variant="primary" @click="doFilter()">
+                            <i class="uil uil-filter me-1"></i> Filter
+                        </b-button>
+                        <b-button type="button" variant="danger" @click="doResetFilter()"
+                            v-b-tooltip.hover
+                            title="Hapus Filter">
+                            <i class="uil uil-multiply"></i>
+                        </b-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="account.role_id !== 1" class="row mt-4 mb-2">
             <div class="col-md-12">
                 <b-button variant="primary" @click="showModalWdPoint">Withdraw Point</b-button>
             </div>
@@ -112,7 +154,13 @@
 <script>
 import Swal from "sweetalert2"
 import moment from 'moment';
+import DatePicker from "vue2-datepicker"
+
+import "vue2-datepicker/index.css"
 export default {
+    components: {
+		DatePicker
+    },
     data() {
         return {
             currentPage: 1,
@@ -123,6 +171,10 @@ export default {
                 { key: 'description', label: 'Keterangan' },
                 { key: 'value', label: 'Point' },
             ],
+            filter: {
+                date_period: null,
+                name: null
+            },
             totalPoint: 0,
             wdpoint: {
                 amount: null,
@@ -130,19 +182,56 @@ export default {
                 accountHolderName: null,
                 accountNumber: null
             },
+            account: []
         }
     },
+    created() {        
+        this.getAccount()
+    },
     methods: {
+        async getAccount() {
+            this.account = await this.$axios.$get('api/admin/account')
+                .then ((response) => {
+                    return response.data;
+                })
+        },
         moment(date) {
             return moment(date)
         },
         getData() {
             let data = [];
-            data = this.$axios.$get('/api/point/history').then((resp) => {
-                return resp.data;
-            })
+            if (this.account.role_id !== 5 && this.account.role_id !== 1) {
+                this.fields.push({ key: 'account.fullname', label: 'Nama User' });
+                data = this.$axios.$get('api/admin/point/history/under', {
+                    params: {
+                        name: this.filter.name,
+                        start_period: this.filter.date_period === null ? null : this.filter.date_period[0],
+                        end_period: this.filter.date_period === null ? null : this.filter.date_period[1],
+                    }
+                }).then((resp) => {
+                    return resp.data;
+                })
+            } else {
+                data = this.$axios.$get('/api/point/history').then((resp) => {
+                    return resp.data;
+                })
+            }           
 
             return data;
+        },
+        doFilter() {
+            this.getData();
+            this.$refs.table.refresh();
+        },
+        
+        doResetFilter() {
+            this.filter = {
+                date_period: null,
+                name: null,
+            }
+
+            this.getData()
+            this.$refs.table.refresh()
         },
         showModalWdPoint() {
             this.getBank();
