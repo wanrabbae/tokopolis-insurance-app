@@ -85,6 +85,12 @@
                                         {{ data.item.name }}</span>
                                 </template>
 
+                                <template #cell(email)="data">
+                                    <span v-for="email in data.item.email">
+                                        <h5><b-badge class="badge bg-secondary me-1">{{ email }}</b-badge></h5>
+                                    </span>
+                                </template>
+
                                 <template #cell(plus)="data">
                                     <h5>
                                         <b-badge v-if="data.item.commission != 0"
@@ -235,6 +241,8 @@ export default {
 
                     return response.data.list.map(item => {
                         item.image = `${item.image}`
+                        // item.email = JSON.parse(item.email)
+
                         return item
                     })
                 })
