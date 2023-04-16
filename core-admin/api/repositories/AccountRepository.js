@@ -228,6 +228,56 @@ export default class AccountRepository {
         });
     }
 
+    async getIdentityList(limit, offset) {
+        return await Identity.findAll({
+            include: {
+                model: Account,
+                attributes: ['id', 'fullname', 'email']
+            },
+            limit: limit,
+            offset: offset,
+        });
+    }
+
+    async getIdentityListWithFilter(query, limit, offset) {
+        return await Identity.findAll({
+            include: {
+                model: Account,
+                attributes: ['id', 'fullname', 'email'],
+                where: {
+                    [Op.or]: [
+                        { fullname: { [Op.like]: `%${query}%` } },
+                        { email: { [Op.like]: `%${query}%` } },
+                    ],
+                },
+            },
+            limit: limit,
+            offset: offset,
+        });
+    }
+
+    async getIdentityCountAll() {
+        return await Identity.count();
+    }
+
+    async getIdentityCountByQuery(query) {
+        return await Identity.count({
+            include: {
+                model: Account,
+                where: {
+                    [Op.or]: [
+                        { fullname: { [Op.like]: `%${query}%` } },
+                        { email: { [Op.like]: `%${query}%` } },
+                    ],
+                },
+            }
+        });
+    }
+
+    async verifyIdentity(id) {
+        return await Identity.update({ verified_at: new Date() }, { where: { account_id: id } });
+    }
+
     async createIdentity(payload) {
         return await Identity.create(payload);
     }
@@ -238,6 +288,52 @@ export default class AccountRepository {
         });
     }
 
+    async getBankList(limit, offset) {
+        return await Bank.findAll({
+            include: {
+                model: Account,
+                attributes: ['id', 'fullname', 'email']
+            },
+            limit: limit,
+            offset: offset,
+        });
+    }
+
+    async getBankListWithFilter(query, limit, offset) {
+        return await Bank.findAll({
+            include: {
+                model: Account,
+                attributes: ['id', 'fullname', 'email'],
+                where: {
+                    [Op.or]: [
+                        { fullname: { [Op.like]: `%${query}%` } },
+                        { email: { [Op.like]: `%${query}%` } },
+                    ],
+                },
+            },
+            limit: limit,
+            offset: offset,
+        });
+    }
+
+    async getBankCountAll() {
+        return await Bank.count();
+    }
+
+    async getBankCountByQuery(query) {
+        return await Bank.count({
+            include: {
+                model: Account,
+                where: {
+                    [Op.or]: [
+                        { fullname: { [Op.like]: `%${query}%` } },
+                        { email: { [Op.like]: `%${query}%` } },
+                    ],
+                },
+            }
+        });
+    }
+
     async createBank(payload) {
         return await Bank.create(payload);
     }
@@ -245,6 +341,12 @@ export default class AccountRepository {
     async updateBank(account_id, payload) {
         return await Bank.update(payload, {
             where: { account_id: account_id },
+        });
+    }
+
+    async verifyBank(id) {
+        return await Bank.update({ verified_at: new Date() }, {
+            where: { account_id: id },
         });
     }
 
