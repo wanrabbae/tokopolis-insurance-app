@@ -130,8 +130,12 @@ export default class TransactionService {
         return this.repository.getComissionHistory(account_id);
     }
 
-    getComissionHistoryUnder(account_ids, filter) {
-        return this.repository.getComissionHistoryUnder(account_ids, filter);
+    getComissionHistoryUnder(account_ids, filter, limit, offset) {
+        return this.repository.getComissionHistoryUnder(account_ids, filter, limit, offset);
+    }
+
+    getComissionHistoryUnderCount(account_ids, filter) {
+        return this.repository.getComissionHistoryUnderCount(account_ids, filter);
     }
 
     getPoint(account_id) {
@@ -142,8 +146,12 @@ export default class TransactionService {
         return this.repository.getPointHistory(account_id, filter);
     }
 
-    getPointHistoryUnder(account_ids, filter) {
-        return this.repository.getPointHistoryUnder(account_ids, filter);
+    getPointHistoryUnder(account_ids, filter, limit, offset) {
+        return this.repository.getPointHistoryUnder(account_ids, filter, limit, offset);
+    }
+
+    getPointHistoryUnderCount(account_ids, filter) {
+        return this.repository.getPointHistoryUnderCount(account_ids, filter);
     }
 
     createPoint(payload) {

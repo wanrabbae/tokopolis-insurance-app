@@ -81,7 +81,7 @@ export default class TransactionRepository {
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
             `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
             `JOIN products as product ON trans.product_id = product.id ` +
-            `WHERE trans.status = '${status}' `,
+            `WHERE trans.status = '${status}' ` +
             (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT })
     }
@@ -404,7 +404,7 @@ export default class TransactionRepository {
         });
     }
 
-    async getComissionHistoryUnder(account_ids, filter) {
+    async getComissionHistoryUnder(account_ids, filter, limit, offset) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -419,13 +419,30 @@ export default class TransactionRepository {
             include: {
                 model: Account,
                 as: 'account',
-                attributes: ['id', 'fullname'],
+                attributes: ['id', 'fullname', 'unique_id'],
                 where: {
                     fullname: {
                         [Op.like]: `%${filter.name}%`
                     }
                 }
+            },
+            limit: limit,
+            offset: offset
+        });
+    }
+
+    async getComissionHistoryUnderCount(account_ids, filter) {
+        let condition = filter.start_period != null && filter.end_period != null ? {
+            account_id: account_ids,
+            created_at: {
+                [Op.between]: [filter.start_period, filter.end_period]
             }
+        } : {
+            account_id: account_ids
+        }
+
+        return await Comission.count({
+            where: condition,
         });
     }
 
@@ -444,7 +461,7 @@ export default class TransactionRepository {
         })
     }
 
-    async getPointHistoryUnder(account_ids, filter) {
+    async getPointHistoryUnder(account_ids, filter, limit, offset) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -458,13 +475,29 @@ export default class TransactionRepository {
             include: {
                 model: Account,
                 as: 'account',
-                attributes: ['id', 'fullname'],
+                attributes: ['id', 'fullname', 'unique_id'],
                 where: {
                     fullname: {
                         [Op.like]: `%${filter.name}%`
                     }
                 }
+            },
+            limit,
+            offset
+        })
+    }
+
+    async getPointHistoryUnderCount(account_ids, filter) {
+        let condition = filter.start_period != null && filter.end_period != null ? {
+            account_id: account_ids,
+            created_at: {
+                [Op.between]: [filter.start_period, filter.end_period]
             }
+        } : {
+            account_id: account_ids
+        }
+        return await Point.count({
+            where: condition,
         })
     }
 

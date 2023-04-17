@@ -48,7 +48,7 @@ exports.history = async (req, res, next) => {
     const limit = Number(req.query.limit) || 10
     const offset = (current - 1) * limit
 
-    const count = await service.getTransactionStatusAll(req.query.status)
+    const count = await service.getTransactionStatusCount(req.query.status)
     const list = await service.getTransactionStatusAll(req.query.status, limit, offset)
 
     if (count.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
@@ -482,12 +482,27 @@ exports.getComissionHistoryUnder = async (req, res) => {
         start_period: req.query.start_period || null,
         end_period: req.query.end_period || null,
     }
+
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 10
+    const offset = (current - 1) * limit
+
     const account_ids = []
     const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
     accountsUnder.forEach(au => account_ids.push(au.id))
-    const comission = await service.getComissionHistoryUnder(account_ids, filter);
 
-    res.jsonData(comission);
+    const count = await service.getComissionHistoryUnderCount(account_ids, filter);
+    const comission = await service.getComissionHistoryUnder(account_ids, filter, limit, offset);
+
+    res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: comission
+    });
 }
 
 exports.getPointHistoryUnder = async (req, res) => {
@@ -496,10 +511,25 @@ exports.getPointHistoryUnder = async (req, res) => {
         start_period: req.query.start_period || null,
         end_period: req.query.end_period || null,
     }
+
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 10
+    const offset = (current - 1) * limit
+
     const account_ids = []
     const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
     accountsUnder.forEach(au => account_ids.push(au.id))
-    const points = await service.getPointHistoryUnder(account_ids, filter);
 
-    res.jsonData(points);
+    const count = await service.getPointHistoryUnderCount(account_ids, filter);
+    const points = await service.getPointHistoryUnder(account_ids, filter, limit, offset);
+
+    res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: points
+    });
 }
