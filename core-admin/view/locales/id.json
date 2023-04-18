@@ -104,6 +104,12 @@
       },
       "pointandcommission": {
         "text": "Point and Commission"
+      },
+      "verifybank": {
+        "text": "Verifikasi Rekening"
+      },
+      "verifyidentity": {
+        "text": "Verifikasi Identitas"
       }
     }
   }

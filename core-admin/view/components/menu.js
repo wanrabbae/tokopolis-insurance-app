@@ -46,6 +46,18 @@ export const menuItems = [
         link: "/upgrade"
     },
     {
+        id: 13,
+        label: "menuitems.verifybank.text",
+        icon: "uil-file-check-alt",
+        link: "verify-bank"
+    },
+    {
+        id: 14,
+        label: "menuitems.verifyidentity.text",
+        icon: "uil-file-check-alt",
+        link: "verify-identity"
+    },
+    {
         id: 9,
         label: "menuitems.sale.text",
         isTitle: true
