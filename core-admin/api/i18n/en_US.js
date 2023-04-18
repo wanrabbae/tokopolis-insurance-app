@@ -95,6 +95,10 @@ const en_US_strings = {
             "transaction.dashboard": "Dashboard Side Photo",
             "transaction.optional": "Optional Photo",
 
+            "transaction.epolicy": "E-policy",
+            "transaction.nota": "Nota",
+            "transaction.policy": "Policy",
+
             "payment.platform": "Payment Platform",
             "endpoint.name": "Endpoint Name",
             "endpoint.route": "Route URL",

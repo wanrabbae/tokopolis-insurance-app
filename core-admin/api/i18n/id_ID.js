@@ -95,6 +95,10 @@ const id_ID_strings = {
             "transaction.dashboard": "Foto Dashboard",
             "transaction.optional": "Foto Tambahan",
 
+            "transaction.epolicy": "E-policy",
+            "transaction.nota": "Nota",
+            "transaction.policy": "Policy",
+
             "payment.platform": "Platform Pembayaran",
             "endpoint.name": "Nama Endpoint",
             "endpoint.route": "URL Route",

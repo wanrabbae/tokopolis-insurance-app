@@ -2,6 +2,7 @@ const excel = require('excel4node')
 const moment = require('moment')
 const fs = require('fs')
 const archiver = require('archiver')
+const validation = require('../../validation/transaction.validation')
 
 import { string } from 'joi'
 import TransactionService from '../../services/TransactionService'
@@ -532,4 +533,32 @@ exports.getPointHistoryUnder = async (req, res) => {
         },
         list: points
     });
+}
+
+exports.uploadEpolicy = async (req, res) => {
+    const validate = validation.epolicy(req)
+    if (validate.error) return res.errorValidation(validate.details)
+
+    const transaction = await service.getTransactionDetail(req.body.transaction_id)
+
+    if (transaction) {
+        const uploads = await service.uploadEpolicy(req.files);
+        await service.updateStatus(transaction[0].id, { status: 'polis' })
+
+        const client_data = transaction[0].client_data;
+        await service.sendEmailEpolicyFile({
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+            target: transaction.agent_email != null ? transaction.agent_email : client_data.email,
+            title: `E-Policy Asuransi | ${transaction[0].id} - ${client_data.fullname}`,
+            data: {
+                name: client_data.fullname,
+                product: transaction[0].product_name,
+                url: `${process.env.REDIRECT_CLIENT}/${uploads.epolicy}`,
+            },
+        })
+
+        return res.jsonData({ message: "Success Upload E-policy" })
+    }
+
+    return res.errorBadRequest(req.polyglot.t('error.transaction'));
 }

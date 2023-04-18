@@ -90,7 +90,7 @@ export default class TransactionRepository {
         return await sequelize.query(`SELECT trans.id, trans.agent_id, trans.client_data, trans.address_detail, ` +
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
-            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, agent_transactions.email as agent_email, ` +
             `vehicle.brand, vehicle.model, vehicle.sub_model, product.id as product_id, product.name as product_name, ` +
             `product.type as product_type, product.image as product_image, product.email as product_email, ` +
             `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
