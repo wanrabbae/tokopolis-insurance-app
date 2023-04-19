@@ -99,6 +99,9 @@ const en_US_strings = {
             "transaction.nota": "Nota",
             "transaction.policy": "Policy",
 
+            "config.key": "Key",
+            "config.value": "Value",
+
             "payment.platform": "Payment Platform",
             "endpoint.name": "Endpoint Name",
             "endpoint.route": "Route URL",

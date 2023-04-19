@@ -28,6 +28,7 @@ const adminUser = require("./routes/admin/user.routes");
 const adminClaim = require("./routes/admin/claim.routes");
 const adminEndpoint = require("./routes/admin/endpoint.routes");
 const adminTransaction = require("./routes/admin/transaction.routes");
+const adminConfig = require("./routes/admin/config.routes");
 
 // Middleware
 app.use(express.json());
@@ -64,7 +65,8 @@ app.use(
     adminDealer,
     adminTransaction,
     adminClaim,
-    adminUser
+    adminUser,
+    adminConfig
 );
 
 module.exports = app;

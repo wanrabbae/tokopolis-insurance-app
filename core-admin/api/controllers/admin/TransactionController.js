@@ -549,7 +549,7 @@ exports.uploadEpolicy = async (req, res) => {
         await service.sendEmailEpolicyFile({
             host: process.env.REDIRECT_CLIENT || req.fullhost,
             target: transaction.agent_email != null ? transaction.agent_email : client_data.email,
-            title: `E-Policy Asuransi | ${transaction[0].id} - ${client_data.fullname}`,
+            title: `Notifikasi Polis Asuransi Mobil | ${transaction[0].id} - ${client_data.fullname}`,
             data: {
                 name: client_data.fullname,
                 product: transaction[0].product_name,

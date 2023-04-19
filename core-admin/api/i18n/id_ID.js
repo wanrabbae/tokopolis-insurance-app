@@ -99,6 +99,9 @@ const id_ID_strings = {
             "transaction.nota": "Nota",
             "transaction.policy": "Policy",
 
+            "config.key": "Key",
+            "config.value": "Value",
+
             "payment.platform": "Platform Pembayaran",
             "endpoint.name": "Nama Endpoint",
             "endpoint.route": "URL Route",
