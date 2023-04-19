@@ -162,6 +162,21 @@ export default class TransactionService {
         return this.repository.getPointAgents(account_ids, req);
     }
 
+    updateStatus(id, payload) {
+        return this.repository.setPaymentStatus(id, payload)
+    }
+
+    uploadEpolicy(files) {
+        const documents = {};
+
+        Object.keys(files).forEach((key) => {
+            const image = uploadHandler(files[key][0].path, "transaction");
+            documents[key] = image.clearPath;
+        });
+
+        return documents;
+    }
+
     sendEmailPayment(payload) {
         let mailer = new Mailer(payload.host);
         // mailer.setUrl('/path')
@@ -200,6 +215,18 @@ export default class TransactionService {
     sendEmailTransactionFile(payload) {
         let mailer = new Mailer(payload.host);
         mailer.setType("transaction-file-sent");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            product: payload.data.product,
+            url: payload.data.url,
+        });
+        mailer.send();
+    }
+
+    sendEmailEpolicyFile(payload) {
+        let mailer = new Mailer(payload.host);
+        mailer.setType("epolicy");
         mailer.setTarget(payload.target);
         mailer.setMail(payload.title, {
             name: payload.data.name,

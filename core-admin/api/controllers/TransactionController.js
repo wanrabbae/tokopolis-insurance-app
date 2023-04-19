@@ -6,6 +6,7 @@ import ProductService from "../services/ProductService";
 import TransactionService from "../services/TransactionService";
 import PaymentService from "../services/PaymentService";
 import PdfService from "../services/PdfService";
+import ConfigService from "../services/ConfigService"
 
 const validation = require("../validation/transaction.validation");
 const {
@@ -24,6 +25,7 @@ const service = new TransactionService();
 const accountService = new AccountService();
 const productService = new ProductService();
 const paymentService = new PaymentService();
+const configService = new ConfigService();
 const pdfService = new PdfService();
 
 exports.getAll = async (req, res) => {
@@ -496,13 +498,14 @@ const setTransactionBonus = async (payload) => {
 
         const findUniqueId = await accountService.getAccountData(payload.account_id);
         const uniqueCodeArray = findUniqueId.unique_id.split("-");
-        const leaderPointValue = (totalPriceForComission * (5 / 100)) / 1000
+        const findKeySpv = await configService.getConfigByKey('point.spv');
 
         // for supervisor
         const spvCode = uniqueCodeArray.slice(0, -1).join("-");
         const findAccountSpv = await accountService.getAccountWithUniqueId(spvCode);
 
-        if (findAccountSpv) {
+        if (findAccountSpv && findKeySpv) {
+            const leaderPointValue = (totalPriceForComission * (parseInt(findKeySpv.value) / 100)) / 1000
             await service.createPoint({
                 account_id: findAccountSpv.id,
                 transaction_id: payload.transaction_id,
@@ -513,9 +516,11 @@ const setTransactionBonus = async (payload) => {
 
         // for branch head
         const bhCode = uniqueCodeArray.slice(0, -2).join("-");
+        const findKeyBh = await configService.getConfigByKey('point.bh');
         const findAccountBH = await accountService.getAccountWithUniqueId(bhCode);
 
-        if (findAccountBH) {
+        if (findAccountBH && findKeyBh) {
+            const leaderPointValue = (totalPriceForComission * (parseInt(findKeyBh.value) / 100)) / 1000
             await service.createPoint({
                 account_id: findAccountBH.id,
                 transaction_id: payload.transaction_id,
@@ -976,12 +981,13 @@ exports.webhookXendit = async (req, res) => {
     });
 
     if (transaction.agent_id != null) {
+        const findProduct = await productService.getProduct(transaction.product_id)
         await setTransactionBonus({
             account_id: transaction.agent_id,
             transaction_id: transaction.id,
             discount_format: transaction.discount_format,
             discount_value: transaction.discount_value,
-            extra_point: transaction.extra_point,
+            extra_point: findProduct.extra_point,
             price: transaction.price,
             expansion_price: transaction.expansion_price,
         })

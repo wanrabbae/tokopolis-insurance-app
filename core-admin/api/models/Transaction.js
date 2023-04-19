@@ -103,7 +103,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
         },
         status: {
-            type: Sequelize.ENUM('open', 'waiting', 'paid', 'denied', 'canceled'),
+            type: Sequelize.ENUM('open', 'waiting', 'paid', 'denied', 'canceled', 'polis'),
             defaultValue: 'open'
         },
         created_at: Sequelize.DATE,
