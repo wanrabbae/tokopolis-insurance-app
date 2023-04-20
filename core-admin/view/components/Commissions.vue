@@ -151,6 +151,17 @@
                             </template>
                         </b-table>
                     </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="dataTables_paginate paging_simple_numbers float-end">
+                                <ul class="pagination pagination-rounded mb-0">
+                                    <!-- pagination -->
+                                    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,6 +182,7 @@ export default {
         return {
             currentPage: 1,
             perPage: 5,
+            totalRows: 1,
             fields: [
             { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: 'created_at', label: 'Tanggal' },
@@ -190,6 +202,14 @@ export default {
                 name: null
             },
             account: []
+        }
+    },
+    computed: {
+        /**
+         * Total no. of records
+         */
+        rows() {
+            return this.totalRows
         }
     },
     created() {        
@@ -229,7 +249,8 @@ export default {
                         end_period: this.filter.date_period === null ? null : this.filter.date_period[1],
                     }
                 }).then((resp) => {
-                    return resp.data;
+                    this.totalRows = resp.data.pagination.total
+                    return resp.data.list;
                 })
             } else {
                 data = this.$axios.$get('/api/comissions/history').then((resp) => {

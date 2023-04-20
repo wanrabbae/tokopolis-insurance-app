@@ -3,6 +3,68 @@
         <PageHeader :title="title" />
 
         <div class="row">
+            <b-modal size="xl" scrollable ref="upload-modal" title="Upload Dokumen e-Polis"
+                ok-title="Submit" @ok.prevent="triggerUpload" cancel-title="Batal">
+                    <div class="d-block text-justify">
+                        <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="doUpload">
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-2 col-lg-2 col-form-label">e-Policy
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input
+                                        @change="onFileChange"
+                                        name="epolicy"
+                                        type="file"                                        
+                                        class="form-control">
+                                </div>
+                            </div>
+
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-2 col-lg-2 col-form-label">Nota
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input
+                                        @change="onFileChange"
+                                        name="nota"
+                                        type="file"                                        
+                                        class="form-control">
+                                </div>
+                            </div>
+
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-2 col-lg-2 col-form-label">Policy
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input
+                                        @change="onFileChange"
+                                        name="policy"
+                                        type="file"                                        
+                                        class="form-control">
+                                </div>
+                            </div>
+
+                            <div role="group" class="row form-group mb-3">
+                                <label class="col-sm-2 col-lg-2 col-form-label">Lainnya
+                                    <label class="text-danger">*</label>
+                                </label>
+                                <div class="col-sm-10 col-lg-10">
+                                    <input
+                                        @change="onFileChange"
+                                        name="lainnya"
+                                        type="file"                                        
+                                        class="form-control">
+                                </div>
+                            </div>
+
+                            <button ref="upload-data" class="d-none"></button>
+
+                        </form>
+                    </div>
+                </b-modal>
+
             <b-modal size="lg" scrollable ref="review-modal" title="Review Data Transaksi"
                 ok-title="Simpan Review" @ok.prevent="triggerReview" cancel-title="Batal">
                 <div class="d-block text-justify">
@@ -93,6 +155,11 @@
                                 <b-button v-else class="float-end" variant="success"
                                     disabled>
                                     <i class="uil uil-file-check me-1"></i> Berkas telah direview
+                                </b-button>
+                                <b-button class="float-end me-2" variant="primary"
+                                    :disabled="data.documents == null"
+                                    @click="showUpload()">
+                                    <i class="uil uil-outline-feedback me-1"></i> Upload e-Polis
                                 </b-button>
                             </div>
                             <div style="display: table">
@@ -321,6 +388,12 @@
                 assessment_note: null,
                 formRevert: {
                     message: ''
+                },
+                formepolis: {
+                    epolicy: null,
+                    nota: null,
+                    policy: null,
+                    lainnya: null
                 }
             };
         },
@@ -340,6 +413,13 @@
             },
         },
         methods: {
+            onFileChange(e) {
+                const files = e.target.files || e.dataTransfer.files
+                if (!files.length)
+                    return
+    
+                this.formepolis[e.target.name] = files[0]
+            },
             validateState(validation) {
                 const { $dirty, $error } = validation
                 return $dirty ? !$error : null
@@ -376,6 +456,9 @@
 
                 this.$refs['review-modal'].show()
             },
+            showUpload() {
+                this.$refs['upload-modal'].show()
+            },
             reviewGood(key) {
                 this.assessment[key].status = true
                 this.$forceUpdate()
@@ -405,6 +488,23 @@
             },
             triggerRevert() {
                 this.$refs['create-revert'].click();
+            },
+            triggerUpload() {
+                this.$refs['upload-data'].click();
+            },
+            doUpload() {
+                const formData = new FormData()
+    
+                for (const key of Object.keys(this.formepolis)) {
+                    formData.append(key, this.formepolis[key])
+                }
+    
+                this.$axios.$post('api/admin/transaction/epolicy', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                })
+                .then(response => {
+                    this.$router.reload()
+                })
             },
             async processRevert(e) {
                 e.preventDefault();

@@ -117,12 +117,20 @@ export default {
             titleTemplate: `${this.title} | %s`
         }
     },
+    computed: {
+        /**
+         * Total no. of records
+         */
+        rows() {
+            return this.totalRows
+        }
+    },
     methods: {
         async getData() {
             this.tableData = await this.$axios.$get(`/api/admin/transaction/history?status=${this.filterForm.status}&limit=${this.perPage}&page=${this.currentPage}`)
                 .then((resp) => {
                     this.totalRows = resp.data.pagination.total
-                    return resp.data.list[0];
+                    return resp.data.list;
                 })
                 
             return this.tableData;

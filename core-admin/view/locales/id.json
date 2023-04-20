@@ -110,6 +110,9 @@
       },
       "verifyidentity": {
         "text": "Verifikasi Identitas"
+      },
+      "config": {
+        "text": "Config Params"
       }
     }
   }
