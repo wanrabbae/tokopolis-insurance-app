@@ -8,7 +8,8 @@ const { getAll, transaction, detail, postTransaction, postOffer,
     getPaymentDetail, webhookMidtrans, webhookXendit,
     getTransactionTotal,
     getComission, getComissionHistory, getPoint, getPointHistory,
-    simulatePay, comissionWithdraw, pointWithdraw, getPointBalanceAgents
+    simulatePay, comissionWithdraw, pointWithdraw, getPointBalanceAgents,
+    cancelPayment,
 } = require('../controllers/TransactionController')
 
 const router = Router();
@@ -35,6 +36,7 @@ router.get('/transaction/review', auth, review)
 router.get('/transaction/fee/payment', auth, getPaymentFee)
 router.get('/transaction/payment', auth, getPaymentDetail)
 router.post('/transaction/payment', auth, doPayment)
+router.post('/transaction/payment/cancel', auth, cancelPayment)
 
 router.post('/transaction/midtrans', webhookMidtrans)
 router.post('/transaction/xendit', webhookXendit)

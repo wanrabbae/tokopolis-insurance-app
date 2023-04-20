@@ -16,16 +16,12 @@ export default class TransactionService {
         return this.repository.getTransactionAllWithAgent(filter, limit, offset, agent_ids);
     }
 
-    getTransactionStatusAll(status, limit, offset) {
-        return this.repository.getTransactionStatusAll(status, limit, offset);
+    getTransactionStatusAll(filter, limit, offset) {
+        return this.repository.getTransactionStatusAll(filter, limit, offset);
     }
 
     getTransactionDetail(id) {
         return this.repository.getTransactionDetail(id);
-    }
-
-    getTransactionStatusAll(status, limit, offset) {
-        return this.repository.getTransactionStatusAll(status, limit, offset);
     }
 
     getTransactionDetailForClient(id) {
@@ -188,6 +184,7 @@ export default class TransactionService {
             platform: payload.data.platform,
             virtual_number: payload.data.virtual_number,
             date: payload.data.date,
+            url: payload.data.url,
         });
         mailer.send();
     }

@@ -71,7 +71,7 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
-    async getTransactionStatusAll(status, limit, offset) {
+    async getTransactionStatusAll(filter, limit, offset) {
 
         return await sequelize.query(`SELECT trans.id, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
@@ -81,7 +81,7 @@ export default class TransactionRepository {
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
             `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
             `JOIN products as product ON trans.product_id = product.id ` +
-            `WHERE trans.status = '${status}' ` +
+            `WHERE trans.status LIKE '%${filter.status}%' AND (client_transactions.fullname LIKE '%${filter.client_name}%' OR agent_transactions.fullname LIKE '%${filter.client_name}%') AND trans.id LIKE '%${filter.id}%' ` +
             (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT })
     }
@@ -312,7 +312,7 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
-    async getTransactionStatusCount(status) {
+    async getTransactionStatusCount(filter) {
 
         return await sequelize.query(`SELECT COUNT(*) as total ` +
             `FROM transactions as trans ` +
@@ -320,7 +320,7 @@ export default class TransactionRepository {
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
             `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
             `JOIN products as product ON trans.product_id = product.id ` +
-            `WHERE trans.status = '${status}' `,
+            `WHERE trans.status LIKE '%${filter.status}%' AND (client_transactions.fullname LIKE '%${filter.client_name}%' OR agent_transactions.fullname LIKE '%${filter.client_name}%') AND trans.id LIKE '%${filter.id}%' `,
             { type: QueryTypes.SELECT })
     }
 

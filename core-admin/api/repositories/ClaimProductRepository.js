@@ -29,6 +29,7 @@ export default class ClaimProductRepository {
             where: {
                 account_id: req.account._id,
             },
+            order: [['id', 'DESC']],
             include: [
                 {
                     model: Account,

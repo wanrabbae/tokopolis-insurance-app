@@ -49,8 +49,14 @@ exports.history = async (req, res, next) => {
     const limit = Number(req.query.limit) || 10
     const offset = (current - 1) * limit
 
-    const count = await service.getTransactionStatusCount(req.query.status)
-    const list = await service.getTransactionStatusAll(req.query.status, limit, offset)
+    const filter = {
+        id: req.query.id || '',
+        client_name: req.query.client_name || '',
+        status: req.query.status || '',
+    }
+
+    const count = await service.getTransactionStatusCount(filter)
+    const list = await service.getTransactionStatusAll(filter, limit, offset)
 
     if (count.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
     return res.jsonData({

@@ -859,6 +859,7 @@ exports.doPayment = async (req, res) => {
                 virtual_number: data.virtual_number,
                 total: moneyFormat(data.amount),
                 date: data.due,
+                url: process.env.REDIRECT_CLIENT + "/asuransi/mobil/polis/konfirmasi-pembayaran?id=" + transaction.id
             },
         });
 
@@ -867,6 +868,20 @@ exports.doPayment = async (req, res) => {
 
     return res.errorBadRequest();
 };
+
+exports.cancelPayment = async (req, res) => {
+    const transaction = await service.getTransactionDetail(req.body.id);
+    if (transaction) {
+        const cancelation = await paymentService.cancelPayment({
+            transaction_id: transaction[0].id,
+            platform: transaction[0].pg_data.name
+        })
+        if (cancelation.data) {
+            return res.jsonSuccess()
+        }
+    }
+    return res.errorBadRequest()
+}
 
 exports.getPaymentDetail = async (req, res) => {
     const validate = validation.getPaymentDetail(req);
