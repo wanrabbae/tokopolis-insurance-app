@@ -123,17 +123,10 @@ exports.getClaimFileXlsx = async (req, res) => {
 }
 
 exports.updateStatusClaim = async (req, res) => {
-    try {
-        const validate = validation.updateStaging(req);
-        if (validate.error) return res.errorValidation(validate.details);
-        await service.updateStatusData(req);
-        return res.jsonSuccess("Success update staging");
-    } catch (error) {
-        return res.jsonData({
-            message: "Something went wrong!",
-            error: error.toString(),
-        });
-    }
+    const validate = validation.updateStaging(req);
+    if (validate.error) return res.errorValidation(validate.details);
+    await service.updateStatusData(req.params.id, req.body.status);
+    return res.jsonSuccess("Success update staging");
 };
 
 exports.generateSend = async (req, res, next) => {

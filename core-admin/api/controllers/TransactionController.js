@@ -976,7 +976,7 @@ exports.webhookXendit = async (req, res) => {
         result = 'paid'
     } else if (req.body.bank_code && req.body.status == "INACTIVE") {
         transaction_id = req.body.external_id
-        result = 'canceled'
+        result = 'failed'
     } else { // E-wallet / Qris
         if (req.body.data && req.body.data.reference_id && req.body.data.status == 'SUCCEEDED') {
             transaction_id = req.body.data.reference_id
