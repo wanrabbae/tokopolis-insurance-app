@@ -873,11 +873,14 @@ exports.cancelPayment = async (req, res) => {
     const transaction = await service.getTransactionDetail(req.body.id);
     if (transaction) {
         const cancelation = await paymentService.cancelPayment({
-            transaction_id: transaction[0].id,
+            transaction_id: transaction[0].pg_transaction_id,
             platform: transaction[0].pg_data.name
         })
-        if (cancelation.data) {
+        if (cancelation.status == true) {
+            await service.updateStatus(transaction[0].id, { status: 'canceled' })
             return res.jsonSuccess()
+        } else {
+            return res.errorBadRequest()
         }
     }
     return res.errorBadRequest()
