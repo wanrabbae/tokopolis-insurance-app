@@ -1088,15 +1088,23 @@ exports.comissionWithdraw = async (req, res) => {
             transaction_id: comission[0].transaction_id,
             value: `-${req.body.amount}`,
         })
+
+        const account = await accountService.getAccountSimple(req.account._id)
+
+        service.sendEmailWithdraw({
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+            target: req.account.email,
+            title: `Notifikasi Sukses Penarikan Dana | (Komisi / Poin) | ${req.account._id}`,
+            data: {
+                name: account.fullname,
+                platform: checkBank.type.toString().toUpperCase(),
+                total: moneyFormat(req.body.amount),
+            },
+        });
         res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
     } catch (error) {
         return res.errorBadRequest(error.message)
     }
-
-    // const comission = await service.getComission(req.account._id);
-    // if (comission.length <= 0) return res.jsonData({ total: 0 })
-
-    // return res.jsonData({ total: comission[0].value })
 };
 
 exports.pointWithdraw = async (req, res) => {
@@ -1130,15 +1138,24 @@ exports.pointWithdraw = async (req, res) => {
             value: `-${req.body.amount}`,
             description: "penarikan"
         });
+
+        const account = await accountService.getAccountSimple(req.account._id)
+
+        service.sendEmailWithdraw({
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+            target: req.account.email,
+            title: `Notifikasi Sukses Penarikan Dana | (Komisi / Poin) | ${req.account._id}`,
+            data: {
+                name: account.fullname,
+                platform: checkBank.type.toString().toUpperCase(),
+                total: moneyFormat(req.body.amount),
+            },
+        });
+
         res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
     } catch (error) {
         return res.errorBadRequest(error.message)
     }
-
-    // const point = await service.getPoint(req.account._id);
-    // if (point.length <= 0) return res.jsonData({ total: 0 })
-
-    // return res.jsonData({ total: point[0].value })
 };
 
 exports.getPoint = async (req, res) => {

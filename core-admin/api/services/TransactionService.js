@@ -244,4 +244,17 @@ export default class TransactionService {
         });
         mailer.send();
     }
+
+    sendEmailWithdraw(payload) {
+        let mailer = new Mailer(payload.host);
+        // mailer.setUrl('/path')
+        mailer.setType("withdrawal");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            total: payload.data.total,
+            platform: payload.data.platform,
+        });
+        mailer.send();
+    }
 }
