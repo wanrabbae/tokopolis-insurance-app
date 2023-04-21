@@ -29,7 +29,7 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
       with:
-        source: "${{ env.adminFolderName }}/*,${{ env.clientFolderName }}/*"
+        source: "*"
         target: "${{ env.folderPath }}"
 
   build:
