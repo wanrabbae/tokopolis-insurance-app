@@ -176,7 +176,7 @@ const generateXls = (review, transaction, destination) => {
         'Tampak Kanan': !isNew ? 'Terlampir' : 'N/A',
         'Tampak Kiri': !isNew ? 'Terlampir' : 'N/A',
         'Tampak Mesin': !isNew ? 'Terlampir' : 'N/A',
-        'Tampak 3D': !isNew ? 'Terlampir' : 'N/A',
+        // 'Tampak 3D': !isNew ? 'Terlampir' : 'N/A',
         'Tampak Dashboard': !isNew ? 'Terlampir' : 'N/A',
         'Tahun Kendaraan': transaction.vehicle_data.year,
         'Pemakaian': 'PRIBADI',
@@ -376,6 +376,7 @@ exports.getXlsxAllTransaction = async (req, res) => {
     for (let index = 0; index < list.length; index++) {
         const data2 = list[index]
         const isNew = data2.documents != null ? data2.documents.bastk != null ? true : false : false;
+        const isNewCon = data2.is_new_condition;
 
         const accessoriesPriceTotal = data2.vehicle_data.accessories.reduce((a, b) => a + b.price, 0)
         const expansionPriceTotal = data2.expansions.reduce((a, b) => a + b.price, 0)
@@ -387,7 +388,7 @@ exports.getXlsxAllTransaction = async (req, res) => {
         worksheet.cell(1, 2).string("Quotation No.").style(style)
         worksheet.cell(1, 3).string("Insurance Name").style(style)
         worksheet.cell(1, 4).string("Tokopolis Policy Number").style(style)
-        worksheet.cell(1, 5).string("Period Of Insured").style(style)
+        worksheet.cell(1, 5).string("Period Of Insurance").style(style)
         worksheet.cell(1, 6).string("Nomor Rangka").style(style)
         worksheet.cell(1, 7).string("Nomor Mesin").style(style)
         worksheet.cell(1, 8).string("Warna").style(style)
@@ -399,30 +400,30 @@ exports.getXlsxAllTransaction = async (req, res) => {
         worksheet.cell(1, 14).string("Tampak Kanan").style(style)
         worksheet.cell(1, 15).string("Tampak Kiri").style(style)
         worksheet.cell(1, 16).string("Tampak Mesin").style(style)
-        worksheet.cell(1, 17).string("Tampak 3D").style(style)
-        worksheet.cell(1, 18).string("Tampak Dashboard").style(style)
-        worksheet.cell(1, 19).string("Tahun Kendaraan").style(style)
-        worksheet.cell(1, 20).string("Pemakaian").style(style)
-        worksheet.cell(1, 21).string("Kondisi").style(style)
-        worksheet.cell(1, 22).string("Merek Kendaraan").style(style)
-        worksheet.cell(1, 23).string("Tipe Kendaraan").style(style)
-        worksheet.cell(1, 24).string("Seri Kendaraan").style(style)
-        worksheet.cell(1, 25).string("Nomor Polisi").style(style)
-        worksheet.cell(1, 26).string("Coverage").style(style)
-        worksheet.cell(1, 27).string("TSI").style(style)
-        worksheet.cell(1, 28).string("Premi Jaminan Utama").style(style)
-        worksheet.cell(1, 29).string("Harga Aksesoris").style(style)
-        worksheet.cell(1, 30).string("Detail Aksesoris").style(style)
-        worksheet.cell(1, 31).string("GWP").style(style)
-        worksheet.cell(1, 32).string("Diskon").style(style)
-        worksheet.cell(1, 33).string("Persenan Diskon").style(style)
-        worksheet.cell(1, 34).string("Biaya Admin").style(style)
-        worksheet.cell(1, 35).string("NWP").style(style)
-        worksheet.cell(1, 36).string("Nama Tertanggung").style(style)
-        worksheet.cell(1, 37).string("Tipe Identitas Tertanggung").style(style)
-        worksheet.cell(1, 38).string("Alamat Tertanggung").style(style)
-        worksheet.cell(1, 39).string("Insurance Notes").style(style)
-        worksheet.cell(1, 40).string("Quotation Status").style(style)
+        // worksheet.cell(1, 17).string("Tampak 3D").style(style)
+        worksheet.cell(1, 17).string("Tampak Dashboard").style(style)
+        worksheet.cell(1, 18).string("Tahun Kendaraan").style(style)
+        worksheet.cell(1, 19).string("Pemakaian").style(style)
+        worksheet.cell(1, 20).string("Kondisi").style(style)
+        worksheet.cell(1, 21).string("Merek Kendaraan").style(style)
+        worksheet.cell(1, 22).string("Tipe Kendaraan").style(style)
+        worksheet.cell(1, 23).string("Seri Kendaraan").style(style)
+        worksheet.cell(1, 24).string("Nomor Polisi").style(style)
+        worksheet.cell(1, 25).string("Coverage").style(style)
+        worksheet.cell(1, 26).string("TSI").style(style)
+        worksheet.cell(1, 27).string("Premi Jaminan Utama").style(style)
+        worksheet.cell(1, 28).string("Harga Aksesoris").style(style)
+        worksheet.cell(1, 29).string("Detail Aksesoris").style(style)
+        worksheet.cell(1, 30).string("GWP").style(style)
+        worksheet.cell(1, 31).string("Diskon").style(style)
+        worksheet.cell(1, 32).string("Persenan Diskon").style(style)
+        worksheet.cell(1, 33).string("Biaya Admin").style(style)
+        worksheet.cell(1, 34).string("NWP").style(style)
+        worksheet.cell(1, 35).string("Nama Tertanggung").style(style)
+        worksheet.cell(1, 36).string("Tipe Identitas Tertanggung").style(style)
+        worksheet.cell(1, 37).string("Alamat Tertanggung").style(style)
+        worksheet.cell(1, 38).string("Insurance Notes").style(style)
+        worksheet.cell(1, 39).string("Quotation Status").style(style)
 
         worksheet.cell(index + 1, 1).string(`${moment(data2.created_at).format("DD/MMM/YYYY")}`)
         worksheet.cell(index + 1, 2).string(`${data2.id}`)
@@ -434,46 +435,46 @@ exports.getXlsxAllTransaction = async (req, res) => {
         worksheet.cell(index + 1, 8).string(`${data2.vehicle_data.color}`)
         worksheet.cell(index + 1, 9).string(!isNew ? 'Terlampir' : 'N/A')
         worksheet.cell(index + 1, 10).string('Terlampir')
-        worksheet.cell(index + 1, 11).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 12).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 13).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 14).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 15).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 16).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 17).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 18).string(!isNew ? 'Terlampir' : 'N/A')
-        worksheet.cell(index + 1, 19).string(data2.vehicle_data.year)
-        worksheet.cell(index + 1, 20).string('PRIBADI')
-        worksheet.cell(index + 1, 21).string(isNew != undefined ? 'BARU' : 'BEKAS')
-        worksheet.cell(index + 1, 22).string(data2.brand)
-        worksheet.cell(index + 1, 23).string(data2.model)
-        worksheet.cell(index + 1, 24).string(data2.sub_model)
-        worksheet.cell(index + 1, 25).string(!isNew && data2.vehicle_data.plate_detail != undefined ?
+        worksheet.cell(index + 1, 11).string('Terlampir')
+        worksheet.cell(index + 1, 12).string(!isNewCon ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 13).string(!isNewCon ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 14).string(!isNewCon ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 15).string(!isNewCon ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 16).string(!isNewCon ? 'Terlampir' : 'N/A')
+        // worksheet.cell(index + 1, 17).string(!isNewCon ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 17).string(!isNewCon ? 'Terlampir' : 'N/A')
+        worksheet.cell(index + 1, 18).string(data2.vehicle_data.year)
+        worksheet.cell(index + 1, 19).string('PRIBADI')
+        worksheet.cell(index + 1, 20).string(isNewCon ? 'BARU' : 'BEKAS')
+        worksheet.cell(index + 1, 21).string(data2.brand)
+        worksheet.cell(index + 1, 22).string(data2.model)
+        worksheet.cell(index + 1, 23).string(data2.sub_model)
+        worksheet.cell(index + 1, 24).string(!isNew && data2.vehicle_data.plate_detail != undefined ?
             `${data2.vehicle_data.plate} ${data2.vehicle_data.plate_detail}` :
             data2.vehicle_data.plate)
-        worksheet.cell(index + 1, 26).string(data2.product_type == 'comprehensive' ? 'Komprehensif' : 'Total Loss')
-        worksheet.cell(index + 1, 27).string(`${data2.vehicle_data.price}`)
-        worksheet.cell(index + 1, 28).string(`${data2.price}`)
+        worksheet.cell(index + 1, 25).string(data2.product_type == 'comprehensive' ? 'Komprehensif' : 'Total Loss')
+        worksheet.cell(index + 1, 26).string(`${data2.vehicle_data.price}`)
+        worksheet.cell(index + 1, 27).string(`${data2.price}`)
         // ====================== LINE FOR EXPANSION_CODES ======================
-        worksheet.cell(index + 1, 29).string(`${accessoriesPriceTotal}`)
-        worksheet.cell(index + 1, 30).string(data2.vehicle_data.accessories
+        worksheet.cell(index + 1, 28).string(`${accessoriesPriceTotal}`)
+        worksheet.cell(index + 1, 29).string(data2.vehicle_data.accessories
             .map(item => `${item.type} (${item.brand})`)
             .join(', '))
-        worksheet.cell(index + 1, 31).string(`${data2.price + expansionPriceTotal}`)
-        worksheet.cell(index + 1, 32).string(`${data2.discount_total}`)
-        worksheet.cell(index + 1, 33).string(`${data2.discount_format == 'percent' ? data2.discount_value :
+        worksheet.cell(index + 1, 30).string(`${data2.price + expansionPriceTotal}`)
+        worksheet.cell(index + 1, 31).string(`${data2.discount_total}`)
+        worksheet.cell(index + 1, 32).string(`${data2.discount_format == 'percent' ? data2.discount_value :
             data2.discount_total / (data2.price + expansionPriceTotal) * 100}`)
-        worksheet.cell(index + 1, 34).string(data2.fee_admin + data2.fee_stamp)
-        worksheet.cell(index + 1, 35).string(`${(data2.price + expansionPriceTotal) - data2.discount_total +
+        worksheet.cell(index + 1, 33).string(data2.fee_admin + data2.fee_stamp)
+        worksheet.cell(index + 1, 34).string(`${(data2.price + expansionPriceTotal) - data2.discount_total +
             data2.fee_admin + data2.fee_stamp}`)
-        worksheet.cell(index + 1, 36).string(data2.client_data.fullname)
-        worksheet.cell(index + 1, 37).string("-")
-        worksheet.cell(index + 1, 38).string((`${addressDetail.join(' ')}, ${data2.village_name}, ` +
+        worksheet.cell(index + 1, 35).string(data2.client_data.fullname)
+        worksheet.cell(index + 1, 36).string("-")
+        worksheet.cell(index + 1, 37).string((`${addressDetail.join(' ')}, ${data2.village_name}, ` +
             `${data2.district_name}, ${data2.regency_name}, ` +
             `${data2.province_name} ${postalCode}`)
             .replace((/  |\r\n|\n|\r/gm), ''))
-        worksheet.cell(index + 1, 39).string('-')
-        worksheet.cell(index + 1, 40).string(`${data2.status}`)
+        worksheet.cell(index + 1, 38).string('-')
+        worksheet.cell(index + 1, 39).string(`${data2.status}`)
     }
 
     workbook.write(`view/static/doc/transaction_${req.body.start_period}-${req.body.end_period}.xlsx`);
