@@ -1,0 +1,42 @@
+name: Deploy Docker Core System
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    paths:
+      - 'core-admin/**'
+      - 'core-client/**'
+      - 'email-service/**'
+      - 'payment-service/**'
+
+env:
+  folderPath: /var/www/html/tokopolis
+
+jobs:
+  update-project-files:
+    name: Update Project Files
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+
+    - name: Pull changes
+      run: git pull
+
+  build:
+    name: Build Docker Containers
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Deploy Script
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          ${{ env.folderPath }}
+          make build

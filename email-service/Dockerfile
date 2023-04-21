@@ -1,4 +1,4 @@
-FROM node:14.21-alpine3.16 as build-stage
+FROM golang:1.18.4 AS builder
 
 # Set the working directory to /app
 WORKDIR /app
@@ -7,10 +7,8 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in package.json
-RUN npm install
-RUN npm run build
-
-EXPOSE 3001
+RUN go mod tidy
+RUN go build main.go
 
 # start the app
-CMD [ "npm", "start" ]
+CMD [ "./main" ]
