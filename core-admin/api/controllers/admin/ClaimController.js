@@ -96,10 +96,10 @@ exports.getClaimFileXlsx = async (req, res) => {
             worksheet.cell(index + 1, 5).string(`${element.reporter_fullname}`)
             worksheet.cell(index + 1, 6).string(`${element.holder_fullname}`)
             worksheet.cell(index + 1, 7).string(`${element.plate_number}`)
-            worksheet.cell(index + 1, 8).string(`${moment(element.incident_time).format("DD/MMM/YYYY")}`)
+            worksheet.cell(index + 1, 8).string(`${moment(element.incident_time).format("DD/MMM/YYYY HH:mm:ss")}`)
             worksheet.cell(index + 1, 9).string(`${element.location}`)
             worksheet.cell(index + 1, 10).string(`${element.documents.identity_card ? 'Terlampir' : 'N/A'}`)
-            worksheet.cell(index + 1, 11).string(`${element.documents.driver_license ? 'Terlampir' : 'N/A'}`)
+            worksheet.cell(index + 1, 11).string(`${element.documents.sim ? 'Terlampir' : 'N/A'}`)
             worksheet.cell(index + 1, 12).string(`${element.documents.stnk ? 'Terlampir' : 'N/A'}`)
             worksheet.cell(index + 1, 13).string(`N/A`)
             worksheet.cell(index + 1, 14).string(`${element.documents.damage1 ? 'Terlampir' : 'N/A'}`)
@@ -123,17 +123,10 @@ exports.getClaimFileXlsx = async (req, res) => {
 }
 
 exports.updateStatusClaim = async (req, res) => {
-    try {
-        const validate = validation.updateStaging(req);
-        if (validate.error) return res.errorValidation(validate.details);
-        await service.updateStatusData(req);
-        return res.jsonSuccess("Success update staging");
-    } catch (error) {
-        return res.jsonData({
-            message: "Something went wrong!",
-            error: error.toString(),
-        });
-    }
+    const validate = validation.updateStaging(req);
+    if (validate.error) return res.errorValidation(validate.details);
+    await service.updateStatusData(req.params.id, req.body.status);
+    return res.jsonSuccess("Success update staging");
 };
 
 exports.generateSend = async (req, res, next) => {
@@ -220,10 +213,10 @@ const generateXls = (claimData, destination) => {
         'Nama Pelapor': claimData.reporter_fullname,
         'Nama Pemegang Polis': claimData.holder_fullname,
         'Nomor Plat Kendaraan': claimData.plate_number,
-        'Waktu Kejadian': moment(claimData.incident_time).format("DD/MMM/YYYY"),
+        'Waktu Kejadian': moment(claimData.incident_time).format("DD/MMM/YYYY HH:mm:ss"),
         'Lokasi Lengkap Kejadian': claimData.location,
         'Identitas Customer': claimData.documents.identity_card ? 'Terlampir' : 'N/A',
-        'Foto SIM': claimData.documents.driver_license ? 'Terlampir' : 'N/A',
+        'Foto SIM': claimData.documents.sim ? 'Terlampir' : 'N/A',
         'Foto STNK': claimData.documents.stnk ? 'Terlampir' : 'N/A',
         'Dokumen Lain (Opsional)': 'N/A',
         'Foto Kerusakan 1': claimData.documents.damage1 ? 'Terlampir' : 'N/A',

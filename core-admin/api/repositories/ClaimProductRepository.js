@@ -29,6 +29,7 @@ export default class ClaimProductRepository {
             where: {
                 account_id: req.account._id,
             },
+            order: [['id', 'DESC']],
             include: [
                 {
                     model: Account,
@@ -104,10 +105,10 @@ export default class ClaimProductRepository {
         return await ClaimProduct.create(payload);
     }
 
-    async updateStatus(payload) {
+    async updateStatus(id, status) {
         return await ClaimProduct.update(
-            { status: payload.body.status },
-            { where: { id: payload.params.id } }
+            { status: status },
+            { where: { id: id } }
         );
     }
 }

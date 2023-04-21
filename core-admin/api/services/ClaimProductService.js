@@ -52,8 +52,8 @@ export default class ClaimProductService {
         return this.repository.createClaimProductData(payload);
     }
 
-    updateStatusData(payload) {
-        return this.repository.updateStatus(payload);
+    updateStatusData(id, status) {
+        return this.repository.updateStatus(id, status);
     }
 
     sendEmailRequestClaimSuccess(payload) {

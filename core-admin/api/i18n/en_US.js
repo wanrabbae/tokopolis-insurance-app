@@ -108,6 +108,7 @@ const en_US_strings = {
             "endpoint.method": "Method",
 
             "claim.fullname": "Nama Pemegang Polis",
+            "claim.plate_number": "Plate Number",
             "claim.transaction.id": "ID Transaksi",
             "claim.no_polis": "Nomor Polis Asuransi",
             "claim.incident_time": "Waktu Kejadian",

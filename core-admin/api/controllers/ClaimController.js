@@ -50,14 +50,14 @@ exports.claimProduct = async (req, res) => {
         const checkTransaction = await transactionService.getTransactionDetail(req.body.transaction_id)
         if (checkTransaction.length <= 0) return res.errorBadRequest(req.polyglot.t("error.claim.transaction.check"))
 
-        if (
-            new Date(req.body.incident_time) <
-            new Date(checkTransaction[0].start_date)
-        ) {
-            return res.errorBadRequest(
-                req.polyglot.t("error.claim.incident_time")
-            );
-        }
+        // if (
+        //     new Date(req.body.incident_time) <
+        //     new Date(checkTransaction[0].start_date)
+        // ) {
+        //     return res.errorBadRequest(
+        //         req.polyglot.t("error.claim.incident_time")
+        //     );
+        // }
 
         const checkProduct = await productService.getProduct(checkTransaction[0].product_id)
         if (!checkProduct) return res.errorBadRequest(req.polyglot.t("error.product"))
@@ -80,7 +80,7 @@ exports.claimProduct = async (req, res) => {
             target: req.account.email,
             title: req.polyglot.t("mail.request_claim"),
             data: {
-                name: transaction.client_data.fullname,
+                name: checkTransaction[0].client_data.fullname,
                 reporter_fullname: req.body.reporter_fullname,
                 holder_fullname: req.body.holder_fullname,
                 incident_time: req.body.incident_time
