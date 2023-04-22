@@ -19,10 +19,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Change Working directory
       run: cd ${{ env.folderPath }}
+      shell: /usr/bin/bash
       working-directory: ${{ env.folderPath }}
 
     - name: Run Deploy Script
