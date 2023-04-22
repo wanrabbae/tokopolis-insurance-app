@@ -19,9 +19,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Run Deploy Script
-      working-directory: ${{ env.folderPath }}
-      run: |
-        make build
+    - name: Build Docker Containers
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}
+          git pull origin master
+          make build

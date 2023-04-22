@@ -1,5 +1,4 @@
 name: Deploy Core System
-if: false
 
 on:
   pull_request:
