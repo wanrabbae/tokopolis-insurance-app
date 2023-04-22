@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: Copy All Files to Destination
-      uses: appleboy/ssh-action@0.1.4
+      uses: appleboy/scp-action@v0.1.4
       env:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
@@ -45,5 +45,5 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-          ${{ env.folderPath }}
+          cd ${{ env.folderPath }}
           make build
