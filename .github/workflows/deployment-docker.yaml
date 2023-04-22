@@ -21,11 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Change Working directory
-      run: cd ${{ env.folderPath }}
-      shell: sh
-      working-directory: ${{ env.folderPath }}
-
     - name: Run Deploy Script
+      working-directory: ${{ env.folderPath }}
       run: |
         make build
