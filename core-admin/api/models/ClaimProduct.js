@@ -55,12 +55,13 @@ module.exports = (sequelize, Sequelize) => {
                 defaultValue: "pending",
             },
             created_at: Sequelize.DATE,
+            updated_at: Sequelize.DATE,
         },
         {
             freezeTableName: true,
             createdAt: "created_at",
             deletedAt: false,
-            updatedAt: false,
+            updatedAt: "updated_at",
         }
     );
 

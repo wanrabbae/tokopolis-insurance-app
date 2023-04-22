@@ -63,6 +63,7 @@ module.exports = {
                 defaultValue: "pending",
             },
             created_at: Sequelize.DATE,
+            updated_at: Sequelize.DATE,
         });
     },
 
