@@ -89,7 +89,8 @@ exports.updatePassword = async (req, res) => {
 };
 
 exports.getIdentity = async (req, res) => {
-    const identity = await service.getIdentity(req.account._id);
+    const type = req.query.type || 'ktp';
+    const identity = await service.getIdentityType(req.account._id, type);
 
     return res.jsonData(identity);
 };

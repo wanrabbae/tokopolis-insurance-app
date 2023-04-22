@@ -5,10 +5,10 @@ module.exports = {
 		return queryInterface.createTable('identities', {
 			account_id: {
 				type: Sequelize.INTEGER,
-				primaryKey: true
 			},
 			identity_number: {
 				type: Sequelize.STRING,
+				primaryKey: true,
 				allowNull: false,
 			},
 			image: Sequelize.STRING,
