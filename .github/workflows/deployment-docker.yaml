@@ -23,7 +23,7 @@ jobs:
 
     - name: Change Working directory
       run: cd ${{ env.folderPath }}
-      shell: /usr/bin/bash
+      shell: bash
       working-directory: ${{ env.folderPath }}
 
     - name: Run Deploy Script
