@@ -17,10 +17,14 @@ jobs:
   build:
     name: Build Docker Containers
     runs-on: ubuntu-latest
-    environment: main
 
     steps:
     - uses: actions/checkout@v1
 
+    - name: Change working directory
+      run: cd ${{ folderPath }}
+      working-directory: ${{ folderPath }}
+
     - name: Run Deploy Script
-      run: cd ${{ env.folderPath }} && make build
+      run: |
+        make build
