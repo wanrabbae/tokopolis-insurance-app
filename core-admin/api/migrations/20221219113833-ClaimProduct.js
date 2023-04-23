@@ -63,7 +63,12 @@ module.exports = {
                 defaultValue: "pending",
             },
             created_at: Sequelize.DATE,
-            updated_at: Sequelize.DATE,
+            surveyed_at: Sequelize.DATE,
+            accepted_at: Sequelize.DATE,
+            declined_at: Sequelize.DATE,
+            fixed_at: Sequelize.DATE,
+            ready_at: Sequelize.DATE,
+            done_at: Sequelize.DATE,
         });
     },
 
