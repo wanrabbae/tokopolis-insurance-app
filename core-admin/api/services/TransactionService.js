@@ -162,13 +162,17 @@ export default class TransactionService {
         return this.repository.setPaymentStatus(id, payload)
     }
 
-    uploadEpolicy(files) {
-        const documents = {};
+    async uploadEpolicy(files, document, id) {
+        const documents = { ...document };
 
         Object.keys(files).forEach((key) => {
             const image = uploadHandler(files[key][0].path, "transaction");
             documents[key] = image.clearPath;
         });
+
+        await this.repository.updateTransaction(id, {
+            documents: documents
+        })
 
         return documents;
     }

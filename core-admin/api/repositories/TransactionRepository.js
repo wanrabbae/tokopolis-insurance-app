@@ -264,6 +264,7 @@ export default class TransactionRepository {
                 "start_date",
                 "client_data",
                 "status",
+                "documents",
             ],
             where: {
                 [Op.or]: [

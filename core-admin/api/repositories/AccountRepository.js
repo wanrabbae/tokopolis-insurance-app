@@ -228,6 +228,12 @@ export default class AccountRepository {
         });
     }
 
+    async getIdentityType(account_id, type) {
+        return await Identity.scope("defaultScope").findOne({
+            where: { account_id: account_id, type: type },
+        });
+    }
+
     async getIdentityList(limit, offset) {
         return await Identity.findAll({
             include: {

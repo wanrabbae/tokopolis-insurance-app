@@ -179,6 +179,10 @@ export default class AccountService {
         return this.repository.getIdentity(account_id);
     }
 
+    getIdentityType(account_id, type) {
+        return this.repository.getIdentityType(account_id, type);
+    }
+
     async getIdentityList(query, limit, offset) {
         if (query == null) {
             return await this.repository.getIdentityList(limit, offset);

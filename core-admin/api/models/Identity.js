@@ -2,11 +2,11 @@ module.exports = (sequelize, Sequelize) => {
 	const Identity = sequelize.define('identities', {
 		account_id: {
 			type: Sequelize.INTEGER,
-			primaryKey: true
 		},
 		identity_number: {
 			type: Sequelize.STRING,
 			allowNull: false,
+			primaryKey: true
 		},
 		image: Sequelize.STRING,
 		type: Sequelize.ENUM('ktp', 'npwp'),
@@ -27,7 +27,7 @@ module.exports = (sequelize, Sequelize) => {
 		timestamps: false,
 	})
 
-	Identity.associate = function(models) {
+	Identity.associate = function (models) {
 		Identity.belongsTo(models.Account, { foreignKey: 'account_id' })
 	}
 

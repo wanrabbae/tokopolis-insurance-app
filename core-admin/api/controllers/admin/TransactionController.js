@@ -549,7 +549,7 @@ exports.uploadEpolicy = async (req, res) => {
     const transaction = await service.getTransactionDetail(req.body.transaction_id)
 
     if (transaction) {
-        const uploads = await service.uploadEpolicy(req.files);
+        const uploads = await service.uploadEpolicy(req.files, transaction[0].documents, transaction[0].id);
         await service.updateStatus(transaction[0].id, { status: 'polis' })
 
         const client_data = transaction[0].client_data;
