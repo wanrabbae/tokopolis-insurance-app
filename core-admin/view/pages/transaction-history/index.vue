@@ -22,6 +22,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">No. Quotation</label>
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="No. Quotation" v-model="filterForm.id" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Nama Tertanggung</label>
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="Nama Tertanggung" v-model="filterForm.client_name" />
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-1">
                                 <div role="group" class="form-group">
                                     <label class="col-form-label">Aksi</label>
@@ -89,14 +105,16 @@ export default {
     layout: 'admin',
     data() {
         return {
-            title: 'Transaction History',
+            title: 'Transaction Status',
             tableData: [],
             totalRows: 1,
             currentPage: 1,
             perPage: 5,
             pageOptions: [5, 10, 25, 50],
             filterForm: {
-                status: "waiting"
+                status: "waiting",
+                id: '',
+                client_name: ''
             },
             sortDesc: false,
             fields: [

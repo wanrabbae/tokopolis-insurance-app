@@ -29,6 +29,7 @@
                     <b-list-group-item href="/profil">Profil</b-list-group-item>
 
                     <b-list-group-item href="/profil/detail-identitas">Detail Identitas</b-list-group-item>
+                    <b-list-group-item href="/profil/detail-npwp">NPWP</b-list-group-item>
 
                     <b-list-group-item href="/profil/detail-bank">Detail Bank</b-list-group-item>
 

@@ -18,9 +18,9 @@
             <div class="step-caption mb-1">
                 {{ step.caption }}
             </div>
-            <!-- <div v-if="id <= currentStep" class="step-date-complete">
+            <div v-if="id <= currentStep" class="step-date-complete">
                 {{ step.dateComplete }}
-            </div> -->
+            </div>
         </li>
     </ul>
 </template>

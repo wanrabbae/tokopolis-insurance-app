@@ -63,7 +63,7 @@
 
                 <BaseInput
                     v-model="model.claimNumber"
-                    type="number"
+                    type="text"
                     name="claim-number"
                     placeholder="Masukkan nomor claim di sini"
                     class="flex-fill flex-md-grow-0 w-md-50 mb-md-0 mr-0 mr-md-3"
@@ -129,7 +129,7 @@ export default {
     },
     methods: {
         trackClaim() {
-            console.log("track claim");
+            this.$router.push({path: '/detail-klaim?id='+this.model.claimNumber})
         }
     }
 }

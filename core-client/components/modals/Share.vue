@@ -15,9 +15,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="border rounded-circle border-success p-2">
-                        <ShareNetwork network="whatsapp" url="https://tokopolis.id/"
-                            title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                            description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You.">
+                        <ShareNetwork network="cstokopolis">
                             <img src="/img/whatsapp.png" width="50px" height="50px" />
                         </ShareNetwork>
                     </div>
@@ -46,7 +44,9 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="border rounded-circle border-danger p-2 bg-danger">
-                        <img src="/img/pdf.png" width="50px" height="50px" />
+                        <a :href="epolicy" target="_blank" :disabled="epolicy === undefined || epolicy === null">
+                            <img src="/img/pdf.png" width="50px" height="50px" />
+                        </a>
                     </div>
                 </div>
             </div>
@@ -70,13 +70,15 @@ export default {
     components: {
         BaseButton
     },
+    props: [
+        'epolicy'
+    ],
     data() {
         return {
             model: {
                 value: '0',
                 bank: 'Bank Mandiri',
                 rekening: '12345678',
-                nama_rekening: 'John Doe',
                 nama_rekening: 'John Doe',
                 description: `
                 Nasabah yang terhormat, 
@@ -96,6 +98,9 @@ export default {
     methods: {
         okHandler(bvModalEvt) {
             this.$emit('close')
+        },
+        openWhatsappAction() {
+            console.log('opened');
         }
     }
 }

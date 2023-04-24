@@ -63,13 +63,13 @@
                             </div>
                             <div class="col-md-3 mt-2">
                                 <div role="group" class="form-group">
-                                    <label class="col-form-label">Nama Pemegang Polis</label>
+                                    <label class="col-form-label">Nama Tertanggung</label>
                                     <div>
                                         <input
                                             type="text"
                                             v-model="filterForm.holder_name"
                                             class="form-control"
-                                            placeholder="Masukkan Nama Pemegang Polis"
+                                            placeholder="Masukkan Nama Tertanggung"
                                             required>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                     </b-button> -->
 
                                     <b-button v-b-tooltip.hover
-                                        title="Send File to Insurance"  type="button" variant="warning"
+                                        title="Send File to Agent"  type="button" variant="warning"
                                         @click="sendEmail(data.item.id)">
                                         <i class="uil uil-fast-mail" ></i>
                                     </b-button>
@@ -210,7 +210,7 @@ export default {
             },
             filterForm: {
                 id: null,
-                id_klaim: null,
+                id_claim: null,
                 holder_name: null,
             },
             filter: null,
@@ -221,7 +221,7 @@ export default {
                 { key: "transaction_id", label: 'No. Transaksi', tdClass: 'align-middle' },
                 { key: "plate_number", label: 'Plat Nomor', tdClass: 'align-middle', sortable: false },
                 { key: "reporter_fullname", label: 'Reporter', tdClass: 'align-middle', sortable: false },
-                { key: "holder_fullname", label: 'Holder', tdClass: 'align-middle', sortable: false },
+                { key: "holder_fullname", label: 'Nama Tertanggung', tdClass: 'align-middle', sortable: false },
                 { key: "incident_time", label: 'Incident Time', tdClass: 'align-middle', sortable: false },
                 { key: "location", label: 'Location', tdClass: 'align-middle', sortable: false },
                 { key: "status", label: 'Status', tdClass: 'align-middle', sortable: false },
@@ -267,8 +267,9 @@ export default {
         },
         doResetFilter() {
             this.filterForm = {
-                name: null,
-                type: null,
+                id: null,
+                id_claim: null,
+                holder_name: null,
             }
             this.getData()
             this.$refs.table.refresh()
@@ -279,7 +280,7 @@ export default {
                         current: this.currentPage,
                         limit: this.perPage,
                         id: this.filterForm.id,
-                        id_klaim: this.filterForm.id_klaim,
+                        id_claim: this.filterForm.id_claim,
                         holder_name: this.filterForm.holder_name,
                     }
                 })
