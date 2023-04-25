@@ -91,10 +91,9 @@
                                         class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
 
                                     <div class="d-inline-block">
-
                                         <div style="cursor: pointer;" title="Share Document">
                                             <fa icon="share-nodes" style="width: 16px; height: 16px;"
-                                                @click="openShareModal(policy.id)" />
+                                                @click="openShareModal(policy.quotationID)" />
                                         </div>
 
                                     </div>
@@ -113,7 +112,7 @@
             </div>
         </b-container>
         <Loading :show="loading" />
-        <Share id="share-popup" :epolicy="epolicy"/>
+        <Share id="share-popup" :epolicy="epolicy" :idpolis="idpolis"/>
     </div>
 </template>
 
@@ -139,6 +138,7 @@ export default {
             title: 'Daftar Polis',
             loading: true,
             epolicy: null,
+            idpolis: null,
             model: {
                 search: null,
                 status: null,
@@ -233,7 +233,8 @@ export default {
         openShareModal(id) {
             this.$bvModal.show('share-popup')
             const selectedData = this.policies.find((items) => items.id === id);
-            this.epolicy = selectedData.documents.epolicy ?? null;
+            this.epolicy = selectedData?.documents?.epolicy ?? null;
+            this.idpolis = id;
         },
     }
 }

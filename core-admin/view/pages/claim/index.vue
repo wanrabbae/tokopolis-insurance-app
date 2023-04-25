@@ -308,7 +308,7 @@ export default {
         },
         async doUpdateStatus(e) {
             e.preventDefault();
-            return await this.$axios.$put(`api/admin/claim/${this.updateStatus.selectedId}/update-staging`, {status: this.updateStatus.newStatus})
+            return await this.$axios.$put(`api/admin/claim/${this.updateStatus.selectedId}/updateStaging`, {status: this.updateStatus.newStatus})
                 .then(response => {
                     this.$refs['form-update-status'].hide()
                     Swal.fire("Berhasil", "Berhasil Mengubah Status", "success")

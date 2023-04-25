@@ -142,12 +142,12 @@
                     <div class="card-body">
                         <div>
                             <div>
-                                <b-button v-if="data.assessment == null" class="float-end ms-2" variant="danger"
+                                <b-button v-if="data.assessment == null && data.status !== 'polis'" class="float-end ms-2" variant="danger"
                                     :disabled="data.documents == null"
                                     @click="showRevert()">
                                     <i class="uil uil-outline-feedback me-1"></i> Revert to Agent
                                 </b-button>
-                                <b-button v-if="data.assessment == null" class="float-end" variant="success"
+                                <b-button v-if="data.assessment == null && data.status !== 'polis'" class="float-end" variant="success"
                                     :disabled="data.documents == null"
                                     @click="showReview()">
                                     <i class="uil uil-file-check me-1"></i> Review Berkas
@@ -156,7 +156,7 @@
                                     disabled>
                                     <i class="uil uil-file-check me-1"></i> Berkas telah direview
                                 </b-button>
-                                <b-button class="float-end me-2" variant="primary"
+                                <b-button v-if="data.status !== 'polis'" class="float-end me-2" variant="primary"
                                     :disabled="data.documents == null"
                                     @click="showUpload()">
                                     <i class="uil uil-outline-feedback me-1"></i> Upload e-Polis
@@ -174,7 +174,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-3" v-for="(item, key) of data.documents" v-bind:key="key">
+            <div v-bind:key="key" v-for="(item, key) of data.documents" class="col-xl-3">
                 <div class="card">
                     <div class="card-body">
                         <img :src="item" width="100%" @click="setLightBoxStatus(key)"
@@ -288,6 +288,26 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body row">
+                        <div :class="(hasExpansions ? 'col-lg-6 ' : 'col-lg-12 ') + 'col-12'">
+                            <h4 class="card-title">Dokumen e-Polis</h4>
+
+                            <table class="table mt-4 mb-4">
+                                <tbody>
+                                    <tr v-for="(item, key) of data.epolis" v-bind:key="key">
+                                        <td colspan="2">
+                                            <a :href="item" target="_blank">{{ key.toUpperCase() }}</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     </template>
@@ -307,11 +327,6 @@
      */
     export default {
         layout: 'admin',
-        head() {
-            return {
-                title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`,
-            };
-        },
         data() {
             return {
                 id: this.$nuxt.$route.params.id,
@@ -390,11 +405,17 @@
                     message: ''
                 },
                 formepolis: {
+                    transaction_id: null,
                     epolicy: null,
                     nota: null,
                     policy: null,
                     lainnya: null
                 }
+            };
+        },
+        head() {
+            return {
+                title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`,
             };
         },
         computed: {
@@ -425,16 +446,29 @@
                 return $dirty ? !$error : null
             },
             async getData() {
+                const epolisdok = ['epolicy', 'policy', 'nota', 'lainnya'];
                 await this.$axios.$get(`api/admin/transaction/${this.id}/detail`)
                     .then(response => {
                         this.data = response.data
 
+                        const documents = {};
+                        const epolis = {};
+
                         for (let key in response.data.documents) {
-                            this.assessment[key] = {
-                                status: true,
-                                note: null
+
+                            if (epolisdok.includes(key)) {
+                                epolis[key] = response.data.documents[key]
+                            } else {
+                                documents[key] = response.data.documents[key]
+                                this.assessment[key] = {
+                                    status: true,
+                                    note: null
+                                }
                             }
                         }
+
+                        this.data.documents = documents;
+                        this.data.epolis = epolis;
                     })
             },
             getLightBoxStatus(key) {
@@ -493,6 +527,9 @@
                 this.$refs['upload-data'].click();
             },
             doUpload() {
+
+                this.formepolis.transaction_id = this.id;
+
                 const formData = new FormData()
     
                 for (const key of Object.keys(this.formepolis)) {
