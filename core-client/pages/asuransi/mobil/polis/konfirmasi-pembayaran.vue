@@ -435,7 +435,7 @@
 
                                 <BaseButton type="primary" block @click="confirmPayment">Konfirmasi</BaseButton>
 
-                                <BaseButton type="link" block>Batalkan Pembelian</BaseButton>
+                                <BaseButton type="link" block @click="cancelPayment">Batalkan Pembelian</BaseButton>
 
                             </div>
 
@@ -466,6 +466,7 @@ export default {
         return {
             title: 'Konfirmasi Pembayaran',
             loading : true,
+            transactionId: null,
             paymentData: {
                 // "type": "ewallet",
                 // "name": "qris",
@@ -541,6 +542,17 @@ export default {
         this.getTransactionReview();
     },
     methods: {
+        async cancelPayment() {
+            await this.$axios.$post('/api/transaction/payment/cancel', { id: this.$route.query.id })
+                .then((resp) => {
+                    self.$router.push({
+                        name: "asuransi-mobil-polis-review-pembelian",
+                        query: {
+                            id: this.$route.query.id
+                        }
+                    })
+                })
+        },
         startTimer() {
             this.timerInterval = setInterval(() => {
                 const currentTime = new Date().getTime();
@@ -561,7 +573,8 @@ export default {
             await this.$axios.$get(`api/transaction/payment?transaction_id=${this.$route.query.id}`)
                 .then ((response) => {
                     if(response.data.status !=="waiting"){
-                        this.$router.push({name: "index"})
+                        // this.$router.push({name: "index"})
+                        this.$router.push({name: "daftar-polis"})
                         this.$store.commit('setProductId',null)
                         this.$store.commit('setTransactionId',null)
                     }

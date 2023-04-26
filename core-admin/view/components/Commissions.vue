@@ -130,26 +130,41 @@
                 <div class="col-md-12">
                     <div class="table-responsive mb-0">
                         <b-table ref="table" :items="getData" :fields="fields" responsive="sm"
-                            :per-page="perPage" :current-page="currentPage"
-                            show-empty>
+                            :per-page="perPage" :current-page="currentPage">
 
                             <template #cell(index)="data">
                                 {{ (currentPage - 1) * perPage + data.index + 1 }}
                             </template>
 
                             <template #cell(created_at)="data">
-                                {{ moment(data.item.created_at).format('D MMM yyyy') }}
-                            </template>
-
-                            <template #cell(description)="data">
-                                <span v-if="data.item.description === 'pemasukan'">Komisi Diterima</span>
-                                <span v-if="data.item.description === 'penarikan'">Penarikan Komisi</span>
+                                {{ moment(data.item.created_at).format('D MMM yyyy HH:mm:ss') }}
                             </template>
 
                             <template #cell(value)="data">
                                 Rp. {{ Intl.NumberFormat().format(data.item.value) }}
                             </template>
+
+                            <template #cell(description)="data">
+                                <div v-if="data.item.description === 'pemasukkan'">
+                                    <span>Komisi Diterima dari Transaksi {{ data.item.transaction_id }}</span>
+                                </div>
+                                <div v-if="data.item.description === 'penarikan'">
+                                    <span>Penarikan Komisi (ID: {{ data.transaction_id }})</span>
+                                </div>
+                                <div v-if="data.item.description === null">-</div>
+                            </template>
                         </b-table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="dataTables_paginate paging_simple_numbers float-end">
+                                <ul class="pagination pagination-rounded mb-0">
+                                    <!-- pagination -->
+                                    <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -171,11 +186,13 @@ export default {
         return {
             currentPage: 1,
             perPage: 5,
+            totalRows: 1,
             fields: [
-            { key: "index", label: '#', tdClass: 'align-middle' },
+                { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: 'created_at', label: 'Tanggal' },
-                { key: 'description', label: 'Keterangan' },
+                { key: 'account_id', label: 'ID User' },
                 { key: 'value', label: 'Komisi' },
+                { key: 'description', label: 'Keterangan' },
             ],
             totalComission: 0,
             totalComissionFormatted: 0,
@@ -191,6 +208,18 @@ export default {
             },
             account: []
         }
+    },
+    computed: {
+        /**
+         * Total no. of records
+         */
+        rows() {
+            return this.totalRows
+        }
+    },
+    mounted() {
+        // Set the initial number of items
+        this.totalRows = this.fields.length
     },
     created() {        
         this.getAccount()
@@ -221,15 +250,18 @@ export default {
         getData() {
             let data = [];
             if (this.account.role_id !== 5 && this.account.role_id !== 1) {
-                this.fields.push({ key: 'account.fullname', label: 'Nama User' });
+                this.fields.splice(3, 0, { key: 'account.fullname', label: 'Nama User' });
                 data = this.$axios.$get('api/admin/comissions/history/under', {
                     params: {
                         name: this.filter.name,
                         start_period: this.filter.date_period === null ? null : this.filter.date_period[0],
                         end_period: this.filter.date_period === null ? null : this.filter.date_period[1],
+                        current: this.currentPage,
+                        limit: this.perPage
                     }
                 }).then((resp) => {
-                    return resp.data;
+                    this.totalRows = resp.data.pagination.total;
+                    return resp.data.list;
                 })
             } else {
                 data = this.$axios.$get('/api/comissions/history').then((resp) => {

@@ -4,7 +4,7 @@
 
         <validation-observer v-slot="observer" tag="div" class="card-body">
 
-            <h2>Detail Identitas</h2>
+            <h2>Detail NPWP</h2>
 
             <b-form method="post" @submit.prevent="observer.handleSubmit(onSubmit)">
 
@@ -15,9 +15,7 @@
                         name="Jenis Identitas"
                         label="Jenis Identitas"
                         :options="[
-                            { text: 'Pilih Jenis Identitas', value: null, disabled:model.verified },
-                            { text: 'KTP', value: 'ktp', disabled:model.verified },
-                            { text: 'Paspor', value: 'passport', disabled:model.verified }
+                            { text: 'NPWP', value: 'npwp', disabled:model.verified }
                         ]"
                         class="col-12 col-md-6"
                         rules="required"
@@ -33,7 +31,7 @@
                             :rules="{ required: true, regex: identityNumberRegex}"
                         >
 
-                            <label class="form-control-label">Nomor Identitas</label>
+                            <label class="form-control-label">Nomor NPWP</label>
 
                             <input
                                 ref="identityNumber"
@@ -64,7 +62,7 @@
                     class="form-group w-md-50"
                 >
 
-                    <label class="form-control-label">Foto Identitas</label>
+                    <label class="form-control-label">Foto NPWP</label>
 
                     <div class="uploader" :class="{'pointer': !model.verified}" @click="() => {if(model.verified) return; toggleShowCropper();}">
 
@@ -157,7 +155,7 @@ export default {
         return {
             title: 'Detail Identitas',
             model: {
-                identityType : null,
+                identityType : 'npwp',
                 identityNumber : null,
                 identityImage: null,
                 verified: false,
@@ -201,7 +199,7 @@ export default {
             } else if(this.model.identityType === "passport") {
                 return /^(?!^0+$)[a-zA-Z0-9]{6,9}$/;
             } else if(this.model.identityType === "npwp") {
-                return /^[0][1-9][.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$/;
+                return /^[\d]{2}[.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$/;
             }
             return null;
         },
@@ -221,7 +219,7 @@ export default {
     },
     methods: {
         async getDataIdentity() {
-            await this.$axios.$get('api/user/identity?type=ktp')
+            await this.$axios.$get('api/user/identity?type=npwp')
                 .then ((response) => {
                     if (response.data != null) {
                         this.model.identityType = response.data.type
