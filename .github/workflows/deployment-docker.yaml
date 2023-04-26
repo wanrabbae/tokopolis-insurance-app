@@ -1,0 +1,33 @@
+name: Deploy Docker Core System
+
+on:
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
+    paths:
+      - 'core-admin/**'
+      - 'core-client/**'
+      - 'email-service/**'
+      - 'payment-service/**'
+
+env:
+  folderPath: /var/www/html/tokopolis
+
+jobs:
+  build:
+    name: Build Docker Containers
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Build Docker Containers
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          cd ${{ env.folderPath }}
+          git pull origin master
+          make build
