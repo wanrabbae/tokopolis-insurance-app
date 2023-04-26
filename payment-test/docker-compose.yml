@@ -1,0 +1,14 @@
+version: '3'
+services:
+  payment-test:
+    container_name: tkp-payment-test
+    build: ./payment-test
+    ports:
+      - "${EXPRESS_PORT}:5125"
+    networks:
+      - tokopolis_internal
+
+networks:
+  tokopolis_internal:
+    name: tokopolis_internal
+    external: true

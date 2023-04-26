@@ -1,0 +1,12 @@
+version: '3'
+services:
+  email:
+    container_name: tkp-email
+    build: .
+    networks:
+      - tokopolis_internal
+
+networks:
+  tokopolis_internal:
+    name: tokopolis_internal
+    external: true

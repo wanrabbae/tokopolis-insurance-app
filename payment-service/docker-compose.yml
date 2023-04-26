@@ -1,0 +1,14 @@
+version: '3'
+services:
+  payment:
+    container_name: tkp-payment
+    build: .
+    ports:
+      - "${EXPRESS_PORT}:5123"
+    networks:
+      - tokopolis_internal
+
+networks:
+  tokopolis_internal:
+    name: tokopolis_internal
+    external: true

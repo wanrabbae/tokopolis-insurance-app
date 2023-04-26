@@ -1,0 +1,14 @@
+version: '3'
+services:
+  client:
+    container_name: tkp-client
+    build: .
+    ports:
+      - "${NUXT_PORT}:3002"
+    networks:
+      - tokopolis_internal
+
+networks:
+  tokopolis_internal:
+    name: tokopolis_internal
+    external: true
