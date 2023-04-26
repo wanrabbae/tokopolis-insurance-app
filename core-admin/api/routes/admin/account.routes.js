@@ -14,6 +14,12 @@ const {
     verifyUpgrade,
 
     leadersByDealerAndRole,
+
+    bankRequestLists,
+    verifyBankRequest,
+
+    identityRequestLists,
+    verifyIdentityRequest
 } = require("../../controllers/admin/AccountController");
 const { uploadFile } = require("../../middlewares/uploadFile");
 
@@ -36,5 +42,13 @@ router.get("/admin/account/upgrade/list", AuthRoleMiddleware, upgradeList);
 router.put("/admin/account/:id/upgrade", AuthRoleMiddleware, verifyUpgrade);
 
 router.get('/admin/account/item/leaders', AuthRoleMiddleware, leadersByDealerAndRole)
+
+// Bank Verify Request
+router.get("/admin/account/banks/list", AuthRoleMiddleware, bankRequestLists);
+router.put("/admin/account/banks/:account_id", AuthRoleMiddleware, verifyBankRequest);
+
+// Identity Verify Request
+router.get("/admin/account/identity/list", AuthRoleMiddleware, identityRequestLists);
+router.put("/admin/account/identity/:account_id", AuthRoleMiddleware, verifyIdentityRequest);
 
 module.exports = router;

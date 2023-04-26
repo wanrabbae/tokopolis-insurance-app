@@ -97,13 +97,22 @@
         "text": "Daftar Transaksi"
       },
       "transactionHistory": {
-        "text": "History Transaksi"
+        "text": "Status Transaksi"
       },
       "claim": {
         "text": "Daftar Klaim"
       },
       "pointandcommission": {
         "text": "Point and Commission"
+      },
+      "verifybank": {
+        "text": "Verifikasi Rekening"
+      },
+      "verifyidentity": {
+        "text": "Verifikasi Identitas"
+      },
+      "config": {
+        "text": "Config Params"
       }
     }
   }

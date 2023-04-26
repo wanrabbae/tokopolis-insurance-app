@@ -117,7 +117,6 @@ exports.createPayment = async (req, res) => {
 
 exports.cancelPayment = async (req, res) => {
     const transaction_id = req.body.transaction_id;
-
     const cancelPayment = async (platform) => {
         switch (platform) {
             case 'bca':

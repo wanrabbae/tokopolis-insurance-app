@@ -95,12 +95,20 @@ const en_US_strings = {
             "transaction.dashboard": "Dashboard Side Photo",
             "transaction.optional": "Optional Photo",
 
+            "transaction.epolicy": "E-policy",
+            "transaction.nota": "Nota",
+            "transaction.policy": "Policy",
+
+            "config.key": "Key",
+            "config.value": "Value",
+
             "payment.platform": "Payment Platform",
             "endpoint.name": "Endpoint Name",
             "endpoint.route": "Route URL",
             "endpoint.method": "Method",
 
             "claim.fullname": "Nama Pemegang Polis",
+            "claim.plate_number": "Plate Number",
             "claim.transaction.id": "ID Transaksi",
             "claim.no_polis": "Nomor Polis Asuransi",
             "claim.incident_time": "Waktu Kejadian",

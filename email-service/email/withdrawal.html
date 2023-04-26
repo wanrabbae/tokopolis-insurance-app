@@ -1,0 +1,34 @@
+{{template "top.html"}}
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <h3>Hi {{.Body.name}}</h3>
+        </td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>Penarikan (komisi/poin) telah diproses! (Komisi/Poin) anda dikirim dan masuk ke rekening bank kamu dalam maksimal waktu 1x24 Jam pada jam kerja operasional bank (tidak termasuk hari Sabtu, Minggu, dan hari libur nasional).</p>
+        </td>
+    </tr>
+</table>
+
+<table class="row table-grey" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>Total Penarikan: <strong class="text-primary">{{.Body.total}}</strong></td>
+    </tr>
+    <tr>
+        <td>Metode Penarikan: <strong>{{.Body.platform}}</strong></td>
+    </tr>
+</table>
+
+<table class="row" cellpadding="0" cellspacing="0" width="600">
+    <tr>
+        <td class="column" width="600" valign="top">
+            <p>Terima Kasih</p>
+        </td>
+    </tr>
+</table>
+{{template "bottom.html"}}

@@ -29,6 +29,7 @@ export default class ClaimProductRepository {
             where: {
                 account_id: req.account._id,
             },
+            order: [['id', 'DESC']],
             include: [
                 {
                     model: Account,
@@ -104,10 +105,35 @@ export default class ClaimProductRepository {
         return await ClaimProduct.create(payload);
     }
 
-    async updateStatus(payload) {
-        return await ClaimProduct.update(
-            { status: payload.body.status },
-            { where: { id: payload.params.id } }
-        );
+    async updateStatus(id, status) {
+        let updateDate = '';
+
+        switch (status) {
+            case 'surveyed':
+                updateDate = `, surveyed_at='${moment().format('YYYY-MM-DD HH:mm:ss')}'`
+                break;
+            case 'accepted':
+                updateDate = `, accepted_at='${moment().format('YYYY-MM-DD HH:mm:ss')}'`
+                break;
+            case 'declined':
+                updateDate = `, declined_at='${moment().format('YYYY-MM-DD HH:mm:ss')}'`
+                break;
+            case 'fixed':
+                updateDate = `, fixed_at='${moment().format('YYYY-MM-DD HH:mm:ss')}'`
+                break;
+            case 'ready':
+                updateDate = `, ready_at='${moment().format('YYYY-MM-DD HH:mm:ss')}'`
+                break;
+            case 'done':
+                updateDate = `, done_at='${moment().format('YYYY-MM-DD HH:mm:ss')}'`
+                break;
+
+            default:
+                break;
+        }
+
+        return await sequelize.query(`
+        UPDATE claim_products SET status='${status}'` + updateDate + ` WHERE id='${id}'`
+        )
     }
 }

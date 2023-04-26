@@ -95,12 +95,20 @@ const id_ID_strings = {
             "transaction.dashboard": "Foto Dashboard",
             "transaction.optional": "Foto Tambahan",
 
+            "transaction.epolicy": "E-policy",
+            "transaction.nota": "Nota",
+            "transaction.policy": "Policy",
+
+            "config.key": "Key",
+            "config.value": "Value",
+
             "payment.platform": "Platform Pembayaran",
             "endpoint.name": "Nama Endpoint",
             "endpoint.route": "URL Route",
             "endpoint.method": "Method",
 
             "claim.fullname": "Nama Pemegang Polis",
+            "claim.plate_number": "Nomot Plat",
             "claim.transaction.id": "ID Transaksi",
             "claim.no_polis": "Nomor Polis Asuransi",
             "claim.incident_time": "Waktu Kejadian",
