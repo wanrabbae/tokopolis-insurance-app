@@ -68,7 +68,7 @@ jobs:
           make build-admin
 
   build-client:
-    needs: build-core
+    needs: build-admin
     name: Build Client Container
     runs-on: ubuntu-latest
 
@@ -85,7 +85,7 @@ jobs:
           make build-client
 
   build-email:
-    needs: build-core
+    needs: build-client
     name: Build Email Container
     runs-on: ubuntu-latest
 
@@ -102,7 +102,7 @@ jobs:
           make build-email
 
   build-payment:
-    needs: build-core
+    needs: build-client
     name: Build Payment Container
     runs-on: ubuntu-latest
 
@@ -119,7 +119,7 @@ jobs:
           make build-payment
 
   build-payment-test:
-    needs: build-core
+    needs: build-client
     name: Build Payment Test Container
     runs-on: ubuntu-latest
 
