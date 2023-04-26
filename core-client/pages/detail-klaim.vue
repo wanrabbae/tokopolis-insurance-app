@@ -223,7 +223,13 @@ export default {
 
                     this.policyData.period = `Tanggal Pengajuan: ${start.format('D MMM yyyy')}`
                     this.policyData.status = response.data.status
+
                     this.policyData.steps[0].dateComplete = moment(response.data.created_at).format('D MMM yyyy')
+                    this.policyData.steps[1].dateComplete = response.data.surveyed_at === null ? "-" : moment(response.data.surveyed_at).format('D MMM yyyy')
+                    this.policyData.steps[2].dateComplete = response.data.accepted_at === null ? "-" : moment(response.data.accepted_at).format('D MMM yyyy')
+                    this.policyData.steps[3].dateComplete = response.data.fixed_at === null ? "-" : moment(response.data.fixed_at).format('D MMM yyyy')
+                    this.policyData.steps[4].dateComplete = response.data.ready_at === null ? "-" : moment(response.data.ready_at).format('D MMM yyyy')
+                    this.policyData.steps[5].dateComplete = response.data.done_at === null ? "-" : moment(response.data.done_at).format('D MMM yyyy')
 
                     const currentStep = this.policyData.steps.find((item) => item.key === response.data.status);
                     if (currentStep) {

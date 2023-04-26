@@ -16,16 +16,12 @@ export default class TransactionService {
         return this.repository.getTransactionAllWithAgent(filter, limit, offset, agent_ids);
     }
 
-    getTransactionStatusAll(status, limit, offset) {
-        return this.repository.getTransactionStatusAll(status, limit, offset);
+    getTransactionStatusAll(filter, limit, offset) {
+        return this.repository.getTransactionStatusAll(filter, limit, offset);
     }
 
     getTransactionDetail(id) {
         return this.repository.getTransactionDetail(id);
-    }
-
-    getTransactionStatusAll(status, limit, offset) {
-        return this.repository.getTransactionStatusAll(status, limit, offset);
     }
 
     getTransactionDetailForClient(id) {
@@ -130,8 +126,12 @@ export default class TransactionService {
         return this.repository.getComissionHistory(account_id);
     }
 
-    getComissionHistoryUnder(account_ids, filter) {
-        return this.repository.getComissionHistoryUnder(account_ids, filter);
+    getComissionHistoryUnder(account_ids, filter, limit, offset) {
+        return this.repository.getComissionHistoryUnder(account_ids, filter, limit, offset);
+    }
+
+    getComissionHistoryUnderCount(account_ids, filter) {
+        return this.repository.getComissionHistoryUnderCount(account_ids, filter);
     }
 
     getPoint(account_id) {
@@ -142,8 +142,12 @@ export default class TransactionService {
         return this.repository.getPointHistory(account_id, filter);
     }
 
-    getPointHistoryUnder(account_ids, filter) {
-        return this.repository.getPointHistoryUnder(account_ids, filter);
+    getPointHistoryUnder(account_ids, filter, limit, offset) {
+        return this.repository.getPointHistoryUnder(account_ids, filter, limit, offset);
+    }
+
+    getPointHistoryUnderCount(account_ids, filter) {
+        return this.repository.getPointHistoryUnderCount(account_ids, filter);
     }
 
     createPoint(payload) {
@@ -152,6 +156,25 @@ export default class TransactionService {
 
     getPointAgents(account_ids, req) {
         return this.repository.getPointAgents(account_ids, req);
+    }
+
+    updateStatus(id, payload) {
+        return this.repository.setPaymentStatus(id, payload)
+    }
+
+    async uploadEpolicy(files, document, id) {
+        const documents = { ...document };
+
+        Object.keys(files).forEach((key) => {
+            const image = uploadHandler(files[key][0].path, "transaction");
+            documents[key] = image.clearPath;
+        });
+
+        await this.repository.updateTransaction(id, {
+            documents: documents
+        })
+
+        return documents;
     }
 
     sendEmailPayment(payload) {
@@ -165,6 +188,7 @@ export default class TransactionService {
             platform: payload.data.platform,
             virtual_number: payload.data.virtual_number,
             date: payload.data.date,
+            url: payload.data.url,
         });
         mailer.send();
     }
@@ -201,6 +225,18 @@ export default class TransactionService {
         mailer.send();
     }
 
+    sendEmailEpolicyFile(payload) {
+        let mailer = new Mailer(payload.host);
+        mailer.setType("epolicy");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            product: payload.data.product,
+            url: payload.data.url,
+        });
+        mailer.send();
+    }
+
     sendEmailFeedBackAgent(payload) {
         let mailer = new Mailer(payload.host);
         mailer.setType("feedback-agent-sent");
@@ -209,6 +245,19 @@ export default class TransactionService {
             name: payload.data.name,
             message: payload.data.message,
             product: payload.data.product,
+        });
+        mailer.send();
+    }
+
+    sendEmailWithdraw(payload) {
+        let mailer = new Mailer(payload.host);
+        // mailer.setUrl('/path')
+        mailer.setType("withdrawal");
+        mailer.setTarget(payload.target);
+        mailer.setMail(payload.title, {
+            name: payload.data.name,
+            total: payload.data.total,
+            platform: payload.data.platform,
         });
         mailer.send();
     }

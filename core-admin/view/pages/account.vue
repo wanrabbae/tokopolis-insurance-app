@@ -358,9 +358,14 @@
 
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
                                         title="Edit Data" v-on:click="showEdit(data.item)">
-                                        
                                         <i class="uil uil-edit-alt"/>
                                     </b-button>
+
+                                    <b-button type="button" variant="danger" v-b-tooltip.hover
+                                        title="Delete Data" v-on:click="deleteData(data.item.id)">
+                                        <i class="uil uil-trash-alt"/>
+                                    </b-button>
+
                                     </template>
 
                                 <!-- <template #cell(action)="data">
@@ -716,7 +721,7 @@ export default {
             });
 
             return data;
-        }
+        },
     }
 }
 </script>

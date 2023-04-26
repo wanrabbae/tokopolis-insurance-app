@@ -39,7 +39,7 @@ export default class TransactionRepository {
             `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
             `AND product.name LIKE '%${filter.product_name}%' ` +
             (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
-            `AND trans.status IN ('waiting', 'paid') ` +
+            `AND trans.status IN ('waiting', 'paid', 'polis') ` +
             `ORDER BY trans.created_at ASC ` +
             (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT })
@@ -71,7 +71,7 @@ export default class TransactionRepository {
             { type: QueryTypes.SELECT })
     }
 
-    async getTransactionStatusAll(status, limit, offset) {
+    async getTransactionStatusAll(filter, limit, offset) {
 
         return await sequelize.query(`SELECT trans.id, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
@@ -81,7 +81,7 @@ export default class TransactionRepository {
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
             `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
             `JOIN products as product ON trans.product_id = product.id ` +
-            `WHERE trans.status = '${status}' `,
+            `WHERE trans.status LIKE '%${filter.status}%' AND (client_transactions.fullname LIKE '%${filter.client_name}%' OR agent_transactions.fullname LIKE '%${filter.client_name}%') AND trans.id LIKE '%${filter.id}%' ` +
             (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT })
     }
@@ -90,12 +90,12 @@ export default class TransactionRepository {
         return await sequelize.query(`SELECT trans.id, trans.agent_id, trans.client_data, trans.address_detail, ` +
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
-            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
+            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, agent_transactions.email as agent_email, ` +
             `vehicle.brand, vehicle.model, vehicle.sub_model, product.id as product_id, product.name as product_name, ` +
             `product.type as product_type, product.image as product_image, product.email as product_email, ` +
             `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
             `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
-            `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.created_at ` +
+            `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.pg_transaction_id, trans.created_at ` +
             `FROM transactions as trans ` +
             `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
@@ -264,6 +264,7 @@ export default class TransactionRepository {
                 "start_date",
                 "client_data",
                 "status",
+                "documents",
             ],
             where: {
                 [Op.or]: [
@@ -307,12 +308,12 @@ export default class TransactionRepository {
             `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
             `AND product.name LIKE '%${filter.product_name}%' ` +
             (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
-            `AND trans.status IN ('waiting', 'paid') ` +
+            `AND trans.status IN ('waiting', 'paid', 'polis') ` +
             `ORDER BY trans.created_at ASC `,
             { type: QueryTypes.SELECT })
     }
 
-    async getTransactionStatusCount(status) {
+    async getTransactionStatusCount(filter) {
 
         return await sequelize.query(`SELECT COUNT(*) as total ` +
             `FROM transactions as trans ` +
@@ -320,7 +321,7 @@ export default class TransactionRepository {
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
             `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
             `JOIN products as product ON trans.product_id = product.id ` +
-            `WHERE trans.status = '${status}' `,
+            `WHERE trans.status LIKE '%${filter.status}%' AND (client_transactions.fullname LIKE '%${filter.client_name}%' OR agent_transactions.fullname LIKE '%${filter.client_name}%') AND trans.id LIKE '%${filter.id}%' `,
             { type: QueryTypes.SELECT })
     }
 
@@ -404,7 +405,7 @@ export default class TransactionRepository {
         });
     }
 
-    async getComissionHistoryUnder(account_ids, filter) {
+    async getComissionHistoryUnder(account_ids, filter, limit, offset) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -419,13 +420,30 @@ export default class TransactionRepository {
             include: {
                 model: Account,
                 as: 'account',
-                attributes: ['id', 'fullname'],
+                attributes: ['id', 'fullname', 'unique_id'],
                 where: {
                     fullname: {
                         [Op.like]: `%${filter.name}%`
                     }
                 }
+            },
+            limit: limit,
+            offset: offset
+        });
+    }
+
+    async getComissionHistoryUnderCount(account_ids, filter) {
+        let condition = filter.start_period != null && filter.end_period != null ? {
+            account_id: account_ids,
+            created_at: {
+                [Op.between]: [filter.start_period, filter.end_period]
             }
+        } : {
+            account_id: account_ids
+        }
+
+        return await Comission.count({
+            where: condition,
         });
     }
 
@@ -444,7 +462,7 @@ export default class TransactionRepository {
         })
     }
 
-    async getPointHistoryUnder(account_ids, filter) {
+    async getPointHistoryUnder(account_ids, filter, limit, offset) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -458,13 +476,29 @@ export default class TransactionRepository {
             include: {
                 model: Account,
                 as: 'account',
-                attributes: ['id', 'fullname'],
+                attributes: ['id', 'fullname', 'unique_id'],
                 where: {
                     fullname: {
                         [Op.like]: `%${filter.name}%`
                     }
                 }
+            },
+            limit,
+            offset
+        })
+    }
+
+    async getPointHistoryUnderCount(account_ids, filter) {
+        let condition = filter.start_period != null && filter.end_period != null ? {
+            account_id: account_ids,
+            created_at: {
+                [Op.between]: [filter.start_period, filter.end_period]
             }
+        } : {
+            account_id: account_ids
+        }
+        return await Point.count({
+            where: condition,
         })
     }
 

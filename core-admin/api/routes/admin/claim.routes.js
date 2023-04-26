@@ -19,6 +19,6 @@ router.get("/admin/claim/all", AuthRoleMiddleware, getAllClaimData);
 router.post("/admin/claim/download", AuthRoleMiddleware, getClaimFileXlsx);
 router.get("/admin/claim/:id", AuthRoleMiddleware, getDetailClaimProduct);
 router.put('/admin/claim/:transaction_id/generate-send', generateSend)
-router.put("/admin/claim/:id/update-staging", AuthRoleMiddleware, updateStatusClaim);
+router.put("/admin/claim/:id/updateStaging", AuthRoleMiddleware, updateStatusClaim);
 
 module.exports = router;

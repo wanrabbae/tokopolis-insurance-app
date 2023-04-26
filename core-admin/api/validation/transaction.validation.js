@@ -424,8 +424,41 @@ const xendit = (req) => {
     }))
 }
 
+const epolicy = (req) => {
+    const extensions = extensionHelper(['zip', 'pdf', 'docx', 'doc', 'xlsx'])
+
+    const schema = Joi.object({
+        transaction_id: Joi.string()
+            .label(req.polyglot.t('field.transaction.id')),
+        epolicy: Joi.string()
+            .required()
+            .regex(RegExp(extensions.regex))
+            .label(req.polyglot.t('field.transaction.epolicy')),
+        nota: Joi.string()
+            .required()
+            .regex(RegExp(extensions.regex))
+            .label(req.polyglot.t('field.transaction.nota')),
+        policy: Joi.string()
+            .required()
+            .regex(RegExp(extensions.regex))
+            .label(req.polyglot.t('field.transaction.policy')),
+        lainnya: Joi.string()
+            .regex(RegExp(extensions.regex))
+            .label(req.polyglot.t('field.transaction.optional')),
+    })
+
+    return joiResponse(schema.validate(req.body, {
+        allowUnknown: true,
+        abortEarly: false,
+        messages: joiErrorMessages(),
+        errors: {
+            language: req.locale.language
+        }
+    }))
+}
+
 module.exports = {
     postOffer, postTemporary, post, fileNew, fileOld,
     review, account, getPaymentFee, getPaymentDetail,
-    createPayment, midtrans, xendit
+    createPayment, midtrans, xendit, epolicy
 }

@@ -179,6 +179,34 @@ export default class AccountService {
         return this.repository.getIdentity(account_id);
     }
 
+    getIdentityType(account_id, type) {
+        return this.repository.getIdentityType(account_id, type);
+    }
+
+    async getIdentityList(query, limit, offset) {
+        if (query == null) {
+            return await this.repository.getIdentityList(limit, offset);
+        }
+
+        return await this.repository.getIdentityListWithFilter(
+            query,
+            limit,
+            offset
+        );
+    }
+
+    getIdentityListCount(query) {
+        if (query == null) {
+            return this.repository.getIdentityCountAll();
+        }
+
+        return this.repository.getIdentityCountByQuery(query);
+    }
+
+    verifyIdentity(id) {
+        return this.repository.verifyIdentity(id);
+    }
+
     async getCountByQuery(query) {
         if (query == null) {
             return await this.repository.getCountAll();
@@ -237,12 +265,36 @@ export default class AccountService {
         return this.repository.getBank(account_id);
     }
 
+    async getBankList(query, limit, offset) {
+        if (query == null) {
+            return await this.repository.getBankList(limit, offset);
+        }
+
+        return await this.repository.getBankListWithFilter(
+            query,
+            limit,
+            offset
+        );
+    }
+
+    getBankListCount(query) {
+        if (query == null) {
+            return this.repository.getBankCountAll();
+        }
+
+        return this.repository.getBankCountByQuery(query);
+    }
+
     createBank(payload) {
         return this.repository.createBank(payload);
     }
 
     updateBank(account_id, payload) {
         return this.repository.updateBank(account_id, payload);
+    }
+
+    verifyBank(id) {
+        return this.repository.verifyBank(id);
     }
 
     checkResetToken(token) {

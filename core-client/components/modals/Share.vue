@@ -15,18 +15,16 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="border rounded-circle border-success p-2">
-                        <ShareNetwork network="whatsapp" url="https://tokopolis.id/"
-                            title="Say hi to Vite! A brand new, extremely fast development setup for Vue."
-                            description="This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You.">
+                        <a :href="`https://api.whatsapp.com/send?text=Nasabah yang terhormat, %0D%0A%0D%0ABerikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. %0D%0ALink : https://tokopolis.id/quotation/${idpolis} . %0D%0ABesar harapan kami atas kepercayaan yang anda berikan. %0D%0A%0D%0ATerima Kasih. %0D%0A%0D%0ARegards, %0D%0A%0D%0ATeam Tokopolis.`" target="_blank">
                             <img src="/img/whatsapp.png" width="50px" height="50px" />
-                        </ShareNetwork>
+                        </a>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="border rounded-circle border-danger p-2">
-                        <ShareNetwork network="email" :url="model.description" title="Polis Quotation.">
+                        <a :href="`mailto:?subject=@t&body=Nasabah yang terhormat, %0D%0DBerikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. %0DLink : https://tokopolis.id/quotation/${idpolis} . %0DBesar harapan kami atas kepercayaan yang anda berikan. %0D%0DTerima Kasih. %0D%0DRegards, %0D%0DTeam Tokopolis.`">
                             <img src="/img/gmail.png" width="50px" height="50px" />
-                        </ShareNetwork>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -37,8 +35,8 @@
                 <span class="input-group-text rounded-0 border-right-0">
                     <img src="/img/link.png" width="15px" height="15px" />
                 </span>
-                <input type="text" class="form-control border-left-0" readonly value="https://tokopolis.id/">
-                <button class="btn btn-primary rounded-0">Copy</button>
+                <input ref="url" type="text" class="form-control border-left-0" readonly :value="`https://tokopolis.id/quotation/${idpolis}`">
+                <button class="btn btn-primary rounded-0" type="button" @click="copyUrl()">Copy</button>
             </div>
             </p>
             <p class="mt-3">Atau Cetak Pdf</p>
@@ -46,7 +44,9 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="border rounded-circle border-danger p-2 bg-danger">
-                        <img src="/img/pdf.png" width="50px" height="50px" />
+                        <a :href="epolicy" target="_blank" :disabled="epolicy === undefined || epolicy === null">
+                            <img src="/img/pdf.png" width="50px" height="50px" />
+                        </a>
                     </div>
                 </div>
             </div>
@@ -58,7 +58,6 @@
             <BaseButton :disabled="model.name == ''" block @click="ok()">Close</BaseButton>
 
         </template>
-
     </b-modal>
 
 </template>
@@ -70,6 +69,9 @@ export default {
     components: {
         BaseButton
     },
+    props: [
+        'epolicy', 'idpolis'
+    ],
     data() {
         return {
             model: {
@@ -77,12 +79,15 @@ export default {
                 bank: 'Bank Mandiri',
                 rekening: '12345678',
                 nama_rekening: 'John Doe',
-                nama_rekening: 'John Doe',
+                link: `mailto:?subject=@t&body=Nasabah yang terhormat, \n\nBerikut kami sampaikan proposal penawaran sesuai dengan 
+                kebutuhan asuransi yang anda minta. \nLink : https://tokopolis.id/quotation/${this.idpolis} . Besar harapan kami 
+                atas kepercayaan yang anda berikan. \n\nTerima Kasih. \n\nRegards, \n\nTeam Tokopolis.`,
+                // idpolis: this.$props.idpolis,
                 description: `
                 Nasabah yang terhormat, 
                         
                 Berikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. 
-                Link : https://tokopolis.id/ . Besar harapan kami atas kepercayaan yang anda berikan. 
+                Link : https://tokopolis.id/quotation/${this.idpolis} . Besar harapan kami atas kepercayaan yang anda berikan. 
                         
                 Terima Kasih. 
                         
@@ -96,6 +101,12 @@ export default {
     methods: {
         okHandler(bvModalEvt) {
             this.$emit('close')
+        },
+        openWhatsappAction() {
+            console.log('opened');
+        },
+        async copyUrl() {
+            await navigator.clipboard.writeText(this.$refs.url.value);
         }
     }
 }

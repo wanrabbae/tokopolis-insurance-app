@@ -221,3 +221,57 @@ exports.leadersByDealerAndRole = async (req, res, next) => {
 
     return res.jsonData(list)
 };
+
+exports.bankRequestLists = async (req, res) => {
+    const query = req.query.query || '';
+
+    const current = Number(req.query.current) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const offset = (current - 1) * limit;
+
+    const count = await service.getBankListCount(query);
+    const data = await service.getBankList(query, limit, offset);
+
+    return res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: data,
+    })
+}
+
+exports.verifyBankRequest = async (req, res) => {
+    const data = await service.verifyBank(req.params.account_id);
+
+    return res.jsonData(data)
+}
+
+exports.identityRequestLists = async (req, res) => {
+    const query = req.query.query || '';
+
+    const current = Number(req.query.current) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const offset = (current - 1) * limit;
+
+    const count = await service.getIdentityListCount(query);
+    const data = await service.getIdentityList(query, limit, offset);
+
+    return res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: data,
+    })
+}
+
+exports.verifyIdentityRequest = async (req, res) => {
+    const data = await service.verifyIdentity(req.params.account_id);
+
+    return res.jsonData(data)
+}

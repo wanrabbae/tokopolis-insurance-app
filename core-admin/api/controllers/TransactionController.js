@@ -6,6 +6,7 @@ import ProductService from "../services/ProductService";
 import TransactionService from "../services/TransactionService";
 import PaymentService from "../services/PaymentService";
 import PdfService from "../services/PdfService";
+import ConfigService from "../services/ConfigService"
 
 const validation = require("../validation/transaction.validation");
 const {
@@ -24,6 +25,7 @@ const service = new TransactionService();
 const accountService = new AccountService();
 const productService = new ProductService();
 const paymentService = new PaymentService();
+const configService = new ConfigService();
 const pdfService = new PdfService();
 
 exports.getAll = async (req, res) => {
@@ -496,13 +498,14 @@ const setTransactionBonus = async (payload) => {
 
         const findUniqueId = await accountService.getAccountData(payload.account_id);
         const uniqueCodeArray = findUniqueId.unique_id.split("-");
-        const leaderPointValue = (totalPriceForComission * (5 / 100)) / 1000
+        const findKeySpv = await configService.getConfigByKey('point.spv');
 
         // for supervisor
         const spvCode = uniqueCodeArray.slice(0, -1).join("-");
         const findAccountSpv = await accountService.getAccountWithUniqueId(spvCode);
 
-        if (findAccountSpv) {
+        if (findAccountSpv && findKeySpv) {
+            const leaderPointValue = (totalPriceForComission * (parseInt(findKeySpv.value) / 100)) / 1000
             await service.createPoint({
                 account_id: findAccountSpv.id,
                 transaction_id: payload.transaction_id,
@@ -513,9 +516,11 @@ const setTransactionBonus = async (payload) => {
 
         // for branch head
         const bhCode = uniqueCodeArray.slice(0, -2).join("-");
+        const findKeyBh = await configService.getConfigByKey('point.bh');
         const findAccountBH = await accountService.getAccountWithUniqueId(bhCode);
 
-        if (findAccountBH) {
+        if (findAccountBH && findKeyBh) {
+            const leaderPointValue = (totalPriceForComission * (parseInt(findKeyBh.value) / 100)) / 1000
             await service.createPoint({
                 account_id: findAccountBH.id,
                 transaction_id: payload.transaction_id,
@@ -854,6 +859,7 @@ exports.doPayment = async (req, res) => {
                 virtual_number: data.virtual_number,
                 total: moneyFormat(data.amount),
                 date: data.due,
+                url: process.env.REDIRECT_CLIENT + "/asuransi/mobil/polis/konfirmasi-pembayaran?id=" + transaction.id
             },
         });
 
@@ -862,6 +868,23 @@ exports.doPayment = async (req, res) => {
 
     return res.errorBadRequest();
 };
+
+exports.cancelPayment = async (req, res) => {
+    const transaction = await service.getTransactionDetail(req.body.id);
+    if (transaction) {
+        const cancelation = await paymentService.cancelPayment({
+            transaction_id: transaction[0].pg_transaction_id,
+            platform: transaction[0].pg_data.name
+        })
+        if (cancelation.status == true) {
+            await service.updateStatus(transaction[0].id, { status: 'canceled' })
+            return res.jsonSuccess()
+        } else {
+            return res.errorBadRequest()
+        }
+    }
+    return res.errorBadRequest()
+}
 
 exports.getPaymentDetail = async (req, res) => {
     const validate = validation.getPaymentDetail(req);
@@ -953,7 +976,7 @@ exports.webhookXendit = async (req, res) => {
         result = 'paid'
     } else if (req.body.bank_code && req.body.status == "INACTIVE") {
         transaction_id = req.body.external_id
-        result = 'canceled'
+        result = 'failed'
     } else { // E-wallet / Qris
         if (req.body.data && req.body.data.reference_id && req.body.data.status == 'SUCCEEDED') {
             transaction_id = req.body.data.reference_id
@@ -976,12 +999,13 @@ exports.webhookXendit = async (req, res) => {
     });
 
     if (transaction.agent_id != null) {
+        const findProduct = await productService.getProduct(transaction.product_id)
         await setTransactionBonus({
             account_id: transaction.agent_id,
             transaction_id: transaction.id,
             discount_format: transaction.discount_format,
             discount_value: transaction.discount_value,
-            extra_point: transaction.extra_point,
+            extra_point: findProduct.extra_point,
             price: transaction.price,
             expansion_price: transaction.expansion_price,
         })
@@ -1064,15 +1088,23 @@ exports.comissionWithdraw = async (req, res) => {
             transaction_id: comission[0].transaction_id,
             value: `-${req.body.amount}`,
         })
+
+        const account = await accountService.getAccountSimple(req.account._id)
+
+        service.sendEmailWithdraw({
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+            target: req.account.email,
+            title: `Notifikasi Sukses Penarikan Dana | (Komisi / Poin) | ${req.account._id}`,
+            data: {
+                name: account.fullname,
+                platform: checkBank.type.toString().toUpperCase(),
+                total: moneyFormat(req.body.amount),
+            },
+        });
         res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
     } catch (error) {
         return res.errorBadRequest(error.message)
     }
-
-    // const comission = await service.getComission(req.account._id);
-    // if (comission.length <= 0) return res.jsonData({ total: 0 })
-
-    // return res.jsonData({ total: comission[0].value })
 };
 
 exports.pointWithdraw = async (req, res) => {
@@ -1106,15 +1138,24 @@ exports.pointWithdraw = async (req, res) => {
             value: `-${req.body.amount}`,
             description: "penarikan"
         });
+
+        const account = await accountService.getAccountSimple(req.account._id)
+
+        service.sendEmailWithdraw({
+            host: process.env.REDIRECT_CLIENT || req.fullhost,
+            target: req.account.email,
+            title: `Notifikasi Sukses Penarikan Dana | (Komisi / Poin) | ${req.account._id}`,
+            data: {
+                name: account.fullname,
+                platform: checkBank.type.toString().toUpperCase(),
+                total: moneyFormat(req.body.amount),
+            },
+        });
+
         res.jsonSuccess(req.polyglot.t("success.transaction.withdraw"))
     } catch (error) {
         return res.errorBadRequest(error.message)
     }
-
-    // const point = await service.getPoint(req.account._id);
-    // if (point.length <= 0) return res.jsonData({ total: 0 })
-
-    // return res.jsonData({ total: point[0].value })
 };
 
 exports.getPoint = async (req, res) => {
