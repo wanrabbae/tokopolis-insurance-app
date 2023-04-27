@@ -32,7 +32,7 @@
             <!-- Left Menu Start -->
             <ul id="side-menu" class="metismenu list-unstyled">
                 <template v-for="item in menuItems">
-                    <li v-if="item.isTitle" :key="item.id" class="menu-title">{{ $t(item.label) }}</li>
+                    <li v-if="item.isTitle  && item.role_id.includes(account.role_id)" :key="item.id" class="menu-title">{{ $t(item.label) }}</li>
                     <li v-if="!item.isTitle && !item.isLayout" :key="item.id">
                         <a v-if="hasItems(item)" href="javascript:void(0);" class="is-parent" :class="{
                   'has-arrow': !item.badge,
@@ -45,7 +45,7 @@
                   ">{{ $t(item.badge.text) }}</span>
                         </a>
 
-                        <nuxt-link v-if="!hasItems(item)" :to="item.link" class="side-nav-link-ref">
+                        <nuxt-link v-if="!hasItems(item) && item.role_id.includes(account.role_id)" :to="item.link" class="side-nav-link-ref">
                             <i v-if="item.icon" :class="`${item.icon}`"></i>
                             <span>{{ $t(item.label) }}</span>
                             <span v-if="item.badge" :class="
@@ -102,6 +102,7 @@ export default {
     data() {
         return {
             menuItems,
+            account: []
         };
     },
     computed: mapState(["layout"]),
@@ -178,8 +179,15 @@ export default {
         this.$router.afterEach((routeTo, routeFrom) => {
             this._activateMenuDropdown();
         });
+        this.getAccount()
     },
     methods: {
+        async getAccount() {
+            this.account = await this.$axios.$get('api/admin/account')
+                .then ((response) => {
+                    return response.data;
+                })
+        },
         /**
          * Toggle menu
          */

@@ -297,6 +297,9 @@
                                     <h5 v-else-if="data.value == 'paid'">
                                         <b-badge class="badge bg-success">Paid</b-badge>
                                     </h5>
+                                    <h5 v-else-if="data.value == 'polis'">
+                                        <b-badge class="badge bg-warning">Polis</b-badge>
+                                    </h5>
                                 </template>
 
                                 <template #cell(action)="data">

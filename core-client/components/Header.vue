@@ -19,7 +19,7 @@
 
                 <b-navbar-nav v-if="loggedIn && mobileView" class="flex-row ml-auto">
 
-                    <b-nav-item-dropdown
+                    <!-- <b-nav-item-dropdown
                         class="d-flex align-items-center"
                         no-caret
                         right
@@ -39,7 +39,7 @@
 
                         <b-dropdown-item href="#">Notification 4</b-dropdown-item>
 
-                    </b-nav-item-dropdown>
+                    </b-nav-item-dropdown> -->
 
                     <b-nav-item href="/profil" class="ml-3">
 
@@ -138,7 +138,7 @@
 
                         <b-navbar-nav v-if="loggedIn && !mobileView">
 
-                            <b-nav-item-dropdown
+                            <!-- <b-nav-item-dropdown
                                 toggle-class="d-flex align-items-center h-100"
                                 menu-class="notification-menu border py-0"
                                 no-caret
@@ -155,7 +155,7 @@
 
                                 <b-dropdown-text>Some example text that's free-flowing within the dropdown menu.</b-dropdown-text>
 
-                            </b-nav-item-dropdown>
+                            </b-nav-item-dropdown> -->
 
                             <b-nav-item-dropdown
                                 toggle-class="d-flex align-items-center h-100"

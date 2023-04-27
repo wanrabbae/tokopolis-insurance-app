@@ -129,22 +129,32 @@
             <div class="col-md-12">
                 <div class="table-responsive mb-0">
                     <b-table ref="table" :items="getData" :fields="fields" responsive="sm"
-                        :per-page="perPage" :current-page="currentPage"
-                        show-empty>
+                        :per-page="perPage" :current-page="currentPage">
 
                         <template #cell(index)="data">
                             {{ (currentPage - 1) * perPage + data.index + 1 }}
                         </template>
 
                         <template #cell(created_at)="data">
-                            {{ moment(data.item.created_at).format('D MMM yyyy') }}
+                            {{ moment(data.item.created_at).format('D MMM yyyy HH:mm:ss') }}
                         </template>
 
                         <template #cell(description)="data">
-                            <span v-if="data.item.description === 'pemasukan'">Point Diterima</span>
-                            <span v-if="data.item.description === 'penarikan'">Penarikan Poin</span>
+                            <span v-if="data.item.description === 'pemasukan'">Point Diterima dari Transaksi {{ data.item.transaction_id }}</span>
+                            <span v-if="data.item.description === 'penarikan'">Penarikan Poin (ID: {{ data.item.transaction_id }})</span>
                         </template>
                     </b-table>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="dataTables_paginate paging_simple_numbers float-end">
+                            <ul class="pagination pagination-rounded mb-0">
+                                <!-- pagination -->
+                                <b-pagination v-model="currentPage" :total-rows="rows" :per-page="perPage"></b-pagination>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -164,12 +174,14 @@ export default {
     data() {
         return {
             currentPage: 1,
+            totalRows: 1,
             perPage: 5,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: 'created_at', label: 'Tanggal' },
-                { key: 'description', label: 'Keterangan' },
+                { key: 'account_id', label: 'ID User' },
                 { key: 'value', label: 'Point' },
+                { key: 'description', label: 'Keterangan' },
             ],
             filter: {
                 date_period: null,
@@ -185,10 +197,28 @@ export default {
             account: []
         }
     },
+    computed: {
+        /**
+         * Total no. of records
+         */
+        rows() {
+            return this.totalRows
+        }
+    },
+    mounted() {
+        // Set the initial number of items
+        this.totalRows = this.fields.length
+    },
     created() {        
         this.getAccount()
     },
     methods: {
+        onFiltered(filteredItems) {
+            // Trigger pagination to update the number of buttons/pages due to filtering
+            console.log(filteredItems);
+            this.totalRows = filteredItems.length
+            this.currentPage = 1
+        },
         async getAccount() {
             this.account = await this.$axios.$get('api/admin/account')
                 .then ((response) => {
@@ -201,15 +231,18 @@ export default {
         getData() {
             let data = [];
             if (this.account.role_id !== 5 && this.account.role_id !== 1) {
-                this.fields.push({ key: 'account.fullname', label: 'Nama User' });
+                this.fields.splice(3, 0, { key: 'account.fullname', label: 'Nama User' });
                 data = this.$axios.$get('api/admin/point/history/under', {
                     params: {
                         name: this.filter.name,
                         start_period: this.filter.date_period === null ? null : this.filter.date_period[0],
                         end_period: this.filter.date_period === null ? null : this.filter.date_period[1],
+                        current: this.currentPage,
+                        limit: this.perPage
                     }
                 }).then((resp) => {
-                    return resp.data;
+                    this.totalRows = resp.data.pagination.total
+                    return resp.data.list;
                 })
             } else {
                 data = this.$axios.$get('/api/point/history').then((resp) => {

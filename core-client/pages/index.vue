@@ -93,8 +93,8 @@ export default {
                     alt: "Asuransi Astra"
                 },
                 {
-                    source: "/svg/brands/logo-zurich.svg",
-                    alt: "Zurich"
+                    source: "/svg/brands/logo-rama.svg",
+                    alt: "Rama Insurance"
                 }
             ],
             covererImages: [

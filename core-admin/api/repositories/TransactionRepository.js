@@ -39,7 +39,7 @@ export default class TransactionRepository {
             `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
             `AND product.name LIKE '%${filter.product_name}%' ` +
             (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
-            `AND trans.status IN ('waiting', 'paid') ` +
+            `AND trans.status IN ('waiting', 'paid', 'polis') ` +
             `ORDER BY trans.created_at ASC ` +
             (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT })
@@ -308,7 +308,7 @@ export default class TransactionRepository {
             `AND vehicle.vehicle_type LIKE '%${filter.vehicle_type}%' ` +
             `AND product.name LIKE '%${filter.product_name}%' ` +
             (filter.start_period != null && filter.end_period != null ? dateFilter : '') +
-            `AND trans.status IN ('waiting', 'paid') ` +
+            `AND trans.status IN ('waiting', 'paid', 'polis') ` +
             `ORDER BY trans.created_at ASC `,
             { type: QueryTypes.SELECT })
     }

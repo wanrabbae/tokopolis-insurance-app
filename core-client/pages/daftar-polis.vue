@@ -91,10 +91,9 @@
                                         class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
 
                                     <div class="d-inline-block">
-
                                         <div style="cursor: pointer;" title="Share Document">
                                             <fa icon="share-nodes" style="width: 16px; height: 16px;"
-                                                @click="openShareModal()" />
+                                                @click="openShareModal(policy.quotationID)" />
                                         </div>
 
                                     </div>
@@ -102,7 +101,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <BaseButton v-if="policy.status != 'open'" tag="a"
+                            <BaseButton v-if="policy.status == 'paid'" tag="a"
                                 :href="'/ajukan-klaim?id=' + policy.quotationID">Ajukan Klaim</BaseButton>
                             <BaseButton tag="a" href="#" disabled>Beli Lagi</BaseButton>
                         </div>
@@ -113,7 +112,7 @@
             </div>
         </b-container>
         <Loading :show="loading" />
-        <Share id="share-popup"/>
+        <Share id="share-popup" :epolicy="epolicy" :idpolis="idpolis"/>
     </div>
 </template>
 
@@ -138,6 +137,8 @@ export default {
         return {
             title: 'Daftar Polis',
             loading: true,
+            epolicy: null,
+            idpolis: null,
             model: {
                 search: null,
                 status: null,
@@ -210,7 +211,8 @@ export default {
                             periodDate: `Periode: ${start.format('D MMM yyyy')} - ${end.format('D MMM yyyy')}`,
                             endDate: isStarted ? `Berakhir dalam ${period.asDays().toFixed(0)} Hari` : '',
                             image: field.product.type === "comprehensive" ? "/img/car-icon-comprehensive.png" : "/img/car-icon-tlo.png",
-                            status: field.status
+                            status: field.status,
+                            documents: field.documents
                         })
                     })
 
@@ -228,8 +230,11 @@ export default {
             this.loading = true
             this.getProductList(page)
         },
-        openShareModal() {
+        openShareModal(id) {
             this.$bvModal.show('share-popup')
+            const selectedData = this.policies.find((items) => items.id === id);
+            this.epolicy = selectedData?.documents?.epolicy ?? null;
+            this.idpolis = id;
         },
     }
 }
