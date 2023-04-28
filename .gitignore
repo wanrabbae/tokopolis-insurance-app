@@ -1,6 +1,6 @@
 # macOS
 .DS_Store
-data/
+volumes/
 
 .env.admin
 .env.client
