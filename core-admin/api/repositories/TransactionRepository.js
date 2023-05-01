@@ -133,7 +133,7 @@ export default class TransactionRepository {
         const dateFilter = `trans.start_date >= '${data.start_period}' ` +
             `AND trans.start_date <= '${data.end_period}' `
 
-        return await sequelize.query(`SELECT trans.id, trans.client_data, trans.address_detail, ` +
+        return await sequelize.query(`SELECT trans.id, trans.client_data, trans.is_new_condition, trans.address_detail, ` +
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
