@@ -14,6 +14,10 @@ apply-env:
 	mv .env.payment payment-service/.env
 	mv .env.payment.test payment-test/.env
 
+init-ssl:
+	chmod +x init-letsencrypt.sh
+	./init-letsencrypt.sh
+
 build-core:
 	@docker-compose -p ${PROJECT_NAME} up --detach --build
 

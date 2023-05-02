@@ -29,6 +29,10 @@ fi
 
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
+
+new_path="${data_path#./}"
+rm -r "$new_path/conf/archive/*" "$new_path/conf/renewal/*"
+
 mkdir -p "$data_path/conf/live/$domains"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
