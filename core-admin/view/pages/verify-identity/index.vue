@@ -12,6 +12,40 @@
                             <i class="uil uil-plus"/> Tambah
                         </b-button> -->
 
+                        <div class="row">
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Nama Pengguna</label>
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="Input nama pengguna" v-model="filterForm.account_id">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">ID Pengguna</label>
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="Input id pengguna" v-model="filterForm.account_name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-2">
+                                <div role="group" class="form-group">
+                                    <label class="col-form-label">Aksi</label>
+                                    <div>
+                                        <b-button type="button" variant="primary" @click="doFilter()">
+                                            <i class="uil uil-filter me-1"></i> Filter
+                                        </b-button>
+                                        <b-button type="button" variant="danger" @click="doResetFilter()"
+                                            v-b-tooltip.hover
+                                            title="Hapus Filter">
+                                            <i class="uil uil-multiply"></i>
+                                        </b-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row mt-3">
                             <div class="col-sm-12 col-md-6">
                                 <div id="tickets-table_length" class="dataTables_length">
@@ -95,9 +129,8 @@ export default {
                 ]
             },
             filterForm: {
-                id: null,
-                id_klaim: null,
-                holder_name: null,
+                account_id: null,
+                account_name: null,
             },
             filter: null,
             filterOn: [],
@@ -150,8 +183,8 @@ export default {
         },
         doResetFilter() {
             this.filterForm = {
-                name: null,
-                type: null,
+                account_id: null,
+                account_name: null,
             }
             this.getData()
             this.$refs.table.refresh()
@@ -161,9 +194,8 @@ export default {
                     params: {
                         current: this.currentPage,
                         limit: this.perPage,
-                        id: this.filterForm.id,
-                        id_klaim: this.filterForm.id_klaim,
-                        holder_name: this.filterForm.holder_name,
+                        account_id: this.filterForm.account_id,
+                        account_name: this.filterForm.account_name,
                     }
                 })
                 .then (response => {

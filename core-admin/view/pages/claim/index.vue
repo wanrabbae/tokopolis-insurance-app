@@ -144,13 +144,13 @@
 
                                 <template #cell(action)="data">
 
-                                    <b-button 
+                                    <b-button
                                         v-b-tooltip.hover  title="View Detail" type="button" 
                                         variant="success" @click="showDetailClaim(data.item.id)">
                                         <i class="uil uil-eye"></i>
                                     </b-button>
 
-                                    <b-button v-b-tooltip.hover
+                                    <b-button v-if="account.role_id == 5" v-b-tooltip.hover
                                         title="Update Status" type="button" variant="primary"
                                         @click="showUpdateStatus(data.item.id)">
                                         <i class="uil uil-check-circle" ></i>
@@ -162,7 +162,7 @@
                                         <i class="uil uil-download-alt" ></i>
                                     </b-button> -->
 
-                                    <b-button v-b-tooltip.hover
+                                    <b-button v-if="account.role_id == 5" v-b-tooltip.hover
                                         title="Send File to Agent"  type="button" variant="warning"
                                         @click="sendEmail(data.item.id)">
                                         <i class="uil uil-fast-mail" ></i>
@@ -232,7 +232,8 @@ export default {
                     newStatus: '',
                     selectedId: null
                 }
-            ]
+            ],
+            account: []
         }
     },
     head() {
@@ -252,7 +253,16 @@ export default {
         // Set the initial number of items
         this.totalRows = this.tableData.length
     },
+    created() {
+        this.getAccount()
+    },
     methods: {
+        async getAccount() {
+            this.account = await this.$axios.$get('api/admin/account')
+                .then ((response) => {
+                    return response.data;
+                })
+        },
         /**
          * Search the table data with search input
          */
