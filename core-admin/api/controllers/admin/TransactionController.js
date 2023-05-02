@@ -151,6 +151,7 @@ const generateXls = (review, transaction, destination) => {
     });
 
     const isNew = transaction.documents.bastk != undefined
+    const isNewCondition = transaction.is_new_condition
 
     const accessoriesPriceTotal = transaction.vehicle_data.accessories.reduce((a, b) => a + b.price, 0)
     const expansionPriceTotal = transaction.expansions.reduce((a, b) => a + b.price, 0)
@@ -164,12 +165,12 @@ const generateXls = (review, transaction, destination) => {
         'Quotation No.': transaction.id,
         'Insurance Name': transaction.product_name,
         'Tokopolis Policy Number': '-',
-        'Period Of Insured': `${moment(transaction.start_date).format("DD/MMM/YYYY")} - ${moment(transaction.start_date).add(1, 'year').format("DD/MMM/YYYY")}`,
+        'Period Of Insurance': `${moment(transaction.start_date).format("DD/MMM/YYYY")} - ${moment(transaction.start_date).add(1, 'year').format("DD/MMM/YYYY")}`,
         'Nomor Rangka': transaction.vehicle_data.skeleton_number,
         'Nomor Mesin': transaction.vehicle_data.machine_number,
         'Warna': transaction.vehicle_data.color,
         'Foto STNK': !isNew ? 'Terlampir' : 'N/A',
-        'Identitas Customer': isNew ? 'Terlampir' : 'N/A',
+        'Identitas Customer': 'Terlampir',
         'Foto BSTK': isNew ? 'Terlampir' : 'N/A',
         'Tampak Depan': !isNew ? 'Terlampir' : 'N/A',
         'Tampak Belakang': !isNew ? 'Terlampir' : 'N/A',
@@ -180,7 +181,7 @@ const generateXls = (review, transaction, destination) => {
         'Tampak Dashboard': !isNew ? 'Terlampir' : 'N/A',
         'Tahun Kendaraan': transaction.vehicle_data.year,
         'Pemakaian': 'PRIBADI',
-        'Kondisi': isNew != undefined ? 'BARU' : 'BEKAS',
+        'Kondisi': isNewCondition ? 'BARU' : 'BEKAS',
         'Merek Kendaraan': transaction.brand,
         'Tipe Kendaraan': transaction.model,
         'Seri Kendaraan': transaction.sub_model,
@@ -189,12 +190,12 @@ const generateXls = (review, transaction, destination) => {
             transaction.vehicle_data.plate,
         'Coverage': transaction.product_type == 'comprehensive' ? 'Komprehensif' : 'Total Loss',
         'TSI': transaction.vehicle_data.price,
-        'Premi Jaminan Utama': transaction.price,
+        'Harga Aksesoris include TSI': accessoriesPriceTotal,
         // ====================== LINE FOR EXPANSION_CODES ======================
-        'Harga Aksesoris': accessoriesPriceTotal,
         'Detail Aksesoris': transaction.vehicle_data.accessories
             .map(item => `${item.type} (${item.brand})`)
             .join(', '),
+        'Premi Jaminan Utama': transaction.price,
         'GWP': transaction.price + expansionPriceTotal,
         'Diskon': transaction.discount_total,
         'Persenan Diskon': transaction.discount_format == 'percent' ? transaction.discount_value :
@@ -411,9 +412,9 @@ exports.getXlsxAllTransaction = async (req, res) => {
         worksheet.cell(1, 24).string("Nomor Polisi").style(style)
         worksheet.cell(1, 25).string("Coverage").style(style)
         worksheet.cell(1, 26).string("TSI").style(style)
-        worksheet.cell(1, 27).string("Premi Jaminan Utama").style(style)
-        worksheet.cell(1, 28).string("Harga Aksesoris").style(style)
-        worksheet.cell(1, 29).string("Detail Aksesoris").style(style)
+        worksheet.cell(1, 27).string("Harga Aksesoris include TSI").style(style)
+        worksheet.cell(1, 28).string("Detail Aksesoris").style(style)
+        worksheet.cell(1, 29).string("Premi Jaminan Utama").style(style)
         worksheet.cell(1, 30).string("GWP").style(style)
         worksheet.cell(1, 31).string("Diskon").style(style)
         worksheet.cell(1, 32).string("Persenan Diskon").style(style)
@@ -454,12 +455,12 @@ exports.getXlsxAllTransaction = async (req, res) => {
             data2.vehicle_data.plate)
         worksheet.cell(index + 1, 25).string(data2.product_type == 'comprehensive' ? 'Komprehensif' : 'Total Loss')
         worksheet.cell(index + 1, 26).string(`${data2.vehicle_data.price}`)
-        worksheet.cell(index + 1, 27).string(`${data2.price}`)
         // ====================== LINE FOR EXPANSION_CODES ======================
-        worksheet.cell(index + 1, 28).string(`${accessoriesPriceTotal}`)
-        worksheet.cell(index + 1, 29).string(data2.vehicle_data.accessories
+        worksheet.cell(index + 1, 27).string(`${accessoriesPriceTotal}`)
+        worksheet.cell(index + 1, 28).string(data2.vehicle_data.accessories
             .map(item => `${item.type} (${item.brand})`)
             .join(', '))
+        worksheet.cell(index + 1, 29).string(`${data2.price}`)
         worksheet.cell(index + 1, 30).string(`${data2.price + expansionPriceTotal}`)
         worksheet.cell(index + 1, 31).string(`${data2.discount_total}`)
         worksheet.cell(index + 1, 32).string(`${data2.discount_format == 'percent' ? data2.discount_value :

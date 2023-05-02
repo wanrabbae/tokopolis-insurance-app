@@ -93,7 +93,7 @@ export default class TransactionRepository {
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, agent_transactions.email as agent_email, ` +
             `vehicle.brand, vehicle.model, vehicle.sub_model, product.id as product_id, product.name as product_name, ` +
             `product.type as product_type, product.image as product_image, product.email as product_email, ` +
-            `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
+            `trans.vehicle_data, trans.documents, trans.assessment, trans.price, trans.is_new_condition, ` +
             `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
             `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.pg_transaction_id, trans.created_at ` +
             `FROM transactions as trans ` +
