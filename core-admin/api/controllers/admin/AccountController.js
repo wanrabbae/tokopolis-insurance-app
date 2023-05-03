@@ -250,7 +250,7 @@ exports.verifyBankRequest = async (req, res) => {
 }
 
 exports.identityRequestLists = async (req, res) => {
-    const query = req.query.query || '';
+    const query = req.query || {};
 
     const current = Number(req.query.current) || 1;
     const limit = Number(req.query.limit) || 10;
