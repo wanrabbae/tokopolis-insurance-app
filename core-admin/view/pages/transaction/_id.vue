@@ -419,11 +419,6 @@
                 title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`,
             };
         },
-        head() {
-            return {
-                title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`,
-            };
-        },
         computed: {
             hasExpansions() {
                 return this.data.expansions != null && this.data.expansions.length > 0
