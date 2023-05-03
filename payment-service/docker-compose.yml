@@ -1,10 +1,10 @@
 version: '3'
 services:
-  admin:
-    container_name: tkp-admin
+  payment:
+    container_name: tkp-payment
     build: .
     ports:
-      - "${NUXT_PORT}:3001"
+      - "${EXPRESS_PORT}:5123"
     networks:
       - tokopolis_internal
 

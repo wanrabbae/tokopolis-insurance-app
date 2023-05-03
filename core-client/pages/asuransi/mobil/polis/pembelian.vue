@@ -341,6 +341,7 @@ export default {
 
                     if (response.data.client != null) {
                         this.model.client = response.data.client
+                        this.model.client.phone = response.data.client?.phone?.replace("+62", "");
                     }
 
                     this.loading = false
@@ -363,7 +364,6 @@ export default {
             // silahkan diperbaiki kalau ada yang salah
             if (this.model.vehicleCondition === 'new') {
                 this.formData.append('bastk', this.model.bastk)
-                this.formData.append('identity_card', this.model.identityCard)
             } else {
                 this.formData.append('stnk', this.model.stnk)
                 this.formData.append('front_side', this.model.frontSide)
@@ -375,6 +375,7 @@ export default {
                 this.formData.append('plate_detail', this.model.plateDetail)
             }
 
+            this.formData.append('identity_card', this.model.identityCard)
             this.formData.append('fullname', this.model.client.fullname)
             this.formData.append('email', this.model.client.email)
             this.formData.append('phone', `+62${this.model.client.phone}`)

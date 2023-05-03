@@ -8,9 +8,8 @@ COPY . /app
 
 # Install any needed packages specified in package.json
 RUN npm install
-RUN npm run build
 
-EXPOSE 3001
+EXPOSE 5125
 
 # start the app
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "dev" ]
