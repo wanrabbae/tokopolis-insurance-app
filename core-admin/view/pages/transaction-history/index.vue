@@ -128,7 +128,7 @@ export default {
                 { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: "id", label: 'No Quotation', tdClass: 'align-middle' },
                 { key: "start_date", label: 'Tanggal Pengajuan', tdClass: 'align-middle' },
-                { key: "client_name", label: 'Nama Tertanggung', tdClass: 'align-middle' },
+                { key: "client_data.fullname", label: 'Nama Tertanggung', tdClass: 'align-middle' },
                 { key: "agent_name", label: 'User', tdClass: 'align-middle' },
                 { key: "brand", label: 'Brand', tdClass: 'align-middle' },
                 { key: "sub_model", label: 'Sub Model', tdClass: 'align-middle' },
