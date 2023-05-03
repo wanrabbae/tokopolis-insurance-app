@@ -24,7 +24,7 @@
 
                                 <div class="col-md-6">
                                     <label for="">Produk</label> 
-                                    <div>{{ data.product.name }}</div>
+                                    <div>{{ data.product?.name }}</div>
                                 </div>
                             </div>
                             <div class="row mt-4">
@@ -124,6 +124,7 @@
                     .then((response) => {
                         return response.data;
                     })
+                this.data.documents = JSON.parse(this.data.documents);
                 return this.data;
             },
             getLightBoxStatus(key) {

@@ -34,7 +34,7 @@
                             </div>
 
                             <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Policy
+                                <label class="col-sm-2 col-lg-2 col-form-label">Wording Policy
                                     <label class="text-danger">*</label>
                                 </label>
                                 <div class="col-sm-10 col-lg-10">
@@ -141,7 +141,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <div>
+                            <div v-if="account.role_id == 5">
                                 <b-button v-if="data.assessment == null && data.status !== 'polis'" class="float-end ms-2" variant="danger"
                                     :disabled="data.documents == null"
                                     @click="showRevert()">
@@ -410,7 +410,13 @@
                     nota: null,
                     policy: null,
                     lainnya: null
-                }
+                },
+                account: []
+            };
+        },
+        head() {
+            return {
+                title: `${this.title} | Nuxtjs Responsive Bootstrap 5 Admin Dashboard`,
             };
         },
         head() {
@@ -425,6 +431,7 @@
         },
         created() {
             this.data = this.getData()
+            this.getAccount()
         },
         validations: {
             feature: {
@@ -434,6 +441,12 @@
             },
         },
         methods: {
+            async getAccount() {
+                this.account = await this.$axios.$get('api/admin/account')
+                    .then ((response) => {
+                        return response.data;
+                    })
+            },
             onFileChange(e) {
                 const files = e.target.files || e.dataTransfer.files
                 if (!files.length)

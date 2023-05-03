@@ -63,6 +63,9 @@ export default class ClaimProductService {
         mailer.setTarget(payload.target);
         mailer.setMail(payload.title, {
             name: payload.data.name,
+            reporter_fullname: payload.data.reporter_fullname,
+            holder_fullname: payload.data.holder_fullname,
+            incident_time: payload.data.incident_time
         });
         mailer.send();
     }

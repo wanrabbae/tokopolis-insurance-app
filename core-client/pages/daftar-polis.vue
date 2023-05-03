@@ -72,8 +72,8 @@
                                 <div class="mb-2">{{ policy.periodDate }}</div>
                                 <div class="d-block">
                                     <div class="badge py-2 px-3 rounded-pill mr-1"
-                                        :class="policy.status === 'paid' ? 'badge-success' : 'badge-danger'">
-                                        {{ policy.status === "paid" ? 'Aktif' : 'Belum Aktif' }}
+                                        :class="policy.status === 'paid' || policy.status === 'polis' ? 'badge-success' : 'badge-danger'">
+                                        {{ policy.status === "paid" || policy.status === 'polis' ? 'Aktif' : 'Belum Aktif' }}
                                     </div>
 
                                     <div v-if="policy.status == 'open'"
@@ -84,6 +84,9 @@
                                         @click="openPayment(policy.quotationID)">Menunggu Pembayaran</div>
                                     <div v-else-if="policy.status == 'paid'"
                                         class="badge py-2 px-3 rounded-pill badge-success mr-1">Pembayaran Diterima
+                                    </div>
+                                    <div v-else-if="policy.status == 'polis'"
+                                        class="badge py-2 px-3 rounded-pill badge-success mr-1">Polis
                                     </div>
                                     <div v-else-if="policy.status == 'rejected'"
                                         class="badge py-2 px-3 rounded-pill badge-danger mr-1">Pembayaran Ditolak</div>

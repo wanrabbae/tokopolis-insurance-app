@@ -93,7 +93,7 @@ export default class TransactionRepository {
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, agent_transactions.email as agent_email, ` +
             `vehicle.brand, vehicle.model, vehicle.sub_model, product.id as product_id, product.name as product_name, ` +
             `product.type as product_type, product.image as product_image, product.email as product_email, ` +
-            `trans.vehicle_data, trans.documents, trans.assessment, trans.price, ` +
+            `trans.vehicle_data, trans.documents, trans.assessment, trans.price, trans.is_new_condition, ` +
             `trans.discount_format, trans.discount_value, trans.discount_total, trans.loading_rate, trans.expansions, ` +
             `trans.fee_admin, trans.fee_stamp, trans.total, trans.status, trans.pg_data, trans.pg_transaction_id, trans.created_at ` +
             `FROM transactions as trans ` +
@@ -133,7 +133,7 @@ export default class TransactionRepository {
         const dateFilter = `trans.start_date >= '${data.start_period}' ` +
             `AND trans.start_date <= '${data.end_period}' `
 
-        return await sequelize.query(`SELECT trans.id, trans.client_data, trans.address_detail, ` +
+        return await sequelize.query(`SELECT trans.id, trans.client_data, trans.is_new_condition, trans.address_detail, ` +
             `village.name as village_name, district.name as district_name, regency.name as regency_name, ` +
             `province.name as province_name, trans.start_date, trans.status, ` +
             `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
@@ -429,6 +429,21 @@ export default class TransactionRepository {
             },
             limit: limit,
             offset: offset
+        });
+    }
+
+    async getComissionTotalUnder(account_ids) {
+        return await Comission.findAll({
+            attributes: [
+                "account_id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            group: ['account_id'],
+            where: {
+                account_id: account_ids,
+            },
+            raw: true,
+            nest: true
         });
     }
 

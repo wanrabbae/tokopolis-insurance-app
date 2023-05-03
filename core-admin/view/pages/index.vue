@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="eccount.role_id === 5" class="col-3">
+            <div v-if="eccount.role_id !== 1 || eccount.length == 0" class="col-3">
                 <div class="card card-summary card-commission">
                     <div class="card-header">
                         Total Commission
@@ -117,7 +117,7 @@ export default {
                 .then((response) => {
                     let total = 0;
                     response.data.forEach((item) => {
-                        total += item.value;
+                        total += parseInt(item.value);
                     })
 
                     return total
@@ -125,12 +125,28 @@ export default {
             }
         },
         async getTotalCommission() {
-            if (this.eccount.role_id > 1) {
-                this.totalCommission = await this.$axios.$get('api/comissions')
+            if (this.eccount.role_id > 1 && this.eccount.role_id === 5) {
+                this.totalPoint = await this.$axios.$get('api/point')
                 .then((response) => {
                     return response.data.total === null ? 0 : response.data.total
                 })
+            } else {
+                this.totalPoint = await this.$axios.$get('api/comissions/under-agents')
+                .then((response) => {
+                    let total = 0;
+                    response.data.forEach((item) => {
+                        total += parseInt(item.value);
+                    })
+
+                    return total
+                })
             }
+            // if (this.eccount.role_id > 1) {
+            //     this.totalCommission = await this.$axios.$get('api/comissions')
+            //     .then((response) => {
+            //         return response.data.total === null ? 0 : response.data.total
+            //     })
+            // }
         }
     }
 };

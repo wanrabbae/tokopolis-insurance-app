@@ -3,7 +3,7 @@ const verifyToken = require('../../middlewares/verifyRole')
 const { uploadFile } = require('../../middlewares/uploadFile')
 
 const { list, detail, addReview,
-    getTransactionQuotation, getTransactionFile, getXlsxAllTransaction, feedbackAgent, history, listUnder, getComissionHistoryUnder, getPointHistoryUnder, uploadEpolicy } = require('../../controllers/admin/TransactionController')
+    getTransactionQuotation, getTransactionFile, getXlsxAllTransaction, feedbackAgent, history, listUnder, getComissionHistoryUnder, getPointHistoryUnder, uploadEpolicy, getComissionTotalUnder } = require('../../controllers/admin/TransactionController')
 
 const router = Router()
 const AuthRoleMiddleware = verifyToken('auth:role')
@@ -26,6 +26,7 @@ router.post('/admin/transaction/epolicy', AuthRoleMiddleware, uploadFile({
     { name: 'policy' }, { name: 'lainnya' },
 ]), uploadEpolicy)
 
+router.get('/comissions/underAgents', AuthRoleMiddleware, getComissionTotalUnder) // Total Komisi pada dashboard
 router.get('/admin/comissions/history/under', AuthRoleMiddleware, getComissionHistoryUnder)
 router.get('/admin/point/history/under', AuthRoleMiddleware, getPointHistoryUnder)
 
