@@ -12,12 +12,13 @@
                                     <label class="text-danger">*</label>
                                 </label>
                                 <div class="col-sm-10 col-lg-10">
-                                    <input
-                                        type="text"
+                                    <select
+                                        class="form-select"
                                         v-model="form.location"
-                                        class="form-control"
-                                        placeholder="Masukkan Lokasi Dealer"
                                         required>
+                                        <option v-for="option in data.location" v-bind:value="option.value"
+                                            v-bind:key="option.text">{{ option.text }}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div role="group" class="row form-group mb-3">
@@ -44,19 +45,6 @@
                 ok-title="Submit" @ok.prevent="triggerUpdate" cancel-title="Batal">
                     <div class="d-block text-justify">
                         <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="doUpdateData">
-                            <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Lokasi
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div class="col-sm-10 col-lg-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.location"
-                                        class="form-control"
-                                        placeholder="Masukkan Lokasi Dealer"
-                                        required>
-                                </div>
-                            </div>
                             <div role="group" class="row form-group mb-3">
                                 <label class="col-sm-2 col-lg-2 col-form-label">Nama Dealer
                                     <label class="text-danger">*</label>
@@ -113,6 +101,10 @@
 
                                 <template #cell(index)="data">
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
+                                </template>
+
+                                <template #cell(location)="data">
+                                    {{ locations[data.item.id.split('-')[0]] }}
                                 </template>
 
                                 <template #cell(action)="data">
