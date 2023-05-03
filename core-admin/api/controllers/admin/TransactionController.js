@@ -570,3 +570,17 @@ exports.uploadEpolicy = async (req, res) => {
 
     return res.errorBadRequest(req.polyglot.t('error.transaction'));
 }
+
+exports.getComissionTotalUnder = async (req, res) => {
+    let total = 0
+    let account_ids = []
+    const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
+    accountsUnder.forEach(au => account_ids.push(au.id))
+
+    const comission = await service.getComissionTotalUnder(account_ids);
+    const calculate = comission.reduce((previous, current) => parseInt(previous.value) + parseInt(current.value))
+
+    total = calculate
+
+    res.jsonData({ total: total });
+}

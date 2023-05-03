@@ -432,6 +432,21 @@ export default class TransactionRepository {
         });
     }
 
+    async getComissionTotalUnder(account_ids) {
+        return await Comission.findAll({
+            attributes: [
+                "account_id",
+                [sequelize.fn("sum", sequelize.col("value")), "value"],
+            ],
+            group: ['account_id'],
+            where: {
+                account_id: account_ids,
+            },
+            raw: true,
+            nest: true
+        });
+    }
+
     async getComissionHistoryUnderCount(account_ids, filter) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
