@@ -266,7 +266,7 @@ export default class AccountService {
     }
 
     async getBankList(query, limit, offset) {
-        if (query == null) {
+        if (query.account_id == undefined && query.account_name == undefined) {
             return await this.repository.getBankList(limit, offset);
         }
 
@@ -278,7 +278,7 @@ export default class AccountService {
     }
 
     getBankListCount(query) {
-        if (query == null) {
+        if (query.account_id == undefined && query.account_name == undefined) {
             return this.repository.getBankCountAll();
         }
 

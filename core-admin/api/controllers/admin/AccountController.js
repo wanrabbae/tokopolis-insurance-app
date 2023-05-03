@@ -223,7 +223,7 @@ exports.leadersByDealerAndRole = async (req, res, next) => {
 };
 
 exports.bankRequestLists = async (req, res) => {
-    const query = req.query.query || '';
+    const query = req.query || {};
 
     const current = Number(req.query.current) || 1;
     const limit = Number(req.query.limit) || 10;
