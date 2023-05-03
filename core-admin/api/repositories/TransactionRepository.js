@@ -74,14 +74,13 @@ export default class TransactionRepository {
     async getTransactionStatusAll(filter, limit, offset) {
 
         return await sequelize.query(`SELECT trans.id, trans.start_date, trans.status, ` +
-            `client_transactions.fullname as client_name, agent_transactions.fullname as agent_name, ` +
-            `vehicle.brand, vehicle.sub_model, product.name as product_name ` +
+            `agent_transactions.fullname as agent_name, ` +
+            `vehicle.brand, vehicle.sub_model, product.name as product_name, trans.client_data ` +
             `FROM transactions as trans ` +
-            `LEFT JOIN accounts as client_transactions ON trans.client_id = client_transactions.id ` +
             `LEFT JOIN accounts as agent_transactions ON trans.agent_id = agent_transactions.id ` +
             `JOIN vehicles as vehicle ON trans.vehicle_id = vehicle.id ` +
             `JOIN products as product ON trans.product_id = product.id ` +
-            `WHERE trans.status LIKE '%${filter.status}%' AND (client_transactions.fullname LIKE '%${filter.client_name}%' OR agent_transactions.fullname LIKE '%${filter.client_name}%') AND trans.id LIKE '%${filter.id}%' ` +
+            `WHERE trans.status LIKE '%${filter.status}%' AND trans.id LIKE '%${filter.id}%' AND JSON_EXTRACT(trans.client_data, '$.fullname') LIKE '%${filter.client_name}%' ` +
             (limit != undefined && offset != undefined ? `LIMIT ${limit} OFFSET ${offset}` : ''),
             { type: QueryTypes.SELECT })
     }
