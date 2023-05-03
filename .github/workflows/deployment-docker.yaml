@@ -1,4 +1,4 @@
-name: Deploy Docker Core System
+name: Deploy Docker System
 
 on:
   pull_request:
@@ -9,17 +9,20 @@ on:
       - 'core-client/**'
       - 'email-service/**'
       - 'payment-service/**'
+      - 'payment-test/**'
 
 env:
   folderPath: /var/www/html/tokopolis
 
 jobs:
-  build:
-    name: Build Docker Containers
+  update-project:
+    name: Update Project Files
     runs-on: ubuntu-latest
 
     steps:
-    - name: Build Docker Containers
+    - uses: actions/checkout@v1
+
+    - name: Run Git Pull
       uses: appleboy/ssh-action@master
       with:
         HOST: ${{ secrets.HOST }}
@@ -27,7 +30,107 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
         script: |
-          export NODE_OPTIONS="--max_old_space_size=4096"
           cd ${{ env.folderPath }}
           git pull origin master
-          make build
+
+  build-core:
+    needs: update-project
+    name: Build Core System
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Core Docker Compose
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}
+          make build-core
+
+  build-admin:
+    needs: build-core
+    name: Build Admin Container
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Admin Docker Compose
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}
+          make build-admin
+
+  build-client:
+    needs: build-admin
+    name: Build Client Container
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Client Docker Compose
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}
+          make build-client
+
+  build-email:
+    needs: build-client
+    name: Build Email Container
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Email Docker Compose
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}
+          make build-email
+
+  build-payment:
+    needs: build-client
+    name: Build Payment Container
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Payment Docker Compose
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}
+          make build-payment
+
+  build-payment-test:
+    needs: build-client
+    name: Build Payment Test Container
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Payment Test Docker Compose
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PORT: ${{ secrets.PORT }}
+        KEY: ${{ secrets.SSHKEY }}
+        script: |
+          cd ${{ env.folderPath }}
+          make build-payment-test

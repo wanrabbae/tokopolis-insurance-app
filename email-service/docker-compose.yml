@@ -1,10 +1,8 @@
 version: '3'
 services:
-  admin:
-    container_name: tkp-admin
+  email:
+    container_name: tkp-email
     build: .
-    ports:
-      - "${NUXT_PORT}:3001"
     networks:
       - tokopolis_internal
 
