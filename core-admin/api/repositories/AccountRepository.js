@@ -247,13 +247,17 @@ export default class AccountRepository {
 
     async getIdentityListWithFilter(query, limit, offset) {
         return await Identity.findAll({
+            where: {
+                account_id: {
+                    [Op.like]: `%${query.account_id || ''}%`
+                }
+            },
             include: {
                 model: Account,
                 attributes: ['id', 'fullname', 'email'],
                 where: {
                     [Op.or]: [
-                        { fullname: { [Op.like]: `%${query}%` } },
-                        { email: { [Op.like]: `%${query}%` } },
+                        { fullname: { [Op.like]: `%${query.account_name || ''}%` } },
                     ],
                 },
             },
@@ -268,12 +272,16 @@ export default class AccountRepository {
 
     async getIdentityCountByQuery(query) {
         return await Identity.count({
+            where: {
+                account_id: {
+                    [Op.like]: `%${query.account_id}%`
+                }
+            },
             include: {
                 model: Account,
                 where: {
                     [Op.or]: [
-                        { fullname: { [Op.like]: `%${query}%` } },
-                        { email: { [Op.like]: `%${query}%` } },
+                        { fullname: { [Op.like]: `%${query.account_name}%` } },
                     ],
                 },
             }
