@@ -126,12 +126,12 @@ export default {
         },
         async getTotalCommission() {
             if (this.eccount.role_id > 1 && this.eccount.role_id === 5) {
-                this.totalPoint = await this.$axios.$get('api/point')
+                this.totalPoint = await this.$axios.$get('api/comissions')
                 .then((response) => {
                     return response.data.total === null ? 0 : response.data.total
                 })
             } else {
-                this.totalPoint = await this.$axios.$get('api/comissions/under-agents')
+                this.totalPoint = await this.$axios.$get('api/comissions/underAgents')
                 .then((response) => {
                     let total = 0;
                     response.data.forEach((item) => {
