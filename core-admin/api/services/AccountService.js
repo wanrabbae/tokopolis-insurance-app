@@ -184,7 +184,7 @@ export default class AccountService {
     }
 
     async getIdentityList(query, limit, offset) {
-        if (query == null) {
+        if (query.account_id == undefined && query.account_name == undefined) {
             return await this.repository.getIdentityList(limit, offset);
         }
 
@@ -196,7 +196,7 @@ export default class AccountService {
     }
 
     getIdentityListCount(query) {
-        if (query == null) {
+        if (query.account_id == undefined && query.account_name == undefined) {
             return this.repository.getIdentityCountAll();
         }
 
