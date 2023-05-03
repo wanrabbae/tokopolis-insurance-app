@@ -130,6 +130,10 @@ export default class TransactionService {
         return this.repository.getComissionHistoryUnder(account_ids, filter, limit, offset);
     }
 
+    getComissionTotalUnder(account_ids) {
+        return this.repository.getComissionTotalUnder(account_ids);
+    }
+
     getComissionHistoryUnderCount(account_ids, filter) {
         return this.repository.getComissionHistoryUnderCount(account_ids, filter);
     }

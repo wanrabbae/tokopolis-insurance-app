@@ -134,7 +134,7 @@ exports.generateSend = async (req, res, next) => {
     if (claimData.length <= 0) return res.errorBadRequest(req.polyglot.t('error.transaction'))
 
     const destination = `view/static/documents`
-    claimData.documents = JSON.parse(claimData.documents)
+    claimData.documents = claimData.documents
 
     generateZip(claimData, destination)
     generateXls(claimData, destination)

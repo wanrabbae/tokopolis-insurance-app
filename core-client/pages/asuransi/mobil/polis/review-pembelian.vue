@@ -213,7 +213,7 @@
 
                             </div>
 
-                           <div class="rounded border mb-3 mb-md-4">
+                           <div v-if="!isAgent()" class="rounded border mb-3 mb-md-4" >
 
                                <div v-b-toggle.promotion-accordion class="position-relative d-flex align-items-center chevron pointer p-3">
 

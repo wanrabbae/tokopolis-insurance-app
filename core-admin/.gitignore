@@ -94,5 +94,3 @@ view/static/temp/
 view/static/undefined/
 view/static/quotation/*
 view/static/documents
-
-docker.env

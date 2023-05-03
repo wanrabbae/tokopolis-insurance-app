@@ -15,6 +15,7 @@
                                             <option value="waiting">Waiting</option>
                                             <option value="open">Open</option>
                                             <option value="paid">Paid</option>
+                                            <option value="polis">Polis</option>
                                             <option value="denied">Denied</option>
                                             <option value="canceled">Canceled</option>
                                             <option value="failed">Failed</option>
@@ -38,12 +39,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-3">
                                 <div role="group" class="form-group">
                                     <label class="col-form-label">Aksi</label>
                                     <div>
                                         <b-button type="button" variant="primary" @click="doFilter()">
                                             <i class="uil uil-filter me-1"></i> Filter
+                                        </b-button>
+                                        <b-button type="button" variant="danger" @click="doResetFilter()"
+                                            v-b-tooltip.hover
+                                            title="Hapus Filter">
+                                            <i class="uil uil-multiply"></i>
                                         </b-button>
                                     </div>
                                 </div>
@@ -75,6 +81,7 @@
                                     <span v-if="data.item.status === 'waiting'" class="badge badge-info">{{ data.item.status }}</span>
                                     <span v-if="data.item.status === 'open'" class="badge badge-primary">{{ data.item.status }}</span>
                                     <span v-if="data.item.status === 'paid'" class="badge badge-success">{{ data.item.status }}</span>
+                                    <span v-if="data.item.status === 'polis'" class="badge badge-success">{{ data.item.status }}</span>
                                     <span v-if="data.item.status === 'denied'" class="badge badge-danger">{{ data.item.status }}</span>
                                     <span v-if="data.item.status === 'canceled'" class="badge badge-warning">{{ data.item.status }}</span>
                                     <span v-if="data.item.status === 'failed'" class="badge badge-secondary">{{ data.item.status }}</span>
@@ -145,7 +152,12 @@ export default {
     },
     methods: {
         async getData() {
-            this.tableData = await this.$axios.$get(`/api/admin/transaction/history?status=${this.filterForm.status}&limit=${this.perPage}&page=${this.currentPage}`)
+            this.tableData = await this.$axios.$get(`/api/admin/transaction/history?status=${this.filterForm.status}&limit=${this.perPage}&page=${this.currentPage}`, {
+                params: {
+                    id: this.filterForm.id,
+                    client_name: this.filterForm.client_name,
+                }
+            })
                 .then((resp) => {
                     this.totalRows = resp.data.pagination.total
                     return resp.data.list;
@@ -157,6 +169,13 @@ export default {
             this.getData()
             this.$refs.table.refresh()
         },
+        doResetFilter() {
+            this.filterForm.status = 'waiting';
+            this.filterForm.id = '';
+            this.filterForm.client_name = '';
+            this.getData()
+            this.$refs.table.refresh()
+        }
     }
 }
 
