@@ -137,6 +137,7 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "account.fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
+                { key: "account.id", label: 'ID Pengguna', tdClass: 'align-middle' },
                 { key: "identity_number", label: 'Nomor Identitas', tdClass: 'align-middle', sortable: false },
                 { key: "image", label: 'Foto Identitas', tdClass: 'align-middle', sortable: false },
                 { key: "type", label: 'Jenis Identitas', tdClass: 'align-middle', sortable: false },

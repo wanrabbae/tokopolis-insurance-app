@@ -13,7 +13,8 @@
                                 <div role="group" class="form-group">
                                     <label class="col-form-label">Nama Pengguna</label>
                                     <div>
-                                        <input type="text" class="form-control" placeholder="Input nama pengguna" v-model="filterForm.account_id">
+                                        <input type="text" class="form-control" placeholder="Input nama pengguna" v-model="filterForm.account_name">
+
                                     </div>
                                 </div>
                             </div>
@@ -21,7 +22,7 @@
                                 <div role="group" class="form-group">
                                     <label class="col-form-label">ID Pengguna</label>
                                     <div>
-                                        <input type="text" class="form-control" placeholder="Input id pengguna" v-model="filterForm.account_name">
+                                        <input type="text" class="form-control" placeholder="Input id pengguna" v-model="filterForm.account_id">
                                     </div>
                                 </div>
                             </div>

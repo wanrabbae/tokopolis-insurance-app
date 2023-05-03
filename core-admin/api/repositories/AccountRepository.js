@@ -274,7 +274,7 @@ export default class AccountRepository {
         return await Identity.count({
             where: {
                 account_id: {
-                    [Op.like]: `%${query.account_id}%`
+                    [Op.like]: `%${query.account_id || ''}%`
                 }
             },
             include: {
@@ -315,13 +315,17 @@ export default class AccountRepository {
 
     async getBankListWithFilter(query, limit, offset) {
         return await Bank.findAll({
+            where: {
+                account_id: {
+                    [Op.like]: `%${query.account_id || ''}%`
+                }
+            },
             include: {
                 model: Account,
                 attributes: ['id', 'fullname', 'email'],
                 where: {
                     [Op.or]: [
-                        { fullname: { [Op.like]: `%${query}%` } },
-                        { email: { [Op.like]: `%${query}%` } },
+                        { fullname: { [Op.like]: `%${query.account_name || ''}%` } },
                     ],
                 },
             },
@@ -333,15 +337,19 @@ export default class AccountRepository {
     async getBankCountAll() {
         return await Bank.count();
     }
-
+    // asdasd
     async getBankCountByQuery(query) {
         return await Bank.count({
+            where: {
+                account_id: {
+                    [Op.like]: `%${query.account_id || ''}%`
+                }
+            },
             include: {
                 model: Account,
                 where: {
                     [Op.or]: [
-                        { fullname: { [Op.like]: `%${query}%` } },
-                        { email: { [Op.like]: `%${query}%` } },
+                        { fullname: { [Op.like]: `%${query.account_name || ''}%` } },
                     ],
                 },
             }
