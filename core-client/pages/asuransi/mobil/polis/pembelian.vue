@@ -341,6 +341,7 @@ export default {
 
                     if (response.data.client != null) {
                         this.model.client = response.data.client
+                        this.model.client.phone = response.data.client?.phone?.replace("+62", "");
                     }
 
                     this.loading = false

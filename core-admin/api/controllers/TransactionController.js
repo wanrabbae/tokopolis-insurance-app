@@ -57,6 +57,8 @@ exports.transaction = async (req, res) => {
             transaction.expansions
         );
 
+        const client_data = JSON.parse(transaction.client_data);
+
         return res.jsonData({
             plate: transaction.vehicle_data.plate,
             price: {
@@ -72,14 +74,14 @@ exports.transaction = async (req, res) => {
                 ),
             },
             client: {
-                fullname: transaction.client_data.fullname,
+                fullname: client_data.fullname,
                 email:
-                    transaction.client_data.email != "null"
-                        ? transaction.client_data.email
+                    client_data.email != "null"
+                        ? client_data.email
                         : null,
                 phone:
-                    transaction.client_data.phone != "null"
-                        ? transaction.client_data.phone
+                    client_data.phone != "null"
+                        ? client_data.phone
                         : null,
             },
         });
