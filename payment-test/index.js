@@ -20,7 +20,7 @@ app.use('/', router)
 module.exports = app
 
 if (require.main === module) {
-    const port = process.env.EXPRESS_PORT || 5126
+    const port = 5125
     app.listen(port, () => {
         // eslint-disable-next-line no-console
         console.log(`API server listening on port ${port}`)
