@@ -99,7 +99,7 @@ export default {
   ** For deployment you might want to edit host and port
   */
   server: {
-   port: process.env.NUXT_PORT || 3000, // default: 3000
+   port: 3001, // default: 3000
    host: '0.0.0.0' // default: localhost
   },
 

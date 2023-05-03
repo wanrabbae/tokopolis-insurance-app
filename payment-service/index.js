@@ -11,7 +11,7 @@ app.use(payment)
 module.exports = app
 
 if (require.main === module) {
-    const port = process.env.EXPRESS_PORT || 5124
+    const port = 5123
     app.listen(port, () => {
         // eslint-disable-next-line no-console
         console.log(`API server listening on port ${port}`)
