@@ -812,6 +812,11 @@ exports.doPayment = async (req, res) => {
         transaction.total
     );
 
+
+    if (typeof transaction.client_data == "string") {
+        transaction.client_data = transaction.client_data
+    }
+
     const payload = {
         order_id: transaction.id,
         customer: {
