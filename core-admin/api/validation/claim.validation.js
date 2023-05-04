@@ -47,15 +47,12 @@ const claimProduct = (req) => {
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t("field.claim.damage1")),
         damage2: Joi.string()
-            .required()
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t("field.claim.damage2")),
         damage3: Joi.string()
-            .required()
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t("field.claim.damage3")),
         damage4: Joi.string()
-            .required()
             .regex(RegExp(extensions.regex))
             .label(req.polyglot.t("field.claim.damage4")),
     });
