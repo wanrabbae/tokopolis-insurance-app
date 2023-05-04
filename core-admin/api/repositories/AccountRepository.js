@@ -281,7 +281,7 @@ export default class AccountRepository {
                 model: Account,
                 where: {
                     [Op.or]: [
-                        { fullname: { [Op.like]: `%${query.account_name}%` } },
+                        { fullname: { [Op.like]: `%${query.account_name || ''}%` } },
                     ],
                 },
             }

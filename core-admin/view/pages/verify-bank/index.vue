@@ -14,7 +14,6 @@
                                     <label class="col-form-label">Nama Pengguna</label>
                                     <div>
                                         <input type="text" class="form-control" placeholder="Input nama pengguna" v-model="filterForm.account_name">
-
                                     </div>
                                 </div>
                             </div>

@@ -57,7 +57,7 @@ exports.transaction = async (req, res) => {
             transaction.expansions
         );
 
-        const client_data = JSON.parse(transaction.client_data);
+        const client_data = transaction.client_data;
 
         return res.jsonData({
             plate: transaction.vehicle_data.plate,
@@ -813,7 +813,7 @@ exports.doPayment = async (req, res) => {
     );
 
     if (typeof transaction.client_data == "string") {
-        transaction.client_data = JSON.parse(transaction.client_data)
+        transaction.client_data = transaction.client_data
     }
     const payload = {
         order_id: transaction.id,
