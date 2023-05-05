@@ -46,6 +46,7 @@ export default class ClaimProductRepository {
             offset: offset
         });
     }
+
     async getClaimProductsCountData(account_id) {
         return await ClaimProduct.count({
             where: {

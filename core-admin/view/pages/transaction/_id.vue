@@ -15,7 +15,7 @@
                                     <input
                                         @change="onFileChange"
                                         name="epolicy"
-                                        type="file"                                        
+                                        type="file"
                                         class="form-control">
                                 </div>
                             </div>
@@ -28,7 +28,7 @@
                                     <input
                                         @change="onFileChange"
                                         name="nota"
-                                        type="file"                                        
+                                        type="file"
                                         class="form-control">
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                     <input
                                         @change="onFileChange"
                                         name="policy"
-                                        type="file"                                        
+                                        type="file"
                                         class="form-control">
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                     <input
                                         @change="onFileChange"
                                         name="lainnya"
-                                        type="file"                                        
+                                        type="file"
                                         class="form-control">
                                 </div>
                             </div>
@@ -141,7 +141,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <div v-if="account.role_id == 5">
+                            <div v-if="account.role_id == 1">
                                 <b-button v-if="data.assessment == null && data.status !== 'polis'" class="float-end ms-2" variant="danger"
                                     :disabled="data.documents == null"
                                     @click="showRevert()">
@@ -446,7 +446,7 @@
                 const files = e.target.files || e.dataTransfer.files
                 if (!files.length)
                     return
-    
+
                 this.formepolis[e.target.name] = files[0]
             },
             validateState(validation) {
@@ -539,11 +539,11 @@
                 this.formepolis.transaction_id = this.id;
 
                 const formData = new FormData()
-    
+
                 for (const key of Object.keys(this.formepolis)) {
                     formData.append(key, this.formepolis[key])
                 }
-    
+
                 this.$axios.$post('api/admin/transaction/epolicy', formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 })
