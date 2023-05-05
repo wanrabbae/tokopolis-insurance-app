@@ -123,7 +123,7 @@ exports.updateIdentity = async (req, res) => {
         verified_at: null,
     };
 
-    const identity = await service.getIdentity(account.id);
+    const identity = await service.getIdentityType(account.id, req.body.type);
 
     if (identity != null) {
         await service.updateIdentity(account.id, fields, req.file);

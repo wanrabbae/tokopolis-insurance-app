@@ -271,7 +271,7 @@ exports.identityRequestLists = async (req, res) => {
 }
 
 exports.verifyIdentityRequest = async (req, res) => {
-    const data = await service.verifyIdentity(req.params.account_id);
+    const data = await service.verifyIdentity(req.params.account_id, req.params.type);
 
     return res.jsonData(data)
 }
