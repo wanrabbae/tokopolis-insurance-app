@@ -44,7 +44,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="form.dealer_id != null && form.role != null && form.role != 2" class="row mt-2">
+                            <div v-if="form.dealer_id != null && form.role != null && form.role != 3" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
                                         <label class="col-form-label">Atasan
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
 
-                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 2 || (form.role != 2 && form.leader_id != null))">
+                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 3 || (form.role != 3 && form.leader_id != null))">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
                                 </p>
