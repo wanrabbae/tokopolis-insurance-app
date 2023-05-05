@@ -812,9 +812,11 @@ exports.doPayment = async (req, res) => {
         transaction.total
     );
 
+
     if (typeof transaction.client_data == "string") {
         transaction.client_data = transaction.client_data
     }
+
     const payload = {
         order_id: transaction.id,
         customer: {
@@ -1057,12 +1059,12 @@ exports.getComission = async (req, res) => {
 };
 
 exports.getComissionHistory = async (req, res) => {
-    const current = Number(req.query.current) || 1
     const limit = Number(req.query.limit) || 5
     const offset = (current - 1) * limit
 
     const count = await service.getComissionHistoryCount(req.account._id)
     const comission = await service.getComissionHistory(req.account._id, limit, offset);
+
 
     return res.jsonData({
         pagination: {

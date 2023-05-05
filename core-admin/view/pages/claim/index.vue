@@ -145,12 +145,20 @@
                                 <template #cell(action)="data">
 
                                     <b-button
+<<<<<<< HEAD
                                         v-b-tooltip.hover  title="View Detail" type="button" 
+=======
+                                        v-b-tooltip.hover title="View Detail" type="button"
+>>>>>>> 111222850691cb48f84a9c01468a74d978231a11
                                         variant="success" @click="showDetailClaim(data.item.id)">
                                         <i class="uil uil-eye"></i>
                                     </b-button>
 
+<<<<<<< HEAD
                                     <b-button v-if="account.role_id == 5" v-b-tooltip.hover
+=======
+                                    <b-button v-if="account.role_id == 1" v-b-tooltip.hover
+>>>>>>> 111222850691cb48f84a9c01468a74d978231a11
                                         title="Update Status" type="button" variant="primary"
                                         @click="showUpdateStatus(data.item.id)">
                                         <i class="uil uil-check-circle" ></i>
@@ -162,7 +170,7 @@
                                         <i class="uil uil-download-alt" ></i>
                                     </b-button> -->
 
-                                    <b-button v-if="account.role_id == 5" v-b-tooltip.hover
+                                    <b-button v-if="account.role_id == 1" v-b-tooltip.hover
                                         title="Send File to Agent"  type="button" variant="warning"
                                         @click="sendEmail(data.item.id)">
                                         <i class="uil uil-fast-mail" ></i>
