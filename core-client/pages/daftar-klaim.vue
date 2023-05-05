@@ -147,7 +147,7 @@
 
                 </div> <!-- card ends -->
 
-                <b-pagination v-if="policies.length" v-model="currentPage" class="mt-4" v-bind="paginationOptions"
+                <b-pagination v-if="policies.length" v-model="currentPage" :total-rows="totalRows" :per-page="perPage" class="mt-4" v-bind="paginationOptions"
                     @page-click="onPageClick" />
 
             </div> <!-- container-content ends -->
@@ -226,9 +226,11 @@ export default {
                 // },
             ],
             currentPage: 1,
+            perPage: 10,
+            totalRows: 0,
             paginationOptions: {
                 align: "center",
-                disabled: !this.isLoggedIn,
+                // disabled: !this.isLoggedIn,
                 limit: 3,
                 perPage: 6,
                 totalSearchResult: 10,
@@ -249,7 +251,7 @@ export default {
 
             await this.$axios.$get(`api/claim`)
                 .then((response) => {
-                    response.data.forEach((field) => {
+                    response.data.list.forEach((field) => {
                         const start = moment(field.created_at)
 
                         this.policies.push({
@@ -262,6 +264,7 @@ export default {
                             status: field.status,
                         })
                     })
+                    this.totalRows = response.data.pagination.total
 
                     this.loading = false
 

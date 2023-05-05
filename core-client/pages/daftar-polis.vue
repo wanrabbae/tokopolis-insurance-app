@@ -104,13 +104,13 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <BaseButton v-if="policy.status == 'paid'" tag="a"
+                            <BaseButton v-if="policy.status == 'polis'" tag="a"
                                 :href="'/ajukan-klaim?id=' + policy.quotationID">Ajukan Klaim</BaseButton>
                             <BaseButton tag="a" href="#" disabled>Beli Lagi</BaseButton>
                         </div>
                     </div>
                 </div>
-                <b-pagination v-if="policies.length" v-model="currentPage" class="mt-4" v-bind="paginationOptions"
+                <b-pagination v-if="policies.length" v-model="currentPage" :per-page="perPage" :total-rows="totalRows" class="mt-4" v-bind="paginationOptions"
                     @page-click="onPageClick" />
             </div>
         </b-container>
@@ -176,9 +176,11 @@ export default {
                 // },
             ],
             currentPage: 1,
+            totalRows: 0,
+            perPage: 10,
             paginationOptions: {
                 align: "center",
-                disabled: !this.isLoggedIn,
+                // disabled: !this.isLoggedIn,
                 limit: 3,
                 perPage: 6,
                 totalSearchResult: 10,
@@ -197,9 +199,13 @@ export default {
         async getTransactions() {
             this.policies = []
 
-            await this.$axios.$get(`api/user/transactions`)
+            await this.$axios.$get(`api/user/transactions` , {
+                params: {
+                    current: this.currentPage
+                }
+            })
                 .then((response) => {
-                    response.data.forEach((field) => {
+                    response.data.list.forEach((field) => {
                         const start = moment(field.start_date)
                         const end = moment(field.start_date).add(1, 'year')
                         const now = moment()
@@ -218,6 +224,7 @@ export default {
                             documents: field.documents
                         })
                     })
+                    this.totalRows = response.data.pagination.total
 
                     this.loading = false
 
@@ -231,7 +238,8 @@ export default {
         },
         onPageClick(event, page) {
             this.loading = true
-            this.getProductList(page)
+            this.currentPage = page;
+            this.getTransactions()
         },
         openShareModal(id) {
             this.$bvModal.show('share-popup')
