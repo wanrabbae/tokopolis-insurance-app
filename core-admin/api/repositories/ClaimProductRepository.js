@@ -24,7 +24,7 @@ export default class ClaimProductRepository {
         AND claim_products.holder_fullname LIKE '%${filter.holder_name}%'`);
     }
 
-    async getClaimProductsData(req) {
+    async getClaimProductsData(req, limit, offset) {
         return await ClaimProduct.findAll({
             where: {
                 account_id: req.account._id,
@@ -42,6 +42,15 @@ export default class ClaimProductRepository {
                     attributes: ["id", "name", "type", "image"],
                 },
             ],
+            limit: limit,
+            offset: offset
+        });
+    }
+    async getClaimProductsCountData(account_id) {
+        return await ClaimProduct.count({
+            where: {
+                account_id: account_id,
+            },
         });
     }
 

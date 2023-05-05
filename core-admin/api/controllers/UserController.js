@@ -168,11 +168,24 @@ exports.updateBank = async (req, res) => {
 };
 
 exports.getTransactions = async (req, res) => {
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 10
+    const offset = (current - 1) * limit
+
+    const count = await transactionService.getTransactionCountByAccountId(req.account._id)
     const transactions = await transactionService.getTransactionByAccountId(
-        req.account._id
+        req.account._id, limit, offset
     );
 
-    return res.jsonData(transactions);
+    return res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: transactions
+    })
 };
 
 exports.getUpgrade = async (req, res) => {

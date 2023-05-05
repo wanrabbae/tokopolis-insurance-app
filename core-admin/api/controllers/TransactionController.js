@@ -1057,9 +1057,22 @@ exports.getComission = async (req, res) => {
 };
 
 exports.getComissionHistory = async (req, res) => {
-    const comission = await service.getComissionHistory(req.account._id);
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 5
+    const offset = (current - 1) * limit
 
-    res.jsonData(comission);
+    const count = await service.getComissionHistoryCount(req.account._id)
+    const comission = await service.getComissionHistory(req.account._id, limit, offset);
+
+    return res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: comission
+    })
 };
 
 exports.comissionWithdraw = async (req, res) => {
@@ -1172,9 +1185,23 @@ exports.getPointHistory = async (req, res) => {
         start_period: req.query.start_period || null,
         end_period: req.query.end_period || null,
     }
-    const point = await service.getPointHistory(req.account._id, filter);
 
-    return res.jsonData(point);
+    const current = Number(req.query.current) || 1
+    const limit = Number(req.query.limit) || 5
+    const offset = (current - 1) * limit
+
+    const count = await service.getPointHistoryCount(req.account._id, filter)
+    const point = await service.getPointHistory(req.account._id, filter, limit, offset);
+
+    return res.jsonData({
+        pagination: {
+            total: count,
+            per_page: limit,
+            current_page: current,
+            last_page: Math.ceil(count / limit),
+        },
+        list: point
+    })
 };
 
 exports.getPointBalanceAgents = async (req, res) => {
