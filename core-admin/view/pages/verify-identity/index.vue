@@ -84,7 +84,7 @@
 
                                     <b-button v-if="data.item.is_verified == 0" v-b-tooltip.hover
                                         title="Verify" type="button" variant="success"
-                                        @click="verifikasiRekening(data.item.account_id)">
+                                        @click="verifikasiRekening(data.item.account_id,data.item.type)">
                                         <i class="uil uil-check-circle" ></i>
                                     </b-button>
                                 </template>
@@ -205,8 +205,8 @@ export default {
                 })
             return this.tableData;
         },
-        async verifikasiRekening(account_id) {
-            return await this.$axios.$put(`/api/admin/account/identity/${account_id}`)
+        async verifikasiRekening(account_id, type) {
+            return await this.$axios.$put(`/api/admin/account/identity/${account_id}/${type}`)
                 .then(response => {
                     Swal.fire("Berhasil", "Berhasil Verifikasi Identitas", "success")
                     window.location.reload()

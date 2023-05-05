@@ -49,6 +49,6 @@ router.put("/admin/account/banks/:account_id", AuthRoleMiddleware, verifyBankReq
 
 // Identity Verify Request
 router.get("/admin/account/identity/list", AuthRoleMiddleware, identityRequestLists);
-router.put("/admin/account/identity/:account_id", AuthRoleMiddleware, verifyIdentityRequest);
+router.put("/admin/account/identity/:account_id/:type", AuthRoleMiddleware, verifyIdentityRequest);
 
 module.exports = router;

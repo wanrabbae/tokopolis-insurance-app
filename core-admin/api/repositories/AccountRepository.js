@@ -288,8 +288,8 @@ export default class AccountRepository {
         });
     }
 
-    async verifyIdentity(id) {
-        return await Identity.update({ verified_at: new Date() }, { where: { account_id: id } });
+    async verifyIdentity(id, type) {
+        return await Identity.update({ verified_at: new Date() }, { where: { account_id: id, type } });
     }
 
     async createIdentity(payload) {

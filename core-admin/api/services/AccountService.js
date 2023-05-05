@@ -203,8 +203,8 @@ export default class AccountService {
         return this.repository.getIdentityCountByQuery(query);
     }
 
-    verifyIdentity(id) {
-        return this.repository.verifyIdentity(id);
+    verifyIdentity(id, type) {
+        return this.repository.verifyIdentity(id, type);
     }
 
     async getCountByQuery(query) {
