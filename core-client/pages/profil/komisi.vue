@@ -111,7 +111,8 @@
 
         </div>
 
-        <b-table-simple class="table-history mb-0" responsive>
+        <b-table-simple class="table-history mb-0" responsive :items="history" :fields="fields"
+                            :per-page="perPage" :current-page="currentPage">
 
             <b-tr class="border-bottom">
 
@@ -169,10 +170,7 @@
 
         </b-table-simple>
 
-        <b-pagination v-if="history.length" v-model="currentPage"
-            class="mt-4"
-            v-bind="paginationOptions"
-            @page-click="onPageClick"
+        <b-pagination v-if="history.length" v-model="currentPage" v-bind="paginationOptions" class="mt-4" :total-rows="rows" :per-page="perPage" @page-click="onPageClick"
         />
 
         <PenarikanKomisiModal id="modal-penarikan-komisi" :fields="commissionData" @submit="onSubmit" />
@@ -211,12 +209,14 @@ export default {
                 // },
             ],
             currentPage: 1,
+            totalRows: 0,
+            perPage: 5,
             paginationOptions: {
                 align: "center",
-                disabled: !this.isLoggedIn,
+                // disabled: !this.isLoggedIn,
                 limit: 3,
-                perPage: 6,
-                totalSearchResult: 10,
+                // perPage: 6,
+                // totalSearchResult: 10,
             },
             type: {
                 withdraw: {
@@ -278,6 +278,9 @@ export default {
                 accountNumber: this.bank.accountNumber,
                 accountHolderName: this.bank.accountHolderName
             }
+        },
+        rows() {
+            return this.totalRows
         }
     },
     mounted() {
@@ -312,9 +315,13 @@ export default {
         async getHistory() {
             this.history = []
 
-            await this.$axios.$get('api/comissions/history')
+            await this.$axios.$get('api/comissions/history', {
+                params: {
+                    current: this.currentPage
+                }
+            })
                 .then((response) => {
-                    for (const item of response.data) {
+                    for (const item of response.data.list) {
                         this.history.push({
                             date: item.created_at,
                             type: item.value > 0 ? 'receive' : 'withdraw',
@@ -322,6 +329,7 @@ export default {
                             value: item.value
                         })
                     }
+                    this.totalRows = response.data.pagination.total
                 })
                 .catch(error => {
                     console.log(error)
@@ -345,7 +353,8 @@ export default {
         },
         onPageClick(event, page) {
             this.loading = true
-            this.getProductList(page)
+            this.currentPage = page;
+            this.getHistory()
         },
     }
 }
