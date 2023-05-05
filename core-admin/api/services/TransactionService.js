@@ -52,8 +52,12 @@ export default class TransactionService {
         return this.repository.getTransactionByPaymentId(pg_transaction_id);
     }
 
-    getTransactionByAccountId(account_id) {
-        return this.repository.getTransactionByAccountId(account_id);
+    getTransactionByAccountId(account_id, limit, offset) {
+        return this.repository.getTransactionByAccountId(account_id, limit, offset);
+    }
+
+    getTransactionCountByAccountId(account_id) {
+        return this.repository.getTransactionCountByAccountId(account_id);
     }
 
     getTransactionCount(filter) {
@@ -122,8 +126,12 @@ export default class TransactionService {
         return this.repository.getComission(account_id);
     }
 
-    getComissionHistory(account_id) {
-        return this.repository.getComissionHistory(account_id);
+    getComissionHistory(account_id, limit, offset) {
+        return this.repository.getComissionHistory(account_id, limit, offset);
+    }
+
+    getComissionHistoryCount(account_id) {
+        return this.repository.getComissionHistoryCount(account_id);
     }
 
     getComissionHistoryUnder(account_ids, filter, limit, offset) {
@@ -142,8 +150,12 @@ export default class TransactionService {
         return this.repository.getPoint(account_id);
     }
 
-    getPointHistory(account_id, filter) {
-        return this.repository.getPointHistory(account_id, filter);
+    getPointHistory(account_id, filter, limit, offset) {
+        return this.repository.getPointHistory(account_id, filter, limit, offset);
+    }
+
+    getPointHistoryCount(account_id, filter) {
+        return this.repository.getPointHistoryCount(account_id, filter);
     }
 
     getPointHistoryUnder(account_ids, filter, limit, offset) {

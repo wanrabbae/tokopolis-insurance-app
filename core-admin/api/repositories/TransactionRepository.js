@@ -255,7 +255,7 @@ export default class TransactionRepository {
         });
     }
 
-    async getTransactionByAccountId(account_id) {
+    async getTransactionByAccountId(account_id, limit, offset) {
         return await Transaction.findAll({
             attributes: [
                 "id",
@@ -286,6 +286,19 @@ export default class TransactionRepository {
             order: [
                 ['created_at', 'DESC'],
             ],
+            limit: limit,
+            offset: offset
+        });
+    }
+
+    async getTransactionCountByAccountId(account_id) {
+        return await Transaction.count({
+            where: {
+                [Op.or]: [
+                    { client_id: account_id },
+                    { agent_id: account_id },
+                ]
+            },
         });
     }
 
@@ -386,18 +399,28 @@ export default class TransactionRepository {
     async getComission(account_id) {
         return await Comission.findAll({
             attributes: [
-                "transaction_id",
+                "account_id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
-            group: ['transaction_id'],
+            group: ['account_id'],
             where: {
                 account_id: account_id,
             },
         })
     }
 
-    async getComissionHistory(account_id) {
+    async getComissionHistory(account_id, limit, offset) {
         return await Comission.findAll({
+            where: {
+                account_id: account_id,
+            },
+            limit,
+            offset
+        });
+    }
+
+    async getComissionHistoryCount(account_id) {
+        return await Comission.count({
             where: {
                 account_id: account_id,
             },
@@ -519,10 +542,10 @@ export default class TransactionRepository {
     async getPoint(account_id) {
         return await Point.findAll({
             attributes: [
-                "transaction_id",
+                "account_id",
                 [sequelize.fn("sum", sequelize.col("value")), "value"],
             ],
-            group: ['transaction_id'],
+            group: ['account_id'],
             where: {
                 account_id: account_id,
             },
