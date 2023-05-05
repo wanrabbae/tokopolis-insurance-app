@@ -122,13 +122,13 @@
                                         {{ policy.quotationID }}
                                     </div>
 
-                                    <div class="d-inline-block">
+                                    <!-- <div class="d-inline-block">
 
                                         <div style="cursor: pointer;" title="Share Document">
                                             <fa icon="share-nodes" style="width: 16px; height: 16px;" @click="openShareModal()"/>
                                         </div>
 
-                                    </div>
+                                    </div> -->
 
                                 </div>
 

@@ -548,7 +548,7 @@
                     headers: { 'Content-Type': 'multipart/form-data' }
                 })
                 .then(response => {
-                    this.$router.reload()
+                    window.location.reload()
                 })
             },
             async processRevert(e) {

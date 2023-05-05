@@ -93,10 +93,10 @@
                                     <div v-else-if="policy.status == 'canceled'"
                                         class="badge py-2 px-3 rounded-pill badge-danger mr-1">Dibatalkan</div>
 
-                                    <div class="d-inline-block">
+                                    <div v-if="policy.status == 'polis'" class="d-inline-block">
                                         <div style="cursor: pointer;" title="Share Document">
                                             <fa icon="share-nodes" style="width: 16px; height: 16px;"
-                                                @click="openShareModal(policy.quotationID)" />
+                                                @click="openShareModal(policy.documents.epolicy)" />
                                         </div>
 
                                     </div>
@@ -115,7 +115,7 @@
             </div>
         </b-container>
         <Loading :show="loading" />
-        <Share id="share-popup" :epolicy="epolicy" :idpolis="idpolis"/>
+        <Share id="share-popup" :epolicy="epolicy"/>
     </div>
 </template>
 
@@ -241,11 +241,9 @@ export default {
             this.currentPage = page;
             this.getTransactions()
         },
-        openShareModal(id) {
+        openShareModal(documents) {
             this.$bvModal.show('share-popup')
-            const selectedData = this.policies.find((items) => items.id === id);
-            this.epolicy = selectedData?.documents?.epolicy ?? null;
-            this.idpolis = id;
+            this.epolicy = documents;
         },
     }
 }
