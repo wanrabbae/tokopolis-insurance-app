@@ -15,14 +15,14 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="border rounded-circle border-success p-2">
-                        <a :href="`https://api.whatsapp.com/send?text=Nasabah yang terhormat, %0D%0A%0D%0ABerikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. %0D%0ALink : https://tokopolis.id/quotation/${idpolis} . %0D%0ABesar harapan kami atas kepercayaan yang anda berikan. %0D%0A%0D%0ATerima Kasih. %0D%0A%0D%0ARegards, %0D%0A%0D%0ATeam Tokopolis.`" target="_blank">
+                        <a :href="`https://api.whatsapp.com/send?text=Nasabah yang terhormat, %0D%0A%0D%0ABerikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. %0D%0ALink : ${$config.serverURL}${epolicy} . %0D%0ABesar harapan kami atas kepercayaan yang anda berikan. %0D%0A%0D%0ATerima Kasih. %0D%0A%0D%0ARegards, %0D%0A%0D%0ATeam Tokopolis.`" target="_blank">
                             <img src="/img/whatsapp.png" width="50px" height="50px" />
                         </a>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="border rounded-circle border-danger p-2">
-                        <a :href="`mailto:?subject=@t&body=Nasabah yang terhormat, %0D%0DBerikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. %0DLink : https://tokopolis.id/quotation/${idpolis} . %0DBesar harapan kami atas kepercayaan yang anda berikan. %0D%0DTerima Kasih. %0D%0DRegards, %0D%0DTeam Tokopolis.`">
+                        <a :href="`mailto:?subject=@t&body=Nasabah yang terhormat, %0D%0DBerikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. %0DLink : ${$config.serverURL}${epolicy} . %0DBesar harapan kami atas kepercayaan yang anda berikan. %0D%0DTerima Kasih. %0D%0DRegards, %0D%0DTeam Tokopolis.`">
                             <img src="/img/gmail.png" width="50px" height="50px" />
                         </a>
                     </div>
@@ -35,7 +35,7 @@
                 <span class="input-group-text rounded-0 border-right-0">
                     <img src="/img/link.png" width="15px" height="15px" />
                 </span>
-                <input ref="url" type="text" class="form-control border-left-0" readonly :value="`https://tokopolis.id/quotation/${idpolis}`">
+                <input ref="url" type="text" class="form-control border-left-0" readonly :value="`${$config.serverURL}${epolicy}`">
                 <button class="btn btn-primary rounded-0" type="button" @click="copyUrl()">Copy</button>
             </div>
             </p>
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="border rounded-circle border-danger p-2 bg-danger">
-                        <a :href="epolicy" target="_blank" :disabled="epolicy === undefined || epolicy === null">
+                        <a :href="$config.apiURL + epolicy" target="_blank" :disabled="epolicy === undefined || epolicy === null">
                             <img src="/img/pdf.png" width="50px" height="50px" />
                         </a>
                     </div>
@@ -80,14 +80,14 @@ export default {
                 rekening: '12345678',
                 nama_rekening: 'John Doe',
                 link: `mailto:?subject=@t&body=Nasabah yang terhormat, \n\nBerikut kami sampaikan proposal penawaran sesuai dengan 
-                kebutuhan asuransi yang anda minta. \nLink : https://tokopolis.id/quotation/${this.idpolis} . Besar harapan kami 
+                kebutuhan asuransi yang anda minta. \nLink : ${this.$config.serverURL}${this.idpolis} . Besar harapan kami 
                 atas kepercayaan yang anda berikan. \n\nTerima Kasih. \n\nRegards, \n\nTeam Tokopolis.`,
                 // idpolis: this.$props.idpolis,
                 description: `
                 Nasabah yang terhormat, 
                         
                 Berikut kami sampaikan proposal penawaran sesuai dengan kebutuhan asuransi yang anda minta. 
-                Link : https://tokopolis.id/quotation/${this.idpolis} . Besar harapan kami atas kepercayaan yang anda berikan. 
+                Link : ${this.$config.serverURL}${this.idpolis} . Besar harapan kami atas kepercayaan yang anda berikan. 
                         
                 Terima Kasih. 
                         
