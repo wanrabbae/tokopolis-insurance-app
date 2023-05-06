@@ -1142,7 +1142,7 @@ exports.pointWithdraw = async (req, res) => {
 
         const result = await paymentService.pointWithdraw({
             external_id: randomString(4) + `${randomNumber(1, 1000)}`,
-            amount: req.body.amount,
+            amount: amount,
             bankCode: checkBank.type.toString().toUpperCase(),
             accountHolderName: checkBank.fullname,
             accountNumber: checkBank.account_number,
@@ -1166,7 +1166,7 @@ exports.pointWithdraw = async (req, res) => {
             data: {
                 name: account.fullname,
                 platform: checkBank.type.toString().toUpperCase(),
-                total: moneyFormat(req.body.amount),
+                total: moneyFormat(amount),
             },
         });
 

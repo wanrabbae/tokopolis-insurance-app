@@ -49,7 +49,11 @@
 
                     <div class="text-muted">
                         <h5 class="font-size-16">Alamat Email</h5>
-                        <p v-html="data.email"></p>
+                        <!-- <p v-html="data.email"></p> -->
+                        <span v-for="email in data.email">
+                            <b-badge class="badge bg-secondary me-1 fs-6">{{ email }}</b-badge>
+                        </span>
+                        <br></br>
                     </div>
 
                     <div class="text-muted">
@@ -427,7 +431,11 @@ export default {
 		},
         async getData() {
             await this.$axios.$get(`api/admin/product/${this.id}`)
-                .then(response => this.data = response.data)
+                .then((response) => {
+                    this.data = response.data
+                    this.data.email = JSON.parse(response.data.email)
+                })
+            console.log(this.data)
         },
         getType() {
             return this.data.type?.replace(/(?:^|\s|-)\S/g, x => x.toUpperCase())

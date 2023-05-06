@@ -223,7 +223,7 @@ export default {
     methods: {
         detailPayment(index) {
             this.$store.commit('setProductId',this.products[index].id)
-            this.$router.push({name: "asuransi-mobil-polis-pembelian"})
+            this.$router.push({ name: "asuransi-mobil-polis-detail-polis" })
         },
         async getComparisonPolis(){
             const param = () => {
