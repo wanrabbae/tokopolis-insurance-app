@@ -332,9 +332,11 @@ export default {
             guestShownProductsLimit: 3,
             isLoggedIn: false,
             currentPage: 1,
+            totalRows: 0,
+            perPage: 5,
             paginationOptions: {
                 align: "center",
-                disabled: !this.isLoggedIn,
+                // disabled: !this.isLoggedIn,
                 limit: 3,
                 perPage: 6,
                 totalSearchResult: 10,
@@ -563,6 +565,8 @@ export default {
                 } else {
                     this.isLoggedIn = false
                 }
+
+                this.totalRows = response.data.pagination.total;
 
                 response.data.data.forEach(element => {
                     this.products.push({
