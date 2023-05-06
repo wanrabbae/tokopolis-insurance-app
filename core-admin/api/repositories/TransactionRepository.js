@@ -427,7 +427,7 @@ export default class TransactionRepository {
         });
     }
 
-    async getComissionHistoryUnder(account_ids, filter, limit, offset) {
+    async getComissionHistoryUnder(account_ids, filter, limit, offset, role_id) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -435,6 +435,14 @@ export default class TransactionRepository {
             }
         } : {
             account_id: account_ids
+        }
+
+        if (role_id == 1) {
+            condition = filter.start_period != null && filter.end_period != null ? {
+                created_at: {
+                    [Op.between]: [filter.start_period, filter.end_period]
+                }
+            } : {}
         }
 
         return await Comission.findAll({
@@ -469,7 +477,7 @@ export default class TransactionRepository {
         });
     }
 
-    async getComissionHistoryUnderCount(account_ids, filter) {
+    async getComissionHistoryUnderCount(account_ids, filter, role_id) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -477,6 +485,14 @@ export default class TransactionRepository {
             }
         } : {
             account_id: account_ids
+        }
+
+        if (role_id == 1) {
+            condition = filter.start_period != null && filter.end_period != null ? {
+                created_at: {
+                    [Op.between]: [filter.start_period, filter.end_period]
+                }
+            } : {}
         }
 
         return await Comission.count({
@@ -516,7 +532,7 @@ export default class TransactionRepository {
         })
     }
 
-    async getPointHistoryUnder(account_ids, filter, limit, offset) {
+    async getPointHistoryUnder(account_ids, filter, limit, offset, role_id) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -525,6 +541,15 @@ export default class TransactionRepository {
         } : {
             account_id: account_ids
         }
+
+        if (role_id == 1) {
+            condition = filter.start_period != null && filter.end_period != null ? {
+                created_at: {
+                    [Op.between]: [filter.start_period, filter.end_period]
+                }
+            } : {}
+        }
+
         return await Point.findAll({
             where: condition,
             include: {
@@ -542,7 +567,7 @@ export default class TransactionRepository {
         })
     }
 
-    async getPointHistoryUnderCount(account_ids, filter) {
+    async getPointHistoryUnderCount(account_ids, filter, role_id) {
         let condition = filter.start_period != null && filter.end_period != null ? {
             account_id: account_ids,
             created_at: {
@@ -551,6 +576,15 @@ export default class TransactionRepository {
         } : {
             account_id: account_ids
         }
+
+        if (role_id == 1) {
+            condition = filter.start_period != null && filter.end_period != null ? {
+                created_at: {
+                    [Op.between]: [filter.start_period, filter.end_period]
+                }
+            } : {}
+        }
+
         return await Point.count({
             where: condition,
         })
