@@ -64,8 +64,8 @@
                                                 v-bind="calendarLabels"
                                                 locale="id"
                                                 :min="model.min"
-                                                :max="$dayjs().format('YYYY-MM-DD')"
-                                                :open-date="$dayjs().format('YYYY-MM-DD')"
+                                                :max="$dayjs().format('YYYY-MM-DD HH:mm')"
+                                                :open-date="$dayjs().format('YYYY-MM-DD HH:mm')"
                                                 nav-button-variant="primary"
                                                 :date-format-options="{ 'day': 'numeric', 'month': 'long', 'year': 'numeric' }"
                                                 hide-header
@@ -76,7 +76,7 @@
                                         </div> <!-- col ends -->
 
                                         <div class="col-5">
-                                            <b-form-timepicker id="timepicker-placeholder" placeholder="Choose a time" locale="id"></b-form-timepicker>
+                                            <b-form-timepicker id="timepicker-placeholder" v-model="model.time" placeholder="Choose a time" locale="id"></b-form-timepicker>
                                         </div>
 
                                     </div> <!-- row ends -->
@@ -294,7 +294,7 @@ export default {
             formData.append('reporter_fullname', this.model.policyReporter)
             formData.append('holder_fullname', this.model.policyHolder)
             formData.append('plate_number', this.model.plateNumber)
-            formData.append('incident_time', this.model.date)
+            formData.append('incident_time', this.model.date + ' ' + this.model.time)
             formData.append('location', this.model.place)
             formData.append('chronology', this.model.chronology)
 

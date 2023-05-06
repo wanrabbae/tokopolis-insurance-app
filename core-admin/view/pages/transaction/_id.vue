@@ -360,6 +360,7 @@
                     vehicle_base: {
                         'brand': 'Merk',
                         'sub_model': 'Seri',
+                        'is_new_condition': 'Kondisi'
                     },
                     vehicle_data: {
                         'year': 'Tahun Pembuatan',
@@ -458,6 +459,7 @@
                 await this.$axios.$get(`api/admin/transaction/${this.id}/detail`)
                     .then(response => {
                         this.data = response.data
+                        this.data.is_new_condition = response.data.is_new_condition == 1 ? 'Baru' : 'Bekas';
 
                         const documents = {};
                         const epolis = {};
