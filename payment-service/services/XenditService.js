@@ -83,6 +83,7 @@ exports.XenditService = class {
             // virtualAccNumber: payload.customer.phone.split("+62")[1],
             isClosed: true,
             expirationDate: new Date(new Date().setDate(new Date().getDate() + 3)),
+            // expirationDate: new Date(new Date().setMinutes(new Date().getMinutes() + 5)), // FOR TESTING
             isSingleUse: true,
             expectedAmt: payload.amount,
         }

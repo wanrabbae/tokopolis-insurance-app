@@ -500,8 +500,8 @@ exports.getComissionHistoryUnder = async (req, res) => {
     const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
     accountsUnder.forEach(au => account_ids.push(au.id))
 
-    const count = await service.getComissionHistoryUnderCount(account_ids, filter);
-    const comission = await service.getComissionHistoryUnder(account_ids, filter, limit, offset);
+    const count = await service.getComissionHistoryUnderCount(account_ids, filter, req.account.role);
+    const comission = await service.getComissionHistoryUnder(account_ids, filter, limit, offset, req.account.role);
 
     res.jsonData({
         pagination: {
@@ -529,8 +529,8 @@ exports.getPointHistoryUnder = async (req, res) => {
     const accountsUnder = await accountService.getAllAccountFromPrefixID(req.account._id)
     accountsUnder.forEach(au => account_ids.push(au.id))
 
-    const count = await service.getPointHistoryUnderCount(account_ids, filter);
-    const points = await service.getPointHistoryUnder(account_ids, filter, limit, offset);
+    const count = await service.getPointHistoryUnderCount(account_ids, filter, req.account.role);
+    const points = await service.getPointHistoryUnder(account_ids, filter, limit, offset, req.account.role);
 
     res.jsonData({
         pagination: {
