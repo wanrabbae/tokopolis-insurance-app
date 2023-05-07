@@ -67,9 +67,9 @@ export default {
   /*
   ** Nuxt.js dev-modules
   */
-  buildModules: [
-    '@nuxtjs/ngrok',
-  ],
+  // buildModules: [
+  //   '@nuxtjs/ngrok',
+  // ],
 
   /*
   ** Nuxt.js modules

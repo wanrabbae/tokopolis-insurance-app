@@ -667,13 +667,13 @@ export default {
                     })
                 }
 
-                if(response.data.is_commercial == '1'){
+                /* if(response.data.is_commercial == '1'){
                     this.condition.usage = true
                     this.userCar.push({
                         text: 'Komersil',
                         value: 'commercial'
                     })
-                }
+                } */
 
             })
         },
