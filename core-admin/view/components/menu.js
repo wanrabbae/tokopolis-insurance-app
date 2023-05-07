@@ -28,7 +28,7 @@ export const menuItems = [
     },
     {
         id: 3,
-        label: "menuitems.permission.text",
+        label: "menuitems.setting.text",
         isTitle: true,
         role_id: [
             role.ROLE_ADMIN,
@@ -45,6 +45,14 @@ export const menuItems = [
     },
     {
         id: 5,
+        label: "menuitems.permission.text",
+        isTitle: true,
+        role_id: [
+            role.ROLE_ADMIN,
+        ]
+    },
+    {
+        id: 6,
         label: "menuitems.endpoint.text",
         icon: "uil-link",
         link: "/endpoint",
@@ -53,7 +61,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 6,
+        id: 7,
         label: "menuitems.role.text",
         icon: "uil-graph-bar",
         link: "/role",
@@ -62,7 +70,15 @@ export const menuItems = [
         ]
     },
     {
-        id: 7,
+        id: 8,
+        label: "menuitems.customer.text",
+        isTitle: true,
+        role_id: [
+            role.ROLE_ADMIN,
+        ]
+    },
+    {
+        id: 9,
         label: "menuitems.dealer.text",
         icon: "uil-building",
         link: "/dealer",
@@ -71,7 +87,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 8,
+        id: 10,
         label: "menuitems.account.text",
         icon: "uil-user",
         link: "/account",
@@ -80,7 +96,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 9,
+        id: 11,
         label: "menuitems.upgrade.text",
         icon: "uil-users-alt",
         link: "/upgrade",
@@ -89,7 +105,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 10,
+        id: 12,
         label: "menuitems.verifybank.text",
         icon: "uil-file-check-alt",
         link: "verify-bank",
@@ -98,7 +114,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 11,
+        id: 13,
         label: "menuitems.verifyidentity.text",
         icon: "uil-file-check-alt",
         link: "verify-identity",
@@ -107,7 +123,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 12,
+        id: 14,
         label: "menuitems.sale.text",
         isTitle: true,
         role_id: [
@@ -119,7 +135,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 13,
+        id: 15,
         label: "menuitems.vehicle.text",
         icon: "uil-car",
         link: "/vehicle",
@@ -147,7 +163,7 @@ export const menuItems = [
     //     ]
     // },
     {
-        id: 14,
+        id: 16,
         label: "menuitems.product.text",
         icon: "uil-box",
         link: "/products",
@@ -156,7 +172,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 15,
+        id: 17,
         label: "menuitems.transaction.text",
         icon: "uil-car",
         link: "/transaction",
@@ -168,7 +184,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 16,
+        id: 18,
         label: "menuitems.transactionHistory.text",
         icon: "uil-car",
         link: "/transaction-history",
@@ -180,7 +196,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 17,
+        id: 19,
         label: "menuitems.claim.text",
         icon: "uil-money-withdrawal",
         link: "/claim",
@@ -192,7 +208,7 @@ export const menuItems = [
         ]
     },
     {
-        id: 18,
+        id: 20,
         label: "menuitems.pointandcommission.text",
         icon: "uil-dollar-alt",
         link: "/point-and-commission",

@@ -192,7 +192,6 @@ export default {
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: 'created_at', label: 'Tanggal' },
-                { key: 'account_id', label: 'ID User' },
                 { key: 'value', label: 'Komisi' },
                 { key: 'description', label: 'Keterangan' },
             ],

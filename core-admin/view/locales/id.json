@@ -59,6 +59,12 @@
       "dashboard": {
         "text": "Beranda"
       },
+      "setting": {
+        "text": "Setelan"
+      },
+      "config": {
+        "text": "Daftar Pengaturan"
+      },
       "permission": {
         "text": "Akses"
       },
@@ -68,11 +74,14 @@
       "role": {
         "text": "Daftar Role"
       },
+      "customer": {
+        "text": "Pengguna"
+      },
       "dealer": {
         "text": "Daftar Dealer"
       },
       "account": {
-        "text": "Daftar Pengguna"
+        "text": "Daftar Akun"
       },
       "upgrade": {
         "text": "Daftar Role Upgrade"
@@ -103,16 +112,13 @@
         "text": "Daftar Klaim"
       },
       "pointandcommission": {
-        "text": "Point and Commission"
+        "text": "Poin dan Komisi"
       },
       "verifybank": {
         "text": "Verifikasi Rekening"
       },
       "verifyidentity": {
         "text": "Verifikasi Identitas"
-      },
-      "config": {
-        "text": "Config Params"
       }
     }
   }

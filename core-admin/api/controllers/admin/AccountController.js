@@ -17,14 +17,14 @@ exports.create = async (req, res) => {
     if (emailCount > 0) return res.errorBadRequest(req.polyglot.t("error.email.exist"))
 
     const roleID = {
-        // 'manager': role.ROLE_MANAGER,
-        'branch': role.ROLE_BRANCH_HEAD,
-        'supervisor': role.ROLE_SUPERVISOR,
-        'agent': role.ROLE_AGENT,
+        // 2: role.ROLE_MANAGER,
+        3: role.ROLE_BRANCH_HEAD,
+        4: role.ROLE_SUPERVISOR,
+        5: role.ROLE_AGENT,
     }
 
     const leadAccount = await service.getAccount(req.body.leader_id)
-    if (leadAccount && req.body.role != role.getSubordinateID(leadAccount.role_id))
+    if (leadAccount && roleID[req.body.role] != role.getSubordinateID(leadAccount.role_id))
         return res.errorBadRequest("Code not valid!")
 
     const salt = await bcrypt.genSalt(10)
@@ -40,7 +40,7 @@ exports.create = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(item.password, salt)
 
         item.password = hashedPassword
-        item.role_id = req.body.role
+        item.role_id = roleID[req.body.role]
         item.parent_id = leadAccount ? leadAccount.id : null
         item.dealer_id = req.body.dealer_id
 
@@ -212,15 +212,16 @@ exports.verifyUpgrade = async (req, res) => {
 exports.leadersByDealerAndRole = async (req, res, next) => {
     if (req.account.role_id < req.query.role) return res.errorBadRequest("Role not valid!")
 
-    const leaderID = [{
-        'branch': 2,
-        'supervisor': 3,
-        'agent': 4,
-    }]
+    const roleID = {
+        // 2: role.ROLE_MANAGER,
+        3: role.ROLE_BRANCH_HEAD,
+        4: role.ROLE_SUPERVISOR,
+        5: role.ROLE_AGENT,
+    }
 
     if (req.query.role < 2 && req.query.role > 4) return res.jsonData([])
 
-    const list = await service.getAccountDataWithDealerAndRoleId(req.query.dealer_id, req.query.role)
+    const list = await service.getAccountDataWithDealerAndRoleId(req.query.dealer_id, role.getLeaderID(roleID[req.query.role]))
 
     return res.jsonData(list)
 };

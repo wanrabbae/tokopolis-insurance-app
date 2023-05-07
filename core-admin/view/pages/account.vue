@@ -143,7 +143,7 @@
                 ok-only ok-title="Tutup">
                     <div class="card-body">
                         <div class="text-muted">
-                            <h5 class="font-size-16">Daftar Pengguna</h5>
+                            <h5 class="font-size-16">Daftar Akun</h5>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0">
                                     <thead>
@@ -175,59 +175,6 @@
                             <h5 class="font-size-16">Deskripsi</h5>
                             <p v-html="getDescription()"></p>
                         </div> -->
-                    </div>
-                </b-modal>
-
-                <b-modal size="lg" scrollable ref="form-update" title="Update Data"
-                ok-title="Submit" @ok.prevent="triggerUpdate" cancel-title="Batal">
-                    <div class="d-block text-justify">
-                        <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="doUpdateData">
-                            <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Nama
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div class="col-sm-10 col-lg-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.name"
-                                        class="form-control"
-                                        placeholder="Masukkan Nama Endpoint"
-                                        required>
-                                </div>
-                            </div>
-
-                            <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Route
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div class="col-sm-10 col-lg-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.route"
-                                        class="form-control"
-                                        placeholder="Masukkan Link Route"
-                                        required>
-                                </div>
-                            </div>
-
-                            <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Method
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div class="col-sm-10 col-lg-10">
-                                    <select
-                                        class="form-select"
-                                        v-model="form.method"
-                                        required>
-                                        <option v-for="option in data.method" v-bind:value="option.value"
-                                            v-bind:key="option.text">{{ option.text }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button ref="update-data" class="d-none"></button>
-
-                        </form>
                     </div>
                 </b-modal>
 
@@ -334,14 +281,13 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
-
                                 <template #cell(role)="data">
                                     <h5 v-if="data.item.roles != null">
                                         <span v-if="data.item.roles.name == 'admin'">
                                             <b-badge class="badge bg-primary">{{ data.item.roles?.alias }}</b-badge>
                                         </span>
                                         <span v-else>
-                                            <b-badge class="badge bg-success">{{ data.item.roles?.alias }}</b-badge>
+                                            <b-badge class="badge bg-success">{{ data.item.roles?.alias }} ({{ data.item.dealers?.name }})</b-badge>
                                         </span>
                                     </h5>
                                     <h5 v-else>
@@ -410,7 +356,7 @@ export default {
     data() {
         return {
             tableData: [],
-            title: "Daftar Pengguna",
+            title: "Daftar Akun",
             totalRows: 1,
             currentPage: 1,
             perPage: 5,
@@ -420,15 +366,11 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: "dealers.name", label: 'Dealer', tdClass: 'align-middle' },
-                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
+                { key: "fullname", label: 'Nama Akun', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
                 { key: "role", label: 'Role', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
                 // { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
-                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
-                { key: "email", label: 'Email', tdClass: 'align-middle' },
-                // { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
             fieldsHirarki: [
                 { key: 'fullname', label: 'Name' },
@@ -443,12 +385,6 @@ export default {
                     { value: 3, text: 'Kepala Cabang' },
                     { value: 4, text: 'Supervisor' },
                     { value: 5, text: 'Mitra' },
-                ],
-                leader: [,
-                    // { value: 'manager', text: 'Operation Manager' },
-                    { value: 'branch', text: 'Kepala Cabang' },
-                    { value: 'supervisor', text: 'Supervisor' },
-                    { value: 'agent', text: 'Mitra' },
                 ],
                 leader: [
                     { value: null, text: 'Pilih Atasan' },
@@ -612,28 +548,18 @@ export default {
         async doCreateData(e) {
             e.preventDefault()
 
-            const finalForm = this.form;
-
             const finalFormList = this.formList.map(item => {
                 const data = item
                 delete data.id
 
                 return data
             })
-            finalForm.data = finalFormList;
 
-            return await this.$axios.$post('api/admin/account', finalForm)
-                .then(response => {
-                    this.$refs['form-create'].hide()
-
-                    Swal.fire("Berhasil", "Berhasil Menambah Data", "success")
-                    window.location.reload()
-                })
             return await this.$axios.$post('api/admin/account', {
                 dealer_id: this.form.dealer_id,
                 role: this.form.role,
                 leader_id: this.form.leader_id,
-                data: finalForm
+                data: finalFormList
             })
             .then(response => {
                 this.$refs['form-create'].hide()

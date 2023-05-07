@@ -31,7 +31,7 @@ export const generateIdRoleManagementWithUniqueId = async (payload) => {
     let other_id;
 
     const findRole = await roleService.getRoleById(payload.role_id);
-    const accounts = await service.getAllAccountWithRoleId(role_id);
+    const accounts = await service.getAllAccountWithRoleId(payload.role_id);
 
     console.log("accounts", accounts);
 

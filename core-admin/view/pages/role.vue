@@ -128,7 +128,7 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: "name", label: 'Nama Role', tdClass: 'align-middle' },
+                { key: "alias", label: 'Nama Role', tdClass: 'align-middle' },
                 { key: "endpoints", label: 'Jumlah Endpoint', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
