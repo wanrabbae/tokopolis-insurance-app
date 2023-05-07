@@ -200,7 +200,7 @@ export default {
                     }
                 })
                 .then (response => {
-                    this.totalRows = /* response.data.pagination.total || */ response.data.length;
+                    this.totalRows = /* response.data.pagination.total || */ response.data.pagination.total;
                     return response.data.list;
                 })
             return this.tableData;
