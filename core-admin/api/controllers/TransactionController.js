@@ -719,7 +719,7 @@ exports.review = async (req, res) => {
     if (transaction == null)
         return res.errorBadRequest(req.polyglot.t("error.transaction"));
 
-    var client = null;
+    var client = transaction.client_data ?? null;
 
     if (transaction.client_data) {
         const village = transaction.village;
@@ -739,10 +739,10 @@ exports.review = async (req, res) => {
                     : null,
             address: {
                 detail: transaction.address_detail,
-                village: titleCase(village.name),
-                district: titleCase(district.name),
-                regency: titleCase(regency.name),
-                province: titleCase(province.name),
+                village: titleCase(village?.name ?? ''),
+                district: titleCase(district?.name ?? ''),
+                regency: titleCase(regency?.name ?? ''),
+                province: titleCase(province?.name ?? ''),
             },
         };
     }
