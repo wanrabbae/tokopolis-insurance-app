@@ -57,7 +57,7 @@ exports.transaction = async (req, res) => {
             transaction.expansions
         );
 
-        const client_data = transaction.client_data;
+        const client_data = JSON.parse(transaction.client_data);
 
         return res.jsonData({
             plate: transaction.vehicle_data.plate,
@@ -718,8 +718,7 @@ exports.review = async (req, res) => {
     );
     if (transaction == null)
         return res.errorBadRequest(req.polyglot.t("error.transaction"));
-
-    var client = transaction.client_data ?? null;
+    var client = JSON.parse(transaction.client_data) ?? null;
 
     if (transaction.client_data) {
         const village = transaction.village;
@@ -728,14 +727,14 @@ exports.review = async (req, res) => {
         const province = regency?.address_province;
 
         client = {
-            fullname: transaction.client_data.fullname,
+            fullname: client.fullname,
             email:
-                transaction.client_data.email != "null"
-                    ? transaction.client_data.email
+                client.email != "null"
+                    ? client.email
                     : null,
             phone:
-                transaction.client_data.phone != "null"
-                    ? transaction.client_data.phone
+                client.phone != "null"
+                    ? client.phone
                     : null,
             address: {
                 detail: transaction.address_detail,
@@ -746,6 +745,7 @@ exports.review = async (req, res) => {
             },
         };
     }
+    console.log(client);
 
     return res.jsonData({
         client: client,
@@ -814,7 +814,7 @@ exports.doPayment = async (req, res) => {
 
 
     if (typeof transaction.client_data == "string") {
-        transaction.client_data = transaction.client_data
+        transaction.client_data = JSON.parse(transaction.client_data)
     }
 
     const payload = {
