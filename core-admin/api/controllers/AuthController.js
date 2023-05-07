@@ -30,7 +30,8 @@ exports.register = async (req, res) => {
         }
     })
 
-    const token = service.getAuthToken(account.id, account.email, account.role_id)
+    const token = service.getAuthToken(account.id, account.email,
+        account.fullname, account.role_id)
 
     return res.jsonData({
         account: {
@@ -63,7 +64,7 @@ exports.login = async (req, res) => {
     })
 
     const token = service.getAuthToken(account.id, account.email,
-        account.role_id, account.profile?.photo)
+        account.fullname, account.role_id, account.profile?.photo)
 
     return res.header('Authorization', `Bearer ${token}`).jsonData({
         'token': token

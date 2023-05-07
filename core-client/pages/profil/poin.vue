@@ -234,7 +234,7 @@ export default {
                 'btn': 'BTN',
                 'cmb': 'CIMB Niaga',
             },
-            role: role
+            role
         }
     },
     head() {
