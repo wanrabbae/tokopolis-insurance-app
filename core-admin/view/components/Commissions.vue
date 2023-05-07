@@ -223,6 +223,7 @@ export default {
     },
     created() {        
         this.getAccount()
+        this.getData()
     },
     methods: {
         async getAccount() {
@@ -247,11 +248,12 @@ export default {
         moment(date) {
             return moment(date)
         },
-        getData() {
+        async getData() {
             let data = [];
-            if (this.account.role_id !== 5 && this.account.role_id !== 1) {
+            await this.getAccount()
+            if (this.account.role_id != 5 && this.account.role_id != 1) {
                 this.fields.splice(3, 0, { key: 'account.fullname', label: 'Nama User' });
-                data = this.$axios.$get('api/admin/comissions/history/under', {
+                data = await this.$axios.$get('api/admin/comissions/history/under', {
                     params: {
                         name: this.filter.name,
                         start_period: this.filter.date_period === null ? null : this.filter.date_period[0],
