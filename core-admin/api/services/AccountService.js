@@ -164,11 +164,12 @@ export default class AccountService {
         return payload;
     }
 
-    getAuthToken(id, email, role, photo = null) {
+    getAuthToken(id, email, fullname, role, photo = null) {
         return jwt.sign(
             {
                 _id: id,
                 email: email,
+                fullname: fullname,
                 role: role,
                 photo: photo,
             },

@@ -11,6 +11,7 @@ const en_US_strings = {
     message: {
         field: {
             name: "Name",
+            alias: "Alias Name",
             fullname: "Fullname",
             label: "Label",
             email: "Email",

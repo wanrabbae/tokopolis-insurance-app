@@ -5,9 +5,9 @@ const { joiResponse, joiErrorMessages } = require('../utilities/validation')
 const create = (req) => {
 
   const schema = Joi.object({
-    name: Joi.string()
+    alias: Joi.string()
       .required()
-      .label(req.polyglot.t('field.name')),
+      .label(req.polyglot.t('field.alias')),
     endpoints: Joi.array().items(Joi.number())
       .required()
       .label(req.polyglot.t('field.endpoint.name')),
