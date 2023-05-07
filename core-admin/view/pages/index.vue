@@ -4,7 +4,7 @@
 
         <!-- <Stat /> -->
 
-        <div v-if="eccount.role_id !== 1 || eccount.length == 0" class="row">
+        <div v-if="account.role_id !== role.ROLE_ADMIN || account.length == 0" class="row">
             <div class="col-3">
                 <div class="card card-summary card-point">
                     <div class="card-header">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="eccount.role_id !== 1 || eccount.length == 0" class="col-3">
+            <div v-if="account.role_id !== role.ROLE_ADMIN || account.length == 0" class="col-3">
                 <div class="card card-summary card-commission">
                     <div class="card-header">
                         Total Commission
@@ -71,6 +71,9 @@
 /**
  * Dashboard component
  */
+
+import role from '../../../constants/roles'
+
 export default {
     layout: 'admin',
     data() {
@@ -84,9 +87,10 @@ export default {
                     active: true,
                 },
             ],
-            eccount: [],
+            account: [],
             totalPoint: 0,
             totalCommission: 0,
+            role: role
         };
     },
     head() {
@@ -101,13 +105,13 @@ export default {
     },
     methods: {
         async getAccount() {
-            this.eccount = await this.$axios.$get('api/admin/account')
+            this.account = await this.$axios.$get('api/admin/account')
                 .then ((response) => {
                     return response.data;
                 })
         },
         async getTotalPoint() {
-            if (this.eccount.role_id > 1 && this.eccount.role_id === 5) {
+            if (this.account.role_id === role.ROLE_AGENT) {
                 this.totalPoint = await this.$axios.$get('api/point')
                 .then((response) => {
                     return response.data.total === null ? 0 : response.data.total
@@ -125,7 +129,7 @@ export default {
             }
         },
         async getTotalCommission() {
-            if (this.eccount.role_id > 1 && this.eccount.role_id === 5) {
+            if (this.account.role_id === role.ROLE_AGENT) {
                 this.totalPoint = await this.$axios.$get('api/comissions')
                 .then((response) => {
                     return response.data.total === null ? 0 : response.data.total
@@ -141,7 +145,7 @@ export default {
                     return total
                 })
             }
-            // if (this.eccount.role_id > 1) {
+            // if (this.account.role_id > 1) {
             //     this.totalCommission = await this.$axios.$get('api/comissions')
             //     .then((response) => {
             //         return response.data.total === null ? 0 : response.data.total

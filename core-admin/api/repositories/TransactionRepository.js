@@ -1,4 +1,4 @@
-import moment from "moment";
+import role from '../../../constants/roles'
 
 const { Op, QueryTypes } = require("sequelize");
 
@@ -437,7 +437,7 @@ export default class TransactionRepository {
             account_id: account_ids
         }
 
-        if (role_id == 1) {
+        if (role_id == role.ROLE_ADMIN) {
             condition = filter.start_period != null && filter.end_period != null ? {
                 created_at: {
                     [Op.between]: [filter.start_period, filter.end_period]
@@ -487,7 +487,7 @@ export default class TransactionRepository {
             account_id: account_ids
         }
 
-        if (role_id == 1) {
+        if (role_id == role.ROLE_ADMIN) {
             condition = filter.start_period != null && filter.end_period != null ? {
                 created_at: {
                     [Op.between]: [filter.start_period, filter.end_period]
@@ -542,7 +542,7 @@ export default class TransactionRepository {
             account_id: account_ids
         }
 
-        if (role_id == 1) {
+        if (role_id == role.ROLE_ADMIN) {
             condition = filter.start_period != null && filter.end_period != null ? {
                 created_at: {
                     [Op.between]: [filter.start_period, filter.end_period]
@@ -577,7 +577,7 @@ export default class TransactionRepository {
             account_id: account_ids
         }
 
-        if (role_id == 1) {
+        if (role_id == role.ROLE_ADMIN) {
             condition = filter.start_period != null && filter.end_period != null ? {
                 created_at: {
                     [Op.between]: [filter.start_period, filter.end_period]
@@ -614,7 +614,7 @@ export default class TransactionRepository {
             ],
             group: ["account_id"],
             where: {
-                account_id: req.account.role_id == 1 ? '' : account_ids,
+                account_id: req.account.role_id == role.ROLE_ADMIN ? '' : account_ids,
             },
             include: {
                 model: Account,

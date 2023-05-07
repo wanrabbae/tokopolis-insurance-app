@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt")
 import AccountService from "../../services/AccountService";
 
 const validation = require("../../validation/user.validation");
+const role = require("../../../../constants/roles");
 const { randomString } = require("../../utilities/functions");
 const { generateIdRoleManagementWithUniqueId } = require("../../utilities/generateId.js");
 
@@ -16,20 +17,20 @@ exports.create = async (req, res) => {
     if (emailCount > 0) return res.errorBadRequest(req.polyglot.t("error.email.exist"))
 
     const roleID = {
-        'manager': 2,
-        'branch': 3,
-        'supervisor': 4,
-        'agent': 5,
+        // 'manager': role.ROLE_MANAGER,
+        'branch': role.ROLE_BRANCH_HEAD,
+        'supervisor': role.ROLE_SUPERVISOR,
+        'agent': role.ROLE_AGENT,
     }
 
     const leadAccount = await service.getAccount(req.body.leader_id)
-    if (leadAccount && req.body.role != leadAccount.role_id + 1)
+    if (leadAccount && req.body.role != role.getSubordinateID(leadAccount.role_id))
         return res.errorBadRequest("Code not valid!")
 
     const salt = await bcrypt.genSalt(10)
 
     var uniqueId = await generateIdRoleManagementWithUniqueId({
-        role_id: req.body.role,
+        role_id: roleID[req.body.role],
         unique_id: leadAccount ? leadAccount.unique_id : req.body.dealer_id,
     })
 
@@ -185,14 +186,16 @@ exports.verifyUpgrade = async (req, res) => {
     const leadAccount = await service.getAccount(upgrade.leader_id)
     if (!leadAccount) return res.errorBadRequest("Code not valid!")
 
+    const newRoleID = role.getSubordinateID(leadAccount.role_id)
+
     const uniqueId = await generateIdRoleManagementWithUniqueId({
-        role_id: leadAccount.role_id + 1,
+        role_id: newRoleID,
         unique_id: leadAccount.unique_id,
     })
 
     if (req.body.status == "approve") {
         await service.updateAccount(upgrade.subordinate_id, {
-            role_id: leadAccount.role_id + 1,
+            role_id: newRoleID,
             unique_id: uniqueId.unique_id,
             other_id: uniqueId.other_id,
         })

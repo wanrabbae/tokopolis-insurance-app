@@ -14,6 +14,25 @@ apply-env:
 	mv .env.payment payment-service/.env
 	mv .env.payment.test payment-test/.env
 
+# Development Only
+
+run-admin:
+	npm run --prefix core-admin/ dev
+
+run-client:
+	npm run --prefix core-client/ dev
+
+run-email:
+	go run email-service/main.go
+
+run-payment:
+	npm run --prefix payment-service/ dev
+
+run-payment-test:
+	npm run --prefix payment-test/ dev
+
+# Deployment
+
 init-ssl:
 	chmod +x init-letsencrypt.sh
 	./init-letsencrypt.sh

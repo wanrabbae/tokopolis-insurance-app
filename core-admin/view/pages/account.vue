@@ -34,7 +34,6 @@
                                             <select
                                                 class="form-select"
                                                 v-model="form.role"
-                                                v-on:change="getAtasan"
                                                 @change="getLeaders"
                                                 required>
                                                 <option v-for="option in data.role" v-bind:value="option.value"
@@ -44,7 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="form.dealer_id != null && form.role != null && form.role != 3" class="row mt-2">
+                            <div v-if="form.dealer_id != null && form.role != null && form.role > 3" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
                                         <label class="col-form-label">Atasan
@@ -63,7 +62,7 @@
                                 </div>
                             </div>
 
-                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 3 || (form.role != 3 && form.leader_id != null))">
+                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 3 || (form.role > 3 && form.leader_id != null))">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
                                 </p>
@@ -335,14 +334,14 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
-                                
+
                                 <template #cell(role)="data">
                                     <h5 v-if="data.item.roles != null">
-                                        <span v-if="data.item.roles.name == 'Superadmin'">
-                                            <b-badge class="badge bg-primary">{{ data.item.roles?.name }}</b-badge>
+                                        <span v-if="data.item.roles.name == 'admin'">
+                                            <b-badge class="badge bg-primary">{{ data.item.roles?.alias }}</b-badge>
                                         </span>
                                         <span v-else>
-                                            <b-badge class="badge bg-success">{{ data.item.roles?.name }}</b-badge>
+                                            <b-badge class="badge bg-success">{{ data.item.roles?.alias }}</b-badge>
                                         </span>
                                     </h5>
                                     <h5 v-else>
@@ -403,6 +402,8 @@
 <script>
 import Swal from "sweetalert2"
 import { required } from "vuelidate/lib/validators"
+
+import role from "../../../constants/roles"
 
 export default {
     layout: 'admin',
@@ -542,25 +543,6 @@ export default {
                 })
                 .catch ([])
         },
-        async getAtasan() {
-            if (this.form.dealer_id !== null && this.form.role !== null && this.form.role !== "manager") {
-                this.data.leader = await this.$axios.$get('api/admin/account/item/leaders', {
-                    params: {
-                        role: this.form.role,
-                        dealer_id: this.form.dealer_id
-                    }
-                })
-                .then(response => {return response.data})
-                .catch([])
-
-                return this.data.leader;
-            }
-        },
-        addContent() {
-            this.formList.push({
-                name: null,
-                route: null,
-                method: null,})},
         async getLeaders() {
             if (this.form.dealer_id == null || this.form.role == null) return
 
@@ -626,7 +608,7 @@ export default {
         },
         triggerUpdatePassword() {
             this.$refs['update-data-password'].click();
-        },  
+        },
         async doCreateData(e) {
             e.preventDefault()
 
@@ -691,7 +673,7 @@ export default {
                     Swal.fire("Berhasil", "Berhasil Mengubah Password", "success")
                     window.location.reload()
                 })
-        },  
+        },
         async deleteData(id) {
             let context = this
 

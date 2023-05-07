@@ -15,7 +15,7 @@
                                         v-model="wdpoint.bankCode"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -28,7 +28,7 @@
                                         v-model="wdpoint.accountHolderName"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                         v-model="wdpoint.accountNumber"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                         v-model="totalPoint"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="account.role_id !== 1" class="row mt-4 mb-2">
+        <div v-if="account.role_id !== role.ROLE_ADMIN" class="row mt-4 mb-2">
             <div class="col-md-12">
                 <b-button variant="primary" @click="showModalWdPoint">Withdraw Point</b-button>
             </div>
@@ -166,6 +166,8 @@ import Swal from "sweetalert2"
 import moment from 'moment';
 import DatePicker from "vue2-datepicker"
 
+import role, { ROLE_ADMIN } from '../../../constants/roles'
+
 import "vue2-datepicker/index.css"
 export default {
     components: {
@@ -194,7 +196,8 @@ export default {
                 accountHolderName: null,
                 accountNumber: null
             },
-            account: []
+            account: [],
+            role: role
         }
     },
     computed: {
@@ -209,7 +212,7 @@ export default {
         // Set the initial number of items
         this.totalRows = this.fields.length
     },
-    created() {        
+    created() {
         this.getAccount()
     },
     methods: {
@@ -230,8 +233,7 @@ export default {
         },
         async getData() {
             let data = [];
-            await this.getAccount()
-            if (this.account.role_id != 5 && this.account.role_id != 1) {
+            if (this.account.role_id !== role.ROLE_AGENT && this.account.role_id !== role.ROLE_ADMIN) {
                 this.fields.splice(3, 0, { key: 'account.fullname', label: 'Nama User' });
                 data = await this.$axios.$get('api/admin/point/history/under', {
                     params: {
@@ -249,7 +251,7 @@ export default {
                 data = this.$axios.$get('/api/point/history').then((resp) => {
                     return resp.data;
                 })
-            }           
+            }
 
             return data;
         },
@@ -257,7 +259,7 @@ export default {
             this.getData();
             this.$refs.table.refresh();
         },
-        
+
         doResetFilter() {
             this.filter = {
                 date_period: null,

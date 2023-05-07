@@ -6,6 +6,8 @@ import AccountService from '../services/AccountService'
 const validation = require('../validation/auth.validation')
 const { randomString } = require('../utilities/functions')
 
+import role from '../../../constants/roles'
+
 const service = new AccountService()
 
 exports.register = async (req, res) => {
@@ -44,7 +46,7 @@ exports.login = async (req, res) => {
     if (validate.error) return res.errorValidation(validate.details)
 
     const account = await service.getAccountDataFromEmail(req.body.email)
-    if (!account || account.role == 'admin') return res.errorBadRequest(req.polyglot.t('error.auth'))
+    if (!account || account.role_id == role.ROLE_ADMIN) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
     const validPass = await bcrypt.compare(req.body.password, account.password)
     if (!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
@@ -113,7 +115,7 @@ exports.changeForgetPassword = async (req, res) => {
 
 exports.confirmEmail = async (req, res) => {
     if (req.params.token === undefined && req.params.token === null) return res.errorBadRequest(req.polyglot.t('error.token'))
-    
+
     const confirmData = await service.checkEmailToken(req.params.token);
     if (confirmData == null) return res.errorBadRequest(req.polyglot.t('error.token'))
 
