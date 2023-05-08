@@ -234,8 +234,8 @@ export default {
             window.location.href = `/asuransi/mobil/polis/konfirmasi-pembayaran?id=${id}`
         },
         openDocument(id) {
-            const redirectURL = self.$config.nodeEnv === 'development' ? self.$config.apiURL :
-                self.$config.serverURL
+            const redirectURL = this.$config.nodeEnv === 'development' ? this.$config.apiURL :
+                this.$config.serverURL
 
             window.open(`${redirectURL}/quotation/${id}.pdf`, '_blank')
         },
