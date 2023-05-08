@@ -119,7 +119,9 @@ const percentToDecimal = (number) => number / parseFloat(100)
 function safelyParseJSON(json) {
     var parsed
     try {
-        parsed = JSON.parse(json)
+        if (typeof json != "object") {
+            parsed = JSON.parse(json)
+        }
     } catch (e) {
         parsed = {}
     }
