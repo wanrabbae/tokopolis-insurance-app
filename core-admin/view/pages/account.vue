@@ -281,6 +281,11 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
+                                <template #cell(fullname)="data">
+                                    <span class="clickable" v-b-tooltip.click.blur :title="tooltip.message"
+                                        @click="copyToClipboard(data.item.unique_id)">{{ data.item.fullname }}</span>
+                                </template>
+
                                 <template #cell(role)="data">
                                     <h5 v-if="data.item.roles != null">
                                         <span v-if="data.item.roles.name == 'admin'">
@@ -406,7 +411,11 @@ export default {
                 password: null,
                 password_new: null,
                 password_confirmation: null
-            }
+            },
+            tooltip: {
+                success: false,
+                message: null
+            },
         }
     },
     head() {
@@ -629,6 +638,17 @@ export default {
             });
 
             return data;
+        },
+        async copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+
+                this.tooltip.success = true;
+                this.tooltip.message = 'Berhasil menyalin kode unik';
+            } catch(err) {
+                this.tooltip.success = false;
+                this.tooltip.message = 'Gagal menyalin: ' + err;
+            }
         },
     }
 }
