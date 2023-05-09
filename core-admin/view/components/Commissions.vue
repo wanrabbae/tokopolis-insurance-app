@@ -252,6 +252,7 @@ export default {
         },
         async getData() {
             let data = [];
+
             if (this.account.role_id !== role.ROLE_AGENT && this.account.role_id !== role.ROLE_ADMIN) {
                 this.fields.splice(3, 0, { key: 'account.fullname', label: 'Nama User' });
                 data = await this.$axios.$get('api/admin/comissions/history/under', {

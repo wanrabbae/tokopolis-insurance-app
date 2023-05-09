@@ -438,6 +438,7 @@ export default class TransactionRepository {
         }
 
         if (role_id == role.ROLE_ADMIN) {
+
             condition = filter.start_period != null && filter.end_period != null ? {
                 created_at: {
                     [Op.between]: [filter.start_period, filter.end_period]
