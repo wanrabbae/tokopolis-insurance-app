@@ -116,7 +116,7 @@ export default class AccountRepository {
         return await Account.findAll({
             where: {
                 dealer_id: dealer_id,
-                role_id: role_id - 1,
+                role_id: role_id,
             },
             attributes: ["id", "fullname"],
         });

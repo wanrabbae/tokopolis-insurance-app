@@ -117,14 +117,15 @@ const titleCase = (value) => {
 const percentToDecimal = (number) => number / parseFloat(100)
 
 function safelyParseJSON(json) {
-    var parsed
     try {
-        parsed = JSON.parse(json)
+        if (typeof json != "object") {
+            json = JSON.parse(json)
+        }
     } catch (e) {
-        parsed = {}
+        json = {}
     }
 
-    return parsed
+    return json
 }
 
 module.exports = {

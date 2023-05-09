@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 import Mailer from "../utilities/mail";
 import AccountRepository from "../repositories/AccountRepository";
 
+import role from '../../../constants/roles'
+
 const { getMoment, uploadHandler } = require("../utilities/functions");
 
 const nuxtFolder = process.env.NUXT_STATIC_DIR;
@@ -78,7 +80,7 @@ export default class AccountService {
         const hashedPassword = await bcrypt.hash(payload.password, salt)
 
         payload.password = hashedPassword
-        payload.role_id = data.account.role + 1
+        payload.role_id = role.getSubordinateID(data.account.role)
         payload.parent_id = data.account._id
 
         return this.repository.createAccountAdmin(payload)
@@ -100,7 +102,7 @@ export default class AccountService {
         const hashedPassword = await bcrypt.hash(payload.password, salt);
 
         payload.password = hashedPassword;
-        payload.role_id = 0;
+        payload.role_id = null;
 
         return this.repository.createAccount(payload);
     }
@@ -147,7 +149,7 @@ export default class AccountService {
         // for role upgrade
         if (payload.unique_id) {
             payload.role = "agent";
-            payload.role_id = 5;
+            payload.role_id = role.ROLE_AGENT;
             payload.other_id = payload.unique_id.split("-").slice(-1).pop();
         }
 
@@ -162,11 +164,12 @@ export default class AccountService {
         return payload;
     }
 
-    getAuthToken(id, email, role, photo = null) {
+    getAuthToken(id, email, fullname, role, photo = null) {
         return jwt.sign(
             {
                 _id: id,
                 email: email,
+                fullname: fullname,
                 role: role,
                 photo: photo,
             },

@@ -141,7 +141,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <div v-if="account.role_id == 1">
+                            <div v-if="account.role_id == role.ROLE_ADMIN">
                                 <b-button v-if="data.assessment == null && data.status !== 'polis'" class="float-end ms-2" variant="danger"
                                     :disabled="data.documents == null"
                                     @click="showRevert()">
@@ -320,6 +320,8 @@
     import { required } from "vuelidate/lib/validators"
     import Swal from "sweetalert2"
 
+    import role from "../../../../constants/roles";
+
     let ClassicEditor
 
     if (process.client) {
@@ -416,7 +418,8 @@
                     policy: null,
                     lainnya: null
                 },
-                account: []
+                account: [],
+                role: role
             };
         },
         head() {

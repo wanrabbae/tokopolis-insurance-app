@@ -117,6 +117,14 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
+                                <template #cell(key)="data">
+                                    <h5>
+                                        <span>
+                                            <b-badge class="badge bg-primary">{{ data.item.key }}</b-badge>
+                                        </span>
+                                    </h5>
+                                </template>
+
                                 <template #cell(action)="data">
                                     <b-button type="button" variant="primary" v-b-tooltip.hover
                                         title="Edit Data" v-on:click="showEdit(data.item)">
@@ -157,7 +165,7 @@ export default {
     data() {
         return {
             tableData: [],
-            title: "Daftar Endpoint",
+            title: "Daftar Pengaturan",
             totalRows: 1,
             currentPage: 1,
             perPage: 5,

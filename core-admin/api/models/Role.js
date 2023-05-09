@@ -12,6 +12,10 @@ module.exports = (sequelize, Sequelize) => {
                 allowNull: false,
                 unique: true,
             },
+            alias: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             created_at: Sequelize.DATE,
             updated_at: Sequelize.DATE,
             deleted_at: Sequelize.DATE,

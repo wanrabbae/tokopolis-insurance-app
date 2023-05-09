@@ -86,21 +86,22 @@
                                 </template>
 
                                 <template #cell(email)="data">
-                                    <span v-for="email in data.item.email">
-                                        <h5><b-badge class="badge bg-secondary me-1">{{ email }}</b-badge></h5>
-                                    </span>
+                                    <h5>
+                                        <b-badge v-for="email in data.item.email" v-bind:key="email"
+                                            class="bg-secondary">{{ email }}</b-badge>
+                                    </h5>
                                 </template>
 
                                 <template #cell(plus)="data">
                                     <h5>
                                         <b-badge v-if="data.item.commission != 0"
-                                            class="badge bg-info">Komisi: {{ data.item.commission }}%</b-badge>
+                                            class="bg-info">Komisi: {{ data.item.commission }}%</b-badge>
 
                                         <b-badge v-if="data.item.extra_point != 0"
-                                            class="badge bg-info">Extra Poin: {{ data.item.extra_point }}%</b-badge>
+                                            class="bg-info">Extra Poin: {{ data.item.extra_point }}%</b-badge>
 
                                         <b-badge v-if="data.item.commission == 0 && data.item.extra_point == 0"
-                                            class="badge bg-danger">Tidak Tersedia</b-badge>
+                                            class="bg-danger">Tidak Tersedia</b-badge>
                                     </h5>
                                 </template>
 

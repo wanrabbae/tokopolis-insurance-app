@@ -11,6 +11,7 @@ const id_ID_strings = {
     message: {
         field: {
             name: "Nama",
+            alias: "Nama Alias",
             fullname: "Nama Lengkap",
             label: "Label",
             email: "Email",

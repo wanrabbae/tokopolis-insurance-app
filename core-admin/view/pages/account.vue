@@ -34,7 +34,6 @@
                                             <select
                                                 class="form-select"
                                                 v-model="form.role"
-                                                v-on:change="getAtasan"
                                                 @change="getLeaders"
                                                 required>
                                                 <option v-for="option in data.role" v-bind:value="option.value"
@@ -44,7 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="form.dealer_id != null && form.role != null && form.role != 3" class="row mt-2">
+                            <div v-if="form.dealer_id != null && form.role != null && form.role > 3" class="row mt-2">
                                 <div class="col-md-6">
                                     <div role="group" class="form-group">
                                         <label class="col-form-label">Atasan
@@ -63,7 +62,7 @@
                                 </div>
                             </div>
 
-                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 3 || (form.role != 3 && form.leader_id != null))">
+                            <div v-if="form.dealer_id != null && form.role != null && (form.role == 3 || (form.role > 3 && form.leader_id != null))">
                                 <p class="mt-4 mb-0">
                                     <i class="mdi mdi-arrow-right text-primary me-1"></i> Anda bisa menambahkan beberapa pengguna sekaligus
                                 </p>
@@ -144,7 +143,7 @@
                 ok-only ok-title="Tutup">
                     <div class="card-body">
                         <div class="text-muted">
-                            <h5 class="font-size-16">Daftar Pengguna</h5>
+                            <h5 class="font-size-16">Daftar Akun</h5>
                             <div class="table-responsive">
                                 <table class="table table-striped mb-0">
                                     <thead>
@@ -176,59 +175,6 @@
                             <h5 class="font-size-16">Deskripsi</h5>
                             <p v-html="getDescription()"></p>
                         </div> -->
-                    </div>
-                </b-modal>
-
-                <b-modal size="lg" scrollable ref="form-update" title="Update Data"
-                ok-title="Submit" @ok.prevent="triggerUpdate" cancel-title="Batal">
-                    <div class="d-block text-justify">
-                        <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="doUpdateData">
-                            <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Nama
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div class="col-sm-10 col-lg-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.name"
-                                        class="form-control"
-                                        placeholder="Masukkan Nama Endpoint"
-                                        required>
-                                </div>
-                            </div>
-
-                            <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Route
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div class="col-sm-10 col-lg-10">
-                                    <input
-                                        type="text"
-                                        v-model="form.route"
-                                        class="form-control"
-                                        placeholder="Masukkan Link Route"
-                                        required>
-                                </div>
-                            </div>
-
-                            <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Method
-                                    <label class="text-danger">*</label>
-                                </label>
-                                <div class="col-sm-10 col-lg-10">
-                                    <select
-                                        class="form-select"
-                                        v-model="form.method"
-                                        required>
-                                        <option v-for="option in data.method" v-bind:value="option.value"
-                                            v-bind:key="option.text">{{ option.text }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <button ref="update-data" class="d-none"></button>
-
-                        </form>
                     </div>
                 </b-modal>
 
@@ -335,14 +281,18 @@
                                     {{ (currentPage - 1) * perPage + data.index + 1 }}
                                 </template>
 
-                                
+                                <template #cell(fullname)="data">
+                                    <span class="clickable" v-b-tooltip.click.blur :title="tooltip.message"
+                                        @click="copyToClipboard(data.item.unique_id)">{{ data.item.fullname }}</span>
+                                </template>
+
                                 <template #cell(role)="data">
                                     <h5 v-if="data.item.roles != null">
-                                        <span v-if="data.item.roles.name == 'Superadmin'">
-                                            <b-badge class="badge bg-primary">{{ data.item.roles?.name }}</b-badge>
+                                        <span v-if="data.item.roles.name == 'admin'">
+                                            <b-badge class="badge bg-primary">{{ data.item.roles?.alias }}</b-badge>
                                         </span>
                                         <span v-else>
-                                            <b-badge class="badge bg-success">{{ data.item.roles?.name }}</b-badge>
+                                            <b-badge class="badge bg-success">{{ data.item.roles?.alias }} ({{ data.item.dealers?.name }})</b-badge>
                                         </span>
                                     </h5>
                                     <h5 v-else>
@@ -404,12 +354,14 @@
 import Swal from "sweetalert2"
 import { required } from "vuelidate/lib/validators"
 
+import role from "../../../constants/roles"
+
 export default {
     layout: 'admin',
     data() {
         return {
             tableData: [],
-            title: "Daftar Pengguna",
+            title: "Daftar Akun",
             totalRows: 1,
             currentPage: 1,
             perPage: 5,
@@ -419,15 +371,11 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: "dealers.name", label: 'Dealer', tdClass: 'align-middle' },
-                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
+                { key: "fullname", label: 'Nama Akun', tdClass: 'align-middle' },
                 { key: "email", label: 'Email', tdClass: 'align-middle' },
                 { key: "role", label: 'Role', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
                 // { key: "dealer", label: 'Dealer', tdClass: 'align-middle' },
-                { key: "fullname", label: 'Nama Pengguna', tdClass: 'align-middle' },
-                { key: "email", label: 'Email', tdClass: 'align-middle' },
-                // { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
             fieldsHirarki: [
                 { key: 'fullname', label: 'Name' },
@@ -442,12 +390,6 @@ export default {
                     { value: 3, text: 'Kepala Cabang' },
                     { value: 4, text: 'Supervisor' },
                     { value: 5, text: 'Mitra' },
-                ],
-                leader: [,
-                    // { value: 'manager', text: 'Operation Manager' },
-                    { value: 'branch', text: 'Kepala Cabang' },
-                    { value: 'supervisor', text: 'Supervisor' },
-                    { value: 'agent', text: 'Mitra' },
                 ],
                 leader: [
                     { value: null, text: 'Pilih Atasan' },
@@ -469,7 +411,11 @@ export default {
                 password: null,
                 password_new: null,
                 password_confirmation: null
-            }
+            },
+            tooltip: {
+                success: false,
+                message: null
+            },
         }
     },
     head() {
@@ -542,25 +488,6 @@ export default {
                 })
                 .catch ([])
         },
-        async getAtasan() {
-            if (this.form.dealer_id !== null && this.form.role !== null && this.form.role !== "manager") {
-                this.data.leader = await this.$axios.$get('api/admin/account/item/leaders', {
-                    params: {
-                        role: this.form.role,
-                        dealer_id: this.form.dealer_id
-                    }
-                })
-                .then(response => {return response.data})
-                .catch([])
-
-                return this.data.leader;
-            }
-        },
-        addContent() {
-            this.formList.push({
-                name: null,
-                route: null,
-                method: null,})},
         async getLeaders() {
             if (this.form.dealer_id == null || this.form.role == null) return
 
@@ -626,11 +553,9 @@ export default {
         },
         triggerUpdatePassword() {
             this.$refs['update-data-password'].click();
-        },  
+        },
         async doCreateData(e) {
             e.preventDefault()
-
-            const finalForm = this.form;
 
             const finalFormList = this.formList.map(item => {
                 const data = item
@@ -638,20 +563,12 @@ export default {
 
                 return data
             })
-            finalForm.data = finalFormList;
 
-            return await this.$axios.$post('api/admin/account', finalForm)
-                .then(response => {
-                    this.$refs['form-create'].hide()
-
-                    Swal.fire("Berhasil", "Berhasil Menambah Data", "success")
-                    window.location.reload()
-                })
             return await this.$axios.$post('api/admin/account', {
                 dealer_id: this.form.dealer_id,
                 role: this.form.role,
                 leader_id: this.form.leader_id,
-                data: finalForm
+                data: finalFormList
             })
             .then(response => {
                 this.$refs['form-create'].hide()
@@ -691,7 +608,7 @@ export default {
                     Swal.fire("Berhasil", "Berhasil Mengubah Password", "success")
                     window.location.reload()
                 })
-        },  
+        },
         async deleteData(id) {
             let context = this
 
@@ -721,6 +638,17 @@ export default {
             });
 
             return data;
+        },
+        async copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+
+                this.tooltip.success = true;
+                this.tooltip.message = 'Berhasil menyalin kode unik';
+            } catch(err) {
+                this.tooltip.success = false;
+                this.tooltip.message = 'Gagal menyalin: ' + err;
+            }
         },
     }
 }

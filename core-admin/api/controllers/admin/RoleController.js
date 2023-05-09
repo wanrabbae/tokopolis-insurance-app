@@ -48,11 +48,11 @@ exports.update = async (req, res) => {
     if (role == null)
         return res.errorBadRequest(req.polyglot.t("error.role.notfound"));
 
-    if (role.name != req.body.name) {
-        const roleExist = await service.getRoleName(req.body.name);
-        if (roleExist != null)
-            return res.errorBadRequest(req.polyglot.t("error.role.exist"));
-    }
+    // if (role.name != req.body.name) {
+    //     const roleExist = await service.getRoleName(req.body.name);
+    //     if (roleExist != null)
+    //         return res.errorBadRequest(req.polyglot.t("error.role.exist"));
+    // }
 
     await service.update(role.id, req.body);
 

@@ -1,3 +1,5 @@
+import role from '../../../constants/roles'
+
 const bcrypt = require('bcrypt')
 
 module.exports = {
@@ -9,7 +11,7 @@ module.exports = {
             fullname: 'Administrator',
             email: 'admin@tokopolis.id',
             password: hashedPassword,
-            role_id: 1,
+            role_id: role.ROLE_ADMIN,
         }], {})
     },
 
