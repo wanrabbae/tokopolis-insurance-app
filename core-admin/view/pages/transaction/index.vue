@@ -346,6 +346,7 @@ import DatePicker from "vue2-datepicker"
 
 import "vue2-datepicker/index.css"
 import { required } from "vuelidate/lib/validators"
+import role from "../../../../constants/roles"
 
 export default {
     layout: 'admin',
@@ -515,7 +516,7 @@ export default {
 
             this.account = await this.getAccount();
 
-            const endpoint = this.account.role_id !== 1 ? '/api/admin/transaction/listUnder' : 'api/admin/transaction/list';
+            const endpoint = this.account.role_id !== role.ROLE_ADMIN ? '/api/admin/transaction/listUnder' : 'api/admin/transaction/list';
 
             this.tableData = await this.$axios.$get(endpoint, {
                     params: {
@@ -613,13 +614,13 @@ export default {
             this.formDownload.end_period = end_period;
 
             this.$axios.$post(`/api/admin/transaction/generate?start_period=${start_period}&end_period=${end_period}`, this.formDownload).then(response => {
-                
+
                 window.open(`${response.data.download_link}`, '_blank');
 
                 self.$router.push('/transaction')
 
                 this.$refs["filter-download-modal"].hide();
-            }) 
+            })
         },
         sendFeedback(id) {
             this.sendFeedbackParam.trx_id = id;

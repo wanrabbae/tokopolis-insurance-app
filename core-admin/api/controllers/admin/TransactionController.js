@@ -308,7 +308,7 @@ exports.addReview = async (req, res, next) => {
     generateXls(req.body, transaction, destination)
 
     const client_data = transaction.client_data
-    const emails = JSON.parse(transaction.product_email)
+    const emails = safelyParseJSON(transaction.product_email)
 
     for (let i = 0; i < emails.length; i++) {
         const element = emails[i];

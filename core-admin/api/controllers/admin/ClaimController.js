@@ -139,7 +139,7 @@ exports.generateSend = async (req, res, next) => {
     generateZip(claimData, destination)
     generateXls(claimData, destination)
 
-    const emails = JSON.parse(claimData.product.email)
+    const emails = safelyParseJSON(claimData.product.email)
 
     for (let i = 0; i < emails.length; i++) {
         const element = emails[i];

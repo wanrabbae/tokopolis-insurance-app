@@ -18,6 +18,7 @@ const {
     randomString,
     titleCase,
     percentToDecimal,
+    safelyParseJSON
 } = require("../utilities/functions");
 const { toPercent } = require("../utilities/calculation");
 
@@ -57,7 +58,7 @@ exports.transaction = async (req, res) => {
             transaction.expansions
         );
 
-        const client_data = JSON.parse(transaction.client_data);
+        const client_data = safelyParseJSON(transaction.client_data);
 
         return res.jsonData({
             plate: transaction.vehicle_data.plate,
@@ -718,7 +719,7 @@ exports.review = async (req, res) => {
     );
     if (transaction == null)
         return res.errorBadRequest(req.polyglot.t("error.transaction"));
-    var client = JSON.parse(transaction.client_data) ?? null;
+    var client = safelyParseJSON(transaction.client_data) ?? null;
 
     if (transaction.client_data) {
         const village = transaction.village;
@@ -812,10 +813,7 @@ exports.doPayment = async (req, res) => {
         transaction.total
     );
 
-
-    if (typeof transaction.client_data == "string") {
-        transaction.client_data = JSON.parse(transaction.client_data)
-    }
+    transaction.client_data = safelyParseJSON(transaction.client_data)
 
     const payload = {
         order_id: transaction.id,

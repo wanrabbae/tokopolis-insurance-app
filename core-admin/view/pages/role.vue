@@ -8,15 +8,15 @@
                     <div class="d-block text-justify">
                         <form class="form-horizontal x-hidden" role="form" v-on:submit.prevent="submitData">
                             <div role="group" class="row form-group mb-3">
-                                <label class="col-sm-2 col-lg-2 col-form-label">Nama
+                                <label class="col-sm-2 col-lg-2 col-form-label">Nama Alias Role
                                     <label class="text-danger">*</label>
                                 </label>
                                 <div class="col-sm-10 col-lg-10">
                                     <input
                                         type="text"
-                                        v-model="form.name"
+                                        v-model="form.alias"
                                         class="form-control"
-                                        placeholder="Masukkan Nama Role"
+                                        placeholder="Masukkan Nama Alias Role"
                                         required>
                                 </div>
                             </div>
@@ -49,9 +49,6 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Tabel {{ title }}</h4>
-                        <!-- <b-button class="mt-1" variant="primary" @click="showCreate">
-                            <i class="uil uil-plus"/> Tambah
-                        </b-button> -->
 
                         <div class="row mt-4">
                             <div class="col-sm-12 col-md-6">
@@ -83,11 +80,6 @@
                                         title="Edit Data" v-on:click="showEdit(data.item)">
                                         <i class="uil uil-edit"/>
                                     </b-button>
-
-                                    <!-- <b-button type="button" variant="danger" v-b-tooltip.hover
-                                        title="Hapus Data" v-on:click="deleteData(data.item.id)">
-                                        <i class="uil uil-trash"/>
-                                    </b-button> -->
                                 </template>
 
                             </b-table>
@@ -128,7 +120,7 @@ export default {
             sortDesc: false,
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
-                { key: "name", label: 'Nama Role', tdClass: 'align-middle' },
+                { key: "alias", label: 'Nama Alias', tdClass: 'align-middle' },
                 { key: "endpoints", label: 'Jumlah Endpoint', tdClass: 'align-middle' },
                 { key: "action", label: 'Aksi', tdClass: 'align-middle' },
             ],
@@ -138,7 +130,7 @@ export default {
             },
             backup: {},
             form: {
-                name: null,
+                alias: null,
                 endpoints: [],
             },
         }
@@ -249,7 +241,7 @@ export default {
                 })
         },
         async doUpdateData() {
-            const data = this.$formCheck(this.form, ['id', 'created_at',
+            const data = this.$formCheck(this.form, ['id', 'name', 'created_at',
                 'updated_at', 'deleted_at'])
 
             return await this.$axios.$put(`api/admin/role/${this.form.id}`, data)

@@ -6,6 +6,7 @@ import NotificationService from "../services/NotificationService";
 import { generateIdRoleManagementWithUniqueId } from "../utilities/generateId.js";
 
 const validation = require("../validation/user.validation");
+const role = require("../../../constants/roles");
 
 const service = new AccountService();
 const transactionService = new TransactionService();
@@ -109,9 +110,9 @@ exports.updateIdentity = async (req, res) => {
         /^[0][1-9][.]([\d]{3})[.]([\d]{3})[.][\d][-]([\d]{3})[.]([\d]{3})$/g;
 
     if (
-        (account.role == "client" &&
+        (account.role_id == null &&
             !ktpRegex.test(req.body.identity_number)) ||
-        (account.role == "agent" && !npwpRegex.test(req.body.identity_number))
+        (account.role_id == role.ROLE_AGENT && !npwpRegex.test(req.body.identity_number))
     ) {
         return res.errorBadRequest(req.polyglot.t("error.identity"));
     }
@@ -199,7 +200,7 @@ exports.requestUpgrade = async (req, res) => {
     if (upgrade) return res.errorBadRequest("You already request upgrade")
 
     const leadAccount = await service.getAccountWithUniqueId(req.body.leader_id);
-    if (!leadAccount || (leadAccount && leadAccount.role_id == 5))
+    if (!leadAccount || (leadAccount && leadAccount.role_id == role.ROLE_AGENT))
         return res.errorNotFound("Code not valid!")
 
     if (req.account.role != 0) return res.errorBadRequest("You already have role")
@@ -225,7 +226,7 @@ exports.requestUpgrade = async (req, res) => {
 
     // will be delete soon
     const uniqueId = await generateIdRoleManagementWithUniqueId({
-        role_id: leadAccount.role_id + 1,
+        role_id: role.getSubordinateID(leadAccount.role_id),
         unique_id: leadAccount.unique_id.split("-")[0],
     });
 
