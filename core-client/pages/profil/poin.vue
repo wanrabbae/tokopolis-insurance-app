@@ -152,6 +152,9 @@
 
 <script>
 import PenarikanPoinModal from '../../components/modals/PenarikanPoinModal.vue';
+
+import role from '../../../constants/roles'
+
 export default {
     components: {
         PenarikanPoinModal
@@ -230,7 +233,8 @@ export default {
                 'bri': 'BRI',
                 'btn': 'BTN',
                 'cmb': 'CIMB Niaga',
-            }
+            },
+            role
         }
     },
     head() {
@@ -291,7 +295,7 @@ export default {
 
             const payload = JSON.parse(atob(accessToken.split('.')[1]))
 
-            return payload.role === 5
+            return payload.role === role.ROLE_AGENT
         },
         async getTotal() {
             await this.$axios.$get('api/transaction/total')

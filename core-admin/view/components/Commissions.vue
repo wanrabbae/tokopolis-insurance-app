@@ -15,7 +15,7 @@
                                         v-model="cmpoint.bankCode"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -28,7 +28,7 @@
                                         v-model="cmpoint.accountHolderName"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                         v-model="cmpoint.accountNumber"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                         v-model="totalComissionFormatted"
                                         class="form-control"
                                         type="text"
-                                        required 
+                                        required
                                         readonly/>
                                 </div>
                             </div>
@@ -121,10 +121,10 @@
             </div>
         </div>
         <div>
-            <div class="row row mt-4 mb-2" v-if="account.role_id !== 1">
+            <div class="row row mt-4 mb-2" v-if="account.role_id !== role.ROLE_ADMIN">
                 <div class="col-md-12">
-                    <b-button v-if="account.role_id === 5" variant="primary" @click="showModalWdCommission">Withdraw Commission</b-button>
-                </div> 
+                    <b-button v-if="account.role_id === role.ROLE_AGENT" variant="primary" @click="showModalWdCommission">Withdraw Commission</b-button>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -177,6 +177,8 @@ import Swal from "sweetalert2"
 import moment from 'moment';
 import DatePicker from "vue2-datepicker"
 
+import role from '../../../constants/roles'
+
 import "vue2-datepicker/index.css"
 export default {
     components: {
@@ -190,7 +192,6 @@ export default {
             fields: [
                 { key: "index", label: '#', tdClass: 'align-middle' },
                 { key: 'created_at', label: 'Tanggal' },
-                { key: 'account_id', label: 'ID User' },
                 { key: 'value', label: 'Komisi' },
                 { key: 'description', label: 'Keterangan' },
             ],
@@ -206,7 +207,8 @@ export default {
                 date_period: null,
                 name: null
             },
-            account: []
+            account: [],
+            role: role
         }
     },
     computed: {
@@ -221,8 +223,9 @@ export default {
         // Set the initial number of items
         this.totalRows = this.fields.length
     },
-    created() {        
+    created() {
         this.getAccount()
+        this.getData()
     },
     methods: {
         async getAccount() {
@@ -247,11 +250,12 @@ export default {
         moment(date) {
             return moment(date)
         },
-        getData() {
+        async getData() {
             let data = [];
-            if (this.account.role_id !== 5 && this.account.role_id !== 1) {
+
+            if (this.account.role_id !== role.ROLE_AGENT && this.account.role_id !== role.ROLE_ADMIN) {
                 this.fields.splice(3, 0, { key: 'account.fullname', label: 'Nama User' });
-                data = this.$axios.$get('api/admin/comissions/history/under', {
+                data = await this.$axios.$get('api/admin/comissions/history/under', {
                     params: {
                         name: this.filter.name,
                         start_period: this.filter.date_period === null ? null : this.filter.date_period[0],
@@ -267,7 +271,7 @@ export default {
                 data = this.$axios.$get('/api/comissions/history').then((resp) => {
                     return resp.data;
                 })
-            }   
+            }
 
             return data;
         },
@@ -281,7 +285,7 @@ export default {
         },
         async doWithdrawCommission(e) {
             e.preventDefault();
-            
+
 
             return await this.$axios.$post('/api/comissions/withdraw', this.cmpoint)
                 .then(resp => {

@@ -527,7 +527,10 @@ export default {
             })
             .then(function(response) {
                 setTimeout(() => {
-                    window.open(`/quotation/${response.data.transaction_id}`, '_blank')
+                    const redirectURL = self.$config.nodeEnv === 'development' ? self.$config.apiURL :
+                        self.$config.serverURL
+
+                    window.open(`${redirectURL}/quotation/${response.data.transaction_id}.pdf`, '_blank')
                 }, 500)
 
                 self.$router.push({

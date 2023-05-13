@@ -5,7 +5,7 @@ import ProductRepository from '../repositories/ProductRepository'
 const { toMillion, toDecimal, comprehensive, tlo, flood,
     earthQuake, srccTerorism, tplRate,
     paDriver, paPassenger } = require('../utilities/calculation')
-const { uploadHandler, stringTag } = require('../utilities/functions')
+const { uploadHandler, stringTag, safelyParseJSON } = require('../utilities/functions')
 
 const nuxtFolder = process.env.NUXT_STATIC_DIR
 
@@ -20,7 +20,7 @@ export default class VehicleService {
 
     async getProductAll(filter, limit, offset) {
         const data = await this.repository.getProductAll(filter, limit, offset)
-        data.map(data => data.dataValues.email = JSON.parse(data.dataValues.email))
+        data.map(data => data.dataValues.email = safelyParseJSON(data.dataValues.email))
         return data
     }
 
@@ -28,7 +28,7 @@ export default class VehicleService {
         const data = await this.repository.getProductList(payload, limit, offset)
         data.map(data => {
             data.dataValues.price = product_price
-            data.dataValues.email = JSON.parse(data.dataValues.email)
+            data.dataValues.email = safelyParseJSON(data.dataValues.email)
         })
 
         return data
@@ -79,7 +79,7 @@ export default class VehicleService {
 
     async getProduct(id) {
         const data = await this.repository.getProduct(id)
-        data.dataValues.email = JSON.parse(data.dataValues.email)
+        data.dataValues.email = safelyParseJSON(data.dataValues.email)
         return data
     }
 

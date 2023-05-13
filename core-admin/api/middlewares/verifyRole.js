@@ -19,7 +19,8 @@ function verify(role = '') {
             try {
                 const originEndpoint = String(req.baseUrl + req.path)
                 const endpoint = originEndpoint
-                    .replace(/([A-Z][A-Z][A-Z]-\d+-+\d+-\d)\w+/g, "?")
+                    .replace(/([A-Z][A-Z][A-Z]-\d+-+\d+-\d)\w+/g, "?") // Tokopolis ID (TKP, CLM)
+                    .replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, "?") // uuid
                     .replace(/[-0-9]+/g, "?")
                 const method = req.method
 

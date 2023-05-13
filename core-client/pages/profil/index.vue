@@ -429,7 +429,7 @@ export default {
                         }
 
                         if (response.data.roles != null) {
-                            this.user.role = response.data.roles.name
+                            this.user.role = response.data.roles.alias
                             this.user.unique_id = response.data.unique_id
                         }
 

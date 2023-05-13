@@ -6,6 +6,8 @@ import AccountService from '../../services/AccountService'
 const validation = require('../../validation/auth.validation')
 const { randomString } = require('../../utilities/functions')
 
+import role from '../../../../constants/roles'
+
 const service = new AccountService()
 
 exports.login = async (req, res) => {
@@ -13,12 +15,13 @@ exports.login = async (req, res) => {
     if (validate.error) return res.errorValidation(validate.details)
 
     const account = await service.getAccountFromEmail(req.body.email)
-    if(!account || account.role == 'client') return res.errorBadRequest(req.polyglot.t('error.auth'))
+    if(!account || account.role_id == role.ROLE_AGENT) return res.errorBadRequest(req.polyglot.t('error.auth'))
 
     const validPass = await bcrypt.compare(req.body.password, account.password)
     if(!validPass) return res.errorBadRequest(req.polyglot.t('error.password'))
 
-    const token = service.getAuthToken(account.id, account.email, account.role_id)
+    const token = service.getAuthToken(account.id, account.email,
+        account.fullname, account.role_id)
 
     return res.header('Authorization', `Bearer ${token}`).jsonData({
         'token': token

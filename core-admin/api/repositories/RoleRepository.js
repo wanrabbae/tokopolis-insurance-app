@@ -22,6 +22,9 @@ export default class RoleRepository {
             where: {
                 [Op.or]: [{ name: { [Op.like]: `%${query}%` } }],
             },
+            order: [
+                ['created_at', 'ASC'],
+            ],
             limit: limit,
             offset: offset,
         });

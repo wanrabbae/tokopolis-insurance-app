@@ -141,7 +141,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div>
-                            <div v-if="account.role_id == 1">
+                            <div v-if="account.role_id == role.ROLE_ADMIN">
                                 <b-button v-if="data.assessment == null && data.status !== 'polis'" class="float-end ms-2" variant="danger"
                                     :disabled="data.documents == null"
                                     @click="showRevert()">
@@ -235,6 +235,10 @@
                                         <td scope="row">{{ item }}</td>
                                         <td>{{ data[key] }}</td>
                                     </tr>
+                                    <tr>
+                                        <td scope="row">Penggunaan Mobil</td>
+                                        <td>Pribadi</td>
+                                    </tr>
                                     <tr v-for="(item, key) of fields.vehicle_data" v-bind:key="key">
                                         <td scope="row">{{ item }}</td>
                                         <td>{{ autoNumberFormat(data.vehicle_data?.[key]) }}</td>
@@ -316,6 +320,8 @@
     import { required } from "vuelidate/lib/validators"
     import Swal from "sweetalert2"
 
+    import role from "../../../../constants/roles";
+
     let ClassicEditor
 
     if (process.client) {
@@ -360,7 +366,7 @@
                     vehicle_base: {
                         'brand': 'Merk',
                         'sub_model': 'Seri',
-                        'is_new_condition': 'Kondisi'
+                        'is_new_condition': 'Kondisi',
                     },
                     vehicle_data: {
                         'year': 'Tahun Pembuatan',
@@ -412,7 +418,8 @@
                     policy: null,
                     lainnya: null
                 },
-                account: []
+                account: [],
+                role: role
             };
         },
         head() {

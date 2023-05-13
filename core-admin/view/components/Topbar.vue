@@ -69,7 +69,7 @@
                 <b-dropdown class="d-inline-block" toggle-class="header-item" right variant="white" menu-class="dropdown-menu-end">
                     <template #button-content>
                         <img class="rounded-circle header-profile-user" src="~/static/img/DefaultProfile.png" alt="Header Avatar" />
-                        <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">Administrator</span>
+                        <span class="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{{ fullname }}</span>
                         <i class="uil-angle-down d-none d-xl-inline-block font-size-15"></i>
                     </template>
 
@@ -138,6 +138,11 @@ export default {
         this.value = this.languages.find((x) => x.language === this.$i18n.locale);
         this.text = this.value.title;
         this.flag = this.value.flag;
+
+        const token = this.$store.$cookiz.get('token')
+        const payload = JSON.parse(atob(token.split('.')[1]))
+
+        this.fullname = payload.fullname || 'Administrator'
     },
     methods: {
         toggleMenu() {

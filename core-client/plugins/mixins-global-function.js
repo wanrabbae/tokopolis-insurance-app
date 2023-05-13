@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import atob from 'atob'
 
+import role from '../../constants/roles'
+
 const mixin = {
     methods: {
         formatPrice(value, locales='id-ID', style='currency', currency = 'IDR') {
@@ -39,7 +41,7 @@ const mixin = {
 
             const payload = JSON.parse(atob(accessToken.split('.')[1]))
 
-            return payload.role === 5
+            return payload.role === role.ROLE_AGENT
         },
     },
 }
