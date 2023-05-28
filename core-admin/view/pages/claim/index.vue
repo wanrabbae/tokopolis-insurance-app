@@ -163,7 +163,7 @@
                                     </b-button> -->
 
                                     <b-button v-if="account.role_id == role.ROLE_ADMIN" v-b-tooltip.hover
-                                        title="Send File to Agent"  type="button" variant="warning"
+                                        title="Revert to Agent"  type="button" variant="warning"
                                         @click="sendEmail(data.item.id)">
                                         <i class="uil uil-fast-mail" ></i>
                                     </b-button>
@@ -299,7 +299,7 @@ export default {
                     }
                 })
                 .then (response => {
-                    this.totalRows = /* response.data.pagination.total || */ response.data.length;
+                    this.totalRows  =response.data.pagination.total ;
                     return response.data.list;
                 })
             return this.tableData;

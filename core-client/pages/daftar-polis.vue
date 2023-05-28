@@ -72,8 +72,8 @@
                                 <div class="mb-2">{{ policy.periodDate }}</div>
                                 <div class="d-block">
                                     <div class="badge py-2 px-3 rounded-pill mr-1"
-                                        :class="policy.status === 'paid' || policy.status === 'polis' ? 'badge-success' : 'badge-danger'">
-                                        {{ policy.status === "paid" || policy.status === 'polis' ? 'Aktif' : 'Belum Aktif' }}
+                                        :class="policy.status === 'polis' ? 'badge-success' : 'badge-danger'">
+                                        {{ policy.status === 'polis' ? 'Aktif' : 'Belum Aktif' }}
                                     </div>
 
                                     <div v-if="policy.status == 'open'"
