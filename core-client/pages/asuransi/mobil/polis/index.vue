@@ -566,7 +566,7 @@ export default {
                     this.isLoggedIn = false
                 }
 
-                this.totalRows = response.data.pagination.total;
+                this.totalRows = response.data.pagination?.total;
 
                 response.data.data.forEach(element => {
                     this.products.push({
