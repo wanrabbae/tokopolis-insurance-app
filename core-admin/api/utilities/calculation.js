@@ -2,11 +2,11 @@ const moment = require('moment')
 
 const toMillion = (price) => price * 1000000
 const toDecimal = (valueInPercent) => valueInPercent / 100
-const toPercent = (valueInDecimal) => valueInDecimal * 100
+const toPercent = (valueInDecimal) => (valueInDecimal * 100).toFixed(2)
 
 const comprehensive = (price, category, zone) => {
-    const type1 = [ [3.82, 3.26, 2.53], [2.67, 2.47, 2.69], [2.18, 2.08, 1.79],
-        [1.2, 1.2, 1.14], [1.05, 1.05, 1.05] ]
+    const type1 = [[3.82, 3.26, 2.53], [2.67, 2.47, 2.69], [2.18, 2.08, 1.79],
+    [1.2, 1.2, 1.14], [1.05, 1.05, 1.05]]
     const type2 = [2.42, 2.39, 2.23]
 
     const list = () => {
@@ -35,8 +35,8 @@ const comprehensive = (price, category, zone) => {
 }
 
 const tlo = (price, category, zone) => {
-    const type1 = [ [0.47, 0.65, 0.51], [0.63, 0.44, 0.44], [0.41, 0.38, 0.29],
-        [0.25, 0.25, 0.23], [0.2, 0.2, 0.2] ]
+    const type1 = [[0.47, 0.65, 0.51], [0.63, 0.44, 0.44], [0.41, 0.38, 0.29],
+    [0.25, 0.25, 0.23], [0.2, 0.2, 0.2]]
     const type2 = [0.88, 1.68, 0.81]
 
     const list = () => {
